@@ -16,6 +16,7 @@ export default function CustomRouteButton({
   return (
     <>
       <ToggleButtonGroup
+        className={component.className}
         onClick={() => {
           if (component?.form) {
             dispatch(storeUserData({ ...user, formType: component.form }));

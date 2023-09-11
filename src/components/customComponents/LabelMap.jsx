@@ -35,7 +35,7 @@ const LabelMap = ({ component }) => {
     <>
       {apiData?.map((item, i) => {
         return (
-          <div key={i}>
+          <div key={i} className={component.parentClassName}>
             <p>{item?.label}</p>
             <p>{item?.value}</p>
           </div>
