@@ -8,7 +8,6 @@ import {
 import { USER_ROLE } from "../../../ScreenJson";
 
 export default function AdminDashboard({ role }) {
-  console.log(role);
   return (
     <div style={{ marginTop: "100px" }}>
       <RenderComponent

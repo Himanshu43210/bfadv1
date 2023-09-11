@@ -25,7 +25,7 @@ const FormPage = () => {
         >
           <GiHamburgerMenu />
         </Button>
-        <Navbar role={userProfile?.role} />
+        {/* <Navbar role={userProfile?.role} /> */}
       </div>
       <div
         style={{

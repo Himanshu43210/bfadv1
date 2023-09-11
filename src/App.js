@@ -8,9 +8,9 @@ import PropertyManagement from "./components/Pages/adminPages/PropertyManagement
 import MasterManagement from "./components/Pages/adminPages/MasterManagement";
 import SuperMasterTable from "./components/Pages/adminPages/SuperMasterTable";
 import StatsList from "./components/Pages/adminPages/StatsList";
-import Home from "./components/Pages/Home";
-import DetailedView from "./components/Pages/DetailedView";
-import SearchResult from "./components/Pages/SearchResult";
+// import Home from "./components/Pages/Home";
+// import DetailedView from "./components/Pages/DetailedView";
+// import SearchResult from "./components/Pages/SearchResult";
 import FormPage from "./components/Pages/adminPages/FormPage.jsx";
 import { useSelector } from "react-redux";
 function App() {

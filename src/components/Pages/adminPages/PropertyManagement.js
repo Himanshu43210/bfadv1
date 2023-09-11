@@ -60,7 +60,7 @@ export default function PropertyManagement() {
       ) : (
         <div>
           <div>
-            <Navbar />
+            {/* <Navbar /> */}
             <Card>
               <Card.Header className="font">Property Details</Card.Header>
               <Card.Body>

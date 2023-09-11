@@ -102,14 +102,14 @@ export const AD_USER_DASHBOARD = {
               name: "Statistics",
               route: "/admin/statistics",
             },
-            {
-              type: ROUTE_BUTTON,
-              className: "admin-route-button",
-              label: "Field Changes Master Data",
-              name: "Field Changes Master Data",
-              form: newPropertyConst,
-              route: "/admin/form",
-            },
+            // {
+            //   type: ROUTE_BUTTON,
+            //   className: "admin-route-button",
+            //   label: "Field Changes Master Data",
+            //   name: "Field Changes Master Data",
+            //   form: newPropertyConst,
+            //   route: "/admin/form",
+            // },
             {
               type: ROUTE_BUTTON,
               className: "admin-route-button",

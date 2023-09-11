@@ -23,7 +23,7 @@ export default function AdminHome() {
         >
           <GiHamburgerMenu />
         </Button>
-        <Navbar role={userProfile?.role} />
+        {/* <Navbar role={userProfile?.role} /> */}
       </div>
       <div
         className={`${"main-admin-container"} ${

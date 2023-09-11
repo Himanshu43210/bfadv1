@@ -50,7 +50,7 @@ export default function MasterManagement() {
       )}
       <div>
         <div>
-          <Navbar />
+          {/* <Navbar /> */}
           <Card>
             <Card.Header className="font">Master Details</Card.Header>
             <Card.Body>
