@@ -214,6 +214,59 @@ export const CP_USER_DASHBOARD = {
   ],
 };
 
+export const SU_USER_DASHBOARD = {
+  name: "User Dashboard Screen",
+  children: [
+    {
+      type: CONTAINER,
+      className: "superAdminDashboard",
+      children: [
+        {
+          type: CONTAINER,
+          className: "superAdminDashboard-child-1",
+          children: [
+            {
+              type: ROUTE_BUTTON,
+              className: "admin-route-button",
+              label: "Statistics",
+              name: "Statistics",
+            },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin-route-button",
+              label: "Post Listing",
+              name: "Post Listing",
+              form: newPropertyConst,
+              route: "/admin/form",
+            },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin-route-button",
+              label: "Master Data of Sub User",
+              name: "Master Data of Sub User",
+              route: "/admin/masterTable",
+            },
+          ],
+        },
+        {
+          type: CONTAINER,
+          className: "superAdminDashboard-child-1",
+          children: [
+            {
+              type: LABEL_MAP,
+              className: "lableded-map-dashboard",
+              api: API_ENDPOINTS[GET_LISTING_DATA],
+              method: GET,
+              endpoint: GET_LISTING_DATA,
+              parentClassName: "super-admin-label",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 export const AD_MASTER_TABLE = {
   name: "Master table",
   className: "klk",

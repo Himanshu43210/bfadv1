@@ -20,6 +20,7 @@ export default function PageSelector({ pageName }) {
   const loginStatus = useSelector((state) =>
     selectApiStatus(state, ADMIN_DASHBOARD_LOGIN)
   );
+  const userProfile = useSelector((state) => state.profile);
 
   useEffect(() => {
     if (!loginStatus) {
@@ -30,7 +31,9 @@ export default function PageSelector({ pageName }) {
   return (
     <>
       {!loginStatus && <Login />}
-      {pageName === ADMIN_DASHBOARD && <AdminDashboard />}
+      {pageName === ADMIN_DASHBOARD && (
+        <AdminDashboard role={userProfile.role} />
+      )}
       {pageName === USER_MANAGEMENT && <UserManagement />}
       {pageName === PROPERTY_MANAGEMENT && <PropertyManagement />}
       {pageName === MASTER_MANAGEMENT && <MasterManagement />}

@@ -177,7 +177,6 @@ export const editUserConst = [
     type: "select",
     isRequired: true,
     options: [
-      // { value: "BuilderFloorAdmin", label: "Builder Floor Admin" },
       { value: "Suspend", label: "Suspend" },
       { value: "Unsuspend", label: "Unsuspend" },
       { value: "Terminate", label: "Terminate" },
