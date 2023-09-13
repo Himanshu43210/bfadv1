@@ -73,7 +73,6 @@ const ComponentSelector = ({ component }) => {
   }
 
   const handleValueChange = (value) => {
-    console.log(value, 21411, component.name, hasValueProperty(value));
     dispatch(
       storeFilterData({
         key: component.paginatioName || component.name,
@@ -103,7 +102,6 @@ const ComponentSelector = ({ component }) => {
       dispatch(callApi(options));
     }
   };
-  console.log(sliceData, 2141);
   return (
     <>
       {component.loadingApi && apiStatus === LOADING && (

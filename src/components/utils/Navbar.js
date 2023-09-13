@@ -5,7 +5,7 @@ function Navbar({ role }) {
   const titleMapping = {
     BuilderFloorAdmin: "Builder Floor Admin",
     ChannelPartner: "Channel Partner",
-    PropertyDealer: "Sales User",
+    SalesUser: "Sales User",
   };
   return (
     <AppBar>

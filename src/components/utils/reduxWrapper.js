@@ -15,7 +15,7 @@ const ReduxWrapper = ({ sliceName, children }) => {
 
   const handleFetchData = () => {
     const data = fetchData(sliceName, "myKey");
-    console.log(data);
+    (data);
   };
 
   return (

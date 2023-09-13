@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import AdminDashboard from "../Pages/adminPages/SuperAdminDashboard";
+import AdminDashboard from "../Pages/adminPages/AdminDashboard";
 import MasterManagement from "../Pages/adminPages/MasterManagement";
 import PropertyManagement from "../Pages/adminPages/PropertyManagement";
 import UserManagement from "../Pages/adminPages/UserManagement";

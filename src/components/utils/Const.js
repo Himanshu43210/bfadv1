@@ -50,6 +50,7 @@ export const LOADING = "loading";
 export const FAILED = "failed";
 export const SUCCESS = "succeeded";
 export const APPROVED = "Approved";
+export const REJECTED = "Rejected";
 
 export const GET_CARD_DATA = "getCardData";
 export const GET_SEARCH_RESULT = "getSearchResult";
@@ -72,13 +73,15 @@ export const GET_HOME_SCREEN_DATA = "getHomeScreenData";
 export const GET_ADMIN_PROPERTY_DATA = "getAdminPropertyData";
 export const GET_CHANNEL_PARTNER_DATA = "getChannelPartnerData";
 export const GET_ADMIN_USER_DATA = "getAdminUserData";
+export const GET_PROPERTY_LIST_BY_USER_ID = "getPropertiesListByUserId";
+export const GET_APPROVAL_PROPERTIES = "getApprovalProperties";
 
 export const LINKEDIN_ICON = "LINKEDIN_ICON";
 export const INSTAGRAM_ICON = "INSTAGRAM_ICON";
 
 export const BF_ADMIN = "bfAdmin";
 export const CHANNEL_PARTNER = "channelPartner";
-export const PROPERTY_DEALER = "propertyDealer";
+export const PROPERTY_DEALER = "salesUser";
 
 // Pages
 export const ADMIN_DASHBOARD = "ADMIN_DASHBOARD";

@@ -20,10 +20,10 @@ const LabelMap = ({ component }) => {
       })
     );
   };
-  console.log(data._id, component.api, api);
+  (data._id, component.api, api);
   useEffect(() => {
     if (!checked) {
-      // console.log(api)
+      // (api)
       handleApiCall();
       setChecked(true);
     }

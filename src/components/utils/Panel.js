@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { resetApiStatus } from "../../redux/slice/apiSlice";
 
 function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
-  console.log(nonSalesUser);
   const dispatch = useDispatch();
   return (
     <div>
@@ -50,13 +49,13 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
                   <h6>User</h6>
                 </Button>
 
-                <Button
+                {/* <Button
                   onClick={() => handlePageClick(MASTER_MANAGEMENT)}
                   className="panel-link"
                 >
                   <FaUserShield className="admin-panel-icons" />
                   <h6>Master</h6>
-                </Button>
+                </Button> */}
               </>
             )}
           </>

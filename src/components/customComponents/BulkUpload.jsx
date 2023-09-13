@@ -33,7 +33,7 @@ function CSVUpload() {
         uploadFile(formData);
       } else {
         setValidationMessage('CSV file is missing some expected headers.');
-        console.log('Missing headers:', Object.keys(headersValid).filter((header) => !headersValid[header]));
+        ('Missing headers:', Object.keys(headersValid).filter((header) => !headersValid[header]));
       }
     };
 

@@ -23,7 +23,6 @@ export default function ApiHandler({
       (userProfile.role ? "&role=" + userProfile.role : "");
   }
 
-  console.log(uurl, url);
   const doFetch = useCallback(() => {
     const options = {
       url: uurl,

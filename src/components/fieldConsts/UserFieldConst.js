@@ -62,7 +62,7 @@ export const newUserConst = [
   },
   {
     name: "location",
-    label: "Location Allowed",
+    label: "Locations Allowed",
     dataKey: "location",
     type: "select",
     isRequired: true,
@@ -82,7 +82,7 @@ export const newUserConst = [
       { label: "South City 1", value: "South City 1" },
       { label: "Sushant Lok 1", value: "Sushant Lok 1" },
     ],
-    requiredErrorMessage: "Please select a Location.",
+    requiredErrorMessage: "Please select a Locations.",
   },
 ];
 
@@ -148,7 +148,7 @@ export const editUserConst = [
   },
   {
     name: "location",
-    label: "Location Allowed",
+    label: "Locations Allowed",
     dataKey: "location",
     type: "select",
     isRequired: true,
@@ -168,7 +168,7 @@ export const editUserConst = [
       { label: "South City 1", value: "South City 1" },
       { label: "Sushant Lok 1", value: "Sushant Lok 1" },
     ],
-    requiredErrorMessage: "Please select a Location.",
+    requiredErrorMessage: "Please select a Locations.",
   },
   {
     name: "status",

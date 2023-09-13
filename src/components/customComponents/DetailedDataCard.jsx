@@ -41,7 +41,7 @@ export default function DetailDataCard({
     (state) => selectApiData(state, getApiEndpoint)?.data
   );
   const cardData = singledata || apiData || {};
-  console.log("cardData", cardData?.title);
+  ("cardData", cardData?.title);
 
   const [ShowNumber, setShowNumber] = useState();
   const [imageLink, setImageLink] = useState(cardData.images?.[0]);

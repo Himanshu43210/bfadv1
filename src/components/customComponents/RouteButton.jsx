@@ -19,7 +19,15 @@ export default function CustomRouteButton({
         className={component.className}
         onClick={() => {
           if (component?.form) {
-            dispatch(storeUserData({ ...user, formType: component.form }));
+            dispatch(
+              storeUserData({
+                ...user,
+                formType: component.form,
+                formSaveApi: component.onSaveApi,
+                formName: component.label,
+                autofill: component.autofill,
+              })
+            );
           }
           if (component?.route) {
             navigate(component.route);

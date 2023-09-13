@@ -1,12 +1,14 @@
 import { newPropertyConst } from "./components/fieldConsts/PropertiesFieldConst";
-import { newUserConst } from "./components/fieldConsts/UserFieldConst";
+import {
+  editUserConst,
+  newUserConst,
+} from "./components/fieldConsts/UserFieldConst";
 import {
   ALTER_PROPERTY_DATA,
   ALTER_USER_DATA,
   API_BUTTON,
   API_HEADING,
   APPROVE_PROPERTY_DATA,
-  AUTO_FETCH_API,
   AUTO_FETCH_API_POST,
   AUTO_FETCH_API_USER,
   CONTAINER,
@@ -16,10 +18,10 @@ import {
   GET,
   GET_ADMIN_PROPERTY_DATA,
   GET_ADMIN_USER_DATA,
+  GET_APPROVAL_PROPERTIES,
   GET_LISTING_DATA,
+  GET_PROPERTY_LIST_BY_USER_ID,
   GET_PROPERTY_USER,
-  GET_SEARCH_RESULT,
-  GET_USER_DATA,
   HORIZONTAL_LINE,
   LABEL_MAP,
   POST,
@@ -79,6 +81,7 @@ export const AD_USER_DASHBOARD = {
               label: "Create Channel Partner",
               name: "Create Channel Partner",
               form: newUserConst,
+              onSaveApi: ALTER_USER_DATA,
               route: "/admin/form",
             },
             {
@@ -93,7 +96,7 @@ export const AD_USER_DASHBOARD = {
               className: "admin-route-button",
               label: "Approve Channel Partner Listngs",
               name: "Approve Channel Partner Listngs",
-              route: "/admin/property",
+              route: "/admin/approveListing",
             },
             {
               type: ROUTE_BUTTON,
@@ -155,8 +158,15 @@ export const CP_USER_DASHBOARD = {
               label: "Create Sub User",
               name: "Create Sub User",
               form: newUserConst,
+              onSaveApi: ALTER_USER_DATA,
               route: "/admin/form",
-              isAutoFill: true,
+              autofill: [
+                "companyName",
+                "companyAddress",
+                "city",
+                "state",
+                "location",
+              ],
             },
             {
               type: ROUTE_BUTTON,
@@ -170,13 +180,14 @@ export const CP_USER_DASHBOARD = {
               className: "admin-route-button",
               label: "Approve Sub User Listngs",
               name: "Approve Sub User Listngs",
-              route: "/admin/property",
+              route: "/admin/approveListing",
             },
             {
               type: ROUTE_BUTTON,
               className: "admin-route-button",
               label: "Statistics",
               name: "Statistics",
+              route: "/admin/statistics",
             },
             {
               type: ROUTE_BUTTON,
@@ -184,7 +195,9 @@ export const CP_USER_DASHBOARD = {
               label: "Post Listing",
               name: "Post Listing",
               form: newPropertyConst,
+              onSaveApi: ALTER_PROPERTY_DATA,
               route: "/admin/form",
+              autofill: ["city", "state", "location"],
             },
             {
               type: ROUTE_BUTTON,
@@ -237,6 +250,7 @@ export const SU_USER_DASHBOARD = {
               label: "Post Listing",
               name: "Post Listing",
               form: newPropertyConst,
+              onSaveApi: ALTER_PROPERTY_DATA,
               route: "/admin/form",
             },
             {
@@ -356,8 +370,8 @@ export const AD_MASTER_TABLE = {
                 {
                   type: SELECT,
                   sliceName: "filter",
-                  name: "location",
-                  label: "Location",
+                  name: "locations",
+                  label: "Locations",
                   className: "filterbutton",
                   onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
                   onClickApiMethod: POST,
@@ -541,6 +555,7 @@ export const AD_MASTER_TABLE = {
       approveApi: APPROVE_PROPERTY_DATA,
       endpoint: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
       dataPoint: GET_ADMIN_PROPERTY_DATA,
+      onRefreshApiType: POST,
     },
     {
       type: ROUTE_BUTTON,
@@ -575,7 +590,7 @@ export const AD_MASTER_TABLE = {
   ],
 };
 
-export const AD_SUPER_USER = {
+export const MANAGE_USER = {
   name: "Master table",
   className: "klk",
   children: [
@@ -596,14 +611,6 @@ export const AD_SUPER_USER = {
           className: "",
           children: [
             {
-              type: TABLE_HEADER,
-              fieldConst: newUserConst,
-              endpoint: GET_ADMIN_USER_DATA,
-              saveApi: ALTER_USER_DATA,
-              dataApi: API_ENDPOINTS[GET_ADMIN_USER_DATA],
-              header: "Add User",
-            },
-            {
               type: DASHBOARD_LISTING,
               data: {},
               desktopHeaders: {
@@ -616,7 +623,7 @@ export const AD_SUPER_USER = {
                 Status: "status",
               },
               mobileHeaders: [{ Name: "name" }, { Role: "role" }],
-              fieldConst: newUserConst,
+              fieldConst: editUserConst,
               editApi: ALTER_USER_DATA,
               deleteApi: DELETE_USER_DATA,
               getDataApi: GET_ADMIN_USER_DATA,
@@ -689,10 +696,113 @@ export const STATS_LIST = {
               approveApi: APPROVE_PROPERTY_DATA,
               endpoint: API_ENDPOINTS[GET_PROPERTY_USER],
               dataPoint: GET_PROPERTY_USER,
+              hideActions: true,
+              showViewAllListing: "listingData",
             },
           ],
         },
       ],
+    },
+    {
+      type: ROUTE_BUTTON,
+      className: "toogle-filter",
+      label: "Back",
+      name: "Back",
+      route: "/admin",
+    },
+  ],
+};
+
+export const VIEW_LISTING = {
+  name: "Master table",
+  className: "klk",
+  children: [
+    {
+      type: API_BUTTON,
+      name: "refresh",
+      buttonLabel: "Refresh",
+      apiType: GET,
+      api: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID],
+    },
+    {
+      type: DASHBOARD_LISTING,
+      desktopHeaders: {
+        Location: "sectorNumber",
+        "Plot No.": "plotNumber",
+        Size: "size",
+        Floor: "floor",
+        Title: "title",
+        Price: "price",
+        Accommodation: "accommodation",
+        Facing: "facing",
+        "Park Facing": "parkFacing",
+        Corner: "corner",
+        Possession: "possession",
+        "Builder Name": "builderName",
+        "Builder Contact Name": "builderContact",
+        "Created By": "",
+        "Mobile Number": "",
+        "Company Name": "",
+        City: "Gurgaon",
+        State: "Haryana",
+        "Dated of Posting": "",
+        "Link Share": "",
+      },
+      user: true,
+      getDataApi: GET_PROPERTY_LIST_BY_USER_ID,
+      endpoint: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID],
+      dataPoint: GET_PROPERTY_LIST_BY_USER_ID,
+      hideActions: true,
+    },
+    {
+      type: ROUTE_BUTTON,
+      className: "toogle-filter",
+      label: "Back",
+      name: "Back",
+      route: "/admin",
+    },
+  ],
+};
+
+export const APPROVAL_PROPERTIES = {
+  name: "Master table",
+  className: "klk",
+  children: [
+    {
+      type: AUTO_FETCH_API_USER,
+      user: true,
+      method: GET,
+      api: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
+    },
+    {
+      type: DASHBOARD_LISTING,
+      desktopHeaders: {
+        Location: "location",
+        "Plot No.": "plotNumber",
+        Floor: "floor",
+        Title: "title",
+        Accommodation: "accommodation",
+        Facing: "facing",
+        Possession: "possession",
+        Price: "price",
+        "Builder Name": "builderName",
+        "Builder Contact Name": "builderContact",
+      },
+      user: true,
+      getDataApi: GET_APPROVAL_PROPERTIES,
+      endpoint: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
+      dataPoint: GET_APPROVAL_PROPERTIES,
+      hideAlterActions: true,
+      showPreviewButton: true,
+      approveApi: APPROVE_PROPERTY_DATA,
+      removeApi: REJECT_PROPERTY,
+    },
+    {
+      type: ROUTE_BUTTON,
+      className: "toogle-filter",
+      label: "Back",
+      name: "Back",
+      route: "/admin",
     },
   ],
 };

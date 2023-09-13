@@ -34,7 +34,6 @@ export default function MasterManagement() {
 
   dataToRender?.data?.map((element) => {
     element.fieldValue?.map((value) => {
-      console.log(element, value);
       tableData.push({
         masterId: element.id,
         field: element.fieldName,
@@ -42,7 +41,6 @@ export default function MasterManagement() {
       });
     });
   });
-  console.log(tableData);
   return (
     <>
       {!dataToRender && (

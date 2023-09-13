@@ -21,12 +21,10 @@ const DashboardListing = ({ component }) => {
   );
   const apiData = useSelector((state) => state.api.data)[component.dataPoint];
 
-  console.log(apiData);
   return (
     <ListingTable
       data={component.data}
       headersDesktop={component.desktopHeaders}
-      ś
       headersMobile={component.mobileHeaders}
       fieldConst={component.fieldConst}
       editApi={component.editApi}
@@ -37,6 +35,10 @@ const DashboardListing = ({ component }) => {
       filterDataUrl={dataApi}
       itemCount={apiData?.itemCount}
       isproperty={component.showPreviewButton}
+      onRefreshApiType={component.onRefreshApiType}
+      hideActions={component.hideActions}
+      showViewAllListing={component.showViewAllListing}
+      hideAlterActions={component.hideAlterActions}
     />
   );
 };

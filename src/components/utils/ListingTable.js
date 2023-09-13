@@ -6,14 +6,17 @@ import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 import { FaUserEdit, FaRegTrashAlt, FaRegEye } from "react-icons/fa";
 import { API_ENDPOINTS } from "../../redux/utils/api";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import { AiOutlineDoubleRight } from "react-icons/ai";
 import {
   APPROVED,
+  BF_ADMIN,
+  CHANNEL_PARTNER,
   DELETE,
   GET,
   NEED_APPROVAL_BY,
   POST,
   PROFILE,
+  REJECTED,
 } from "./Const";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "../../redux/utils/apiActions";
@@ -27,6 +30,9 @@ import SearchCard from "../customComponents/SearchCard";
 import DetailDataCard from "../customComponents/DetailedDataCard";
 import { selectApiStatus } from "./../../redux/utils/selectors";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { sanitizeFormData } from "./reusableMethods";
+import { USER_ROLE } from "../../ScreenJson";
 const ListingTable = ({
   headersDesktop = [],
   headersMobile = [],
@@ -39,6 +45,10 @@ const ListingTable = ({
   isproperty,
   removeApi,
   filterDataUrl,
+  onRefreshApiType,
+  hideActions,
+  showViewAllListing,
+  hideAlterActions,
 }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -58,16 +68,14 @@ const ListingTable = ({
   const [tableData, setTableData] = useState([]);
   const [formData, setFormData] = useState({});
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
-
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
-
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
   const dispatch = useDispatch();
   const getApiDataFromRedux = useSelector((state) =>
     selectApiData(state, getDataApi)
   );
   const userProfile = useSelector((state) => state[PROFILE]);
-
+  const navigateTo = useNavigate();
   useEffect(() => {
     if (!_.isEmpty(getApiDataFromRedux)) {
       if (getApiDataFromRedux.pageNumber !== activePage)
@@ -77,18 +85,16 @@ const ListingTable = ({
       if (getApiDataFromRedux.totalItems !== totalItems)
         setTotalItems(getApiDataFromRedux.totalItems);
       setTableData(getApiDataFromRedux.data);
-      console.log("data set Successfully", tableData);
     }
   }, [getApiDataFromRedux]);
 
   const handleSave = () => {
-    console.log();
     try {
       const options = {
         url: API_ENDPOINTS[editApi],
         method: POST,
         headers: { "Content-Type": "application/json" },
-        data: formData,
+        data: sanitizeFormData(formData),
       };
       dispatch(callApi(options));
     } catch (error) {
@@ -126,16 +132,25 @@ const ListingTable = ({
   };
 
   const handleRemove = (rowId) => {
+    console.log(formData);
     try {
       const options = {
         url: API_ENDPOINTS[removeApi],
         method: POST,
         headers: { "Content-Type": "application/json" },
         data: {
-          _id: rowId,
-          [NEED_APPROVAL_BY]: userProfile.parentId || APPROVED,
-          rejectedByBFAdmin: "rejectedByCP",
-          rejectedByBFAdminComments: "testing",
+          id: rowId,
+          userId: userProfile._id,
+          rejectedByBFAdmin:
+            userProfile.role === USER_ROLE[BF_ADMIN]
+              ? userProfile._id
+              : undefined,
+          rejectedByCP:
+            userProfile.role === USER_ROLE[CHANNEL_PARTNER]
+              ? userProfile._id
+              : undefined,
+          rejectedByBFAdminComments: formData.rejectedByBFAdminComments,
+          rejectedByCPComments: formData.rejectedByCPComments,
         },
       };
       dispatch(callApi(options));
@@ -155,7 +170,7 @@ const ListingTable = ({
         url:
           filterDataUrl +
           `&page=${activePage}&limit=${itemsCountPerPage}&sortType=${sortType}&sortColumn=${sortColumn}`,
-        method: GET,
+        method: onRefreshApiType || GET,
         headers: { "Content-Type": "application/json" },
         data: { sortType, sortColumn, activePage, itemsCountPerPage },
       })
@@ -180,7 +195,6 @@ const ListingTable = ({
   };
   const toggleHomePreview = () => {
     setShowHomePreviewModal(!showHomePreviewModal);
-    console.log(showPreviewModal);
   };
   const toggleSearchpreview = () => {
     setShowSearchPreviewModal(!showSearchPreviewModal);
@@ -206,9 +220,6 @@ const ListingTable = ({
       sortColumn: column,
       sortType: newSortType,
     });
-    console.log(
-      `Sort type: ${newSortType}, Sort column: ${column}, Active page: ${activePage}, Records per page: ${itemsCountPerPage}`
-    );
   };
 
   const handlePageChange = (action, pageNumber) => {
@@ -219,9 +230,6 @@ const ListingTable = ({
       sortColumn,
       sortType,
     });
-    console.log(
-      `Sort type: ${sortType}, Sort column: ${sortColumn}, Active page: ${pageNumber}, Records per page: ${itemsCountPerPage}`
-    );
   };
 
   const handleRecordPerPage = (action) => {
@@ -232,12 +240,7 @@ const ListingTable = ({
       sortColumn,
       sortType,
     });
-    console.log(
-      `Sort type: ${sortType}, Sort column: ${sortColumn}, Active page: ${activePage}, Records per page: ${itemsCountPerPage}`
-    );
   };
-
-  console.log(tableData);
 
   // // Sort the data
   // setTableData(
@@ -322,12 +325,10 @@ const ListingTable = ({
             tooglePreview();
           }}
           onDetailPreview={() => {
-            console.log(currentRowData);
             toggleDetailPreview();
             tooglePreview();
           }}
           onSearchResultPreview={() => {
-            console.log("Search Clicked");
             toggleSearchpreview();
             tooglePreview();
           }}
@@ -366,6 +367,22 @@ const ListingTable = ({
           onCancel={toggleRemove}
         >
           <p className="lbel">Are you sure want to Remove?</p>
+          <FormBuilder
+            fields={[
+              {
+                name:
+                  userProfile.role === USER_ROLE[BF_ADMIN]
+                    ? "rejectedByBFAdminComments"
+                    : "rejectedByCPComments",
+                label: "Comments",
+                type: "textarea",
+                parentclassName: "property-w-3 column-property",
+                className: "column-property",
+                textLimit: 100,
+              },
+            ]}
+            onFormDataChange={handleFormDataChange}
+          />
         </ReusablePopup>
       )}
       <div className="tablediv ">
@@ -383,7 +400,10 @@ const ListingTable = ({
                     (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
                 </th>
               ))}
-              <th className="tablehead text">Actions</th>
+              {!hideActions && <th className="tablehead text">Actions</th>}
+              {showViewAllListing && (
+                <th className="tablehead text">View all Listing</th>
+              )}
             </tr>
           </thead>
           <tbody className="tablebody text">
@@ -392,8 +412,10 @@ const ListingTable = ({
                 className="tableborder text"
                 key={element.id}
                 onClick={() => {
-                  setCurrentRowData(element);
-                  toogleRowClick();
+                  if (!showViewAllListing) {
+                    setCurrentRowData(element);
+                    toogleRowClick();
+                  }
                 }}
               >
                 {Object.keys(tableHeaders).map((headerLabel, index) => (
@@ -401,70 +423,86 @@ const ListingTable = ({
                     {element[tableHeaders[headerLabel]]}
                   </td>
                 ))}
-                <td className="tablebody tableborder text actionColumn">
-                  <Button
-                    className="ListingEditbtn"
-                    variant="success"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCurrentRowData(element);
-                      toogleEdit();
-                    }}
-                  >
-                    <FaUserEdit size={20} />
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className="ListingDeletebtn"
-                    variant="danger"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCurrentRowData(element);
-                      toogleDelete();
-                    }}
-                  >
-                    <FaRegTrashAlt size={20} />
-                  </Button>
-                  &nbsp;
-                  {isproperty && ( // Conditionally render the Preview button
-                    <Button
-                      className="ListingPreviewbtn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentRowData(element);
-                        tooglePreview(); // Add a function to handle the preview logic
-                      }}
-                    >
-                      <FaRegEye size={20} />
-                    </Button>
-                  )}
-                  &nbsp;
-                  {approveApi &&
-                    element[NEED_APPROVAL_BY] &&
-                    userProfile._id === element[NEED_APPROVAL_BY] && (
+                {!hideActions && (
+                  <td className="tablebody tableborder text actionColumn">
+                    {!hideAlterActions && (
                       <>
                         <Button
+                          className="ListingEditbtn"
+                          variant="success"
                           onClick={(e) => {
                             e.stopPropagation();
                             setCurrentRowData(element);
-                            toogleApproval();
+                            toogleEdit();
                           }}
                         >
-                          <FcApproval size={12} />
+                          <FaUserEdit size={20} />
                         </Button>
+                        &nbsp;
                         <Button
+                          className="ListingDeletebtn"
+                          variant="danger"
                           onClick={(e) => {
                             e.stopPropagation();
-                            // setCurrentRowData(element);
-                            // toogleApproval();
-                            toggleRemove();
+                            setCurrentRowData(element);
+                            toogleDelete();
                           }}
                         >
-                          <FcRemoveImage size={12} />
+                          <FaRegTrashAlt size={20} />
                         </Button>
+                        &nbsp;
                       </>
                     )}
-                </td>
+                    {isproperty && ( // Conditionally render the Preview button
+                      <Button
+                        className="ListingPreviewbtn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentRowData(element);
+                          tooglePreview(); // Add a function to handle the preview logic
+                        }}
+                      >
+                        <FaRegEye size={20} />
+                      </Button>
+                    )}
+                    &nbsp;
+                    {approveApi &&
+                      element[NEED_APPROVAL_BY] &&
+                      userProfile._id === element[NEED_APPROVAL_BY] && (
+                        <>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentRowData(element);
+                              toogleApproval();
+                            }}
+                          >
+                            <FcApproval size={12} />
+                          </Button>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentRowData(element);
+                              toggleRemove();
+                            }}
+                          >
+                            <FcRemoveImage size={12} />
+                          </Button>
+                        </>
+                      )}
+                  </td>
+                )}
+                {showViewAllListing && (
+                  <td>
+                    <Button
+                      onClick={(e) => {
+                        navigateTo(showViewAllListing + "?id=" + element._id);
+                      }}
+                    >
+                      <AiOutlineDoubleRight size={12} />
+                    </Button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

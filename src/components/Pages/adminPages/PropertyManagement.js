@@ -54,7 +54,9 @@ export default function PropertyManagement() {
 
   return (
     <>
-      {!tableData && <AutoFetchApi url={dataApi} method={POST} data={{filter:{}}} />}
+      {!tableData && (
+        <AutoFetchApi url={dataApi} method={POST} data={{ filter: {} }} />
+      )}
       {apiStatus === LOADING ? (
         <CircularProgress className="loader-class" />
       ) : (
@@ -84,6 +86,7 @@ export default function PropertyManagement() {
                   approveApi={APPROVE_PROPERTY_DATA}
                   itemCount={tableData?.itemCount}
                   isproperty={true}
+                  onRefreshApiType={POST}
                 />
               </Card.Body>
             </Card>

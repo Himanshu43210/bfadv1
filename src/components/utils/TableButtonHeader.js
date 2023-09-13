@@ -66,7 +66,6 @@ const TableButtonHeader = ({
 
   const handleSubmit = async () => {
     try {
-      console.log({ ...formData, parentId: userProfile._id }, userProfile._id);
       const newFormData = new FormData();
 
       // for (const file of formData?.images || []) {

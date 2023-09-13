@@ -16,14 +16,14 @@ export default function SliderComponent({
   if (!value && defaultValue) handleValueChange(defaultValue);
 
   const handleChange = (event, newValue) => {
-    console.log(newValue,2141)
+    (newValue,2141)
     handleValueChange(newValue);
   };
   const getVal = value || defaultValue;
   const minValue = convertToCr(getVal[0]);
   const maxValue = convertToCr(getVal[1]);
 
-  console.log(value,2141)
+  (value,2141)
   return (
     <div>
       <div>

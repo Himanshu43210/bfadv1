@@ -1,12 +1,11 @@
-import _ from "lodash";
 import React from "react";
 import RenderComponent from "../../customComponents/ComponentRenderer";
-import { MANAGE_USER } from "../../../UserJson";
+import { APPROVAL_PROPERTIES } from "../../../UserJson";
 
-export default function UserManagement() {
+export default function ApproveListing() {
   return (
     <div style={{ marginTop: "100px" }}>
-      <RenderComponent jsonToRender={MANAGE_USER} />
+      <RenderComponent jsonToRender={APPROVAL_PROPERTIES} />
     </div>
   );
 }
