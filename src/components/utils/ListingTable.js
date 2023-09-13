@@ -359,7 +359,7 @@ const ListingTable = ({
       )}
       {showRemoveModal && (
         <ReusablePopup
-          onYes={() => {
+          onRemove={() => {
             handleRemove(currentRowData._id);
             toggleRemove();
           }}
