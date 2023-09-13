@@ -20,7 +20,7 @@ const LabelMap = ({ component }) => {
       })
     );
   };
-  (data._id, component.api, api);
+  // (data._id, component.api, api);
   useEffect(() => {
     if (!checked) {
       // (api)

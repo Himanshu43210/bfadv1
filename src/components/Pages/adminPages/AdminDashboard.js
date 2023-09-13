@@ -9,7 +9,7 @@ import { USER_ROLE } from "../../../ScreenJson";
 import { BF_ADMIN } from "../../utils/Const";
 
 export default function AdminDashboard({ role }) {
-  (role);
+  // (role);
   return (
     <div style={{ marginTop: "100px" }}>
       <RenderComponent
