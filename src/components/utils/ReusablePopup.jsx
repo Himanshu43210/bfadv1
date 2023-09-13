@@ -9,6 +9,7 @@ const ReusablePopup = ({
   onSave,
   onYes,
   onNo,
+  onRemove,
   onCancel,
   onClose,
   onHomePreview,
@@ -48,6 +49,11 @@ const ReusablePopup = ({
           {onYes && (
             <Button variant="secondary" onClick={onYes}>
               Yes
+            </Button>
+          )}
+          {onRemove && (
+            <Button variant="secondary" onClick={onRemove}>
+              Reject
             </Button>
           )}
           {onNo && (

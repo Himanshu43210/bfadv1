@@ -178,7 +178,7 @@ export const editUserConst = [
     isRequired: true,
     options: [
       { value: "Suspend", label: "Suspend" },
-      { value: "Unsuspend", label: "Unsuspend" },
+      { value: "active", label: "Active" },
       { value: "Terminate", label: "Terminate" },
     ],
     requiredErrorMessage: "Please select a Status.",
