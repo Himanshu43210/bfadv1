@@ -64,7 +64,7 @@ export default function SelectButton({
           {options.map((item, i) => {
             const val = typeof value === "object" ? value?.value : value;
             const check = val === item.value;
-            (val, check);
+            // (val, check);
             return (
               <div
                 key={i}
