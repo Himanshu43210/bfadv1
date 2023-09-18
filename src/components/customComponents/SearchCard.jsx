@@ -8,15 +8,16 @@ import {
 import ApiButton from "./ApiButton";
 import { FaShareAlt, FaRegHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { GET } from "../utils/Const";
 
 export default function SearchCard({
   element = {},
-  apiType,
+  apiType = GET,
   onClickApi,
   onClickNavigate,
   classname,
 }) {
-  const cardDetailUrl = `${onClickNavigate}?title=${element.title?.replaceAll(
+    const cardDetailUrl = `${onClickNavigate}?title=${element.title?.replaceAll(
     " ",
     "-"
   )}&id=${element._id}`;

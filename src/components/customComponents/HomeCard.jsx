@@ -9,15 +9,16 @@ import {
 import ApiButton from "./ApiButton";
 import { convertToCr } from "../utils/HelperMethods";
 import { useNavigate } from "react-router-dom";
+import { GET } from "../utils/Const";
 
 export default function HomeCard({
   element,
   onClickApi,
   onClickNavigate,
   classname,
-  apiType,
+  apiType = GET,
 }) {
-  const navigateTo = useNavigate();
+    const navigateTo = useNavigate();
   return (
     <Card
       className={classname}
@@ -31,7 +32,7 @@ export default function HomeCard({
       sx={{
         maxWidth: "345px",
         width: "auto",
-        height: "300px",
+        minHeight: "auto",
         marginTop: "0px",
       }}
     >
@@ -54,10 +55,10 @@ export default function HomeCard({
         />
         <CardContent>
           <Typography gutterBottom variant="h6" component="div">
-            {element.title}
+            {element?.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {element.sectorNumber}
+            {element?.sectorNumber}
           </Typography>
           <div>
             <div>
@@ -69,7 +70,7 @@ export default function HomeCard({
                 width="20px"
               />
               <Typography variant="body2" className="homecardtext">
-                {element.accommodation}{" "}
+                {element?.accommodation}{" "}
               </Typography>
             </div>
             <div>
@@ -80,7 +81,7 @@ export default function HomeCard({
                 height="20px"
                 width="20px"
               />
-              <Typography variant="body2">{element.floor}</Typography>
+              <Typography variant="body2">{element?.floor}</Typography>
             </div>
             <div>
               <img
@@ -90,7 +91,7 @@ export default function HomeCard({
                 height="20px"
                 width="20px"
               />
-              <Typography variant="body2">{element.size}Sq.Yd.</Typography>
+              <Typography variant="body2">{element?.size}Sq.Yd.</Typography>
             </div>
           </div>
         </CardContent>
@@ -98,16 +99,16 @@ export default function HomeCard({
         <div>
           <Rating
             name="home-card-fixed-rating"
-            value={element.raiting || 5}
+            value={element?.raiting || 5}
             precision={1}
             readOnly
           />
           <ApiButton
             apiType={apiType}
             api={onClickApi}
-            buttonLabel={`₹ ${convertToCr(element.price)} Cr.`}
-            queryParams={{ id: element._id }}
-            navigate={`${onClickNavigate}?title=${element.title?.replaceAll(
+            buttonLabel={`₹ ${convertToCr(element?.price)} Cr.`}
+            queryParams={{ id: element?._id }}
+            navigate={`${onClickNavigate}?title=${element?.title?.replaceAll(
               " ",
               "-"
             )}&id=${element._id}`}
