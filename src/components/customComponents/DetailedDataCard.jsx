@@ -118,42 +118,42 @@ export default function DetailDataCard({
           <div className="detail-icon-div">
             <div className="rowicon">
               <div>
-                <img src={component?.icons.sectorNumber} alt="" />
+                <img src={component?.icons?.sectorNumber} alt="" />
                 {cardData?.sectorNumber}
               </div>
               <div>
-                <img src={component?.icons.size} alt="" />
+                <img src={component?.icons?.size} alt="" />
                 {cardData?.size}
               </div>
               <div>
-                <img src={component?.icons.accommodation} alt="" />
+                <img src={component?.icons?.accommodation} alt="" />
                 {cardData?.accommodation}
               </div>
             </div>
 
             <div className="rowicon">
               <div>
-                <img src={component?.icons.floor} alt="" />
+                <img src={component?.icons?.floor} alt="" />
                 {cardData?.floor}
               </div>
               <div>
-                <img src={component?.icons.facing} alt="" />
+                <img src={component?.icons?.facing} alt="" />
                 {cardData?.facing}
               </div>
               <div>
-                <img src={component?.icons.possession} alt="" />
+                <img src={component?.icons?.possession} alt="" />
                 {cardData?.possession}
               </div>
             </div>
 
             <div className="rowicon">
               <div>
-                <img src={component?.icons.parkFacing} alt="" />
+                <img src={component?.icons?.parkFacing} alt="" />
                 {cardData?.parkFacing}
               </div>
 
               <div>
-                <img src={component?.icons.corner} alt="" />
+                <img src={component?.icons?.corner} alt="" />
                 {cardData?.corner}
               </div>
             </div>
@@ -166,15 +166,15 @@ export default function DetailDataCard({
                   setShowNumber(!ShowNumber);
                 }}
               >
-                {ShowNumber ? cardData?.channelContact : "Phone"}
+                <img src={component?.icons?.phone} alt="" />
+                {ShowNumber ? cardData?.channelContact : "Call"}
               </Button>
               <Button
                 className="detail-button"
                 variant="contained"
                 onClick={() => {
                   window.open(
-                    `https://wa.me/${
-                      cardData?.channelContact
+                    `https://wa.me/${cardData?.channelContact
                     }?text=${component.whatsappText?.replace(
                       "{link}",
                       pathname
@@ -183,6 +183,7 @@ export default function DetailDataCard({
                   );
                 }}
               >
+                <img src={component?.icons?.whatsapp} alt="" />
                 WhatsApp
               </Button>
             </div>
