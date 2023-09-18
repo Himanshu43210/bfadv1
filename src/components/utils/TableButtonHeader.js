@@ -17,6 +17,7 @@ import { callApi } from "../../redux/utils/apiActions";
 import ExcelTable from "../customComponents/BulkUpload";
 import CSVUpload from "../customComponents/BulkUpload";
 import { USER_ROLE } from "../../ScreenJson";
+import SnackBar from "../customComponents/SnackBar";
 
 const TableButtonHeader = ({
   tableData = [],
@@ -25,6 +26,7 @@ const TableButtonHeader = ({
   refreshDataApi,
   addHeader,
 }) => {
+  const [snackbar, setSnackbar] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [newPopup, setNewPopup] = useState(null);
   const [importPopup, setImportPopup] = useState(null);
@@ -50,6 +52,9 @@ const TableButtonHeader = ({
     anchor.download = `${filename}.xlsx`;
     anchor.click();
     window.URL.revokeObjectURL(url);
+    setSnackbar({
+      open: true, message: "Data Exported!", ahd: 3000
+    });
   };
 
   const handleFormDataChange = (newFormData) => {
@@ -58,6 +63,7 @@ const TableButtonHeader = ({
 
   const handleExportClick = () => {
     convertArrayToExcel(tableData, "data_export");
+    toogleExportPopup();
   };
 
   const handleFileSelect = (event) => {
@@ -157,8 +163,8 @@ const TableButtonHeader = ({
         data: imagesCheck
           ? newFormData
           : checked
-          ? newFormData
-          : {
+            ? newFormData
+            : {
               ...formData,
               parentId: userProfile._id,
               [NEED_APPROVAL_BY]: userProfile.parentId,
@@ -170,6 +176,13 @@ const TableButtonHeader = ({
     }
   };
 
+  const snackbarClose = () => {
+    setSnackbar({
+      ...snackbar,
+      open: false,
+      message: ""
+    });
+  };
   const toogleNewPopup = () => {
     setNewPopup(!newPopup);
   };
@@ -188,7 +201,7 @@ const TableButtonHeader = ({
         data: formData,
       };
       dispatch(callApi(options));
-    } catch (error) {}
+    } catch (error) { }
   };
   return (
     <>
@@ -241,6 +254,7 @@ const TableButtonHeader = ({
           <FiRefreshCcw /> &nbsp;&nbsp; REFRESH
         </Button>
       </div>
+      <SnackBar open={snackbar?.open} message={snackbar?.message} onClose={snackbarClose} />
     </>
   );
 };

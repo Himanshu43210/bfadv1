@@ -33,6 +33,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { sanitizeFormData } from "./reusableMethods";
 import { USER_ROLE } from "../../ScreenJson";
+import SnackBar from "../customComponents/SnackBar";
+
 const ListingTable = ({
   headersDesktop = [],
   headersMobile = [],
@@ -50,6 +52,8 @@ const ListingTable = ({
   showViewAllListing,
   hideAlterActions,
 }) => {
+  console.log('+++++ props +++++', fieldConst);
+  const [snackbar, setSnackbar] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -97,6 +101,10 @@ const ListingTable = ({
         data: sanitizeFormData(formData),
       };
       dispatch(callApi(options));
+      setSnackbar({
+        open: true,
+        message: `Added.`
+      })
     } catch (error) {
       console.log(error);
     }
@@ -132,7 +140,6 @@ const ListingTable = ({
   };
 
   const handleRemove = (rowId) => {
-    console.log(formData);
     try {
       const options = {
         url: API_ENDPOINTS[removeApi],
@@ -182,6 +189,13 @@ const ListingTable = ({
 
   const toogleRowClick = () => {
     setShowRowModal(!showRowModal);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar({
+      open: false,
+      message: ""
+    });
   };
 
   const toogleEdit = () => {
@@ -530,6 +544,7 @@ const ListingTable = ({
           />
         )
       )}
+      <SnackBar open={snackbar?.open} message={snackbar?.message} onClose={snackbarClose} />
     </>
   );
 };
