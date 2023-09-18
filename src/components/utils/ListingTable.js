@@ -63,7 +63,7 @@ const ListingTable = ({
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [showRowModal, setShowRowModal] = useState(false);
   const [currentRowData, setCurrentRowData] = useState({});
-  const [activePage, setActivePage] = useState(1);
+  const [activePage, setActivePage] = useState(0);
   const [itemsCountPerPage, setItemsCountPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(10);
   const [sortType, setSortType] = useState("asc");
@@ -80,7 +80,7 @@ const ListingTable = ({
   const userProfile = useSelector((state) => state[PROFILE]);
   const navigateTo = useNavigate();
   useEffect(() => {
-    if (!_.isEmpty(getApiDataFromRedux)) {
+        if (!_.isEmpty(getApiDataFromRedux)) {
       if (getApiDataFromRedux.pageNumber !== activePage)
         setActivePage(getApiDataFromRedux.pageNumber);
       if (getApiDataFromRedux.nbHits !== itemsCountPerPage)
@@ -100,8 +100,8 @@ const ListingTable = ({
         data: sanitizeFormData(formData),
       };
       dispatch(callApi(options));
-      setSnackbar({ open: true, message: `Saved.` });
-    } catch (error) {
+        setSnackbar({ open: true, message: `Saved.` });
+          } catch (error) {
       console.log(error);
     }
   };
@@ -233,7 +233,7 @@ const ListingTable = ({
   };
 
   const handlePageChange = (action, pageNumber) => {
-    if (pageNumber > 0) setActivePage(pageNumber);
+        if (pageNumber > 0) setActivePage(pageNumber);
     filterData({
       activePage: pageNumber,
       itemsCountPerPage,

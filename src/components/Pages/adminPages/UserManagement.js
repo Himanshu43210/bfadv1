@@ -23,7 +23,7 @@ export default function UserManagement() {
   const desktopHeaders = {
     Name: "name",
     "Phone Number": "phoneNumber",
-    Address: "address",
+    Address: "companyAddress",
     Email: "email",
     Role: "role",
     "Parent Id": "parentId",
@@ -62,6 +62,7 @@ export default function UserManagement() {
                   editApi={ALTER_USER_DATA}
                   deleteApi={DELETE_USER_DATA}
                   getDataApi={GET_ADMIN_USER_DATA}
+                  filterDataUrl={dataApi}
                   itemCount={tableData?.itemCount}
                 />
               </Card.Body>
