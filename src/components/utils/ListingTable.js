@@ -52,7 +52,6 @@ const ListingTable = ({
   showViewAllListing,
   hideAlterActions,
 }) => {
-  console.log('+++++ props +++++', fieldConst);
   const [snackbar, setSnackbar] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -101,10 +100,7 @@ const ListingTable = ({
         data: sanitizeFormData(formData),
       };
       dispatch(callApi(options));
-      setSnackbar({
-        open: true,
-        message: `Added.`
-      })
+      setSnackbar({ open: true, message: `Saved.` });
     } catch (error) {
       console.log(error);
     }
