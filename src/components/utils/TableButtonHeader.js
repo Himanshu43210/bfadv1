@@ -171,6 +171,8 @@ const TableButtonHeader = ({
             },
       };
       dispatch(callApi(options));
+        // on success clear the form data
+        setFormData({});
     } catch (err) {
       console.log(err);
     }
