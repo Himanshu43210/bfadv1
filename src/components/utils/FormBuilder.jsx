@@ -229,6 +229,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     handleChange(field.name, selectedOption || null)
                   }
                   required={field.isRequired}
+                  isMulti={true}
                 />
               )}
               {field.type === "radio" && (
