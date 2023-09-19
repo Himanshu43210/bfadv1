@@ -25,6 +25,7 @@ const TableButtonHeader = ({
   saveDataApi,
   refreshDataApi,
   addHeader,
+  refreshMethod,
 }) => {
   const [snackbar, setSnackbar] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
@@ -53,7 +54,9 @@ const TableButtonHeader = ({
     anchor.click();
     window.URL.revokeObjectURL(url);
     setSnackbar({
-      open: true, message: "Data Exported!", ahd: 3000
+      open: true,
+      message: "Data Exported!",
+      ahd: 3000,
     });
   };
 
@@ -163,16 +166,26 @@ const TableButtonHeader = ({
         data: imagesCheck
           ? newFormData
           : checked
-            ? newFormData
-            : {
+          ? newFormData
+          : {
               ...formData,
               parentId: userProfile._id,
               [NEED_APPROVAL_BY]: userProfile.parentId,
             },
       };
       dispatch(callApi(options));
-        // on success clear the form data
-        setFormData({});
+
+      try {
+        const options = {
+          url: refreshDataApi,
+          method: refreshMethod ? refreshMethod : POST,
+          headers: { "Content-Type": "application/json" },
+          data: {},
+        };
+        dispatch(callApi(options));
+      } catch (error) {}
+      // on success clear the form data
+      setFormData({});
     } catch (err) {
       console.log(err);
     }
@@ -182,7 +195,7 @@ const TableButtonHeader = ({
     setSnackbar({
       ...snackbar,
       open: false,
-      message: ""
+      message: "",
     });
   };
   const toogleNewPopup = () => {
@@ -203,7 +216,7 @@ const TableButtonHeader = ({
         data: formData,
       };
       dispatch(callApi(options));
-    } catch (error) { }
+    } catch (error) {}
   };
   return (
     <>
@@ -256,7 +269,11 @@ const TableButtonHeader = ({
           <FiRefreshCcw /> &nbsp;&nbsp; REFRESH
         </Button>
       </div>
-      <SnackBar open={snackbar?.open} message={snackbar?.message} onClose={snackbarClose} />
+      <SnackBar
+        open={snackbar?.open}
+        message={snackbar?.message}
+        onClose={snackbarClose}
+      />
     </>
   );
 };
