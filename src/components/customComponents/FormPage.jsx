@@ -15,11 +15,21 @@ import { filterAutofillData, sanitizeFormData } from "../utils/reusableMethods";
 import CustomRouteButton from "./RouteButton";
 import { USER_ROLE } from "../../ScreenJson";
 import _ from "lodash";
+import SnackBar from "../customComponents/SnackBar";
 
 const FormPage = () => {
+  const [snackbar, setSnackbar] = useState({});
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.profile);
   const [formData, setFormData] = useState({});
+
+  const snackbarClose = () => {
+    setSnackbar({
+      open: false,
+      message: ""
+    });
+  };
+
   const handleFormDataChange = (newFormData) => {
     setFormData(newFormData);
   };
@@ -95,8 +105,8 @@ const FormPage = () => {
         let data = imagesCheck
           ? newFormData
           : checked
-          ? newFormData
-          : sanitizeFormData({
+            ? newFormData
+            : sanitizeFormData({
               ...formData,
               parentId: userProfile._id,
               role:
@@ -105,6 +115,18 @@ const FormPage = () => {
                   : USER_ROLE["salesUser"],
             });
 
+        const err = {};
+        userProfile.formType.forEach((field) => {
+          if (
+            field.isRequired &&
+            ((typeof formData[field.name] === "object" &&
+              formData[field.name].length === 0) ||
+              !formData[field.name])
+          ) {
+            err[field.name] = "This is required";
+          }
+        });
+
         const options = {
           url: API_ENDPOINTS[userProfile.formSaveApi],
           method: POST,
@@ -112,10 +134,20 @@ const FormPage = () => {
           data: data,
         };
 
-        dispatch(callApi(options));
+        if (Object.keys(err).length === 0) {
+          dispatch(callApi(options))
+          .then(() => {
+            setFormData({});
+            setSnackbar({ open: true, message: `Saved.` });
+          });
+        } else {
+          setSnackbar({ open: true, message: `Required fields are empty.` });
+        }
+
         setLoading(false);
       } catch (error) {
         setLoading(false);
+        setSnackbar({ open: true, message: `Save Failed.` });
         console.log(error);
       }
     }
@@ -148,6 +180,7 @@ const FormPage = () => {
           }}
         />
       </div>
+      <SnackBar open={snackbar?.open} message={snackbar?.message} onClose={snackbarClose} />
     </>
   );
 };

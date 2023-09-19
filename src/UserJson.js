@@ -22,6 +22,7 @@ import {
   GET_LISTING_DATA,
   GET_PROPERTY_LIST_BY_USER_ID,
   GET_PROPERTY_USER,
+  HEADING,
   HORIZONTAL_LINE,
   LABEL_MAP,
   POST,
@@ -68,6 +69,11 @@ export const AD_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
+      type: HEADING,
+      text: "Super Admin Panel",
+      className: "formheadingcontainer"
+    },
+    {
       type: CONTAINER,
       className: "superAdminDashboard",
       children: [
@@ -105,14 +111,14 @@ export const AD_USER_DASHBOARD = {
               name: "Statistics",
               route: "/admin/statistics",
             },
-            // {
-            //   type: ROUTE_BUTTON,
-            //   className: "admin-route-button",
-            //   label: "Field Changes Master Data",
-            //   name: "Field Changes Master Data",
-            //   form: newPropertyConst,
-            //   route: "/admin/form",
-            // },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin-route-button",
+              label: "Field Changes Master Data",
+              name: "Field Changes Master Data",
+              form: newPropertyConst,
+              route: "/admin/form",
+            },
             {
               type: ROUTE_BUTTON,
               className: "admin-route-button",
@@ -144,6 +150,11 @@ export const AD_USER_DASHBOARD = {
 export const CP_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
+    {
+      type: HEADING,
+      text: "Channel Partner Admin Panel",
+      className: "formheadingcontainer"
+    },
     {
       type: CONTAINER,
       className: "superAdminDashboard",
@@ -231,6 +242,11 @@ export const SU_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
+      type: HEADING,
+      text: "Sub User Panel",
+      className: "formheadingcontainer"
+    },
+    {
       type: CONTAINER,
       className: "superAdminDashboard",
       children: [
@@ -285,7 +301,7 @@ export const AD_MASTER_TABLE = {
   name: "Master table",
   className: "klk",
   children: [
-    {
+        {
       type: AUTO_FETCH_API_POST,
       api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
       data: { filter: {} },
@@ -396,6 +412,7 @@ export const AD_MASTER_TABLE = {
                   type: SELECT_SLIDER,
                   sliceName: "filter",
                   name: "size",
+                  label: "Size",
                   buttonLabel: "Size",
                   minValue: 0.0,
                   maxValue: 1000.0,
@@ -509,7 +526,7 @@ export const AD_MASTER_TABLE = {
         "Plot No.": "plotNumber",
         Size: "size",
         Floor: "floor",
-        Title: "title",
+        // Title: "title",
         Price: "price",
         Accommodation: "accommodation",
         Facing: "facing",
@@ -519,10 +536,10 @@ export const AD_MASTER_TABLE = {
         "Builder Name": "builderName",
         "Builder Contact Name": "builderContact",
         "Created By": "",
-        "Mobile Number": "",
-        "Company Name": "",
-        City: "Gurgaon",
-        State: "Haryana",
+        "Mobile Number": "phoneNumber",
+        "Company Name": "companyName",
+        City: "city",
+        State: "state",
         "Dated of Posting": "",
         "Link Share": "",
       },
@@ -594,7 +611,7 @@ export const MANAGE_USER = {
   name: "Master table",
   className: "klk",
   children: [
-    {
+        {
       type: AUTO_FETCH_API_USER,
       user: true,
       method: GET,
@@ -615,12 +632,15 @@ export const MANAGE_USER = {
               data: {},
               desktopHeaders: {
                 Name: "name",
-                "Phone Number": "phoneNumber",
-                Address: "address",
-                Email: "email",
-                Role: "role",
-                "Parent Id": "parentId",
-                Status: "status",
+                "Company Name": "companyName",
+                "Mobile Number": "phoneNumber",
+                "City": "city",
+                "State": "state",
+                // Address: "address",
+                // Email: "email",
+                // Role: "role",
+                // "Parent Id": "parentId",
+                // Status: "status",
               },
               mobileHeaders: [{ Name: "name" }, { Role: "role" }],
               fieldConst: editUserConst,
@@ -650,6 +670,12 @@ export const STATS_LIST = {
   name: "Master table",
   className: "klk",
   children: [
+    {
+      type: HEADING,
+      name: "statistics",
+      text: "Statistics",
+      className: "formheadingcontainer"
+    },
     {
       type: LABEL_MAP,
       className: "lableded-map-dashboard",
@@ -684,7 +710,7 @@ export const STATS_LIST = {
                 "Total Listings": "total_count",
                 Approved: "approved_count",
                 Pending: "pending_count",
-                "View all Listings": "",
+                // "View all Listings": "",
               },
               removeApi: REJECT_PROPERTY,
               user: true,
@@ -717,6 +743,12 @@ export const VIEW_LISTING = {
   name: "Master table",
   className: "klk",
   children: [
+    {
+      type: HEADING,
+      name: "allListing",
+      text: "All Listing",
+      className: "formheadingcontainer"
+    },
     {
       type: API_BUTTON,
       name: "refresh",
@@ -768,7 +800,7 @@ export const APPROVAL_PROPERTIES = {
   name: "Master table",
   className: "klk",
   children: [
-    {
+        {
       type: AUTO_FETCH_API_USER,
       user: true,
       method: GET,
@@ -777,16 +809,20 @@ export const APPROVAL_PROPERTIES = {
     {
       type: DASHBOARD_LISTING,
       desktopHeaders: {
-        Location: "location",
-        "Plot No.": "plotNumber",
-        Floor: "floor",
-        Title: "title",
-        Accommodation: "accommodation",
-        Facing: "facing",
-        Possession: "possession",
-        Price: "price",
-        "Builder Name": "builderName",
-        "Builder Contact Name": "builderContact",
+        "Company Name": "companyName",
+        "Mobile Number": "phoneNumber",
+        "City": "city",
+        "Primary Title": "primaryTitle",
+        // Location: "location",
+        // "Plot No.": "plotNumber",
+        // Floor: "floor",
+        // Title: "title",
+        // Accommodation: "accommodation",
+        // Facing: "facing",
+        // Possession: "possession",
+        // Price: "price",
+        // "Builder Name": "builderName",
+        // "Builder Contact Name": "builderContact",
       },
       user: true,
       getDataApi: GET_APPROVAL_PROPERTIES,

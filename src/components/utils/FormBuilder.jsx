@@ -225,11 +225,24 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     field.defaultOption
                   }
                   options={field.options}
+                  styles={{
+                    control: (baseStyles, state) => ({
+                      ...baseStyles,
+                      width: 'auto',
+                      display: 'flex',
+                      alignItems: 'center',
+                      border: state.isFocused ? baseStyles.border : 'gray',
+                      borderBottom: '1px solid #ccc',
+                      borderRadius: state.isFocused ? baseStyles.borderRadius : '',
+                      textAlign: 'center',
+                    }),
+                  }}
                   onChange={(selectedOption) =>
                     handleChange(field.name, selectedOption || null)
                   }
+                  closeMenuOnSelect={!field.isMulti}
                   required={field.isRequired}
-                  isMulti={true}
+                  isMulti={field.isMulti}
                 />
               )}
               {field.type === "radio" && (
