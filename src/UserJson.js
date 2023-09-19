@@ -32,6 +32,7 @@ import {
   SELECT_SLIDER,
   SLIDER,
   TABLE_HEADER,
+  TITLE,
   TOGGLE_BUTTON,
 } from "./components/utils/Const";
 import { API_ENDPOINTS } from "./redux/utils/api";
@@ -301,11 +302,15 @@ export const AD_MASTER_TABLE = {
   name: "Master table",
   className: "klk",
   children: [
-        {
+    {
       type: AUTO_FETCH_API_POST,
       api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
       data: { filter: {} },
       className: "header",
+    },
+    {
+      type: TITLE,
+      titles: ["Master Data of Super Admin", "Master Data of Channel Partner", "Master Data of Sub User"]
     },
     { type: HORIZONTAL_LINE },
     {
@@ -611,11 +616,15 @@ export const MANAGE_USER = {
   name: "Master table",
   className: "klk",
   children: [
-        {
+    {
       type: AUTO_FETCH_API_USER,
       user: true,
       method: GET,
       api: API_ENDPOINTS[GET_ADMIN_USER_DATA],
+    },
+    {
+      type: TITLE,
+      titles: ["Manage Channel Partner", "Manage Sub User"]
     },
     {
       type: CONTAINER,
@@ -671,10 +680,9 @@ export const STATS_LIST = {
   className: "klk",
   children: [
     {
-      type: HEADING,
-      name: "statistics",
-      text: "Statistics",
-      className: "formheadingcontainer"
+      type: TITLE,
+      titles: ["Statistics"],
+      common: true
     },
     {
       type: LABEL_MAP,
@@ -800,11 +808,15 @@ export const APPROVAL_PROPERTIES = {
   name: "Master table",
   className: "klk",
   children: [
-        {
+    {
       type: AUTO_FETCH_API_USER,
       user: true,
       method: GET,
       api: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
+    },
+    {
+      type: TITLE,
+      titles: ["Approve Channel Partner Listings", "Approve Sub User Listings"]
     },
     {
       type: DASHBOARD_LISTING,
