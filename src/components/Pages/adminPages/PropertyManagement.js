@@ -71,6 +71,7 @@ export default function PropertyManagement() {
                   tableData={_.cloneDeep(tableData?.data || [])}
                   saveDataApi={ALTER_PROPERTY_DATA}
                   refreshDataApi={dataApi}
+                  refreshMethod={POST}
                   addHeader="Add Property"
                 />
                 <ListingTable
