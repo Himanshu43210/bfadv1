@@ -225,9 +225,10 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     field.defaultOption
                   }
                   options={field.options}
-                  onChange={(selectedOption) =>
-                    handleChange(field.name, selectedOption || null)
-                  }
+                  onChange={(selectedOption) => {
+                    console.log(selectedOption[0]);
+                    handleChange(field.name, selectedOption[0] || null);
+                  }}
                   required={field.isRequired}
                   isMulti={true}
                 />

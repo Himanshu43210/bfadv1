@@ -15,6 +15,7 @@ import { filterAutofillData, sanitizeFormData } from "../utils/reusableMethods";
 import CustomRouteButton from "./RouteButton";
 import { USER_ROLE } from "../../ScreenJson";
 import _ from "lodash";
+import { useNavigate } from "react-router-dom";
 
 const FormPage = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const FormPage = () => {
   };
 
   const [loading, setLoading] = useState(false);
-
+  const router = useNavigate();
   const handleSave = async () => {
     if (!loading) {
       setLoading(true);
@@ -113,6 +114,7 @@ const FormPage = () => {
         };
 
         dispatch(callApi(options));
+        router("/admin");
         setLoading(false);
       } catch (error) {
         setLoading(false);
