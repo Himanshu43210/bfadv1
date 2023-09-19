@@ -16,6 +16,7 @@ import CustomRouteButton from "./RouteButton";
 import { USER_ROLE } from "../../ScreenJson";
 import _ from "lodash";
 import SnackBar from "../customComponents/SnackBar";
+import { useNavigate } from "react-router-dom";
 
 const FormPage = () => {
   const [snackbar, setSnackbar] = useState({});
@@ -35,7 +36,7 @@ const FormPage = () => {
   };
 
   const [loading, setLoading] = useState(false);
-
+  const router = useNavigate();
   const handleSave = async () => {
     if (!loading) {
       setLoading(true);
@@ -137,6 +138,7 @@ const FormPage = () => {
         if (Object.keys(err).length === 0) {
           dispatch(callApi(options))
           .then(() => {
+            router("/admin");
             setFormData({});
             setSnackbar({ open: true, message: `Saved.` });
           });

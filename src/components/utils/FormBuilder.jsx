@@ -237,9 +237,10 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                       textAlign: 'center',
                     }),
                   }}
-                  onChange={(selectedOption) =>
-                    handleChange(field.name, selectedOption || null)
-                  }
+                  onChange={(selectedOption) => {
+                    console.log(selectedOption[0]);
+                    handleChange(field.name, selectedOption[0] || null);
+                  }}
                   closeMenuOnSelect={!field.isMulti}
                   required={field.isRequired}
                   isMulti={field.isMulti}
