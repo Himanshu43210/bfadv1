@@ -5,7 +5,11 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Panel from "../../utils/Panel";
 import Navbar from "../../utils/Navbar";
 import { useSelector } from "react-redux";
-import { ADMIN_DASHBOARD, ADMIN_DASHBOARD_LOGIN, PROPERTY_DEALER } from "../../utils/Const";
+import {
+  ADMIN_DASHBOARD,
+  ADMIN_DASHBOARD_LOGIN,
+  PROPERTY_DEALER,
+} from "../../utils/Const";
 import { USER_ROLE } from "../../../ScreenJson";
 import PageSelector from "../../customComponents/PageSelector";
 

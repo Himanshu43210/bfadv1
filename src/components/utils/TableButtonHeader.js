@@ -61,6 +61,7 @@ const TableButtonHeader = ({
   };
 
   const handleFormDataChange = (newFormData) => {
+    console.log(newFormData)
     setFormData(newFormData);
   };
 
