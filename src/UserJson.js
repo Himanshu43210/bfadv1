@@ -1,3 +1,4 @@
+import { USER_ROLE } from "./ScreenJson";
 import { newPropertyConst } from "./components/fieldConsts/PropertiesFieldConst";
 import {
   editUserConst,
@@ -22,6 +23,7 @@ import {
   GET_LISTING_DATA,
   GET_PROPERTY_LIST_BY_USER_ID,
   GET_PROPERTY_USER,
+  HEADING,
   HORIZONTAL_LINE,
   LABEL_MAP,
   POST,
@@ -31,6 +33,7 @@ import {
   SELECT_SLIDER,
   SLIDER,
   TABLE_HEADER,
+  TITLE,
   TOGGLE_BUTTON,
 } from "./components/utils/Const";
 import { API_ENDPOINTS } from "./redux/utils/api";
@@ -67,6 +70,11 @@ import { API_ENDPOINTS } from "./redux/utils/api";
 export const AD_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
+    {
+      type: HEADING,
+      text: "Super Admin Panel",
+      className: "formheadingcontainer"
+    },
     {
       type: CONTAINER,
       className: "superAdminDashboard",
@@ -105,14 +113,14 @@ export const AD_USER_DASHBOARD = {
               name: "Statistics",
               route: "/admin/statistics",
             },
-            // {
-            //   type: ROUTE_BUTTON,
-            //   className: "admin-route-button",
-            //   label: "Field Changes Master Data",
-            //   name: "Field Changes Master Data",
-            //   form: newPropertyConst,
-            //   route: "/admin/form",
-            // },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin-route-button",
+              label: "Field Changes Master Data",
+              name: "Field Changes Master Data",
+              form: newPropertyConst,
+              route: "/admin/form",
+            },
             {
               type: ROUTE_BUTTON,
               className: "admin-route-button",
@@ -144,6 +152,11 @@ export const AD_USER_DASHBOARD = {
 export const CP_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
+    {
+      type: HEADING,
+      text: "Channel Partner Admin Panel",
+      className: "formheadingcontainer"
+    },
     {
       type: CONTAINER,
       className: "superAdminDashboard",
@@ -231,6 +244,11 @@ export const SU_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
+      type: HEADING,
+      text: "Sub User Panel",
+      className: "formheadingcontainer"
+    },
+    {
       type: CONTAINER,
       className: "superAdminDashboard",
       children: [
@@ -290,6 +308,10 @@ export const AD_MASTER_TABLE = {
       api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
       data: { filter: {} },
       className: "header",
+    },
+    {
+      type: TITLE,
+      titles: ["Master Data of Super Admin", "Master Data of Channel Partner", "Master Data of Sub User"]
     },
     { type: HORIZONTAL_LINE },
     {
@@ -396,6 +418,7 @@ export const AD_MASTER_TABLE = {
                   type: SELECT_SLIDER,
                   sliceName: "filter",
                   name: "size",
+                  label: "Size",
                   buttonLabel: "Size",
                   minValue: 0.0,
                   maxValue: 1000.0,
@@ -505,48 +528,105 @@ export const AD_MASTER_TABLE = {
       type: DASHBOARD_LISTING,
       data: {},
       desktopHeaders: {
-        Location: "sectorNumber",
+        "Location": "sectorNumber",
         "Plot No.": "plotNumber",
-        Size: "size",
-        Floor: "floor",
-        Title: "title",
-        Price: "price",
-        Accommodation: "accommodation",
-        Facing: "facing",
+        "Size": "size",
+        "Floor": "floor",
+        "Title": "title",
+        "Price": "price",
+        "Accommodation": "accommodation",
+        "Facing": "facing",
         "Park Facing": "parkFacing",
-        Corner: "corner",
-        Possession: "possession",
+        "Corner": "corner",
+        "Possession": "possession",
         "Builder Name": "builderName",
         "Builder Contact Name": "builderContact",
         "Created By": "",
-        "Mobile Number": "",
-        "Company Name": "",
-        City: "Gurgaon",
-        State: "Haryana",
+        "Mobile Number": "phoneNumber",
+        "Company Name": "companyName",
+        "City": "city",
+        "State": "state",
         "Dated of Posting": "",
         "Link Share": "",
       },
       mobileHeaders: {
-        Location: "sectorNumber",
+        "Location": "sectorNumber",
         "Plot No.": "plotNumber",
-        Size: "size",
-        Floor: "floor",
-        Title: "title",
-        Price: "price",
-        Accommodation: "accommodation",
-        Facing: "facing",
+        "Size": "size",
+        "Floor": "floor",
+        "Title": "title",
+        "Price": "price",
+        "Accommodation": "accommodation",
+        "Facing": "facing",
         "Park Facing": "parkFacing",
-        Corner: "corner",
-        Possession: "possession",
+        "Corner": "corner",
+        "Possession": "possession",
         "Builder Name": "builderName",
         "Builder Contact Name": "builderContact",
         "Created By": "",
         "Mobile Number": "",
         "Company Name": "",
-        City: "Gurgaon",
-        State: "Haryana",
+        "City": "Gurgaon",
+        "State": "Haryana",
         "Dated of Posting": "",
         "Link Share": "",
+      },
+      roleSpecificDesktopHeaders: {
+        [USER_ROLE.bfAdmin]: {
+          "Location": "sectorNumber",
+          "Plot No.": "plotNumber",
+          "Size": "size",
+          "Floor": "floor",
+          "Price": "price",
+          "Accommodation": "accommodation",
+          "Facing": "facing",
+          "Park Facing": "parkFacing",
+          "Corner": "corner",
+          "Possession": "possession",
+          "Builder Name": "builderName",
+          "Builder Contact Name": "builderContact",
+          "Created By": "",
+          "Mobile Number": "",
+          "Company Name": "",
+          "City": "Gurgaon",
+          "State": "Haryana",
+          "Dated of Posting": "",
+          "Link Share": "",
+        },
+        [USER_ROLE.channelPartner]: {
+          "Location": "sectorNumber",
+          "Plot No.": "plotNumber",
+          "Size": "size",
+          "Floor": "floor",
+          "Price": "price",
+          "Accommodation": "accommodation",
+          "Facing": "facing",
+          "Park Facing": "parkFacing",
+          "Corner": "corner",
+          "Possession": "possession",
+          "Builder Name": "builderName",
+          "Builder Contact Name": "builderContact",
+          "Created By": "",
+          "Dated of Posting": "",
+          "Link Share": "",
+        },
+        [USER_ROLE.salesUser]: {
+          "Location": "sectorNumber",
+          "Plot No.": "plotNumber",
+          "Size": "size",
+          "Floor": "floor",
+          "Price": "price",
+          "Accommodation": "accommodation",
+          "Facing": "facing",
+          "Park Facing": "parkFacing",
+          "Corner": "corner",
+          "Possession": "possession",
+          "Builder Name": "builderName",
+          "Builder Contact Name": "builderContact",
+          "Created By": "",
+          "Dated of Posting": "",
+          "Link Share": "",
+        }
       },
       fieldConst: newPropertyConst,
       editApi: ALTER_PROPERTY_DATA,
@@ -601,6 +681,10 @@ export const MANAGE_USER = {
       api: API_ENDPOINTS[GET_ADMIN_USER_DATA],
     },
     {
+      type: TITLE,
+      titles: ["Manage Channel Partner", "Manage Sub User"]
+    },
+    {
       type: CONTAINER,
       name: "",
       className: "",
@@ -613,14 +697,18 @@ export const MANAGE_USER = {
             {
               type: DASHBOARD_LISTING,
               data: {},
+              roleSpecific: false,
               desktopHeaders: {
-                Name: "name",
-                "Phone Number": "phoneNumber",
-                Address: "address",
-                Email: "email",
-                Role: "role",
-                "Parent Id": "parentId",
-                Status: "status",
+                "Name": "name",
+                "Company Name": "companyName",
+                "Mobile Number": "phoneNumber",
+                "City": "city",
+                "State": "state",
+                // "Address": "address",
+                // "Email": "email",
+                // "Role": "role",
+                // "Parent Id": "parentId",
+                // "Status": "status",
               },
               mobileHeaders: [{ Name: "name" }, { Role: "role" }],
               fieldConst: editUserConst,
@@ -650,6 +738,11 @@ export const STATS_LIST = {
   name: "Master table",
   className: "klk",
   children: [
+    {
+      type: TITLE,
+      titles: ["Statistics"],
+      common: true
+    },
     {
       type: LABEL_MAP,
       className: "lableded-map-dashboard",
@@ -684,7 +777,7 @@ export const STATS_LIST = {
                 "Total Listings": "total_count",
                 Approved: "approved_count",
                 Pending: "pending_count",
-                "View all Listings": "",
+                // "View all Listings": "",
               },
               removeApi: REJECT_PROPERTY,
               user: true,
@@ -717,6 +810,12 @@ export const VIEW_LISTING = {
   name: "Master table",
   className: "klk",
   children: [
+    {
+      type: HEADING,
+      name: "allListing",
+      text: "All Listing",
+      className: "formheadingcontainer"
+    },
     {
       type: API_BUTTON,
       name: "refresh",
@@ -775,18 +874,40 @@ export const APPROVAL_PROPERTIES = {
       api: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
     },
     {
+      type: TITLE,
+      titles: ["Approve Channel Partner Listings", "Approve Sub User Listings"]
+    },
+    {
       type: DASHBOARD_LISTING,
       desktopHeaders: {
-        Location: "location",
+        "Company Name": "companyName",
+        "Mobile Number": "phoneNumber",
+        "City": "city",
+        "Primary Title": "primaryTitle",
+        "Location": "location",
         "Plot No.": "plotNumber",
-        Floor: "floor",
-        Title: "title",
-        Accommodation: "accommodation",
-        Facing: "facing",
-        Possession: "possession",
-        Price: "price",
+        "Floor": "floor",
+        "Title": "title",
+        "Accommodation": "accommodation",
+        "Facing": "facing",
+        "Possession": "possession",
+        "Price": "price",
         "Builder Name": "builderName",
         "Builder Contact Name": "builderContact",
+      },
+      roleSpecificDesktopHeaders: {
+        [USER_ROLE.bfAdmin]: {
+          "Company Name": "companyName",
+          "Mobile Number": "phoneNumber",
+          "City": "city",
+          "Primary Title": "primaryTitle",
+        },
+        [USER_ROLE.channelPartner]: {
+          "Sub User Name": "name",
+          "Mobile Number": "phoneNumber",
+          "City": "city",
+          "Primary Title": "primaryTitle",
+        }
       },
       user: true,
       getDataApi: GET_APPROVAL_PROPERTIES,

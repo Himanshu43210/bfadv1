@@ -174,19 +174,21 @@ const TableButtonHeader = ({
               [NEED_APPROVAL_BY]: userProfile.parentId,
             },
       };
-      dispatch(callApi(options));
-
-      try {
-        const options = {
-          url: refreshDataApi,
-          method: refreshMethod ? refreshMethod : POST,
-          headers: { "Content-Type": "application/json" },
-          data: {},
-        };
-        dispatch(callApi(options));
-      } catch (error) {}
-      // on success clear the form data
-      setFormData({});
+      dispatch(callApi(options))
+      .then(()=> {
+        setSnackbar({open: true, message: "Successful!"});
+        try {
+          const options = {
+            url: refreshDataApi,
+            method: refreshMethod ? refreshMethod : POST,
+            headers: { "Content-Type": "application/json" },
+            data: {},
+          };
+          dispatch(callApi(options));
+        } catch (error) {}
+        // on success clear the form data
+        setFormData({});
+      });
     } catch (err) {
       console.log(err);
     }

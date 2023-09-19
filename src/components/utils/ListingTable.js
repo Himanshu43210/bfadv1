@@ -38,6 +38,7 @@ import SnackBar from "../customComponents/SnackBar";
 const ListingTable = ({
   headersDesktop = [],
   headersMobile = [],
+  roleSpecificDesktopHeaders,
   fieldConst,
   editApi,
   deleteApi,
@@ -79,29 +80,54 @@ const ListingTable = ({
   );
   const userProfile = useSelector((state) => state[PROFILE]);
   const navigateTo = useNavigate();
+  let allowedTableColumns = roleSpecificDesktopHeaders ? roleSpecificDesktopHeaders[userProfile.role] : tableHeaders;
+  
   useEffect(() => {
-        if (!_.isEmpty(getApiDataFromRedux)) {
+    if (!_.isEmpty(getApiDataFromRedux)) {
       if (getApiDataFromRedux.pageNumber !== activePage)
         setActivePage(getApiDataFromRedux.pageNumber);
-      if (getApiDataFromRedux.nbHits !== itemsCountPerPage)
+      if (getApiDataFromRedux.nbHits !== itemsCountPerPage) {
+        console.log('===== not equal to nbHits =====', getApiDataFromRedux, itemsCountPerPage);
         setItemsCountPerPage(getApiDataFromRedux.nbHits);
+      }
       if (getApiDataFromRedux.totalItems !== totalItems)
         setTotalItems(getApiDataFromRedux.totalItems);
       setTableData(getApiDataFromRedux.data);
+      allowedTableColumns = roleSpecificDesktopHeaders ? roleSpecificDesktopHeaders[userProfile.role] : tableHeaders;
     }
   }, [getApiDataFromRedux]);
 
   const handleSave = () => {
     try {
+      const err = {};
+      fieldConst.forEach((field) => {
+        if (
+          field.isRequired &&
+          ((typeof formData[field.name] === "object" &&
+            formData[field.name]?.length === 0) ||
+            !formData[field.name])
+        ) {
+          err[field.name] = "This is required";
+        }
+      });
       const options = {
         url: API_ENDPOINTS[editApi],
         method: POST,
         headers: { "Content-Type": "application/json" },
         data: sanitizeFormData(formData),
       };
-      dispatch(callApi(options));
-        setSnackbar({ open: true, message: `Saved.` });
-          } catch (error) {
+      if (Object.keys(err).length === 0) {
+        dispatch(callApi(options))
+          .then(() => {
+            setSnackbar({ open: true, message: `Saved.` });
+          })
+          .catch(() => {
+            setSnackbar({ open: true, message: `Failed.` });
+          });
+      } else {
+        setSnackbar({ open: true, message: `Fields are missing.` });
+      }
+    } catch (error) {
       console.log(error);
     }
   };
@@ -113,7 +139,8 @@ const ListingTable = ({
         method: DELETE,
         headers: { "Content-Type": "application/json" },
       };
-      dispatch(callApi(options));
+      dispatch(callApi(options))
+
     } catch (error) {
       console.log(error);
     }
@@ -129,9 +156,13 @@ const ListingTable = ({
           [NEED_APPROVAL_BY]: userProfile.parentId || APPROVED,
         },
       };
-      dispatch(callApi(options));
+      dispatch(callApi(options))
+        .then(() => {
+          setSnackbar({ open: true, message: `Approved.` });
+        });
     } catch (error) {
       console.log(error);
+      setSnackbar({ open: true, message: `Approve Failed.` });
     }
   };
 
@@ -156,7 +187,10 @@ const ListingTable = ({
           rejectedByCPComments: formData.rejectedByCPComments,
         },
       };
-      dispatch(callApi(options));
+      dispatch(callApi(options))
+        .then(() => {
+          setSnackbar({ open: true, message: `Removed.` });
+        });
     } catch (error) {
       console.log(error);
     }
@@ -233,7 +267,7 @@ const ListingTable = ({
   };
 
   const handlePageChange = (action, pageNumber) => {
-        if (pageNumber > 0) setActivePage(pageNumber);
+    if (pageNumber > 0) setActivePage(pageNumber);
     filterData({
       activePage: pageNumber,
       itemsCountPerPage,
@@ -300,50 +334,13 @@ const ListingTable = ({
           <p className="lbel">Are you sure want to Delete?</p>
         </ReusablePopup>
       )}
-      {showHomePreviewModal && (
-        <ReusablePopup
-          onHide={toggleHomePreview}
-          className="home-modal-content"
-          onCancel={toggleHomePreview}
-        >
-          <HomeCard element={currentRowData}></HomeCard>
-        </ReusablePopup>
-      )}
-      {showSearchPreviewModal && (
-        <ReusablePopup
-          onHide={toggleSearchpreview}
-          onCancel={toggleSearchpreview}
-          className="search-modal-content"
-        >
-          <SearchCard element={currentRowData}></SearchCard>
-        </ReusablePopup>
-      )}
-      {showDetailPreviewModal && (
-        <ReusablePopup
-          className="detail-modal-content"
-          onHide={toggleDetailPreview}
-          onCancel={toggleDetailPreview}
-        >
-          <DetailDataCard singledata={currentRowData}></DetailDataCard>
-        </ReusablePopup>
-      )}
 
       {showPreviewModal && (
-        <ReusablePopup
-          onHomePreview={() => {
-            toggleHomePreview();
-            tooglePreview();
-          }}
-          onDetailPreview={() => {
-            toggleDetailPreview();
-            tooglePreview();
-          }}
-          onSearchResultPreview={() => {
-            toggleSearchpreview();
-            tooglePreview();
-          }}
-          onHide={tooglePreview}
-        ></ReusablePopup>
+        <ReusablePopup onHide={tooglePreview} onClose={tooglePreview}>
+          <HomeCard element={currentRowData}></HomeCard>
+          <SearchCard element={currentRowData}></SearchCard>
+          <DetailDataCard singledata={currentRowData}></DetailDataCard>
+        </ReusablePopup>
       )}
 
       {showRowModal && (
@@ -399,14 +396,14 @@ const ListingTable = ({
         <Table striped bordered hover responsive size="sm">
           <thead>
             <tr>
-              {Object.keys(tableHeaders).map((headerLabel, index) => (
+              {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                 <th
                   key={index}
-                  onClick={() => handleSort(tableHeaders[headerLabel])}
+                  onClick={() => handleSort(allowedTableColumns[headerLabel])}
                   className="tablehead text"
                 >
                   {headerLabel}
-                  {sortColumn === tableHeaders[headerLabel] &&
+                  {sortColumn === allowedTableColumns[headerLabel] &&
                     (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
                 </th>
               ))}
@@ -428,9 +425,9 @@ const ListingTable = ({
                   }
                 }}
               >
-                {Object.keys(tableHeaders).map((headerLabel, index) => (
+                {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                   <td className="bodytext" key={index}>
-                    {element[tableHeaders[headerLabel]]}
+                    {element[allowedTableColumns[headerLabel]]}
                   </td>
                 ))}
                 {!hideActions && (
