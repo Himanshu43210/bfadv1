@@ -53,7 +53,7 @@ export default function HomeCard({
           className="360-image-icon"
           alt={"360-image-icon"}
         />
-        <CardContent>
+        <CardContent style={{flexDirection: 'column', alignItems: 'center'}}>
           <Typography gutterBottom variant="h6" component="div">
             {element?.title}
           </Typography>
@@ -96,7 +96,7 @@ export default function HomeCard({
           </div>
         </CardContent>
 
-        <div>
+        <div style={{display: "flex", alignItems: "center", marginBottom: "20px", paddingInline: "16px"}}>
           <Rating
             name="home-card-fixed-rating"
             value={element?.raiting || 5}

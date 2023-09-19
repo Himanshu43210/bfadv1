@@ -27,6 +27,7 @@ import {
   AUTO_FETCH_API_POST,
   TABLE_HEADER,
   AUTO_FETCH_API_USER,
+  TITLE,
 } from "../utils/Const";
 import Banner from "./Banner";
 import Footer from "./Footer";
@@ -54,6 +55,7 @@ import CustomRouteButton from "./RouteButton";
 import LabelMap from "./LabelMap";
 import TableHeader from "./TableHeader";
 import ApiHandler from "./AutoFetchApiPost";
+import { USER_ROLE } from "../../ScreenJson";
 
 const ComponentSelector = ({ component }) => {
   const dispatch = useDispatch();
@@ -61,6 +63,7 @@ const ComponentSelector = ({ component }) => {
   const apiStatus = useSelector((state) =>
     selectApiStatus(state, component.loadingApi || "")
   );
+  const userProfile = useSelector((state) => state.profile);
 
   function hasValueProperty(input) {
     // Check if the input is an object
@@ -102,6 +105,18 @@ const ComponentSelector = ({ component }) => {
       dispatch(callApi(options));
     }
   };
+
+  const getTitle = () => {
+    let idx = component.common
+      ? 0
+      : userProfile.role == USER_ROLE.bfAdmin
+        ? 0
+        : userProfile.role == USER_ROLE.channelPartner
+          ? 1
+          : 2;
+    return <Heading component={{ text: component?.titles[idx], className: "formheadingcontainer" }} />;
+  };
+
   return (
     <>
       {component.loadingApi && apiStatus === LOADING && (
@@ -122,6 +137,7 @@ const ComponentSelector = ({ component }) => {
           user={component.user}
         />
       )}
+      {component.type === TITLE && getTitle()}
       {component.type === CONTAINER && (
         <RenderComponent jsonToRender={component} />
       )}

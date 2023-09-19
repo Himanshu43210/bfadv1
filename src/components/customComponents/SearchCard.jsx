@@ -17,7 +17,7 @@ export default function SearchCard({
   onClickNavigate,
   classname,
 }) {
-    const cardDetailUrl = `${onClickNavigate}?title=${element.title?.replaceAll(
+  const cardDetailUrl = `${onClickNavigate}?title=${element.title?.replaceAll(
     " ",
     "-"
   )}&id=${element._id}`;
@@ -35,7 +35,7 @@ export default function SearchCard({
       }}
       className={classname}
     >
-      <CardActionArea className="searchcardiv">
+      <CardActionArea className="searchcardiv" style={{ display: "flex" }}>
         <CardMedia
           component="img"
           height="100"
@@ -44,91 +44,94 @@ export default function SearchCard({
           // alt="Left_Image"
           alt={element.title}
         />
-        <div>
-          <CardContent>
-            <div className="detailcardheadingdiv">
-              <Typography
-                variant="h5"
-                gutterBottom
-                className="detailcardheading"
-              >
-                {element.title}
-              </Typography>
-              <div className="detailicondiv">
-                <FaShareAlt size={"23px"} onClick={handleShareClick} />
-                <FaRegHeart size={"23px"} />
+        <CardContent style={{ flex: 1, width: "100%" }}>
+          <div className="detailcardheadingdiv">
+            <Typography
+              variant="h5"
+              gutterBottom
+              className="detailcardheading"
+            >
+              {element.title}
+            </Typography>
+            <div className="detailicondiv">
+              <FaShareAlt size={"23px"} onClick={handleShareClick} />
+              <FaRegHeart size={"23px"} />
+            </div>
+          </div>
+          <div className="contentdiv" style={{ justifyContent: "space-between" }}>
+            <div style={{ flex: 1, display: "flex", flexWrap: "wrap", justifyContent: "space-between", paddingRight: "16%" }}>
+              <div style={{ display: "flex" }}>
+                <img
+                  className="detailimages"
+                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/location.png"
+                  alt=""
+                  style={{ paddingRight: "6px" }}
+                />
+                <Typography fontWeight="lg">
+                  {element.sectorNumber}
+                </Typography>
+              </div>
+              <div style={{ display: "flex" }}>
+                <img
+                  className="detailimages"
+                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/home.png"
+                  alt=""
+                  style={{ paddingRight: "6px" }}
+                />
+                <Typography fontWeight="lg">{element.size}</Typography>
+              </div>
+              <div style={{ display: "flex" }}>
+                <img
+                  className="detailimages"
+                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/check.png"
+                  alt=""
+                  style={{ paddingRight: "6px" }}
+                />
+                <Typography fontWeight="lg">{element.possession}</Typography>
+              </div>
+              <div style={{ display: "flex" }}>
+                <img
+                  className="detailimages"
+                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/stairs.png"
+                  alt=""
+                  style={{ paddingRight: "6px" }}
+                />
+                <Typography fontWeight="lg">{element.floor}</Typography>
+              </div>
+              <div style={{ display: "flex" }}>
+                <img
+                  className="detailimages"
+                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/home.png"
+                  alt=""
+                  style={{ paddingRight: "6px" }}
+                />
+                <Typography fontWeight="lg">
+                  {element.accommodation}
+                </Typography>
+              </div>
+              <div style={{ display: "flex" }}>
+                <img
+                  className="detailimages"
+                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/compass.png"
+                  alt=""
+                  style={{ paddingRight: "6px" }}
+                />
+                <Typography fontWeight="lg">{element.facing}</Typography>
               </div>
             </div>
-            <div>
-              <div className="contentdiv">
-                <div>
-                  <img
-                    className="detailimages"
-                    src="https://builder-floor-flax.vercel.app/assets/imgs/icons/location.png"
-                    alt=""
-                  />
-                  <Typography fontWeight="lg">
-                    {element.sectorNumber}
-                  </Typography>
-                </div>
-                <div>
-                  <img
-                    className="detailimages"
-                    src="https://builder-floor-flax.vercel.app/assets/imgs/icons/home.png"
-                    alt=""
-                  />
-                  <Typography fontWeight="lg">{element.size}</Typography>
-                </div>
-                <div>
-                  <img
-                    className="detailimages"
-                    src="https://builder-floor-flax.vercel.app/assets/imgs/icons/check.png"
-                    alt=""
-                  />
-                  <Typography fontWeight="lg">{element.possession}</Typography>
-                </div>
-                <div>
-                  <img
-                    className="detailimages"
-                    src="https://builder-floor-flax.vercel.app/assets/imgs/icons/stairs.png"
-                    alt=""
-                  />
-                  <Typography fontWeight="lg">{element.floor}</Typography>
-                </div>
-                <div>
-                  <img
-                    className="detailimages"
-                    src="https://builder-floor-flax.vercel.app/assets/imgs/icons/home.png"
-                    alt=""
-                  />
-                  <Typography fontWeight="lg">
-                    {element.accommodation}
-                  </Typography>
-                </div>
 
-                <div>
-                  <img
-                    className="detailimages"
-                    src="https://builder-floor-flax.vercel.app/assets/imgs/icons/compass.png"
-                    alt=""
-                  />
-                  <Typography fontWeight="lg">{element.facing}</Typography>
-                </div>
-
-                <div className="searchpagebuttondiv">
-                  <ApiButton
-                    apiType={apiType}
-                    api={onClickApi}
-                    buttonLabel={`₹ ${element.price / 10000000} Cr.`}
-                    queryParams={{ id: element._id }}
-                    navigate={cardDetailUrl}
-                  />
-                  <Typography fontWeight="lg"> View Details {">>"} </Typography>
-                </div>
-              </div>
+            <div className="searchpagebuttondiv">
+              <ApiButton
+                apiType={apiType}
+                api={onClickApi}
+                buttonLabel={`₹ ${element.price / 10000000} Cr.`}
+                queryParams={{ id: element._id }}
+                navigate={cardDetailUrl}
+              />
+              <Typography fontWeight="lg">View Details {">>"}</Typography>
             </div>
-          </CardContent>
-        </div>
+          </div>
+        </CardContent>
       </CardActionArea>
     </Card>
   );
