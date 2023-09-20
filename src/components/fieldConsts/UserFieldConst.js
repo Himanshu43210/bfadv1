@@ -92,6 +92,19 @@ export const newUserConst = [
     ],
     requiredErrorMessage: "Please select a Locations.",
   },
+  {
+    name: "role",
+    label: "Role",
+    dataKey: "role",
+    type: "select",
+    isRequired: true,
+    options: [
+      { label: "bfAdmin", value: "BuilderFloorAdmin" },
+      { label: "channelPartner", value: "ChannelPartner" },
+      { label: "salesUser", value: "SalesUser" },
+    ],
+    requiredErrorMessage: "Please select a Locations.",
+  },
 ];
 
 export const editUserConst = [
