@@ -26,6 +26,14 @@ export const newUserConst = [
     requiredErrorMessage: "Please enter your email.",
   },
   {
+    name: "password",
+    label: "Password",
+    dataKey: "password",
+    type: TEXT,
+    isRequired: true,
+    requiredErrorMessage: "Please enter your Password.",
+  },
+  {
     name: "companyName",
     label: "Company Name",
     dataKey: "companyName",

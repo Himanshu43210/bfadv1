@@ -126,7 +126,12 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                   id={field.name}
                   name={field.name}
                   value={formData[field.name] || formData[field.dataKey] || ""}
-                  onChange={(e) => handleChange(field.name, e.target.value)}
+                  onChange={(e) => {
+                    handleChange(field.name, e.target.value);
+                    if (field.name === "email") {
+                      handleChange("emailOtp", "verified");
+                    }
+                  }}
                   required={field.isRequired}
                 />
               )}
@@ -162,7 +167,9 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                   id={field.name}
                   name={field.name}
                   value={formData[field.name] || formData[field.dataKey] || ""}
-                  onChange={(e) => handleChange(field.name, e.target.value)}
+                  onChange={(e) => {
+                    handleChange(field.name, e.target.value);
+                  }}
                   required={field.isRequired}
                 />
               )}
@@ -228,13 +235,15 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                   styles={{
                     control: (baseStyles, state) => ({
                       ...baseStyles,
-                      width: 'auto',
-                      display: 'flex',
-                      alignItems: 'center',
-                      border: state.isFocused ? baseStyles.border : 'gray',
-                      borderBottom: '1px solid #ccc',
-                      borderRadius: state.isFocused ? baseStyles.borderRadius : '',
-                      textAlign: 'center',
+                      width: "auto",
+                      display: "flex",
+                      alignItems: "center",
+                      border: state.isFocused ? baseStyles.border : "gray",
+                      borderBottom: "1px solid #ccc",
+                      borderRadius: state.isFocused
+                        ? baseStyles.borderRadius
+                        : "",
+                      textAlign: "center",
                     }),
                   }}
                   onChange={(selectedOption) => {
