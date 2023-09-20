@@ -341,9 +341,10 @@ export const AD_MASTER_TABLE = {
       className: "",
       children: [
         {
-          type: AUTO_FETCH_API_POST,
+          type: AUTO_FETCH_API_USER,
           api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
           data: { filter: {} },
+          method: GET,
           className: "header",
           user: true,
         },
