@@ -3,11 +3,13 @@ import FormBuilder from "../utils/FormBuilder";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ADMIN_DASHBOARD_LOGIN,
   BF_ADMIN,
   NEED_APPROVAL_BY,
   POST,
   PROPERTY_DEALER,
   ROUTE_BUTTON,
+  SUCCESS,
 } from "../utils/Const";
 import { API_ENDPOINTS } from "../../redux/utils/api";
 import { callApi } from "../../redux/utils/apiActions";
@@ -17,6 +19,8 @@ import { USER_ROLE } from "../../ScreenJson";
 import _ from "lodash";
 import SnackBar from "../customComponents/SnackBar";
 import { useNavigate } from "react-router-dom";
+import { selectApiData, selectApiStatus } from "../../redux/utils/selectors";
+import { storeUserData } from "../../redux/slice/userSlice";
 
 const FormPage = () => {
   const [snackbar, setSnackbar] = useState({});
@@ -27,7 +31,7 @@ const FormPage = () => {
   const snackbarClose = () => {
     setSnackbar({
       open: false,
-      message: ""
+      message: "",
     });
   };
 
@@ -106,8 +110,8 @@ const FormPage = () => {
         let data = imagesCheck
           ? newFormData
           : checked
-            ? newFormData
-            : sanitizeFormData({
+          ? newFormData
+          : sanitizeFormData({
               ...formData,
               parentId: userProfile._id,
               role:
@@ -136,8 +140,7 @@ const FormPage = () => {
         };
 
         if (Object.keys(err).length === 0) {
-          dispatch(callApi(options))
-          .then(() => {
+          dispatch(callApi(options)).then(() => {
             router("/admin");
             setFormData({});
             setSnackbar({ open: true, message: `Saved.` });
@@ -155,34 +158,77 @@ const FormPage = () => {
     }
   };
 
+  const navigate = useNavigate();
+  const loginStatus = useSelector((state) =>
+    selectApiStatus(state, ADMIN_DASHBOARD_LOGIN)
+  );
+  const userProfile1 = useSelector((state) =>
+    selectApiData(state, ADMIN_DASHBOARD_LOGIN)
+  );
+
+  const [check, setCheck] = useState(false);
+  useEffect(() => {
+    if (!loginStatus) {
+      const email = localStorage.getItem("email");
+      const password = localStorage.getItem("password");
+      if (email && password) {
+        try {
+          const options = {
+            url: API_ENDPOINTS[ADMIN_DASHBOARD_LOGIN],
+            method: POST,
+            headers: { "Content-Type": "application/json" },
+            data: {
+              email: email,
+              password: password,
+            },
+          };
+          dispatch(callApi(options));
+        } catch (error) {}
+        navigate("/admin");
+      } else {
+        navigate("/login");
+      }
+    } else {
+      setCheck(true)
+    }
+  }, [loginStatus]);
+
   return (
     <>
-      {console.log(formData)}
-      <div>
-        <div className="formheadingcontainer">{userProfile.formName}</div>
-        <FormBuilder
-          fields={userProfile.formType}
-          onFormDataChange={handleFormDataChange}
-          propsFormData={
-            userProfile.autofill
-              ? filterAutofillData(userProfile.autofill, userProfile)
-              : {}
-          }
-        />
-        <Button variant="primary" onClick={handleSave}>
-          Save
-        </Button>
-        <CustomRouteButton
-          component={{
-            type: ROUTE_BUTTON,
-            className: "admin-route-button",
-            label: "Go to Dashboard",
-            name: "Go to Dashboard",
-            route: "/admin",
-          }}
-        />
-      </div>
-      <SnackBar open={snackbar?.open} message={snackbar?.message} onClose={snackbarClose} />
+      {check && (
+        <>
+          {console.log(formData)}
+          <div>
+            <div className="formheadingcontainer">{userProfile.formName}</div>
+            <FormBuilder
+              fields={userProfile.formType}
+              onFormDataChange={handleFormDataChange}
+              propsFormData={
+                userProfile.autofill
+                  ? filterAutofillData(userProfile.autofill, userProfile)
+                  : {}
+              }
+            />
+            <Button variant="primary" onClick={handleSave}>
+              Save
+            </Button>
+            <CustomRouteButton
+              component={{
+                type: ROUTE_BUTTON,
+                className: "admin-route-button",
+                label: "Go to Dashboard",
+                name: "Go to Dashboard",
+                route: "/admin",
+              }}
+            />
+          </div>
+          <SnackBar
+            open={snackbar?.open}
+            message={snackbar?.message}
+            onClose={snackbarClose}
+          />
+        </>
+      )}
     </>
   );
 };

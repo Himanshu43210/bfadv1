@@ -28,6 +28,7 @@ import {
   TABLE_HEADER,
   AUTO_FETCH_API_USER,
   TITLE,
+  LOGIN_REFRESH,
 } from "../utils/Const";
 import Banner from "./Banner";
 import Footer from "./Footer";
@@ -56,6 +57,7 @@ import LabelMap from "./LabelMap";
 import TableHeader from "./TableHeader";
 import ApiHandler from "./AutoFetchApiPost";
 import { USER_ROLE } from "../../ScreenJson";
+import LoginRefresh from "./LoginRefresh";
 
 const ComponentSelector = ({ component }) => {
   const dispatch = useDispatch();
@@ -110,11 +112,18 @@ const ComponentSelector = ({ component }) => {
     let idx = component.common
       ? 0
       : userProfile.role == USER_ROLE.bfAdmin
-        ? 0
-        : userProfile.role == USER_ROLE.channelPartner
-          ? 1
-          : 2;
-    return <Heading component={{ text: component?.titles[idx], className: "formheadingcontainer" }} />;
+      ? 0
+      : userProfile.role == USER_ROLE.channelPartner
+      ? 1
+      : 2;
+    return (
+      <Heading
+        component={{
+          text: component?.titles[idx],
+          className: "formheadingcontainer",
+        }}
+      />
+    );
   };
 
   return (
@@ -216,6 +225,9 @@ const ComponentSelector = ({ component }) => {
       {component.type === LABEL_MAP && <LabelMap component={component} />}
       {component.type === HORIZONTAL_LINE && <hr />}
       {component.type === TABLE_HEADER && <TableHeader component={component} />}
+      {component.type === LOGIN_REFRESH && (
+        <LoginRefresh component={component} />
+      )}
     </>
   );
 };
