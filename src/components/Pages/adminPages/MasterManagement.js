@@ -1,21 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ListingTable from "../../utils/ListingTable";
 import { newMasterConst } from "../../fieldConsts/MasterFieldConst";
 import TableButtonHeader from "../../utils/TableButtonHeader";
 import Navbar from "../../utils/Navbar";
 import {
+  ADMIN_DASHBOARD_LOGIN,
   ALTER_MASTER_DATA,
   DELETE_MASTER_DATA,
   GET,
   GET_MASTER_DATA,
+  POST,
+  SUCCESS,
 } from "../../utils/Const";
 import AutoFetchApi from "../../customComponents/AutoFetchApi";
 import { API_ENDPOINTS } from "../../../redux/utils/api";
-import { selectApiData } from "../../../redux/utils/selectors";
+import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors";
+import { useNavigate } from "react-router-dom";
+import { callApi } from "../../../redux/utils/apiActions";
+import { storeUserData } from "../../../redux/slice/userSlice";
 
-export default function MasterManagement() {
+function MasterManagement() {
   let tableData = [];
   const desktopHeaders = {
     Field: "fieldName",
@@ -75,4 +81,51 @@ export default function MasterManagement() {
       </div>
     </>
   );
+}
+
+export default function MasterManagementParent() {
+  const navigate = useNavigate();
+  const loginStatus = useSelector((state) =>
+    selectApiStatus(state, ADMIN_DASHBOARD_LOGIN)
+  );
+  const userProfile = useSelector((state) => state.profile);
+  const userProfile1 = useSelector((state) =>
+    selectApiData(state, ADMIN_DASHBOARD_LOGIN)
+  );
+  const dispatch = useDispatch();
+
+  const [check, setCheck] = useState(false);
+  useEffect(() => {
+    if (!loginStatus) {
+      const email = localStorage.getItem("email");
+      const password = localStorage.getItem("password");
+      if (email && password) {
+        try {
+          const options = {
+            url: API_ENDPOINTS[ADMIN_DASHBOARD_LOGIN],
+            method: POST,
+            headers: { "Content-Type": "application/json" },
+            data: {
+              email: email,
+              password: password,
+            },
+          };
+          dispatch(callApi(options));
+        } catch (error) {}
+      } else {
+        navigate("/login");
+      }
+    } else {
+    }
+  }, [loginStatus]);
+
+  useEffect(() => {
+    if (loginStatus === SUCCESS) {
+      dispatch(storeUserData(userProfile1?.profile));
+    }
+    if (userProfile._id) {
+      setCheck(true);
+    }
+  }, [loginStatus, userProfile]);
+  return <>{check && <MasterManagement />}</>;
 }

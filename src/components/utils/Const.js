@@ -37,6 +37,7 @@ export const SCROLL_TO_TOP = "SCROLL_TO_TOP";
 export const HAMBURGER_MENU = "HAMBURGER_MENU";
 export const SELECT_SLIDER = "SELECT_SLIDER";
 export const TABLE_HEADER = "TABLE_HEADER";
+export const LOGIN_REFRESH = "LOGIN_REFRESH";
 export const SEARCH_CARD = "SEARCH_CARD";
 export const API_HEADING = "API_HEADING";
 export const TOGGLE_BUTTON = "TOGGLE_BUTTON";
