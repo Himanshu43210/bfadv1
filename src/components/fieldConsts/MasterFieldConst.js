@@ -1,10 +1,29 @@
 export const newMasterConst = [
   {
     name: "fieldName",
-    label: "Field Name",
+    label: "Field",
+    type: "select",
+    parentclassName: "property-w-1",
+    isRequired: true,
+    options: [
+      { value: "state", label: "State" },
+      { value: "city", label: "City" },
+      { value: "location", label: "Location" },
+      { value: "size", label: "Size" },
+      { value: "floor", label: "Floor" },
+      { value: "price", label: "Price" },
+      { value: "accomodation", label: "Accommodation" },
+      { value: "possession", label: "Possession" },
+      { value: "primaryTitle", label: "Primary Title" },
+    ],
+    requiredErrorMessage: "Please select a Field.",
+  },
+  {
+    name: "fieldLabel",
+    label: "Field Label",
     type: "text",
     isRequired: true,
-    requiredErrorMessage: "Please enter Field Name.",
+    requiredErrorMessage: "Please enter Field Label.",
   },
   {
     name: "fieldValue",

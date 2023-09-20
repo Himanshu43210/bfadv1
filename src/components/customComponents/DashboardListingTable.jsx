@@ -41,6 +41,7 @@ const DashboardListing = ({ component }) => {
       showViewAllListing={component.showViewAllListing}
       hideAlterActions={component.hideAlterActions}
       roleSpecificDesktopHeaders={component.roleSpecificDesktopHeaders}
+      disableRowModal={component.disableRowModal}
     />
   );
 };

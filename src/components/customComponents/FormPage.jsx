@@ -9,7 +9,6 @@ import {
   POST,
   PROPERTY_DEALER,
   ROUTE_BUTTON,
-  SUCCESS,
 } from "../utils/Const";
 import { API_ENDPOINTS } from "../../redux/utils/api";
 import { callApi } from "../../redux/utils/apiActions";
@@ -20,7 +19,6 @@ import _ from "lodash";
 import SnackBar from "../customComponents/SnackBar";
 import { useNavigate } from "react-router-dom";
 import { selectApiData, selectApiStatus } from "../../redux/utils/selectors";
-import { storeUserData } from "../../redux/slice/userSlice";
 
 const FormPage = () => {
   const [snackbar, setSnackbar] = useState({});
@@ -75,30 +73,30 @@ const FormPage = () => {
         );
         newFormData.append(NEED_APPROVAL_BY, userProfile.parentId);
 
-        function isObjectNotString(value) {
-          return (
-            typeof value === "object" && !Array.isArray(value) && value !== null
-          );
-        }
+        // function isObjectNotString(value) {
+        //   return (
+        //     typeof value === "object" && !Array.isArray(value) && value !== null
+        //   );
+        // }
 
-        let checked = false;
-        function isFileList(value) {
-          return value instanceof FileList;
-        }
+        // let checked = false;
+        // function isFileList(value) {
+        //   return value instanceof FileList;
+        // }
 
-        Object.keys(formData).forEach((element) => {
-          if (!isFileList(formData[element])) {
-            if (isObjectNotString(formData[element])) {
-              checked = true;
-              newFormData.append(
-                element,
-                JSON.stringify(formData[element].value)
-              );
-            } else {
-              newFormData.append(element, formData[element]);
-            }
-          }
-        });
+        // Object.keys(formData).forEach((element) => {
+        //   if (!isFileList(formData[element])) {
+        //     if (isObjectNotString(formData[element])) {
+        //       checked = true;
+        //       newFormData.append(
+        //         element,
+        //         JSON.stringify(formData[element].value)
+        //       );
+        //     } else {
+        //       newFormData.append(element, formData[element]);
+        //     }
+        //   }
+        // });
 
         const imagesCheck = fileFields.some((field) => formData[field]);
 
@@ -109,9 +107,9 @@ const FormPage = () => {
 
         let data = imagesCheck
           ? newFormData
-          : checked
-          ? newFormData
-          : sanitizeFormData({
+          : // : checked
+            // ? newFormData
+            sanitizeFormData({
               ...formData,
               parentId: userProfile._id,
               role:
@@ -140,12 +138,11 @@ const FormPage = () => {
         };
 
         if (Object.keys(err).length === 0) {
-          dispatch(callApi(options))
-            .then(() => {
-              router("/admin");
-              setFormData({});
-              setSnackbar({ open: true, message: `Saved.` });
-            });
+          dispatch(callApi(options)).then(() => {
+            router("/admin");
+            setFormData({});
+            setSnackbar({ open: true, message: `Saved.` });
+          });
         } else {
           setSnackbar({ open: true, message: `Required fields are empty.` });
         }
@@ -189,7 +186,7 @@ const FormPage = () => {
         navigate("/login");
       }
     } else {
-      setCheck(true)
+      setCheck(true);
     }
   }, [loginStatus]);
 

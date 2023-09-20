@@ -1,4 +1,5 @@
 import { USER_ROLE } from "./ScreenJson";
+import { newMasterConst } from "./components/fieldConsts/MasterFieldConst";
 import { newPropertyConst } from "./components/fieldConsts/PropertiesFieldConst";
 import {
   editUserConst,
@@ -37,6 +38,7 @@ import {
   TABLE_HEADER,
   TITLE,
   TOGGLE_BUTTON,
+  ALTER_MASTER_DATA,
 } from "./components/utils/Const";
 import { API_ENDPOINTS } from "./redux/utils/api";
 
@@ -82,9 +84,9 @@ export const AD_USER_DASHBOARD = {
           panelTitle: "SUPER ADMIN PANEL",
           classes: "formheadingcontainer",
           mainHeaderClass: "formheadingcontainer",
-          panelTitleClass: "formheadingcontainer"
+          panelTitleClass: "formheadingcontainer",
         },
-      ]
+      ],
     },
     {
       type: CONTAINER,
@@ -129,7 +131,8 @@ export const AD_USER_DASHBOARD = {
               className: "admin-route-button",
               label: "Field Changes Master Data",
               name: "Field Changes Master Data",
-              form: newPropertyConst,
+              form: newMasterConst,
+              onSaveApi: ALTER_MASTER_DATA,
               route: "/admin/form",
             },
             {
@@ -173,9 +176,9 @@ export const CP_USER_DASHBOARD = {
           panelTitle: "CHANNEL PARTNER ADMIN PANEL",
           classes: "formheadingcontainer",
           mainHeaderClass: "formheadingcontainer",
-          panelTitleClass: "formheadingcontainer"
+          panelTitleClass: "formheadingcontainer",
         },
-      ]
+      ],
     },
     {
       type: CONTAINER,
@@ -273,9 +276,9 @@ export const SU_USER_DASHBOARD = {
           panelTitle: "SUB USER PANEL",
           classes: "formheadingcontainer",
           mainHeaderClass: "formheadingcontainer",
-          panelTitleClass: "formheadingcontainer"
+          panelTitleClass: "formheadingcontainer",
         },
-      ]
+      ],
     },
     {
       type: CONTAINER,
@@ -342,6 +345,7 @@ export const AD_MASTER_TABLE = {
           api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
           data: { filter: {} },
           className: "header",
+          user: true,
         },
         {
           type: CONTAINER,
@@ -353,13 +357,13 @@ export const AD_MASTER_TABLE = {
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
-                [USER_ROLE.salesUser]: "SUB USER PANEL"
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
               mainHeaderClass: "formheadingcontainer",
-              panelTitleClass: "formheadingcontainer"
+              panelTitleClass: "formheadingcontainer",
             },
-          ]
+          ],
         },
         {
           type: TITLE,
@@ -370,7 +374,7 @@ export const AD_MASTER_TABLE = {
           ],
         },
         { type: HORIZONTAL_LINE },
-        
+
         {
           type: DASHBOARD_LISTING,
           data: {},
@@ -483,6 +487,7 @@ export const AD_MASTER_TABLE = {
           endpoint: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
           dataPoint: GET_ADMIN_PROPERTY_DATA,
           onRefreshApiType: POST,
+          disableRowModal: true,
         },
         {
           type: ROUTE_BUTTON,
@@ -515,13 +520,13 @@ export const MANAGE_USER = {
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
-                [USER_ROLE.salesUser]: "SUB USER PANEL"
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
               mainHeaderClass: "formheadingcontainer",
-              panelTitleClass: "formheadingcontainer"
+              panelTitleClass: "formheadingcontainer",
             },
-          ]
+          ],
         },
         {
           type: AUTO_FETCH_API_USER,
@@ -568,6 +573,7 @@ export const MANAGE_USER = {
                   endpoint: API_ENDPOINTS[GET_ADMIN_USER_DATA],
                   dataPoint: GET_ADMIN_USER_DATA,
                   showPreviewButton: false,
+                  disableRowModal: true,
                 },
                 {
                   type: ROUTE_BUTTON,
@@ -604,13 +610,13 @@ export const STATS_LIST = {
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
-                [USER_ROLE.salesUser]: "SUB USER PANEL"
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
               mainHeaderClass: "formheadingcontainer",
-              panelTitleClass: "formheadingcontainer"
+              panelTitleClass: "formheadingcontainer",
             },
-          ]
+          ],
         },
         {
           type: TITLE,
@@ -701,13 +707,13 @@ export const VIEW_LISTING = {
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
-                [USER_ROLE.salesUser]: "SUB USER PANEL"
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
               mainHeaderClass: "formheadingcontainer",
-              panelTitleClass: "formheadingcontainer"
+              panelTitleClass: "formheadingcontainer",
             },
-          ]
+          ],
         },
         {
           type: HEADING,
@@ -789,13 +795,13 @@ export const APPROVAL_PROPERTIES = {
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
-                [USER_ROLE.salesUser]: "SUB USER PANEL"
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
               mainHeaderClass: "formheadingcontainer",
-              panelTitleClass: "formheadingcontainer"
+              panelTitleClass: "formheadingcontainer",
             },
-          ]
+          ],
         },
         {
           type: TITLE,
@@ -844,6 +850,7 @@ export const APPROVAL_PROPERTIES = {
           showPreviewButton: true,
           approveApi: APPROVE_PROPERTY_DATA,
           removeApi: REJECT_PROPERTY,
+          disableRowModal: true,
         },
         {
           type: ROUTE_BUTTON,

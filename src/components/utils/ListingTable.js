@@ -53,7 +53,8 @@ const ListingTable = ({
   showViewAllListing,
   hideAlterActions,
   refreshDataApi,
-  refreshMethod
+  refreshMethod,
+  disableRowModal,
 }) => {
   const [snackbar, setSnackbar] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
@@ -79,20 +80,28 @@ const ListingTable = ({
   );
   const userProfile = useSelector((state) => state[PROFILE]);
   const navigateTo = useNavigate();
-  let allowedTableColumns = roleSpecificDesktopHeaders ? roleSpecificDesktopHeaders[userProfile.role] : tableHeaders;
+  let allowedTableColumns = roleSpecificDesktopHeaders
+    ? roleSpecificDesktopHeaders[userProfile.role]
+    : tableHeaders;
 
   useEffect(() => {
     if (!_.isEmpty(getApiDataFromRedux)) {
       if (getApiDataFromRedux.pageNumber !== activePage)
         setActivePage(getApiDataFromRedux.pageNumber);
       if (getApiDataFromRedux.nbHits !== itemsCountPerPage) {
-        console.log('===== not equal to nbHits =====', getApiDataFromRedux, itemsCountPerPage);
+        console.log(
+          "===== not equal to nbHits =====",
+          getApiDataFromRedux,
+          itemsCountPerPage
+        );
         setItemsCountPerPage(getApiDataFromRedux.nbHits);
       }
       if (getApiDataFromRedux.totalItems !== totalItems)
         setTotalItems(getApiDataFromRedux.totalItems);
       setTableData(getApiDataFromRedux.data);
-      allowedTableColumns = roleSpecificDesktopHeaders ? roleSpecificDesktopHeaders[userProfile.role] : tableHeaders;
+      allowedTableColumns = roleSpecificDesktopHeaders
+        ? roleSpecificDesktopHeaders[userProfile.role]
+        : tableHeaders;
     }
   }, [getApiDataFromRedux]);
 
@@ -105,7 +114,7 @@ const ListingTable = ({
         data: {},
       };
       dispatch(callApi(options));
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const handleSave = () => {
@@ -151,10 +160,9 @@ const ListingTable = ({
         method: DELETE,
         headers: { "Content-Type": "application/json" },
       };
-      dispatch(callApi(options))
-        .then(() => {
-          setSnackbar({ open: true, message: `Deleted.` });
-        });
+      dispatch(callApi(options)).then(() => {
+        setSnackbar({ open: true, message: `Deleted.` });
+      });
     } catch (error) {
       console.log(error);
     }
@@ -170,10 +178,9 @@ const ListingTable = ({
           [NEED_APPROVAL_BY]: userProfile.parentId || APPROVED,
         },
       };
-      dispatch(callApi(options))
-        .then(() => {
-          setSnackbar({ open: true, message: `Approved.` });
-        });
+      dispatch(callApi(options)).then(() => {
+        setSnackbar({ open: true, message: `Approved.` });
+      });
     } catch (error) {
       console.log(error);
       setSnackbar({ open: true, message: `Approve Failed.` });
@@ -201,10 +208,9 @@ const ListingTable = ({
           rejectedByCPComments: formData.rejectedByCPComments,
         },
       };
-      dispatch(callApi(options))
-        .then(() => {
-          setSnackbar({ open: true, message: `Removed.` });
-        });
+      dispatch(callApi(options)).then(() => {
+        setSnackbar({ open: true, message: `Removed.` });
+      });
     } catch (error) {
       console.log(error);
     }
@@ -238,7 +244,7 @@ const ListingTable = ({
   const snackbarClose = () => {
     setSnackbar({
       open: false,
-      message: ""
+      message: "",
     });
     refreshData();
   };
@@ -346,34 +352,32 @@ const ListingTable = ({
           <HomeCard element={currentRowData}></HomeCard>
           <SearchCard element={currentRowData}></SearchCard>
           <DetailDataCard singledata={currentRowData}></DetailDataCard>
-          {
-            currentRowData[NEED_APPROVAL_BY] && (
-              <>
-                <Button
-                  variant="success"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toogleApproval();
-                  }}
-                >
-                  Approve
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleRemove();
-                  }}
-                >
-                  Reject
-                </Button>
-              </>
-            )
-          }
+          {currentRowData[NEED_APPROVAL_BY] && (
+            <>
+              <Button
+                variant="success"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toogleApproval();
+                }}
+              >
+                Approve
+              </Button>
+              <Button
+                variant="danger"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleRemove();
+                }}
+              >
+                Reject
+              </Button>
+            </>
+          )}
         </ReusablePopup>
       )}
 
-      {showRowModal && (
+      {!disableRowModal && showRowModal && (
         <ReusablePopup onHide={toogleRowClick} onClose={toogleRowClick}>
           <FormBuilder
             propsFormData={currentRowData}
@@ -567,7 +571,11 @@ const ListingTable = ({
           />
         )
       )}
-      <SnackBar open={snackbar?.open} message={snackbar?.message} onClose={snackbarClose} />
+      <SnackBar
+        open={snackbar?.open}
+        message={snackbar?.message}
+        onClose={snackbarClose}
+      />
     </>
   );
 };

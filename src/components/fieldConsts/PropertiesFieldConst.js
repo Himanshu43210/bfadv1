@@ -27,7 +27,6 @@ export const newPropertyConst = [
     isMulti: true,
     parentclassName: "property-w-1",
     isRequired: true,
-    isMulti: true,
     options: [
       { value: "DLF1", label: "DLF City Phase 1" },
       { value: "DLF2", label: "DLF City Phase 2" },
