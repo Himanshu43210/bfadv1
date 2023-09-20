@@ -99,7 +99,6 @@ export const newUserConst = [
     type: "select",
     isRequired: true,
     options: [
-      { label: "bfAdmin", value: "BuilderFloorAdmin" },
       { label: "channelPartner", value: "ChannelPartner" },
       { label: "salesUser", value: "SalesUser" },
     ],
