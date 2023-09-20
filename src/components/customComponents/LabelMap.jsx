@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GET } from "../utils/Const";
+import { ADMIN_DASHBOARD_LOGIN, GET } from "../utils/Const";
 import { callApi } from "../../redux/utils/apiActions";
+import { selectApiStatus } from "../../redux/utils/selectors";
 
 const LabelMap = ({ component }) => {
   const data = useSelector((state) => state.profile);
@@ -45,4 +46,14 @@ const LabelMap = ({ component }) => {
   );
 };
 
-export default LabelMap;
+const RealLabelMap = ({ component }) => {
+  const userProfile = useSelector((state) => state.profile);
+
+  if (userProfile._id) {
+    return <LabelMap component={component} />;
+  } else {
+    return <></>;
+  }
+};
+
+export default RealLabelMap;
