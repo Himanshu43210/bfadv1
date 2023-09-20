@@ -133,7 +133,7 @@ export const AD_USER_DASHBOARD = {
               name: "Field Changes Master Data",
               form: newMasterConst,
               onSaveApi: ALTER_MASTER_DATA,
-              route: "/admin/form",
+              route: "/admin/TableForm",
             },
             {
               type: ROUTE_BUTTON,
@@ -293,6 +293,7 @@ export const SU_USER_DASHBOARD = {
               className: "admin-route-button",
               label: "Statistics",
               name: "Statistics",
+              route: "/admin/statistics",
             },
             {
               type: ROUTE_BUTTON,
@@ -847,6 +848,9 @@ export const APPROVAL_PROPERTIES = {
           getDataApi: GET_APPROVAL_PROPERTIES,
           endpoint: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
           dataPoint: GET_APPROVAL_PROPERTIES,
+          // editApi: ALTER_PROPERTY_DATA,
+          // deleteApi: DELETE_PROPERTY_DATA,
+          fieldConst: newPropertyConst,
           hideAlterActions: true,
           showPreviewButton: true,
           approveApi: APPROVE_PROPERTY_DATA,
