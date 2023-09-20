@@ -238,8 +238,8 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     }),
                   }}
                   onChange={(selectedOption) => {
-                    console.log(selectedOption[0]);
-                    handleChange(field.name, selectedOption[0] || null);
+                    console.log(selectedOption);
+                    handleChange(field.name, selectedOption || null);
                   }}
                   closeMenuOnSelect={!field.isMulti}
                   required={field.isRequired}
