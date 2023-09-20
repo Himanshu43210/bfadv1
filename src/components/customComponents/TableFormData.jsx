@@ -144,13 +144,21 @@ const TableFormPage = () => {
 
         if (Object.keys(err).length === 0) {
           dispatch(callApi(options)).then(() => {
-            router("/admin");
+            // router("/admin");
             setFormData({});
             setSnackbar({ open: true, message: `Saved.` });
           });
         } else {
           setSnackbar({ open: true, message: `Required fields are empty.` });
         }
+        try {
+          const options = {
+            url: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
+            method: GET,
+            headers: { "Content-Type": "application/json" },
+          };
+          dispatch(callApi(options));
+        } catch (error) {}
         setLoading(false);
       } catch (error) {
         setLoading(false);
