@@ -73,30 +73,28 @@ const FormPage = () => {
         );
         newFormData.append(NEED_APPROVAL_BY, userProfile.parentId);
 
-        // function isObjectNotString(value) {
-        //   return (
-        //     typeof value === "object" && !Array.isArray(value) && value !== null
-        //   );
-        // }
+        function isObjectNotString(value) {
+          return (
+            typeof value === "object" && !Array.isArray(value) && value !== null
+          );
+        }
 
-        // let checked = false;
-        // function isFileList(value) {
-        //   return value instanceof FileList;
-        // }
+        function isFileList(value) {
+          return value instanceof FileList;
+        }
 
-        // Object.keys(formData).forEach((element) => {
-        //   if (!isFileList(formData[element])) {
-        //     if (isObjectNotString(formData[element])) {
-        //       checked = true;
-        //       newFormData.append(
-        //         element,
-        //         JSON.stringify(formData[element].value)
-        //       );
-        //     } else {
-        //       newFormData.append(element, formData[element]);
-        //     }
-        //   }
-        // });
+        Object.keys(formData).forEach((element) => {
+          if (!isFileList(formData[element])) {
+            if (isObjectNotString(formData[element])) {
+              newFormData.append(
+                element,
+                JSON.stringify(formData[element].value)
+              );
+            } else {
+              newFormData.append(element, formData[element]);
+            }
+          }
+        });
 
         const imagesCheck = fileFields.some((field) => formData[field]);
 
@@ -107,9 +105,7 @@ const FormPage = () => {
 
         let data = imagesCheck
           ? newFormData
-          : // : checked
-            // ? newFormData
-            sanitizeFormData({
+          : sanitizeFormData({
               ...formData,
               parentId: userProfile._id,
               role:

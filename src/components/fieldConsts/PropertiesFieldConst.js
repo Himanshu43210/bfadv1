@@ -24,7 +24,6 @@ export const newPropertyConst = [
     name: "location",
     label: "Location",
     type: "select",
-    isMulti: true,
     parentclassName: "property-w-1",
     isRequired: true,
     options: [
