@@ -74,6 +74,7 @@ export const newUserConst = [
     dataKey: "location",
     type: "select",
     isRequired: true,
+    isMulti: true,
     options: [
       { label: "DLF City Phase 1", value: "DLF City Phase 1" },
       { label: "DLF City Phase 2", value: "DLF City Phase 2" },

@@ -26,6 +26,7 @@ import {
   HEADING,
   HORIZONTAL_LINE,
   LABEL_MAP,
+  PANEL_HEADER,
   LOGIN_REFRESH,
   POST,
   REJECT_PROPERTY,
@@ -72,9 +73,18 @@ export const AD_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
-      type: HEADING,
-      text: "Super Admin Panel",
-      className: "formheadingcontainer",
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitle: "SUPER ADMIN PANEL",
+          classes: "formheadingcontainer",
+          mainHeaderClass: "formheadingcontainer",
+          panelTitleClass: "formheadingcontainer"
+        },
+      ]
     },
     {
       type: CONTAINER,
@@ -154,9 +164,18 @@ export const CP_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
-      type: HEADING,
-      text: "Channel Partner Admin Panel",
-      className: "formheadingcontainer",
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitle: "CHANNEL PARTNER ADMIN PANEL",
+          classes: "formheadingcontainer",
+          mainHeaderClass: "formheadingcontainer",
+          panelTitleClass: "formheadingcontainer"
+        },
+      ]
     },
     {
       type: CONTAINER,
@@ -245,9 +264,18 @@ export const SU_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
-      type: HEADING,
-      text: "Sub User Panel",
-      className: "formheadingcontainer",
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitle: "SUB USER PANEL",
+          classes: "formheadingcontainer",
+          mainHeaderClass: "formheadingcontainer",
+          panelTitleClass: "formheadingcontainer"
+        },
+      ]
     },
     {
       type: CONTAINER,
@@ -314,6 +342,24 @@ export const AD_MASTER_TABLE = {
           api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
           data: { filter: {} },
           className: "header",
+        },
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL"
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
+            },
+          ]
         },
         {
           type: TITLE,
@@ -713,6 +759,24 @@ export const MANAGE_USER = {
       className: "",
       children: [
         {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL"
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
+            },
+          ]
+        },
+        {
           type: AUTO_FETCH_API_USER,
           user: true,
           method: GET,
@@ -783,6 +847,24 @@ export const STATS_LIST = {
       name: "",
       className: "",
       children: [
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL"
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
+            },
+          ]
+        },
         {
           type: TITLE,
           titles: ["Statistics"],
@@ -863,6 +945,24 @@ export const VIEW_LISTING = {
       className: "",
       children: [
         {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL"
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
+            },
+          ]
+        },
+        {
           type: HEADING,
           name: "allListing",
           text: "All Listing",
@@ -931,6 +1031,24 @@ export const APPROVAL_PROPERTIES = {
           user: true,
           method: GET,
           api: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
+        },
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL"
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
+            },
+          ]
         },
         {
           type: TITLE,

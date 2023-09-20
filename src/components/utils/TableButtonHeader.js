@@ -28,6 +28,7 @@ const TableButtonHeader = ({
   addHeader,
   refreshMethod,
 }) => {
+  console.log('+++++ tableData, fieldConst +++++', tableData, fieldConst);
   const [snackbar, setSnackbar] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [newPopup, setNewPopup] = useState(null);
@@ -171,8 +172,8 @@ const TableButtonHeader = ({
           data: imagesCheck
             ? newFormData
             : checked
-            ? newFormData
-            : {
+              ? newFormData
+              : {
                 ...formData,
                 parentId: userProfile._id,
                 [NEED_APPROVAL_BY]: userProfile.parentId,
@@ -188,7 +189,7 @@ const TableButtonHeader = ({
               data: {},
             };
             dispatch(callApi(options));
-          } catch (error) {}
+          } catch (error) { }
           // on success clear the form data
           setFormData({});
         });
@@ -196,6 +197,8 @@ const TableButtonHeader = ({
         
         console.log(err);
       }
+    } else {
+      setSnackbar({ open: true, message: "Required field(s) are empty!" });
     }
   };
 
@@ -224,7 +227,7 @@ const TableButtonHeader = ({
         data: formData,
       };
       dispatch(callApi(options));
-    } catch (error) {}
+    } catch (error) { }
   };
   return (
     <>

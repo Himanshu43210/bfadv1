@@ -140,15 +140,15 @@ const FormPage = () => {
         };
 
         if (Object.keys(err).length === 0) {
-          dispatch(callApi(options)).then(() => {
-            router("/admin");
-            setFormData({});
-            setSnackbar({ open: true, message: `Saved.` });
-          });
+          dispatch(callApi(options))
+            .then(() => {
+              router("/admin");
+              setFormData({});
+              setSnackbar({ open: true, message: `Saved.` });
+            });
         } else {
           setSnackbar({ open: true, message: `Required fields are empty.` });
         }
-
         setLoading(false);
       } catch (error) {
         setLoading(false);
