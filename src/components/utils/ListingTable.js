@@ -52,14 +52,13 @@ const ListingTable = ({
   hideActions,
   showViewAllListing,
   hideAlterActions,
+  refreshDataApi,
+  refreshMethod
 }) => {
   const [snackbar, setSnackbar] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [showHomePreviewModal, setShowHomePreviewModal] = useState(false);
-  const [showSearchPreviewModal, setShowSearchPreviewModal] = useState(false);
-  const [showDetailPreviewModal, setShowDetailPreviewModal] = useState(false);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [showRowModal, setShowRowModal] = useState(false);
@@ -81,7 +80,7 @@ const ListingTable = ({
   const userProfile = useSelector((state) => state[PROFILE]);
   const navigateTo = useNavigate();
   let allowedTableColumns = roleSpecificDesktopHeaders ? roleSpecificDesktopHeaders[userProfile.role] : tableHeaders;
-  
+
   useEffect(() => {
     if (!_.isEmpty(getApiDataFromRedux)) {
       if (getApiDataFromRedux.pageNumber !== activePage)
@@ -96,6 +95,18 @@ const ListingTable = ({
       allowedTableColumns = roleSpecificDesktopHeaders ? roleSpecificDesktopHeaders[userProfile.role] : tableHeaders;
     }
   }, [getApiDataFromRedux]);
+
+  const refreshData = () => {
+    try {
+      const options = {
+        url: refreshDataApi,
+        method: refreshMethod ? refreshMethod : POST,
+        headers: { "Content-Type": "application/json" },
+        data: {},
+      };
+      dispatch(callApi(options));
+    } catch (error) { }
+  };
 
   const handleSave = () => {
     try {
@@ -128,6 +139,7 @@ const ListingTable = ({
         setSnackbar({ open: true, message: `Fields are missing.` });
       }
     } catch (error) {
+      setSnackbar({ open: true, message: `Failed.` });
       console.log(error);
     }
   };
@@ -140,7 +152,9 @@ const ListingTable = ({
         headers: { "Content-Type": "application/json" },
       };
       dispatch(callApi(options))
-
+        .then(() => {
+          setSnackbar({ open: true, message: `Deleted.` });
+        });
     } catch (error) {
       console.log(error);
     }
@@ -226,6 +240,7 @@ const ListingTable = ({
       open: false,
       message: ""
     });
+    refreshData();
   };
 
   const toogleEdit = () => {
@@ -236,15 +251,6 @@ const ListingTable = ({
   };
   const tooglePreview = () => {
     setShowPreviewModal(!showPreviewModal);
-  };
-  const toggleHomePreview = () => {
-    setShowHomePreviewModal(!showHomePreviewModal);
-  };
-  const toggleSearchpreview = () => {
-    setShowSearchPreviewModal(!showSearchPreviewModal);
-  };
-  const toggleDetailPreview = () => {
-    setShowDetailPreviewModal(!showDetailPreviewModal);
   };
   const toogleApproval = () => {
     setShowApprovalModal(!showApprovalModal);
@@ -340,6 +346,30 @@ const ListingTable = ({
           <HomeCard element={currentRowData}></HomeCard>
           <SearchCard element={currentRowData}></SearchCard>
           <DetailDataCard singledata={currentRowData}></DetailDataCard>
+          {
+            currentRowData[NEED_APPROVAL_BY] && (
+              <>
+                <Button
+                  variant="success"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toogleApproval();
+                  }}
+                >
+                  Approve
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleRemove();
+                  }}
+                >
+                  Reject
+                </Button>
+              </>
+            )
+          }
         </ReusablePopup>
       )}
 
