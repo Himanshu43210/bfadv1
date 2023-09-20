@@ -11,7 +11,7 @@ import {
 import { FiRefreshCcw } from "react-icons/fi";
 import FormBuilder from "./FormBuilder";
 import ReusablePopup from "./ReusablePopup";
-import { GET, NEED_APPROVAL_BY, POST, PROFILE, PROPERTY_DEALER } from "./Const";
+import { BF_ADMIN, GET, NEED_APPROVAL_BY, POST, PROFILE, PROPERTY_DEALER } from "./Const";
 import { API_ENDPOINTS } from "../../redux/utils/api";
 import { callApi } from "../../redux/utils/apiActions";
 import ExcelTable from "../customComponents/BulkUpload";
@@ -19,6 +19,7 @@ import CSVUpload from "../customComponents/BulkUpload";
 import { USER_ROLE } from "../../ScreenJson";
 import SnackBar from "../customComponents/SnackBar";
 import { Toaster } from "react-hot-toast";
+import { sanitizeFormData } from "./reusableMethods";
 
 const TableButtonHeader = ({
   tableData = [],
@@ -28,7 +29,7 @@ const TableButtonHeader = ({
   addHeader,
   refreshMethod,
 }) => {
-  console.log('+++++ tableData, fieldConst +++++', tableData, fieldConst);
+  console.log("+++++ tableData, fieldConst +++++", tableData, fieldConst);
   const [snackbar, setSnackbar] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [newPopup, setNewPopup] = useState(null);
@@ -171,16 +172,16 @@ const TableButtonHeader = ({
           },
           data: imagesCheck
             ? newFormData
-            : checked
-              ? newFormData
-              : {
+            : sanitizeFormData({
                 ...formData,
                 parentId: userProfile._id,
-                [NEED_APPROVAL_BY]: userProfile.parentId,
-              },
+                role:
+                  userProfile.role === USER_ROLE[BF_ADMIN]
+                    ? USER_ROLE["channelPartner"]
+                    : USER_ROLE["salesUser"],
+              }),
         };
 
-        
         dispatch(callApi(options)).then(() => {
           setSnackbar({ open: true, message: "Successful!" });
           try {
@@ -191,12 +192,11 @@ const TableButtonHeader = ({
               data: {},
             };
             dispatch(callApi(options));
-          } catch (error) { }
+          } catch (error) {}
           // on success clear the form data
           setFormData({});
         });
       } catch (err) {
-        
         console.log(err);
       }
     } else {
@@ -229,7 +229,7 @@ const TableButtonHeader = ({
         data: formData,
       };
       dispatch(callApi(options));
-    } catch (error) { }
+    } catch (error) {}
   };
   return (
     <>
