@@ -80,8 +80,9 @@ export const AD_USER_DASHBOARD = {
           type: PANEL_HEADER,
           mainHeading: "WELCOME TO BUILDERFLOOR.COM",
           panelTitle: "SUPER ADMIN PANEL",
-          // className: "superAdminDashboard",
-          // className: "formheadingcontainer"
+          classes: "formheadingcontainer",
+          mainHeaderClass: "formheadingcontainer",
+          panelTitleClass: "formheadingcontainer"
         },
       ]
     },
@@ -170,8 +171,9 @@ export const CP_USER_DASHBOARD = {
           type: PANEL_HEADER,
           mainHeading: "WELCOME TO BUILDERFLOOR.COM",
           panelTitle: "CHANNEL PARTNER ADMIN PANEL",
-          // className: "superAdminDashboard",
-          // className: "formheadingcontainer"
+          classes: "formheadingcontainer",
+          mainHeaderClass: "formheadingcontainer",
+          panelTitleClass: "formheadingcontainer"
         },
       ]
     },
@@ -271,8 +273,6 @@ export const SU_USER_DASHBOARD = {
           panelTitle: "SUB USER PANEL",
           classes: "formheadingcontainer",
           mainHeaderClass: "formheadingcontainer",
-          detailsClass: "formheadingcontainer",
-          detailsChildClass: "formheadingcontainer",
           panelTitleClass: "formheadingcontainer"
         },
       ]
@@ -355,8 +355,9 @@ export const AD_MASTER_TABLE = {
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL"
               },
-              // className: "superAdminDashboard",
-              // className: "formheadingcontainer"
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
             },
           ]
         },
@@ -769,8 +770,9 @@ export const MANAGE_USER = {
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL"
               },
-              // className: "superAdminDashboard",
-              // className: "formheadingcontainer"
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
             },
           ]
         },
@@ -857,8 +859,9 @@ export const STATS_LIST = {
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL"
               },
-              // className: "superAdminDashboard",
-              // className: "formheadingcontainer"
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
             },
           ]
         },
@@ -953,8 +956,9 @@ export const VIEW_LISTING = {
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL"
               },
-              // className: "superAdminDashboard",
-              // className: "formheadingcontainer"
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
             },
           ]
         },
@@ -1040,8 +1044,9 @@ export const APPROVAL_PROPERTIES = {
                 [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL"
               },
-              // className: "superAdminDashboard",
-              // className: "formheadingcontainer"
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer"
             },
           ]
         },
