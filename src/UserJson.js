@@ -348,7 +348,7 @@ export const AD_MASTER_TABLE = {
           method: POST,
           className: "header",
           user: true,
-        },
+        },  
         {
           type: CONTAINER,
           // className: "superAdminDashboard",
@@ -812,6 +812,13 @@ export const APPROVAL_PROPERTIES = {
             "Approve Channel Partner Listings",
             "Approve Sub User Listings",
           ],
+        },
+        {
+          type: LABEL_MAP,
+          className: "lableded-map-dashboard",
+          api: API_ENDPOINTS[GET_LISTING_DATA],
+          method: GET,
+          endpoint: GET_LISTING_DATA,
         },
         {
           type: DASHBOARD_LISTING,
