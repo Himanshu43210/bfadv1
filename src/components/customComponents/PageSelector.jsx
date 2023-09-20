@@ -9,6 +9,7 @@ import {
   MASTER_MANAGEMENT,
   POST,
   PROPERTY_MANAGEMENT,
+  SUCCESS,
   USER_MANAGEMENT,
 } from "../utils/Const";
 import { selectApiData, selectApiStatus } from "../../redux/utils/selectors";
@@ -52,10 +53,17 @@ export default function PageSelector({ pageName }) {
         navigate("/login");
       }
     } else {
-      dispatch(storeUserData(userProfile1?.profile));
-      setCheck(true);
     }
   }, [loginStatus]);
+
+  useEffect(() => {
+    if (loginStatus === SUCCESS) {
+      dispatch(storeUserData(userProfile1?.profile));
+    }
+    if (userProfile._id) {
+      setCheck(true);
+    }
+  }, [loginStatus,userProfile]);
 
   return (
     <>
