@@ -559,6 +559,7 @@ export const MANAGE_USER = {
                     "Mobile Number": "phoneNumber",
                     City: "city",
                     State: "state",
+                    Status:"status"
                     // "Address": "address",
                     // "Email": "email",
                     // "Role": "role",

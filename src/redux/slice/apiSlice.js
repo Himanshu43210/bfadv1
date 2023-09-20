@@ -22,8 +22,11 @@ const apiSlice = createSlice({
         state.data[getApiName(action.meta.arg.url)] = action.payload;
       })
       .addCase(callApi.rejected, (state, action) => {
-        state.status[getApiName(action.meta.arg.url)] = FAILED;
-        state.error[getApiName(action.meta.arg.url)] = action.error.message;
+        const apiname = getApiName(action.meta.arg.url);
+        if (apiname !== "") {
+          state.status[getApiName(action.meta.arg.url)] = FAILED;
+          state.error[getApiName(action.meta.arg.url)] = action.error.message;
+        }
       });
   },
 });
