@@ -51,6 +51,8 @@ const Login = () => {
           password: password,
         },
       };
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
       dispatch(callApi(options));
     } catch (error) {}
   };
