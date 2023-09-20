@@ -18,6 +18,7 @@ import ExcelTable from "../customComponents/BulkUpload";
 import CSVUpload from "../customComponents/BulkUpload";
 import { USER_ROLE } from "../../ScreenJson";
 import SnackBar from "../customComponents/SnackBar";
+import { Toaster } from "react-hot-toast";
 
 const TableButtonHeader = ({
   tableData = [],
@@ -192,6 +193,7 @@ const TableButtonHeader = ({
           setFormData({});
         });
       } catch (err) {
+        
         console.log(err);
       }
     }
@@ -226,6 +228,7 @@ const TableButtonHeader = ({
   };
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       {newPopup ? (
         <ReusablePopup
           onSave={handleSubmit}
