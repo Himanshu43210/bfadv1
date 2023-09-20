@@ -26,6 +26,7 @@ import {
   HEADING,
   HORIZONTAL_LINE,
   LABEL_MAP,
+  PANEL_HEADER,
   POST,
   REJECT_PROPERTY,
   ROUTE_BUTTON,
@@ -33,7 +34,7 @@ import {
   SELECT_SLIDER,
   SLIDER,
   TABLE_HEADER,
-  TITLE,
+    TITLE,
   TOGGLE_BUTTON,
 } from "./components/utils/Const";
 import { API_ENDPOINTS } from "./redux/utils/api";
@@ -71,9 +72,17 @@ export const AD_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
-      type: HEADING,
-      text: "Super Admin Panel",
-      className: "formheadingcontainer"
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitle: "SUPER ADMIN PANEL",
+          // className: "superAdminDashboard",
+          // className: "formheadingcontainer"
+        },
+      ]
     },
     {
       type: CONTAINER,
@@ -153,9 +162,17 @@ export const CP_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
-      type: HEADING,
-      text: "Channel Partner Admin Panel",
-      className: "formheadingcontainer"
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitle: "CHANNEL PARTNER ADMIN PANEL",
+          // className: "superAdminDashboard",
+          // className: "formheadingcontainer"
+        },
+      ]
     },
     {
       type: CONTAINER,
@@ -244,9 +261,20 @@ export const SU_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
-      type: HEADING,
-      text: "Sub User Panel",
-      className: "formheadingcontainer"
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitle: "SUB USER PANEL",
+          classes: "formheadingcontainer",
+          mainHeaderClass: "formheadingcontainer",
+          detailsClass: "formheadingcontainer",
+          detailsChildClass: "formheadingcontainer",
+          panelTitleClass: "formheadingcontainer"
+        },
+      ]
     },
     {
       type: CONTAINER,
@@ -308,6 +336,23 @@ export const AD_MASTER_TABLE = {
       api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
       data: { filter: {} },
       className: "header",
+    },
+    {
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitles: {
+            [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+            [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+            [USER_ROLE.salesUser]: "SUB USER PANEL"
+          },
+          // className: "superAdminDashboard",
+          // className: "formheadingcontainer"
+        },
+      ]
     },
     {
       type: TITLE,
@@ -675,6 +720,23 @@ export const MANAGE_USER = {
   className: "klk",
   children: [
     {
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitles: {
+            [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+            [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+            [USER_ROLE.salesUser]: "SUB USER PANEL"
+          },
+          // className: "superAdminDashboard",
+          // className: "formheadingcontainer"
+        },
+      ]
+    },
+    {
       type: AUTO_FETCH_API_USER,
       user: true,
       method: GET,
@@ -739,6 +801,23 @@ export const STATS_LIST = {
   className: "klk",
   children: [
     {
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitles: {
+            [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+            [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+            [USER_ROLE.salesUser]: "SUB USER PANEL"
+          },
+          // className: "superAdminDashboard",
+          // className: "formheadingcontainer"
+        },
+      ]
+    },
+    {
       type: TITLE,
       titles: ["Statistics"],
       common: true
@@ -746,6 +825,7 @@ export const STATS_LIST = {
     {
       type: LABEL_MAP,
       className: "lableded-map-dashboard",
+      parentClassName: "super-admin-label",
       api: API_ENDPOINTS[GET_LISTING_DATA],
       method: GET,
       endpoint: GET_LISTING_DATA,
@@ -811,6 +891,23 @@ export const VIEW_LISTING = {
   className: "klk",
   children: [
     {
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitles: {
+            [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+            [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+            [USER_ROLE.salesUser]: "SUB USER PANEL"
+          },
+          // className: "superAdminDashboard",
+          // className: "formheadingcontainer"
+        },
+      ]
+    },
+    {
       type: HEADING,
       name: "allListing",
       text: "All Listing",
@@ -874,8 +971,33 @@ export const APPROVAL_PROPERTIES = {
       api: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
     },
     {
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitles: {
+            [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+            [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+            [USER_ROLE.salesUser]: "SUB USER PANEL"
+          },
+          // className: "superAdminDashboard",
+          // className: "formheadingcontainer"
+        },
+      ]
+    },
+    {
       type: TITLE,
       titles: ["Approve Channel Partner Listings", "Approve Sub User Listings"]
+    },
+    {
+      type: LABEL_MAP,
+      className: "lableded-map-dashboard",
+      parentClassName: "super-admin-label",
+      api: API_ENDPOINTS[GET_LISTING_DATA],
+      method: GET,
+      endpoint: GET_LISTING_DATA,
     },
     {
       type: DASHBOARD_LISTING,
@@ -900,13 +1022,13 @@ export const APPROVAL_PROPERTIES = {
           "Company Name": "companyName",
           "Mobile Number": "phoneNumber",
           "City": "city",
-          "Primary Title": "primaryTitle",
+          "Primary Title": "title",
         },
         [USER_ROLE.channelPartner]: {
-          "Sub User Name": "name",
-          "Mobile Number": "phoneNumber",
+          "Sub User Name": "createdByName",
+          "Mobile Number": "createdByPhoneNumber",
           "City": "city",
-          "Primary Title": "primaryTitle",
+          "Primary Title": "title",
         }
       },
       user: true,

@@ -137,15 +137,14 @@ const FormPage = () => {
 
         if (Object.keys(err).length === 0) {
           dispatch(callApi(options))
-          .then(() => {
-            router("/admin");
-            setFormData({});
-            setSnackbar({ open: true, message: `Saved.` });
-          });
+            .then(() => {
+              router("/admin");
+              setFormData({});
+              setSnackbar({ open: true, message: `Saved.` });
+            });
         } else {
           setSnackbar({ open: true, message: `Required fields are empty.` });
         }
-
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -157,7 +156,7 @@ const FormPage = () => {
 
   return (
     <>
-      {console.log(formData)}
+      {console.log("----- form page -----", formData)}
       <div>
         <div className="formheadingcontainer">{userProfile.formName}</div>
         <FormBuilder

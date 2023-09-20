@@ -28,6 +28,7 @@ import {
   TABLE_HEADER,
   AUTO_FETCH_API_USER,
   TITLE,
+  PANEL_HEADER,
 } from "../utils/Const";
 import Banner from "./Banner";
 import Footer from "./Footer";
@@ -56,6 +57,7 @@ import LabelMap from "./LabelMap";
 import TableHeader from "./TableHeader";
 import ApiHandler from "./AutoFetchApiPost";
 import { USER_ROLE } from "../../ScreenJson";
+import PanelHeader from "./PanelHeader";
 
 const ComponentSelector = ({ component }) => {
   const dispatch = useDispatch();
@@ -141,6 +143,9 @@ const ComponentSelector = ({ component }) => {
       {component.type === CONTAINER && (
         <RenderComponent jsonToRender={component} />
       )}
+      {
+        component.type === PANEL_HEADER && <PanelHeader component={component} />
+      }
       {component.type === IMAGE_BANNER && <Banner component={component} />}
       {component.type === SELECT && (
         <SelectButton
