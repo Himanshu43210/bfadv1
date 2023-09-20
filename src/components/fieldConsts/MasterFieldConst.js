@@ -27,7 +27,7 @@ export const newMasterConst = [
   },
   {
     name: "fieldValue",
-    label: "Field Value (use comma to seperate values)",
+    label: "Field Value",
     type: "text",
     isRequired: true,
     requiredErrorMessage: "Please enter Field Value.",

@@ -1,10 +1,7 @@
 import React from "react";
 import ListingTable from "../utils/ListingTable";
-import { API_ENDPOINTS } from "../../redux/utils/api";
-import { GET_CHANNEL_PARTNER_DATA, LOADING } from "../utils/Const";
 import { useSelector } from "react-redux";
 import { selectApiStatus } from "../../redux/utils/selectors";
-import { CircularProgress } from "@mui/material";
 
 const DashboardListing = ({ component }) => {
   const userProfile = useSelector((state) => state.profile);
