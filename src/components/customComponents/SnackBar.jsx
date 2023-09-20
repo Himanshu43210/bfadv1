@@ -3,7 +3,7 @@ import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function SnackBar({
-    open = false,
+    open,
     message,
     autoHideDuration = 3000,
     anchor = {horizontal: 'right', vertical: 'bottom'},

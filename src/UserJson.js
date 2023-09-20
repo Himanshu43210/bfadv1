@@ -1,4 +1,5 @@
 import { USER_ROLE } from "./ScreenJson";
+import { newMasterConst } from "./components/fieldConsts/MasterFieldConst";
 import { newPropertyConst } from "./components/fieldConsts/PropertiesFieldConst";
 import {
   editUserConst,
@@ -26,6 +27,7 @@ import {
   HEADING,
   HORIZONTAL_LINE,
   LABEL_MAP,
+  PANEL_HEADER,
   LOGIN_REFRESH,
   POST,
   REJECT_PROPERTY,
@@ -36,6 +38,7 @@ import {
   TABLE_HEADER,
   TITLE,
   TOGGLE_BUTTON,
+  ALTER_MASTER_DATA,
 } from "./components/utils/Const";
 import { API_ENDPOINTS } from "./redux/utils/api";
 
@@ -72,9 +75,18 @@ export const AD_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
-      type: HEADING,
-      text: "Super Admin Panel",
-      className: "formheadingcontainer",
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitle: "SUPER ADMIN PANEL",
+          classes: "formheadingcontainer",
+          mainHeaderClass: "formheadingcontainer",
+          panelTitleClass: "formheadingcontainer",
+        },
+      ],
     },
     {
       type: CONTAINER,
@@ -119,7 +131,8 @@ export const AD_USER_DASHBOARD = {
               className: "admin-route-button",
               label: "Field Changes Master Data",
               name: "Field Changes Master Data",
-              form: newPropertyConst,
+              form: newMasterConst,
+              onSaveApi: ALTER_MASTER_DATA,
               route: "/admin/form",
             },
             {
@@ -154,9 +167,18 @@ export const CP_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
-      type: HEADING,
-      text: "Channel Partner Admin Panel",
-      className: "formheadingcontainer",
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitle: "CHANNEL PARTNER ADMIN PANEL",
+          classes: "formheadingcontainer",
+          mainHeaderClass: "formheadingcontainer",
+          panelTitleClass: "formheadingcontainer",
+        },
+      ],
     },
     {
       type: CONTAINER,
@@ -245,9 +267,18 @@ export const SU_USER_DASHBOARD = {
   name: "User Dashboard Screen",
   children: [
     {
-      type: HEADING,
-      text: "Sub User Panel",
-      className: "formheadingcontainer",
+      type: CONTAINER,
+      // className: "superAdminDashboard",
+      children: [
+        {
+          type: PANEL_HEADER,
+          mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+          panelTitle: "SUB USER PANEL",
+          classes: "formheadingcontainer",
+          mainHeaderClass: "formheadingcontainer",
+          panelTitleClass: "formheadingcontainer",
+        },
+      ],
     },
     {
       type: CONTAINER,
@@ -314,6 +345,25 @@ export const AD_MASTER_TABLE = {
           api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
           data: { filter: {} },
           className: "header",
+          user: true,
+        },
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
         },
         {
           type: TITLE,
@@ -324,237 +374,7 @@ export const AD_MASTER_TABLE = {
           ],
         },
         { type: HORIZONTAL_LINE },
-        {
-          type: CONTAINER,
-          className: "actioncontainer",
-          children: [
-            {
-              type: SELECT,
-              className: "select-city-button",
-              sliceName: "filter",
-              name: "city",
-              defaultValue: { label: "Gurgaon", value: "Gurgaon" },
-              options: [{ label: "Gurgaon", value: "Gurgaon" }],
-            },
-            {
-              type: SLIDER,
-              sliceName: "filter",
-              name: "budget",
-              minValue: 10000000,
-              maxValue: 100000000,
-              step: 1000000,
-              defaultValue: [20000000, 30000000],
-            },
-            {
-              type: API_BUTTON,
-              sliceName: "filter",
-              name: "search",
-              buttonLabel: "Search",
-              apiType: POST,
-              navigate: "/admin/masterTable",
-              api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-            },
-          ],
-        },
-        {
-          type: API_HEADING,
-          name: "matchFoundHeading",
-          tag: "h2",
-          className: "match-found-heading",
-          dynamicDetails: {
-            api: GET_ADMIN_PROPERTY_DATA,
-            textReplace: "_TEXT_TO_REPLACE_",
-          },
-          text: "_TEXT_TO_REPLACE_ Matches Found",
-        },
-        {
-          type: CONTAINER,
-          name: "cardBodyContainer",
-          className: "cardBodyContainer",
-          children: [
-            {
-              type: CONTAINER,
-              className: "filter-button-div",
-              children: [
-                {
-                  type: CONTAINER,
-                  className: "filter-button-div-overflowed",
-                  children: [
-                    {
-                      type: SELECT,
-                      sliceName: "filter",
-                      name: "floor",
-                      label: "Floors",
-                      className: "filterbutton",
-                      onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                      onClickApiMethod: POST,
-                      options: [
-                        { label: "First Floor", value: "firstFloor" },
-                        { label: "Second Floor", value: "secondFloor" },
-                        { label: "Third Floor", value: "thirdFloor" },
-                        { label: "Fourth Floor", value: "fourthFloor" },
-                        {
-                          label: "Basement + First Floor",
-                          value: "basementPlusFirstFloor",
-                        },
-                      ],
-                    },
-                    {
-                      type: SELECT,
-                      sliceName: "filter",
-                      name: "locations",
-                      label: "Locations",
-                      className: "filterbutton",
-                      onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                      onClickApiMethod: POST,
-                      options: [
-                        {
-                          label: "DLF City Phase 1",
-                          value: "DLF City Phase 1",
-                        },
-                        {
-                          label: "DLF City Phase 2",
-                          value: "DLF City Phase 2",
-                        },
-                        {
-                          label: "DLF City Phase 3",
-                          value: "DLF City Phase 3",
-                        },
-                        {
-                          label: "DLF City Phase 4",
-                          value: "DLF City Phase 4",
-                        },
-                        {
-                          label: "Sector 15 Part 2",
-                          value: "Sector 15 Part 2",
-                        },
-                        { label: "Sector 27", value: "Sector 27" },
-                        { label: "Sector 28", value: "Sector 28" },
-                        { label: "Sector 38", value: "Sector 38" },
-                        { label: "Sector 42", value: "Sector 42" },
-                        { label: "Sector 43", value: "Sector 43" },
-                        { label: "Sector 45", value: "Sector 45" },
-                        { label: "Sector 46", value: "Sector 46" },
-                        { label: "South City 1", value: "South City 1" },
-                        { label: "Sushant Lok 1", value: "Sushant Lok 1" },
-                      ],
-                    },
-                    {
-                      type: SELECT_SLIDER,
-                      sliceName: "filter",
-                      name: "size",
-                      label: "Size",
-                      buttonLabel: "Size",
-                      minValue: 0.0,
-                      maxValue: 1000.0,
-                      onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                      onClickApiMethod: POST,
-                      step: 0.1,
-                      defaultValue: [180.0, 360.0],
-                    },
-                    {
-                      type: SELECT,
-                      sliceName: "filter",
-                      name: "accomodation",
-                      label: "Accomodation",
-                      className: "filterbutton",
-                      onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                      onClickApiMethod: POST,
-                      options: [
-                        { label: "2 BHK", value: "2 BHK" },
-                        { label: "3 BHK", value: "3 BHK" },
-                        { label: "4 BHK", value: "4 BHK" },
-                        { label: "5 BHK", value: "5 BHK" },
-                        { label: "6 BHK", value: "6 BHK" },
-                      ],
-                    },
-                    {
-                      type: SELECT,
-                      sliceName: "filter",
-                      name: "possession",
-                      label: "Possession",
-                      className: "filterbutton",
-                      onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                      onClickApiMethod: POST,
-                      options: [
-                        { label: "Ready", value: "Ready" },
-                        { label: "1 Months", value: "1 Months" },
-                        { label: "3 Months", value: "3 Months" },
-                        { label: "6 Months", value: "6 Months" },
-                        { label: "9 Months", value: "9 Months" },
-                        { label: "12 Months", value: "12 Months" },
-                      ],
-                    },
-                    {
-                      type: SELECT,
-                      sliceName: "filter",
-                      name: "facing",
-                      label: "Facing",
-                      className: "filterbutton",
-                      onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                      onClickApiMethod: POST,
-                      options: [
-                        { label: "North", value: "North" },
-                        { label: "South", value: "South" },
-                        { label: "East", value: "East" },
-                        { label: "West", value: "West" },
-                        { label: "North-East", value: "North-East" },
-                        { label: "North-West", value: "North-West" },
-                        { label: "South-East", value: "South-East" },
-                        { label: "South-West", value: "South-West" },
-                      ],
-                    },
-                    {
-                      type: SELECT,
-                      sliceName: "filter",
-                      className: "filterbutton",
-                      name: "sortBy",
-                      label: "Sort By",
-                      onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                      onClickApiMethod: POST,
-                      options: [
-                        {
-                          label: "Price High to Low",
-                          value: "Price High to Low",
-                        },
-                        {
-                          label: "Price Low to High",
-                          value: "Price Low to High",
-                        },
-                      ],
-                    },
-                    {
-                      type: TOGGLE_BUTTON,
-                      className: "toogle-filter",
-                      sliceName: "filter",
-                      onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                      onClickApiMethod: POST,
-                      label: "Park",
-                      name: "Park",
-                    },
-                    {
-                      type: TOGGLE_BUTTON,
-                      className: "toogle-filter",
-                      sliceName: "filter",
-                      onClickApi: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                      onClickApiMethod: POST,
-                      label: "Corner",
-                      name: "Corner",
-                    },
-                    {
-                      type: TOGGLE_BUTTON,
-                      className: "toogle-filter",
-                      sliceName: "filter",
-                      label: "Reset",
-                      name: "Reset",
-                      isReset: true,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
+
         {
           type: DASHBOARD_LISTING,
           data: {},
@@ -667,6 +487,7 @@ export const AD_MASTER_TABLE = {
           endpoint: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
           dataPoint: GET_ADMIN_PROPERTY_DATA,
           onRefreshApiType: POST,
+          disableRowModal: true,
         },
         {
           type: ROUTE_BUTTON,
@@ -675,29 +496,6 @@ export const AD_MASTER_TABLE = {
           name: "Back",
           route: "/admin",
         },
-        // {
-        //   type: DASHBOARD_LISTING,
-        //   desktopHeaders: {
-        //     "Channel Partner Company Name": "fieldName",
-        //     "City Where Registered": "fieldValue",
-        //     "Channel Partner Name": "parentId",
-        //     "Channel Partner Mobile number": "channel partner mobile number",
-        //     Listings: "listings",
-        //     Approved: "approved",
-        //     Pending: "pending",
-        //     "View Details": "view detail",
-        //   },
-        //   mobileHeaders: {
-        //     "Channel Partner Company Name": "fieldName",
-        //     "City Where Registered": "fieldValue",
-        //     "Channel Partner Name": "parentId",
-        //     "Channel Partner Mobile number": "channel partner mobile number",
-        //     Listings: "listings",
-        //     Approved: "approved",
-        //     Pending: "pending",
-        //     "View Details": "view detail",
-        //   },
-        // },
       ],
     },
   ],
@@ -712,6 +510,24 @@ export const MANAGE_USER = {
       name: "",
       className: "",
       children: [
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
         {
           type: AUTO_FETCH_API_USER,
           user: true,
@@ -757,6 +573,7 @@ export const MANAGE_USER = {
                   endpoint: API_ENDPOINTS[GET_ADMIN_USER_DATA],
                   dataPoint: GET_ADMIN_USER_DATA,
                   showPreviewButton: false,
+                  disableRowModal: true,
                 },
                 {
                   type: ROUTE_BUTTON,
@@ -783,6 +600,24 @@ export const STATS_LIST = {
       name: "",
       className: "",
       children: [
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
         {
           type: TITLE,
           titles: ["Statistics"],
@@ -863,6 +698,24 @@ export const VIEW_LISTING = {
       className: "",
       children: [
         {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
+        {
           type: HEADING,
           name: "allListing",
           text: "All Listing",
@@ -933,6 +786,24 @@ export const APPROVAL_PROPERTIES = {
           api: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
         },
         {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
+        {
           type: TITLE,
           titles: [
             "Approve Channel Partner Listings",
@@ -979,6 +850,7 @@ export const APPROVAL_PROPERTIES = {
           showPreviewButton: true,
           approveApi: APPROVE_PROPERTY_DATA,
           removeApi: REJECT_PROPERTY,
+          disableRowModal: true,
         },
         {
           type: ROUTE_BUTTON,

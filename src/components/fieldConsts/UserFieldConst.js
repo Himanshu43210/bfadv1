@@ -26,14 +26,6 @@ export const newUserConst = [
     requiredErrorMessage: "Please enter your email.",
   },
   {
-    name: "password",
-    label: "Password",
-    dataKey: "password",
-    type: TEXT,
-    isRequired: true,
-    requiredErrorMessage: "Please enter your Password.",
-  },
-  {
     name: "companyName",
     label: "Company Name",
     dataKey: "companyName",
@@ -74,6 +66,7 @@ export const newUserConst = [
     dataKey: "location",
     type: "select",
     isRequired: true,
+    isMulti: true,
     options: [
       { label: "DLF City Phase 1", value: "DLF City Phase 1" },
       { label: "DLF City Phase 2", value: "DLF City Phase 2" },
@@ -89,18 +82,6 @@ export const newUserConst = [
       { label: "Sector 46", value: "Sector 46" },
       { label: "South City 1", value: "South City 1" },
       { label: "Sushant Lok 1", value: "Sushant Lok 1" },
-    ],
-    requiredErrorMessage: "Please select a Locations.",
-  },
-  {
-    name: "role",
-    label: "Role",
-    dataKey: "role",
-    type: "select",
-    isRequired: true,
-    options: [
-      { label: "channelPartner", value: "ChannelPartner" },
-      { label: "salesUser", value: "SalesUser" },
     ],
     requiredErrorMessage: "Please select a Locations.",
   },
