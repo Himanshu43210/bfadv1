@@ -4,10 +4,16 @@ import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADMIN_DASHBOARD_LOGIN,
+  APPROVE_PROPERTY_DATA,
+  AUTO_FETCH_API_USER,
   BF_ADMIN,
+  DASHBOARD_LISTING,
+  GET,
+  GET_APPROVAL_PROPERTIES,
   NEED_APPROVAL_BY,
   POST,
   PROPERTY_DEALER,
+  REJECT_PROPERTY,
   ROUTE_BUTTON,
 } from "../utils/Const";
 import { API_ENDPOINTS } from "../../redux/utils/api";
@@ -21,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { selectApiData, selectApiStatus } from "../../redux/utils/selectors";
 import { APPROVAL_PROPERTIES } from "../../UserJson";
 import RenderComponent from "./ComponentRenderer";
+import { newPropertyConst } from "../fieldConsts/PropertiesFieldConst";
 
 const TableFormPage = () => {
   const [snackbar, setSnackbar] = useState({});
@@ -222,11 +229,69 @@ const TableFormPage = () => {
             message={snackbar?.message}
             onClose={snackbarClose}
           />
-          <div style={{ marginTop: "100px" }}>
-            <RenderComponent jsonToRender={APPROVAL_PROPERTIES} />
-          </div>
         </>
       )}
+      <div style={{ marginTop: "100px" }}>
+        <RenderComponent
+          jsonToRender={{
+            name: "Master table",
+            className: "klk",
+            children: [
+              {
+                type: AUTO_FETCH_API_USER,
+                user: true,
+                method: GET,
+                api: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
+              },
+              {
+                type: DASHBOARD_LISTING,
+                desktopHeaders: {
+                  "Company Name": "companyName",
+                  "Mobile Number": "phoneNumber",
+                  City: "city",
+                  "Primary Title": "primaryTitle",
+                  Location: "location",
+                  "Plot No.": "plotNumber",
+                  Floor: "floor",
+                  Title: "title",
+                  Accommodation: "accommodation",
+                  Facing: "facing",
+                  Possession: "possession",
+                  Price: "price",
+                  "Builder Name": "builderName",
+                  "Builder Contact Name": "builderContact",
+                },
+                roleSpecificDesktopHeaders: {
+                  [USER_ROLE.bfAdmin]: {
+                    "Company Name": "companyName",
+                    "Mobile Number": "phoneNumber",
+                    City: "city",
+                    "Primary Title": "primaryTitle",
+                  },
+                  [USER_ROLE.channelPartner]: {
+                    "Sub User Name": "name",
+                    "Mobile Number": "phoneNumber",
+                    City: "city",
+                    "Primary Title": "primaryTitle",
+                  },
+                },
+                user: true,
+                getDataApi: GET_APPROVAL_PROPERTIES,
+                endpoint: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
+                dataPoint: GET_APPROVAL_PROPERTIES,
+                // editApi: ALTER_PROPERTY_DATA,
+                // deleteApi: DELETE_PROPERTY_DATA,
+                fieldConst: newPropertyConst,
+                hideAlterActions: true,
+                showPreviewButton: true,
+                approveApi: APPROVE_PROPERTY_DATA,
+                removeApi: REJECT_PROPERTY,
+                disableRowModal: true,
+              },
+            ],
+          }}
+        />
+      </div>
     </>
   );
 };
