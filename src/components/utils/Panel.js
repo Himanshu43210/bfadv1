@@ -69,6 +69,8 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
           <Button
             onClick={() => {
               dispatch(resetApiStatus(onLogoutClick));
+              localStorage.removeItem("email");
+              localStorage.removeItem("login");
             }}
             className="panel-link"
           >
