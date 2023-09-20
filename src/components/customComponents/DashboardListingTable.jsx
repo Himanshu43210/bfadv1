@@ -27,6 +27,7 @@ const DashboardListing = ({ component }) => {
       headersDesktop={component.desktopHeaders}
       headersMobile={component.mobileHeaders}
       fieldConst={component.fieldConst}
+      addApi={component.addApi}
       editApi={component.editApi}
       deleteApi={component.deleteApi}
       getDataApi={component.getDataApi}
@@ -39,6 +40,7 @@ const DashboardListing = ({ component }) => {
       hideActions={component.hideActions}
       showViewAllListing={component.showViewAllListing}
       hideAlterActions={component.hideAlterActions}
+      roleSpecificDesktopHeaders={component.roleSpecificDesktopHeaders}
     />
   );
 };
