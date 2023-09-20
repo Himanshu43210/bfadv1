@@ -136,6 +136,7 @@ const ListingTable = ({
         headers: { "Content-Type": "application/json" },
         data: sanitizeFormData(formData),
       };
+
       if (Object.keys(err).length === 0) {
         dispatch(callApi(options))
           .then(() => {
@@ -147,6 +148,8 @@ const ListingTable = ({
       } else {
         setSnackbar({ open: true, message: `Fields are missing.` });
       }
+      refreshData();
+
     } catch (error) {
       setSnackbar({ open: true, message: `Failed.` });
       console.log(error);
