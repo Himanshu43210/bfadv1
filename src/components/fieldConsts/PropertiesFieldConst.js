@@ -21,7 +21,7 @@ export const newPropertyConst = [
     requiredErrorMessage: "Please select a city.",
   },
   {
-    name: "location",
+    name: "sectorNumber",
     label: "Location",
     type: "select",
     parentclassName: "property-w-1",

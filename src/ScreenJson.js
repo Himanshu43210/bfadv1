@@ -304,7 +304,7 @@ export const SEARCH_RESULT = {
                 {
                   type: SELECT,
                   sliceName: "filter",
-                  name: "locations",
+                  name: "sectorNumber",
                   label: "Locations",
                   className: "filterChannel",
                   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
