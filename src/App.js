@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import FormPage from "./components/customComponents/FormPage";
 import ViewListing from "./components/Pages/adminPages/ViewListing";
 import ApproveListing from "./components/Pages/adminPages/ApproveListings";
+import TableFormPage from "./components/customComponents/TableFormData";
 function App() {
   const userProfile = useSelector((state) => state.profile);
   return (
@@ -30,7 +31,7 @@ function App() {
           <Route path="/" element={<Home />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/admin/form" element={<FormPage />} />
-          <Route path="/admin/TableForm" element={<FormPage />} />
+          <Route path="/admin/TableForm" element={<TableFormPage />} />
           <Route path="/admin/user" element={<UserManagement />} />
           <Route path="/admin/approveListing" element={<ApproveListing />} />
           <Route path="/admin/master" element={<MasterManagement />} />
