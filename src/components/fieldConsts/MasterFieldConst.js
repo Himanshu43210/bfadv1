@@ -8,7 +8,7 @@ export const newMasterConst = [
     options: [
       { value: "state", label: "State" },
       { value: "city", label: "City" },
-      { value: "location", label: "Location" },
+      { value: "sectorNumber", label: "Location" },
       { value: "size", label: "Size" },
       { value: "floor", label: "Floor" },
       { value: "price", label: "Price" },
