@@ -77,6 +77,18 @@ const TableButtonHeader = ({
     setSelectedFile(event.target.files[0]);
   };
 
+  const refreshData = () => {
+    try {
+      const options = {
+        url: refreshDataApi,
+        method: refreshMethod ? refreshMethod : POST,
+        headers: { "Content-Type": "application/json" },
+        data: {},
+      };
+      dispatch(callApi(options));
+    } catch (error) { }
+  };
+
   const handleSubmit = async () => {
     if (Object.keys(formData).length !== 0) {
       try {
@@ -173,26 +185,17 @@ const TableButtonHeader = ({
           data: imagesCheck
             ? newFormData
             : sanitizeFormData({
-                ...formData,
-                parentId: userProfile._id,
-                role:
-                  userProfile.role === USER_ROLE[BF_ADMIN]
-                    ? USER_ROLE["channelPartner"]
-                    : USER_ROLE["salesUser"],
-              }),
+              ...formData,
+              parentId: userProfile._id,
+              role:
+                userProfile.role === USER_ROLE[BF_ADMIN]
+                  ? USER_ROLE["channelPartner"]
+                  : USER_ROLE["salesUser"],
+            }),
         };
 
         dispatch(callApi(options)).then(() => {
-          setSnackbar({ open: true, message: "Successful!" });
-          try {
-            const options = {
-              url: refreshDataApi,
-              method: refreshMethod ? refreshMethod : POST,
-              headers: { "Content-Type": "application/json" },
-              data: {},
-            };
-            dispatch(callApi(options));
-          } catch (error) {}
+          setSnackbar({ open: true, message: "Successful!", status: 0 });
           // on success clear the form data
           setFormData({});
         });
@@ -200,16 +203,20 @@ const TableButtonHeader = ({
         console.log(err);
       }
     } else {
-      setSnackbar({ open: true, message: "Required field(s) are empty!" });
+      setSnackbar({ open: true, message: "Required field(s) are empty!", status: -1 });
     }
   };
 
-  const snackbarClose = () => {
+  const snackbarClose = (status) => {
     setSnackbar({
       ...snackbar,
       open: false,
       message: "",
     });
+    // if status is 0, then refresh
+    if (status === 0) {
+      refreshData();
+    }
   };
   const toogleNewPopup = () => {
     setNewPopup(!newPopup);
@@ -229,7 +236,7 @@ const TableButtonHeader = ({
         data: formData,
       };
       dispatch(callApi(options));
-    } catch (error) {}
+    } catch (error) { }
   };
   return (
     <>
@@ -286,7 +293,7 @@ const TableButtonHeader = ({
       <SnackBar
         open={snackbar?.open}
         message={snackbar?.message}
-        onClose={snackbarClose}
+        onClose={(status) => snackbarClose(status)}
       />
     </>
   );

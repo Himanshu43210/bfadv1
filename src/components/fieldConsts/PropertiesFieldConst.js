@@ -186,7 +186,7 @@ export const newPropertyConst = [
   },
   {
     name: "title",
-    label: "Main Title",
+    label: "Primary Title",
     parentclassName: "property-w-2 property-margin-r",
     type: "select",
     options: PROPERTY_TITLE_LIST,
@@ -196,7 +196,7 @@ export const newPropertyConst = [
   {
     name: "detailTitle",
     parentclassName: "property-w-2 property-margin-r",
-    label: "Sub Title",
+    label: "Secondary Title",
     type: TEXT,
     textLimit: 100,
     isRequired: true,

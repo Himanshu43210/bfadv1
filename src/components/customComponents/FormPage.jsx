@@ -26,11 +26,12 @@ const FormPage = () => {
   const userProfile = useSelector((state) => state.profile);
   const [formData, setFormData] = useState({});
 
-  const snackbarClose = () => {
+  const snackbarClose = (status) => {
     setSnackbar({
       open: false,
       message: "",
     });
+    // based on status proceed with further actions
   };
 
   const handleFormDataChange = (newFormData) => {
@@ -106,13 +107,13 @@ const FormPage = () => {
         let data = imagesCheck
           ? newFormData
           : sanitizeFormData({
-              ...formData,
-              parentId: userProfile._id,
-              role:
-                userProfile.role === USER_ROLE[BF_ADMIN]
-                  ? USER_ROLE["channelPartner"]
-                  : USER_ROLE["salesUser"],
-            });
+            ...formData,
+            parentId: userProfile._id,
+            role:
+              userProfile.role === USER_ROLE[BF_ADMIN]
+                ? USER_ROLE["channelPartner"]
+                : USER_ROLE["salesUser"],
+          });
 
         const err = {};
         userProfile.formType.forEach((field) => {
@@ -176,7 +177,7 @@ const FormPage = () => {
             },
           };
           dispatch(callApi(options));
-        } catch (error) {}
+        } catch (error) { }
         navigate("/admin");
       } else {
         navigate("/login");
@@ -218,7 +219,7 @@ const FormPage = () => {
           <SnackBar
             open={snackbar?.open}
             message={snackbar?.message}
-            onClose={snackbarClose}
+            onClose={(status) => snackbarClose(status)}
           />
         </>
       )}

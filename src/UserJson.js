@@ -861,6 +861,7 @@ export const APPROVAL_PROPERTIES = {
           fieldConst: newPropertyConst,
           hideAlterActions: true,
           showPreviewButton: true,
+          showEditbutton: true,
           approveApi: APPROVE_PROPERTY_DATA,
           removeApi: REJECT_PROPERTY,
           disableRowModal: true,
