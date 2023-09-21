@@ -152,6 +152,11 @@ const FormPage = () => {
     }
   };
 
+  const handleReset = () => {
+    setFormData({});
+    setSnackbar({ open: true, message: "Form Reset." });
+  };
+
   const navigate = useNavigate();
   const loginStatus = useSelector((state) =>
     selectApiStatus(state, ADMIN_DASHBOARD_LOGIN)
@@ -203,9 +208,8 @@ const FormPage = () => {
                   : {}
               }
             />
-            <Button variant="primary" onClick={handleSave}>
-              Save
-            </Button>
+            {userProfile?.showResetBtn && <Button onClick={handleReset} color="secondary">Reset</Button>}
+            <Button variant="primary" onClick={handleSave}>Save</Button>
             <CustomRouteButton
               component={{
                 type: ROUTE_BUTTON,
