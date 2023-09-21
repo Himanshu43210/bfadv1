@@ -193,7 +193,7 @@ export const newPropertyConst = [
     requiredErrorMessage: "Please Add 360 Image",
   },
   {
-    name: "VideoFile",
+    name: "videoFile",
     label: "Load Videos",
     parentclassName: "property-w-1",
     type: "file",
