@@ -21,7 +21,6 @@ export const newPropertyConst = [
     name: "sectorNumber",
     label: "Location",
     type: "select",
-    isMulti: true,
     parentclassName: "property-w-1",
     isRequired: true,
     requiredErrorMessage: "Please select a sector number.",

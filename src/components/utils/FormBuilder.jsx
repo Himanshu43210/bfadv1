@@ -332,18 +332,16 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                 <div className={field.className}>
                   <input
                     className="inputtag"
-                    type="text"
+                    type={TEXT}
                     disabled={field.disabled}
-                    id={`${field.name}-crore`}
-                    name={`${field.name}-crore`}
-                    value={Math.floor((formData[field.name] || 0) / 10000000)}
-                    onChange={(e) =>
-                      handleCurrencyChange(
-                        handleChange,
-                        field.name,
-                        formData[field.name] || 0
-                      )(e, "crore")
+                    id={field.name}
+                    name={field.name}
+                    value={
+                      formData[field.name] || formData[field.dataKey] || ""
                     }
+                    onChange={(e) => {
+                      handleChange(field.name, e.target.value);
+                    }}
                     required={field.isRequired}
                   />
                   <Select

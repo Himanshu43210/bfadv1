@@ -132,6 +132,7 @@ export const editUserConst = [
     label: "Locations Allowed",
     dataKey: "location",
     type: "select",
+    isMulti: true,
     isRequired: true,
     requiredErrorMessage: "Please select a Locations.",
   },
