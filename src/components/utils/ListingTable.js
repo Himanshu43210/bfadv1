@@ -54,7 +54,8 @@ const ListingTable = ({
   refreshDataApi,
   refreshMethod,
   disableRowModal,
-  showEditAction
+  showEditAction,
+  showColumnFilter,
 }) => {
   const [snackbar, setSnackbar] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
@@ -448,8 +449,20 @@ const ListingTable = ({
         </ReusablePopup>
       )}
       <div className="tablediv ">
+        <input
+          type="text"
+          onChange={(e) => {
+            console.log(e.target.value);
+            setTableFilter({
+              search: e.target.value,
+            });
+          }}
+          value={[tableFilter["search"]] || ""}
+        />
         <Button onClick={() => applyFilters()}>Filter Data</Button>
-        <Button onClick={() => setShowFilters(!showFilters)}>Filter</Button>
+        {showColumnFilter && (
+          <Button onClick={() => setShowFilters(!showFilters)}>Filter</Button>
+        )}
         <Table striped bordered hover responsive size="sm">
           <thead>
             <tr>
