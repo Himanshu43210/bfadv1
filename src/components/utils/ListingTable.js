@@ -125,6 +125,7 @@ const ListingTable = ({
   }, [getApiDataFromRedux]);
 
   const refreshData = () => {
+    console.log("here");
     try {
       const options = {
         url: refreshDataApi,

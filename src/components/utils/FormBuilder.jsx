@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
-import { EMAIL, TEXT } from "./Const";
-import firebase, { app, auth } from "../../firebase";
+import { EMAIL, GET_MASTER_DATA_ON_HOME, TEXT } from "./Const";
+import firebase, { auth } from "../../firebase";
+import { selectMasterData } from "../../redux/utils/selectors";
+import { useSelector } from "react-redux";
 
 const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
   const [formData, setFormData] = useState(propsFormData || {});
@@ -12,6 +14,9 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
     onFormDataChange(formData);
   }, [formData, onFormDataChange]);
 
+  const masterData = useSelector((state) =>
+    selectMasterData(state, GET_MASTER_DATA_ON_HOME || "")
+  );
   const handleChange = (name, value) => {
     const field = fields.find((f) => f.name === name);
     const errors = { ...fieldErrors };
@@ -231,7 +236,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                         : formData[field.name])) ||
                     field.defaultOption
                   }
-                  options={field.options}
+                  options={field.options || masterData[field.name]}
                   styles={{
                     control: (baseStyles, state) => ({
                       ...baseStyles,
@@ -355,7 +360,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                           : formData[field.nameType])) ||
                       field.defaultOption
                     }
-                    options={field.options}
+                    options={field.options || masterData[field.name]}
                     onChange={(selectedOption) =>
                       handleChange(field.nameType, selectedOption || null)
                     }

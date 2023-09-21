@@ -131,9 +131,7 @@ export const AD_USER_DASHBOARD = {
               className: "admin-route-button",
               label: "Field Changes Master Data",
               name: "Field Changes Master Data",
-              form: newMasterConst,
-              onSaveApi: ALTER_MASTER_DATA,
-              route: "/admin/TableForm",
+              route: "/admin/master",
             },
             {
               type: ROUTE_BUTTON,
@@ -348,7 +346,7 @@ export const AD_MASTER_TABLE = {
           method: POST,
           className: "header",
           user: true,
-        },  
+        },
         {
           type: CONTAINER,
           // className: "superAdminDashboard",
@@ -560,7 +558,7 @@ export const MANAGE_USER = {
                     "Mobile Number": "phoneNumber",
                     City: "city",
                     State: "state",
-                    Status:"status"
+                    Status: "status",
                     // "Address": "address",
                     // "Email": "email",
                     // "Role": "role",

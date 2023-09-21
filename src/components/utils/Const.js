@@ -79,6 +79,7 @@ export const GET_CHANNEL_PARTNER_DATA = "getChannelPartnerData";
 export const GET_ADMIN_USER_DATA = "getAdminUserData";
 export const GET_PROPERTY_LIST_BY_USER_ID = "getPropertiesListByUserId";
 export const GET_APPROVAL_PROPERTIES = "getApprovalProperties";
+export const GET_MASTER_DATA_ON_HOME = "getMasterDataOnHome";
 
 export const LINKEDIN_ICON = "LINKEDIN_ICON";
 export const INSTAGRAM_ICON = "INSTAGRAM_ICON";

@@ -11,7 +11,14 @@ import {
 import { FiRefreshCcw } from "react-icons/fi";
 import FormBuilder from "./FormBuilder";
 import ReusablePopup from "./ReusablePopup";
-import { BF_ADMIN, GET, NEED_APPROVAL_BY, POST, PROFILE, PROPERTY_DEALER } from "./Const";
+import {
+  BF_ADMIN,
+  GET,
+  NEED_APPROVAL_BY,
+  POST,
+  PROFILE,
+  PROPERTY_DEALER,
+} from "./Const";
 import { API_ENDPOINTS } from "../../redux/utils/api";
 import { callApi } from "../../redux/utils/apiActions";
 import ExcelTable from "../customComponents/BulkUpload";
