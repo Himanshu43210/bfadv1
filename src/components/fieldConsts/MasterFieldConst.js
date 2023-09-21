@@ -14,6 +14,7 @@ export const newMasterConst = [
       { value: "price", label: "Price" },
       { value: "accomodation", label: "Accommodation" },
       { value: "possession", label: "Possession" },
+      { value: "status", label: "Status" },
       { value: "primaryTitle", label: "Primary Title" },
     ],
     requiredErrorMessage: "Please select a Field.",

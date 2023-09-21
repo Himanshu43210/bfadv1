@@ -1,131 +1,84 @@
-import React, { useEffect, useState } from "react";
+import _ from "lodash";
+import React from "react";
 import { Card } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ListingTable from "../../utils/ListingTable";
-import { newMasterConst } from "../../fieldConsts/MasterFieldConst";
 import TableButtonHeader from "../../utils/TableButtonHeader";
 import Navbar from "../../utils/Navbar";
 import {
-  ADMIN_DASHBOARD_LOGIN,
   ALTER_MASTER_DATA,
   DELETE_MASTER_DATA,
   GET,
   GET_MASTER_DATA,
-  POST,
-  SUCCESS,
+  LOADING,
+  ROUTE_BUTTON,
 } from "../../utils/Const";
 import AutoFetchApi from "../../customComponents/AutoFetchApi";
 import { API_ENDPOINTS } from "../../../redux/utils/api";
 import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors";
-import { useNavigate } from "react-router-dom";
-import { callApi } from "../../../redux/utils/apiActions";
-import { storeUserData } from "../../../redux/slice/userSlice";
+import { CircularProgress } from "@mui/material";
+import { newMasterConst } from "../../fieldConsts/MasterFieldConst";
+import CustomRouteButton from "../../customComponents/RouteButton";
 
-function MasterManagement() {
-  let tableData = [];
+export default function UserManagement() {
   const desktopHeaders = {
     Field: "fieldName",
+    Label: "fieldLabel",
     Value: "fieldValue",
-    "Parent Id": "parentId",
   };
-  const mobileHeaders = {
-    Field: "field",
-    Value: "value",
-    "Parent Id": "parentId",
-  };
+  const mobileHeaders = [{ Name: "name" }, { Role: "role" }];
   const fieldConst = newMasterConst;
-  const dataToRender = useSelector((state) =>
-    selectApiData(state, GET_MASTER_DATA)
+  let tableData = useSelector((state) => selectApiData(state, GET_MASTER_DATA));
+  const userProfile = useSelector((state) => state.profile);
+  const dataApi = API_ENDPOINTS[GET_MASTER_DATA] + "?id=" + userProfile._id;
+  const apiStatus = useSelector((state) =>
+    selectApiStatus(state, ALTER_MASTER_DATA || "")
   );
-
-  dataToRender?.data?.map((element) => {
-    element.fieldValue?.map((value) => {
-      tableData.push({
-        masterId: element.id,
-        field: element.fieldName,
-        value: value,
-      });
-    });
-  });
   return (
     <>
-      {!dataToRender && (
-        <AutoFetchApi url={API_ENDPOINTS[GET_MASTER_DATA]} method={GET} />
-      )}
-      <div>
+      {!tableData && <AutoFetchApi url={dataApi} method={GET} />}
+      {apiStatus === LOADING ? (
+        <CircularProgress className="loader-class" />
+      ) : (
         <div>
-          {/* <Navbar /> */}
-          <Card>
-            <Card.Header className="font">Master Details</Card.Header>
-            <Card.Body>
-              <TableButtonHeader
-                fieldConst={fieldConst}
-                tableData={tableData}
-                saveDataApi={ALTER_MASTER_DATA}
-                refreshDataApi={GET_MASTER_DATA}
-                addHeader="Add Masters"
-              />
-              <ListingTable
-                data={tableData}
-                headersDesktop={desktopHeaders}
-                headersMobile={mobileHeaders}
-                fieldConst={fieldConst}
-                editApi={ALTER_MASTER_DATA}
-                deleteApi={DELETE_MASTER_DATA}
-                getDataApi={GET_MASTER_DATA}
-                itemCount={dataToRender?.itemCount}
-              />
-            </Card.Body>
-          </Card>
+          <div>
+            <Navbar />
+            <Card>
+              <Card.Header className="font">User Details</Card.Header>
+              <Card.Body>
+                <TableButtonHeader
+                  fieldConst={fieldConst}
+                  tableData={_.cloneDeep(tableData?.data || [])}
+                  saveDataApi={ALTER_MASTER_DATA}
+                  refreshDataApi={dataApi}
+                  addHeader="Add Master Data"
+                  refreshMethod={GET}
+                />
+                <ListingTable
+                  headersDesktop={desktopHeaders}
+                  headersMobile={mobileHeaders}
+                  fieldConst={fieldConst}
+                  editApi={ALTER_MASTER_DATA}
+                  deleteApi={DELETE_MASTER_DATA}
+                  getDataApi={GET_MASTER_DATA}
+                  filterDataUrl={dataApi}
+                  itemCount={tableData?.itemCount}
+                  refreshMethod={GET}
+                />
+                <CustomRouteButton
+                  component={{
+                    type: ROUTE_BUTTON,
+                    className: "admin-route-button",
+                    label: "Go to Dashboard",
+                    name: "Go to Dashboard",
+                    route: "/admin",
+                  }}
+                />
+              </Card.Body>
+            </Card>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
-}
-
-export default function MasterManagementParent() {
-  const navigate = useNavigate();
-  const loginStatus = useSelector((state) =>
-    selectApiStatus(state, ADMIN_DASHBOARD_LOGIN)
-  );
-  const userProfile = useSelector((state) => state.profile);
-  const userProfile1 = useSelector((state) =>
-    selectApiData(state, ADMIN_DASHBOARD_LOGIN)
-  );
-  const dispatch = useDispatch();
-
-  const [check, setCheck] = useState(false);
-  useEffect(() => {
-    if (!loginStatus) {
-      const email = localStorage.getItem("email");
-      const password = localStorage.getItem("password");
-      if (email && password) {
-        try {
-          const options = {
-            url: API_ENDPOINTS[ADMIN_DASHBOARD_LOGIN],
-            method: POST,
-            headers: { "Content-Type": "application/json" },
-            data: {
-              email: email,
-              password: password,
-            },
-          };
-          dispatch(callApi(options));
-        } catch (error) {}
-      } else {
-        navigate("/login");
-      }
-    } else {
-    }
-  }, [loginStatus]);
-
-  useEffect(() => {
-    if (loginStatus === SUCCESS) {
-      dispatch(storeUserData(userProfile1?.profile));
-    }
-    if (userProfile._id) {
-      setCheck(true);
-    }
-  }, [loginStatus, userProfile]);
-  return <>{check && <MasterManagement />}</>;
 }
