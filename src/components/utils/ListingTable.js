@@ -54,6 +54,7 @@ const ListingTable = ({
   refreshDataApi,
   refreshMethod,
   disableRowModal,
+  showEditAction,
   showColumnFilter,
 }) => {
   const [snackbar, setSnackbar] = useState({});
@@ -133,7 +134,7 @@ const ListingTable = ({
         data: {},
       };
       dispatch(callApi(options));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleSave = () => {
@@ -159,17 +160,17 @@ const ListingTable = ({
       if (Object.keys(err).length === 0) {
         dispatch(callApi(options))
           .then(() => {
-            setSnackbar({ open: true, message: `Saved.` });
+            setSnackbar({ open: true, message: `Saved.`, status: 0 });
           })
           .catch(() => {
-            setSnackbar({ open: true, message: `Failed.` });
+            setSnackbar({ open: true, message: `Failed.`, status: -1 });
           });
       } else {
-        setSnackbar({ open: true, message: `Fields are missing.` });
+        setSnackbar({ open: true, message: `Fields are missing.`, status: -1 });
       }
       refreshData();
     } catch (error) {
-      setSnackbar({ open: true, message: `Failed.` });
+      setSnackbar({ open: true, message: `Failed.`, status: -1 });
       console.log(error);
     }
   };
@@ -182,10 +183,11 @@ const ListingTable = ({
         headers: { "Content-Type": "application/json" },
       };
       dispatch(callApi(options)).then(() => {
-        setSnackbar({ open: true, message: `Deleted.` });
+        setSnackbar({ open: true, message: `Deleted.`, status: 0 });
       });
     } catch (error) {
       console.log(error);
+      setSnackbar({ open: true, message: `Deletion Failed.`, status: -1 });
     }
   };
   const handleApprove = (rowId) => {
@@ -200,11 +202,11 @@ const ListingTable = ({
         },
       };
       dispatch(callApi(options)).then(() => {
-        setSnackbar({ open: true, message: `Approved.` });
+        setSnackbar({ open: true, message: `Approved.`, status: 0 });
       });
     } catch (error) {
       console.log(error);
-      setSnackbar({ open: true, message: `Approve Failed.` });
+      setSnackbar({ open: true, message: `Approval Failed.`, status: -1 });
     }
   };
 
@@ -230,10 +232,11 @@ const ListingTable = ({
         },
       };
       dispatch(callApi(options)).then(() => {
-        setSnackbar({ open: true, message: `Removed.` });
+        setSnackbar({ open: true, message: `Removed.`, status: 0 });
       });
     } catch (error) {
       console.log(error);
+      setSnackbar({ open: true, message: `Removal Failed.`, status: -1 });
     }
   };
 
@@ -255,12 +258,15 @@ const ListingTable = ({
     setShowRowModal(!showRowModal);
   };
 
-  const snackbarClose = () => {
+  const snackbarClose = (status) => {
     setSnackbar({
       open: false,
       message: "",
     });
-    refreshData();
+    // if status == 0, refresh
+    if (status === 0) {
+      refreshData();
+    }
   };
 
   const toogleEdit = () => {
@@ -366,28 +372,31 @@ const ListingTable = ({
           <HomeCard element={currentRowData}></HomeCard>
           <SearchCard element={currentRowData}></SearchCard>
           <DetailDataCard singledata={currentRowData}></DetailDataCard>
-          {currentRowData[NEED_APPROVAL_BY] && (
-            <>
-              <Button
-                variant="success"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toogleApproval();
-                }}
-              >
-                Approve
-              </Button>
-              <Button
-                variant="danger"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleRemove();
-                }}
-              >
-                Reject
-              </Button>
-            </>
-          )}
+          {console.log('+++++ currentRowData[NEED_APPROVAL_BY] ++++', currentRowData[NEED_APPROVAL_BY])}
+          {
+            currentRowData[NEED_APPROVAL_BY] !== APPROVED && (
+              <>
+                <Button
+                  variant="success"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toogleApproval();
+                  }}
+                >
+                  Approve
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleRemove();
+                  }}
+                >
+                  Reject
+                </Button>
+              </>
+            )
+          }
         </ReusablePopup>
       )}
 
@@ -616,7 +625,7 @@ const ListingTable = ({
       <SnackBar
         open={snackbar?.open}
         message={snackbar?.message}
-        onClose={snackbarClose}
+        onClose={(status) => snackbarClose(status)}
       />
     </>
   );

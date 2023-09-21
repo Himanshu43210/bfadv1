@@ -135,7 +135,7 @@ export const newPropertyConst = [
   },
   {
     name: "title",
-    label: "Main Title",
+    label: "Primary Title",
     parentclassName: "property-w-2 property-margin-r",
     type: "select",
     isRequired: true,
@@ -144,7 +144,7 @@ export const newPropertyConst = [
   {
     name: "detailTitle",
     parentclassName: "property-w-2 property-margin-r",
-    label: "Sub Title",
+    label: "Secondary Title",
     type: TEXT,
     textLimit: 100,
     isRequired: true,
@@ -173,7 +173,7 @@ export const newPropertyConst = [
     label: "Normal Images",
     type: "file",
     parentclassName: "property-w-1",
-    isRequired: true,
+    isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
   },
   {
@@ -181,7 +181,7 @@ export const newPropertyConst = [
     label: "360 Images",
     parentclassName: "property-w-1",
     type: "file",
-    isRequired: true,
+    isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
   },
   {
@@ -189,7 +189,7 @@ export const newPropertyConst = [
     label: "Layout Plan",
     parentclassName: "property-w-1",
     type: "file",
-    isRequired: true,
+    isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
   },
   {
@@ -197,7 +197,7 @@ export const newPropertyConst = [
     label: "Load Videos",
     parentclassName: "property-w-1",
     type: "file",
-    isRequired: true,
+    isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
   },
   {
@@ -205,7 +205,7 @@ export const newPropertyConst = [
     label: "Load Virtual Tour",
     parentclassName: "property-w-1",
     type: "file",
-    isRequired: true,
+    isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
   },
 ];
