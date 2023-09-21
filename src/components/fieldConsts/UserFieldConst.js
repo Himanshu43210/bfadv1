@@ -48,7 +48,6 @@ export const newUserConst = [
     dataKey: "city",
     type: "select",
     isRequired: true,
-    options: [{ value: "gurgaon", label: "Gurgaon" }],
     requiredErrorMessage: "Please select a City.",
   },
   {
@@ -57,7 +56,6 @@ export const newUserConst = [
     dataKey: "state",
     type: "select",
     isRequired: true,
-    // options: [{ value: "harayana", label: "Harayana" }],
     requiredErrorMessage: "Please select a State.",
   },
   {
@@ -119,7 +117,6 @@ export const editUserConst = [
     dataKey: "city",
     type: "select",
     isRequired: true,
-    options: [{ value: "gurgaon", label: "Gurgaon" }],
     requiredErrorMessage: "Please select a City.",
   },
   {
@@ -128,7 +125,6 @@ export const editUserConst = [
     dataKey: "state",
     type: "select",
     isRequired: true,
-    options: [{ value: "harayana", label: "Harayana" }],
     requiredErrorMessage: "Please select a State.",
   },
   {
