@@ -29,7 +29,6 @@ import HomeCard from "../customComponents/HomeCard";
 import SearchCard from "../customComponents/SearchCard";
 import DetailDataCard from "../customComponents/DetailedDataCard";
 import { selectApiStatus } from "./../../redux/utils/selectors";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { sanitizeFormData } from "./reusableMethods";
 import { USER_ROLE } from "../../ScreenJson";
@@ -71,6 +70,8 @@ const ListingTable = ({
   const [sortColumn, setSortColumn] = useState("id");
   const [tableData, setTableData] = useState([]);
   const [formData, setFormData] = useState({});
+  const [showFilters, setShowFilters] = useState(false);
+  const [tableFilter, setTableFilter] = useState({});
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -83,6 +84,22 @@ const ListingTable = ({
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
     : tableHeaders;
+
+  const applyFilters = (sortingFilter = "") => {
+    const filterQuery =
+      Object.entries(tableFilter)
+        .map(([key, value]) => `&${key}=${value}`)
+        .join("") || "";
+    console.log(filterDataUrl, sortingFilter, filterQuery);
+    dispatch(
+      callApi({
+        url: filterDataUrl + sortingFilter + filterQuery,
+        method: onRefreshApiType || GET,
+        headers: { "Content-Type": "application/json" },
+        data: { sortType, sortColumn, activePage, itemsCountPerPage },
+      })
+    );
+  };
 
   useEffect(() => {
     if (!_.isEmpty(getApiDataFromRedux)) {
@@ -149,7 +166,6 @@ const ListingTable = ({
         setSnackbar({ open: true, message: `Fields are missing.` });
       }
       refreshData();
-
     } catch (error) {
       setSnackbar({ open: true, message: `Failed.` });
       console.log(error);
@@ -225,15 +241,8 @@ const ListingTable = ({
     sortType,
     sortColumn,
   }) => {
-    dispatch(
-      callApi({
-        url:
-          filterDataUrl +
-          `&page=${activePage}&limit=${itemsCountPerPage}&sortType=${sortType}&sortColumn=${sortColumn}`,
-        method: onRefreshApiType || GET,
-        headers: { "Content-Type": "application/json" },
-        data: { sortType, sortColumn, activePage, itemsCountPerPage },
-      })
+    applyFilters(
+      `&page=${activePage}&limit=${itemsCountPerPage}&sortType=${sortType}&sortColumn=${sortColumn}`
     );
   };
   const handleFormDataChange = (newFormData) => {
@@ -430,18 +439,34 @@ const ListingTable = ({
         </ReusablePopup>
       )}
       <div className="tablediv ">
+        <Button onClick={() => applyFilters()}>Filter Data</Button>
+        <Button onClick={() => setShowFilters(!showFilters)}>Filter</Button>
         <Table striped bordered hover responsive size="sm">
           <thead>
             <tr>
               {Object.keys(allowedTableColumns).map((headerLabel, index) => (
-                <th
-                  key={index}
-                  onClick={() => handleSort(allowedTableColumns[headerLabel])}
-                  className="tablehead text"
-                >
-                  {headerLabel}
+                <th key={index} className="tablehead text">
+                  <div
+                    onClick={() => handleSort(allowedTableColumns[headerLabel])}
+                  >
+                    {headerLabel}
+                  </div>
                   {sortColumn === allowedTableColumns[headerLabel] &&
                     (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                  {showFilters && (
+                    <input
+                      type="text"
+                      onChange={(e) =>
+                        setTableFilter({
+                          ...tableFilter,
+                          [allowedTableColumns[headerLabel]]: e.target.value,
+                        })
+                      }
+                      value={
+                        tableFilter[allowedTableColumns[headerLabel]] || ""
+                      }
+                    />
+                  )}
                 </th>
               ))}
               {!hideActions && <th className="tablehead text">Actions</th>}

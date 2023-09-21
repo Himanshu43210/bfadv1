@@ -823,10 +823,10 @@ export const APPROVAL_PROPERTIES = {
         {
           type: DASHBOARD_LISTING,
           desktopHeaders: {
-            "Company Name": "companyName",
-            "Mobile Number": "phoneNumber",
+            "Company Name": "createdByName",
+            "Mobile Number": "createdByPhoneNumber",
             City: "city",
-            "Primary Title": "primaryTitle",
+            "Primary Title": "title",
             Location: "location",
             "Plot No.": "plotNumber",
             Floor: "floor",
@@ -840,16 +840,16 @@ export const APPROVAL_PROPERTIES = {
           },
           roleSpecificDesktopHeaders: {
             [USER_ROLE.bfAdmin]: {
-              "Company Name": "companyName",
-              "Mobile Number": "phoneNumber",
+              "Company Name": "createdByName",
+              "Mobile Number": "createdByPhoneNumber",
               City: "city",
-              "Primary Title": "primaryTitle",
+              "Primary Title": "title",
             },
             [USER_ROLE.channelPartner]: {
-              "Sub User Name": "name",
-              "Mobile Number": "phoneNumber",
+              "Sub User Name": "createdByName",
+              "Mobile Number": "createdByPhoneNumber",
               City: "city",
-              "Primary Title": "primaryTitle",
+              "Primary Title": "title",
             },
           },
           user: true,
