@@ -764,7 +764,7 @@ export const VIEW_LISTING = {
           className: "toogle-filter",
           label: "Back",
           name: "Back",
-          route: "/admin",
+          route: "/admin/statistics",
         },
       ],
     },
