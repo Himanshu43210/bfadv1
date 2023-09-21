@@ -59,7 +59,7 @@ export const newUserConst = [
     requiredErrorMessage: "Please select a State.",
   },
   {
-    name: "location",
+    name: "sectorNumber",
     label: "Locations Allowed",
     dataKey: "location",
     type: "select",
@@ -128,7 +128,7 @@ export const editUserConst = [
     requiredErrorMessage: "Please select a State.",
   },
   {
-    name: "location",
+    name: "sectorNumber",
     label: "Locations Allowed",
     dataKey: "location",
     type: "select",
