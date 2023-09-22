@@ -119,8 +119,9 @@ const FormPage = () => {
             data: data,
           };
 
+          setLoading(true);
           dispatch(callApi(options)).then(() => {
-            setLoading(true);
+            setLoading(false);
             router("/admin");
             setSnackbar({ open: true, message: `Saved.` });
           });
