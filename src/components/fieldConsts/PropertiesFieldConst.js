@@ -168,7 +168,7 @@ export const newPropertyConst = [
     parentclassName: "property-w-1",
     type: "file",
     isRequired: true,
-    requiredErrorMessage: "Please Add 360 Image",
+    requiredErrorMessage: "Please Add Thumbnail Image",
     acceptedFileTypes: "image/*",
   },
   {
@@ -177,7 +177,7 @@ export const newPropertyConst = [
     type: "file",
     parentclassName: "property-w-1",
     isRequired: false,
-    requiredErrorMessage: "Please Add 360 Image",
+    requiredErrorMessage: "Please Add Normal Image",
     acceptedFileTypes: "image/*",
   },
   {
@@ -195,7 +195,7 @@ export const newPropertyConst = [
     parentclassName: "property-w-1",
     type: "file",
     isRequired: false,
-    requiredErrorMessage: "Please Add 360 Image",
+    requiredErrorMessage: "Please Add Layout Image",
     acceptedFileTypes: "image/*",
   },
   {
@@ -204,7 +204,7 @@ export const newPropertyConst = [
     parentclassName: "property-w-1",
     type: "file",
     isRequired: false,
-    requiredErrorMessage: "Please Add 360 Image",
+    requiredErrorMessage: "Please Add Video File",
     acceptedFileTypes: "video/*",
   },
   {
@@ -213,7 +213,7 @@ export const newPropertyConst = [
     parentclassName: "property-w-1",
     type: "file",
     isRequired: false,
-    requiredErrorMessage: "Please Add 360 Image",
+    requiredErrorMessage: "Please Add Virtual Image",
     acceptedFileTypes: "image/*",
   },
 ];
