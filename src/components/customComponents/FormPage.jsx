@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import FormBuilder from "../utils/FormBuilder";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADMIN_DASHBOARD_LOGIN,
@@ -113,17 +113,17 @@ const FormPage = () => {
                     : USER_ROLE["salesUser"],
               });
 
-          const err = {};
-          userProfile.formType.forEach((field) => {
-            if (
-              field.isRequired &&
-              ((typeof formData[field.name] === "object" &&
-                formData[field.name].length === 0) ||
-                !formData[field.name])
-            ) {
-              err[field.name] = "This is required";
-            }
-          });
+              const err = [];
+              userProfile.formType.forEach((field) => {
+                if (
+                  field.isRequired &&
+                  ((typeof formData[field.name] === "object" &&
+                    formData[field.name].length === 0) ||
+                    !formData[field.name])
+                ) {
+                  err.push({ fieldName: field.label, message: "This is required" });
+                }
+              });
 
           const options = {
             url: API_ENDPOINTS[userProfile.formSaveApi],
@@ -132,20 +132,22 @@ const FormPage = () => {
             data: data,
           };
 
-          if (Object.keys(err).length === 0) {
+          if (err.length === 0) {
             dispatch(callApi(options)).then(() => {
+              setLoading(false);
               router("/admin");
-              // setFormData({});
               setSnackbar({ open: true, message: `Saved.` });
             });
           } else {
-            setSnackbar({ open: true, message: `Required fields are empty.` });
+            setLoading(false);
+            setSnackbar({ open: true, message: `Empty required '${err[0]?.fieldName}' field.` });
+            console.log('Empty Required Field(s): ', err);
           }
           setLoading(false);
         } catch (error) {
           setLoading(false);
           setSnackbar({ open: true, message: `Save Failed.` });
-          console.log(error);
+          console.log("--- Save failed ---", error);
         }
       }
     }
@@ -201,9 +203,7 @@ const FormPage = () => {
                   : {}
               }
             />
-            <Button variant="primary" onClick={handleSave}>
-              Save
-            </Button>
+            <Button variant="primary" onClick={handleSave} disabled={loading}>{loading ? "Saving" : "Save"}</Button>
             <CustomRouteButton
               component={{
                 type: ROUTE_BUTTON,
@@ -219,6 +219,7 @@ const FormPage = () => {
             message={snackbar?.message}
             onClose={snackbarClose}
           />
+          {loading === true ? <CircularProgress /> : null}
         </>
       )}
     </>

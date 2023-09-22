@@ -26,6 +26,7 @@ import { USER_ROLE } from "../../ScreenJson";
 import SnackBar from "../customComponents/SnackBar";
 import { Toaster } from "react-hot-toast";
 import { sanitizeFormData } from "./reusableMethods";
+import { CircularProgress } from "@mui/material";
 
 const TableButtonHeader = ({
   tableData = [],
@@ -37,6 +38,7 @@ const TableButtonHeader = ({
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
+  const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [newPopup, setNewPopup] = useState(null);
   const [importPopup, setImportPopup] = useState(null);
@@ -88,11 +90,11 @@ const TableButtonHeader = ({
         data: {},
       };
       dispatch(callApi(options));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleSubmit = async () => {
-    const formData = finalizeRef.current();  
+    const formData = finalizeRef.current();
     if (formData) {
       console.log("Received validated data:", formData);
       if (Object.keys(formData).length !== 0) {
@@ -191,21 +193,23 @@ const TableButtonHeader = ({
             data: imagesCheck
               ? newFormData
               : sanitizeFormData({
-                  ...formData,
-                  parentId: userProfile._id,
-                  role:
-                    userProfile.role === USER_ROLE[BF_ADMIN]
-                      ? USER_ROLE["channelPartner"]
-                      : USER_ROLE["salesUser"],
-                }),
+                ...formData,
+                parentId: userProfile._id,
+                role:
+                  userProfile.role === USER_ROLE[BF_ADMIN]
+                    ? USER_ROLE["channelPartner"]
+                    : USER_ROLE["salesUser"],
+              }),
           };
-
+          setLoading(true);
           dispatch(callApi(options)).then(() => {
+            setLoading(false);
             setSnackbar({ open: true, message: "Successful!", status: 0 });
             // on success clear the form data
             setFormData({});
           });
         } catch (err) {
+          setLoading(false);
           console.log(err);
         }
       } else {
@@ -293,6 +297,7 @@ const TableButtonHeader = ({
         message={snackbar?.message}
         onClose={(status) => snackbarClose(status)}
       />
+      {loading === true ? <CircularProgress /> : null}
     </>
   );
 };
