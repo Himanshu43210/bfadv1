@@ -18,24 +18,24 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
   const validateAllFields = () => {
     let errors = {};
 
-    fields.forEach((field) => {
-      const value = formData[field.name];
+    // fields.forEach((field) => {
+    //   const value = formData[field.name];
 
-      if (field.isRequired && _.isEmpty(value)) {
-        errors[field.name] =
-          field.requiredErrorMessage || "This field is required.";
-      } else if (field.regex && !field.regex.test(value)) {
-        errors[field.name] = field.regexErrorMessage || "Invalid input.";
-      }
-    });
+    //   if (field.isRequired && _.isEmpty(value)) {
+    //     errors[field.name] =
+    //       field.requiredErrorMessage || "This field is required.";
+    //   } else if (field.regex && !field.regex.test(value)) {
+    //     errors[field.name] = field.regexErrorMessage || "Invalid input.";
+    //   }
+    // });
 
-    setFieldErrors(errors);
+    // setFieldErrors(errors);
     return errors;
   };
 
   const finalizeData = () => {
     const errors = validateAllFields();
-
+    console.log(formData);
     if (_.isEmpty(errors)) {
       return formData;
     } else {
@@ -63,7 +63,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
       ...prevFormData,
       [field.name]: value,
     }));
-    setFieldErrors(errors);
+    // setFieldErrors(errors);
   };
 
   const handleCurrencyChange = (field, existingTotal) => (e, unitType) => {
