@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export const sanitizeFormData = (data) => {
   let sanitizedData = { ...data }; // Copy the original formData
 
@@ -22,4 +24,19 @@ export const filterAutofillData = (autofill, data) => {
     }
     return acc;
   }, {});
+};
+
+export const isValueEmpty = (value) => {
+  // Check for null or undefined
+  if (value === null || value === undefined) {
+    return true;
+  }
+
+  // Check for numbers
+  if (typeof value === "number") {
+    return value <= 0; // Numbers are considered empty if they are 0 or negative
+  }
+
+  // Use Lodash's isEmpty for other types
+  return _.isEmpty(value);
 };

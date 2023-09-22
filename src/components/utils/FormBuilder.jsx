@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectMasterData } from "../../redux/utils/selectors";
 import _ from "lodash";
 import { useImperativeHandle } from "react";
+import { isValueEmpty } from "./reusableMethods";
 
 const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
   const [formData, setFormData] = useState(propsFormData || {});
@@ -18,25 +19,25 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
   const validateAllFields = () => {
     let errors = {};
 
-    // fields.forEach((field) => {
-    //   const value = formData[field.name];
+    fields.forEach((field) => {
+      const value = formData[field.name];
 
-    //   if (field.isRequired && _.isEmpty(value)) {
-    //     errors[field.name] =
-    //       field.requiredErrorMessage || "This field is required.";
-    //   } else if (field.regex && !field.regex.test(value)) {
-    //     errors[field.name] = field.regexErrorMessage || "Invalid input.";
-    //   }
-    // });
+      if (field.isRequired && isValueEmpty(value)) {
+        errors[field.name] =
+          field.requiredErrorMessage || "This field is required.";
+      } else if (field.regex && !field.regex.test(value)) {
+        errors[field.name] = field.regexErrorMessage || "Invalid input.";
+      }
+    });
 
-    // setFieldErrors(errors);
+    setFieldErrors(errors);
     return errors;
   };
 
   const finalizeData = () => {
     const errors = validateAllFields();
     console.log(formData);
-    if (_.isEmpty(errors)) {
+    if (isValueEmpty(errors)) {
       return formData;
     } else {
       console.error(
@@ -48,22 +49,28 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
 
   // Expose the finalizeData function to the parent using a ref
   useImperativeHandle(ref, () => finalizeData);
+
   const handleChange = (field, value) => {
     const errors = { ...fieldErrors };
-    if (field.isRequired && _.isEmpty(value)) {
+    console.log(field, value);
+    if (field.isRequired && isValueEmpty(value)) {
+      console.log("inside 3 this ");
       errors[field.name] =
         field.requiredErrorMessage || "This field is required.";
     } else if (field.regex && !field.regex.test(value)) {
+      console.log("inside 2 this");
       errors[field.name] =
-        field.regexErrorMessage || "Regex is nor correct in this field";
+        field.regexErrorMessage || "Regex is not correct in this field";
     } else {
+      console.log("inside 1 this");
       delete errors[field.name];
     }
     setFormData((prevFormData) => ({
       ...prevFormData,
       [field.name]: value,
     }));
-    // setFieldErrors(errors);
+    setFieldErrors(errors);
+    console.log(formData, errors);
   };
 
   const handleCurrencyChange = (field, existingTotal) => (e, unitType) => {
@@ -255,6 +262,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
               )}
               {field.type === "price" && (
                 <div className={field.className}>
+                  {console.log(field.name)}
                   <input
                     className="inputtag"
                     type="text"
