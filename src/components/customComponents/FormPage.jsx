@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import FormBuilder from "../utils/FormBuilder";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADMIN_DASHBOARD_LOGIN,
@@ -38,7 +38,6 @@ const FormPage = () => {
 
   const handleSave = async () => {
     if (!loading) {
-      setLoading(true);
       const formData = finalizeRef.current();
       if (formData) {
         try {
@@ -105,25 +104,13 @@ const FormPage = () => {
           let data = imagesCheck
             ? newFormData
             : sanitizeFormData({
-                ...formData,
-                parentId: userProfile._id,
-                role:
-                  userProfile.role === USER_ROLE[BF_ADMIN]
-                    ? USER_ROLE["channelPartner"]
-                    : USER_ROLE["salesUser"],
-              });
-
-          const err = {};
-          userProfile.formType.forEach((field) => {
-            if (
-              field.isRequired &&
-              ((typeof formData[field.name] === "object" &&
-                formData[field.name].length === 0) ||
-                !formData[field.name])
-            ) {
-              err[field.name] = "This is required";
-            }
-          });
+              ...formData,
+              parentId: userProfile._id,
+              role:
+                userProfile.role === USER_ROLE[BF_ADMIN]
+                  ? USER_ROLE["channelPartner"]
+                  : USER_ROLE["salesUser"],
+            });
 
           const options = {
             url: API_ENDPOINTS[userProfile.formSaveApi],
@@ -132,22 +119,23 @@ const FormPage = () => {
             data: data,
           };
 
-          if (Object.keys(err).length === 0) {
-            dispatch(callApi(options)).then(() => {
-              router("/admin");
-              // setFormData({});
-              setSnackbar({ open: true, message: `Saved.` });
-            });
-          } else {
-            setSnackbar({ open: true, message: `Required fields are empty.` });
-          }
-          setLoading(false);
+          setLoading(true);
+          dispatch(callApi(options)).then(() => {
+            setLoading(false);
+            router("/admin");
+            setSnackbar({ open: true, message: `Saved.` });
+          });
         } catch (error) {
           setLoading(false);
           setSnackbar({ open: true, message: `Save Failed.` });
-          console.log(error);
+          console.log("--- Save failed ---", error);
         }
+      } else {
+        setLoading(false);
+        setSnackbar({ open: true, message: `Empty required field(s).` });
       }
+    } else {
+      setSnackbar({ open: true, message: `Saving Already.` });
     }
   };
 
@@ -176,7 +164,7 @@ const FormPage = () => {
             },
           };
           dispatch(callApi(options));
-        } catch (error) {}
+        } catch (error) { }
         navigate("/admin");
       } else {
         navigate("/login");
@@ -201,9 +189,7 @@ const FormPage = () => {
                   : {}
               }
             />
-            <Button variant="primary" onClick={handleSave}>
-              Save
-            </Button>
+            <Button variant="primary" onClick={handleSave} disabled={loading}>{loading ? "Saving" : "Save"}</Button>
             <CustomRouteButton
               component={{
                 type: ROUTE_BUTTON,
@@ -219,6 +205,7 @@ const FormPage = () => {
             message={snackbar?.message}
             onClose={snackbarClose}
           />
+          {loading === true ? <CircularProgress /> : null}
         </>
       )}
     </>

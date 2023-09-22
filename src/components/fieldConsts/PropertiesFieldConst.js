@@ -212,7 +212,7 @@ export const newPropertyConst = [
     type: "file",
     isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
-    acceptedFileTypes: "video/*",
+    acceptedFileTypes: "image/*",
   },
 ];
 export const bulkuploadheader = [
