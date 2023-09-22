@@ -16,6 +16,7 @@ export default function SearchCard({
   onClickApi,
   onClickNavigate,
   classname,
+  disableOnClickNavigate = false,
 }) {
   const cardDetailUrl = `${onClickNavigate}?title=${element.title?.replaceAll(
     " ",
@@ -31,7 +32,7 @@ export default function SearchCard({
   return (
     <Card
       onClick={() => {
-        navigateTo(cardDetailUrl);
+        if (!disableOnClickNavigate) navigateTo(cardDetailUrl);
       }}
       className={classname}
     >
@@ -46,11 +47,7 @@ export default function SearchCard({
         />
         <CardContent style={{ flex: 1, width: "100%" }}>
           <div className="detailcardheadingdiv">
-            <Typography
-              variant="h5"
-              gutterBottom
-              className="detailcardheading"
-            >
+            <Typography variant="h5" gutterBottom className="detailcardheading">
               {element.title}
             </Typography>
             <div className="detailicondiv">
@@ -58,8 +55,19 @@ export default function SearchCard({
               <FaRegHeart size={"23px"} />
             </div>
           </div>
-          <div className="contentdiv" style={{ justifyContent: "space-between" }}>
-            <div style={{ flex: 1, display: "flex", flexWrap: "wrap", justifyContent: "space-between", paddingRight: "16%" }}>
+          <div
+            className="contentdiv"
+            style={{ justifyContent: "space-between" }}
+          >
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
+                paddingRight: "16%",
+              }}
+            >
               <div style={{ display: "flex" }}>
                 <img
                   className="detailimages"
@@ -67,9 +75,7 @@ export default function SearchCard({
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />
-                <Typography fontWeight="lg">
-                  {element.sectorNumber}
-                </Typography>
+                <Typography fontWeight="lg">{element.sectorNumber}</Typography>
               </div>
               <div style={{ display: "flex" }}>
                 <img
@@ -105,9 +111,7 @@ export default function SearchCard({
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />
-                <Typography fontWeight="lg">
-                  {element.accommodation}
-                </Typography>
+                <Typography fontWeight="lg">{element.accommodation}</Typography>
               </div>
               <div style={{ display: "flex" }}>
                 <img

@@ -131,7 +131,7 @@ const ListingTable = ({
   };
 
   const handleSave = () => {
-    const formData = finalizeRef.current(); 
+    const formData = finalizeRef.current();
     if (formData) {
       console.log("Received validated data:", formData);
       try {
@@ -212,9 +212,8 @@ const ListingTable = ({
   };
 
   const handleRemove = (rowId) => {
-    const formData = finalizeRef.current();  
+    const formData = finalizeRef.current();
     if (formData) {
-      console.log("Received validated data:", formData);
       try {
         const options = {
           url: API_ENDPOINTS[removeApi],
@@ -355,31 +354,39 @@ const ListingTable = ({
 
       {showPreviewModal && (
         <ReusablePopup onHide={tooglePreview} onClose={tooglePreview}>
-          <HomeCard element={currentRowData}></HomeCard>
-          <SearchCard element={currentRowData}></SearchCard>
+          <HomeCard
+            element={currentRowData}
+            disableOnClickNavigate={true}
+          ></HomeCard>
+          <SearchCard
+            element={currentRowData}
+            disableOnClickNavigate={true}
+          ></SearchCard>
           <DetailDataCard singledata={currentRowData}></DetailDataCard>
-          {currentRowData[NEED_APPROVAL_BY] !== APPROVED && (
-            <>
-              <Button
-                variant="success"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toogleApproval();
-                }}
-              >
-                Approve
-              </Button>
-              <Button
-                variant="danger"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleRemove();
-                }}
-              >
-                Reject
-              </Button>
-            </>
-          )}
+          {approveApi &&
+            currentRowData[NEED_APPROVAL_BY] &&
+            userProfile._id === currentRowData[NEED_APPROVAL_BY] && (
+              <>
+                <Button
+                  variant="success"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toogleApproval();
+                  }}
+                >
+                  Approve
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleRemove();
+                  }}
+                >
+                  Reject
+                </Button>
+              </>
+            )}
         </ReusablePopup>
       )}
 

@@ -17,17 +17,20 @@ export default function HomeCard({
   onClickNavigate,
   classname,
   apiType = GET,
+  disableOnClickNavigate = false,
 }) {
-    const navigateTo = useNavigate();
+  const navigateTo = useNavigate();
   return (
     <Card
       className={classname}
       onClick={() => {
-        navigateTo(
-          `${onClickNavigate}?title=${element.title?.replaceAll(" ", "-")}&id=${
-            element._id
-          }`
-        );
+        if (!disableOnClickNavigate)
+          navigateTo(
+            `${onClickNavigate}?title=${element.title?.replaceAll(
+              " ",
+              "-"
+            )}&id=${element._id}`
+          );
       }}
       sx={{
         maxWidth: "345px",
@@ -53,7 +56,7 @@ export default function HomeCard({
           className="360-image-icon"
           alt={"360-image-icon"}
         />
-        <CardContent style={{flexDirection: 'column', alignItems: 'center'}}>
+        <CardContent style={{ flexDirection: "column", alignItems: "center" }}>
           <Typography gutterBottom variant="h6" component="div">
             {element?.title}
           </Typography>
@@ -96,7 +99,14 @@ export default function HomeCard({
           </div>
         </CardContent>
 
-        <div style={{display: "flex", alignItems: "center", marginBottom: "20px", paddingInline: "16px"}}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "20px",
+            paddingInline: "16px",
+          }}
+        >
           <Rating
             name="home-card-fixed-rating"
             value={element?.raiting || 5}
