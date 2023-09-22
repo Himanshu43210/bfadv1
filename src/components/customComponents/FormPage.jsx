@@ -38,7 +38,6 @@ const FormPage = () => {
 
   const handleSave = async () => {
     if (!loading) {
-      setLoading(true);
       const formData = finalizeRef.current();
       if (formData) {
         try {
@@ -105,25 +104,13 @@ const FormPage = () => {
           let data = imagesCheck
             ? newFormData
             : sanitizeFormData({
-                ...formData,
-                parentId: userProfile._id,
-                role:
-                  userProfile.role === USER_ROLE[BF_ADMIN]
-                    ? USER_ROLE["channelPartner"]
-                    : USER_ROLE["salesUser"],
-              });
-
-              const err = [];
-              userProfile.formType.forEach((field) => {
-                if (
-                  field.isRequired &&
-                  ((typeof formData[field.name] === "object" &&
-                    formData[field.name].length === 0) ||
-                    !formData[field.name])
-                ) {
-                  err.push({ fieldName: field.label, message: "This is required" });
-                }
-              });
+              ...formData,
+              parentId: userProfile._id,
+              role:
+                userProfile.role === USER_ROLE[BF_ADMIN]
+                  ? USER_ROLE["channelPartner"]
+                  : USER_ROLE["salesUser"],
+            });
 
           const options = {
             url: API_ENDPOINTS[userProfile.formSaveApi],
@@ -132,24 +119,22 @@ const FormPage = () => {
             data: data,
           };
 
-          if (err.length === 0) {
-            dispatch(callApi(options)).then(() => {
-              setLoading(false);
-              router("/admin");
-              setSnackbar({ open: true, message: `Saved.` });
-            });
-          } else {
+          dispatch(callApi(options)).then(() => {
             setLoading(false);
-            setSnackbar({ open: true, message: `Empty required '${err[0]?.fieldName}' field.` });
-            console.log('Empty Required Field(s): ', err);
-          }
-          setLoading(false);
+            router("/admin");
+            setSnackbar({ open: true, message: `Saved.` });
+          });
         } catch (error) {
           setLoading(false);
           setSnackbar({ open: true, message: `Save Failed.` });
           console.log("--- Save failed ---", error);
         }
+      } else {
+        setLoading(false);
+        setSnackbar({ open: true, message: `Empty required field(s).` });
       }
+    } else {
+      setSnackbar({ open: true, message: `Saving Already.` });
     }
   };
 
@@ -178,7 +163,7 @@ const FormPage = () => {
             },
           };
           dispatch(callApi(options));
-        } catch (error) {}
+        } catch (error) { }
         navigate("/admin");
       } else {
         navigate("/login");
