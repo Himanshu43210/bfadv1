@@ -1,121 +1,89 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import { EMAIL, GET_MASTER_DATA_ON_HOME, TEXT } from "./Const";
-import firebase, { auth } from "../../firebase";
-import { selectMasterData } from "../../redux/utils/selectors";
 import { useSelector } from "react-redux";
+import { selectMasterData } from "../../redux/utils/selectors";
+import _ from "lodash";
+import { useImperativeHandle } from "react";
 
-const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
+const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
   const [formData, setFormData] = useState(propsFormData || {});
   const [fieldErrors, setFieldErrors] = useState({});
-
-  useEffect(() => {
-    onFormDataChange(formData);
-  }, [formData, onFormDataChange]);
 
   const masterData = useSelector((state) =>
     selectMasterData(state, GET_MASTER_DATA_ON_HOME || "")
   );
-  const handleChange = (name, value) => {
-    const field = fields.find((f) => f.name === name);
-    const errors = { ...fieldErrors };
 
-    // if (field.regex && !field.regex.test(value)) {
-    //   errors[name] = field.regexErrorMessage;
-    // } else {
-    //   delete errors[name];
-    // }
+  const validateAllFields = () => {
+    let errors = {};
+
+    fields.forEach((field) => {
+      const value = formData[field.name];
+
+      if (field.isRequired && _.isEmpty(value)) {
+        errors[field.name] =
+          field.requiredErrorMessage || "This field is required.";
+      } else if (field.regex && !field.regex.test(value)) {
+        errors[field.name] = field.regexErrorMessage || "Invalid input.";
+      }
+    });
+
+    setFieldErrors(errors);
+    return errors;
+  };
+
+  const finalizeData = () => {
+    const errors = validateAllFields();
+
+    if (_.isEmpty(errors)) {
+      return formData;
+    } else {
+      console.error(
+        "There are errors in the form. Please correct them before saving."
+      );
+      return null;
+    }
+  };
+
+  // Expose the finalizeData function to the parent using a ref
+  useImperativeHandle(ref, () => finalizeData);
+  const handleChange = (field, value) => {
+    const errors = { ...fieldErrors };
+    if (field.isRequired && _.isEmpty(value)) {
+      errors[field.name] =
+        field.requiredErrorMessage || "This field is required.";
+    } else if (field.regex && !field.regex.test(value)) {
+      errors[field.name] =
+        field.regexErrorMessage || "Regex is nor correct in this field";
+    } else {
+      delete errors[field.name];
+    }
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [field.name]: value,
     }));
     setFieldErrors(errors);
   };
 
-  const handleFileChange = (key, value) => {
-    const allFiles = [];
-    for (const file of value) {
-      allFiles.push(file);
+  const handleCurrencyChange = (field, existingTotal) => (e, unitType) => {
+    let updatedValue = parseInt(e.target.value) || 0;
+
+    if (unitType === "crore") {
+      updatedValue = (existingTotal % 10000000) + updatedValue * 10000000;
+    } else if (unitType === "lakh") {
+      updatedValue =
+        Math.floor(existingTotal / 10000000) * 10000000 + updatedValue * 100000;
     }
-    handleChange(key, allFiles);
-  };
 
-  const handleCurrencyChange =
-    (handleChange, fieldName, existingTotal) => (e, unitType) => {
-      let updatedValue = parseInt(e.target.value) || 0;
-
-      if (unitType === "crore") {
-        updatedValue = (existingTotal % 10000000) + updatedValue * 10000000;
-      } else if (unitType === "lakh") {
-        updatedValue =
-          Math.floor(existingTotal / 10000000) * 10000000 +
-          updatedValue * 100000;
-      }
-
-      handleChange(fieldName, updatedValue, true);
-    };
-
-  const [verificationId, setVerificationId] = useState("");
-
-  const handleSendOtp = async () => {
-    const field = fields.find((f) => f.name === "phoneNumber");
-    try {
-      const confirmation = await auth.signInWithPhoneNumber(
-        formData.phoneNumber
-      );
-      // setVerificationId(confirmation.verificationId);
-      // OTP sent successfully
-    } catch (error) {
-      // Handle error
-      console.error("Error sending OTP:", error);
-    }
-  };
-
-  const configureCaptcha = async () => {
-    // handleSendOtp();
-    try {
-      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-        "sign-in-button",
-        {
-          size: "invisible",
-          callback: (response) => {
-            // reCAPTCHA solved, allow signInWithPhoneNumber.
-            handleSendOtp();
-          },
-          defaultCountry: "IN",
-        },
-        auth
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleSendOtpMail = () => {};
-
-  const handleVerifyOtp = async () => {
-    // try {
-    //   const credential = firebase.auth.PhoneAuthProvider.credential(
-    //     verificationId,
-    //     otp
-    //   );
-    //   await firebase.auth().signInWithCredential(credential);
-    //   // User is authenticated
-    // } catch (error) {
-    //   // Handle error
-    //   console.error("Error verifying OTP:", error);
-    // }
+    handleChange(field, updatedValue);
   };
 
   return (
     <form className="addbtn">
       <div className="formcontainer">
         {fields.map((field) => (
-          <div
-            key={field.name}
-            className={"subform" + " " + field.parentclassName}
-          >
+          <div key={field.name} className={`subform ${field.parentclassName}`}>
             <div className="lablediv">
               <label className="lbel" htmlFor={field.name}>
                 {field.label}
@@ -123,6 +91,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
             </div>
 
             <div className="inputdiv">
+              {/* ... (Other input types can be added similarly) */}
               {field.type === TEXT && (
                 <input
                   className="inputtag"
@@ -130,22 +99,30 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                   disabled={field.disabled}
                   id={field.name}
                   name={field.name}
-                  value={formData[field.name] || formData[field.dataKey] || ""}
-                  onChange={(e) => {
-                    handleChange(field.name, e.target.value);
-                    if (field.name === "email") {
-                      handleChange("emailOtp", "verified");
-                    }
-                  }}
+                  value={formData[field.name] || ""}
+                  onChange={(e) => handleChange(field, e.target.value)}
                   required={field.isRequired}
                 />
               )}
+
+              {field.type === EMAIL && (
+                <input
+                  className="inputtag"
+                  type={EMAIL}
+                  id={field.name}
+                  name={field.name}
+                  value={formData[field.name] || ""}
+                  onChange={(e) => handleChange(field, e.target.value)}
+                  required={field.isRequired}
+                />
+              )}
+
               {field.type === "phoneOTP" && (
                 <div className="phone-otp-button">
                   <label
                     onClick={() => {
                       // handleSendOtp();
-                      configureCaptcha();
+                      // configureCaptcha();
                     }}
                   >
                     Send Otp
@@ -159,30 +136,16 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     value={
                       formData[field.name] || formData[field.dataKey] || ""
                     }
-                    onChange={(e) => handleChange(field.name, e.target.value)}
+                    onChange={(e) => handleChange(field, e.target.value)}
                     required={field.isRequired}
                   />
                 </div>
-              )}
-
-              {field.type === EMAIL && (
-                <input
-                  className="inputtag"
-                  type={EMAIL}
-                  id={field.name}
-                  name={field.name}
-                  value={formData[field.name] || formData[field.dataKey] || ""}
-                  onChange={(e) => {
-                    handleChange(field.name, e.target.value);
-                  }}
-                  required={field.isRequired}
-                />
               )}
               {field.type === "emailOtp" && (
                 <div className="phone-otp-button">
                   <label
                     onClick={() => {
-                      handleSendOtpMail();
+                      // handleSendOtpMail();
                     }}
                   >
                     Send Otp on Mail
@@ -195,7 +158,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     value={
                       formData[field.name] || formData[field.dataKey] || ""
                     }
-                    onChange={(e) => handleChange(EMAIL, e.target.value)}
+                    onChange={(e) => handleChange(field, e.target.value)}
                     required={field.isRequired}
                   />
                 </div>
@@ -207,7 +170,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                   id={field.name}
                   name={field.name}
                   value={formData[field.name] || formData[field.dataKey] || ""}
-                  onChange={(e) => handleChange(field.name, e.target.value)}
+                  onChange={(e) => handleChange(field, e.target.value)}
                   required={field.isRequired}
                 />
               )}
@@ -217,7 +180,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                   id={field.name}
                   name={field.name}
                   value={formData[field.name] || formData[field.dataKey] || ""}
-                  onChange={(e) => handleChange(field.name, e.target.value)}
+                  onChange={(e) => handleChange(field, e.target.value)}
                   required={field.isRequired}
                 />
               )}
@@ -252,8 +215,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     }),
                   }}
                   onChange={(selectedOption) => {
-                    console.log(selectedOption);
-                    handleChange(field.name, selectedOption || null);
+                    handleChange(field, selectedOption || null);
                   }}
                   closeMenuOnSelect={!field.isMulti}
                   required={field.isRequired}
@@ -274,7 +236,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                             formData[field.name] === option.value) ||
                           formData[field.dataKey] === option.value
                         }
-                        onChange={() => handleChange(field.name, option.value)}
+                        onChange={() => handleChange(field, option.value)}
                         required={field.isRequired}
                       />
                       {option.label}
@@ -287,7 +249,8 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                   type="file"
                   name={field.name}
                   multiple
-                  onChange={(e) => handleChange(field.name, e.target.files)}
+                  onChange={(e) => handleChange(field, e.target.files)}
+                  accept={field?.acceptedFileTypes}
                 />
               )}
               {field.type === "price" && (
@@ -300,11 +263,10 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     name={`${field.name}-crore`}
                     value={Math.floor((formData[field.name] || 0) / 10000000)}
                     onChange={(e) =>
-                      handleCurrencyChange(
-                        handleChange,
-                        field.name,
-                        formData[field.name] || 0
-                      )(e, "crore")
+                      handleCurrencyChange(field, formData[field.name] || 0)(
+                        e,
+                        "crore"
+                      )
                     }
                     required={field.isRequired}
                   />
@@ -317,11 +279,10 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     name={`${field.name}-lakh`}
                     value={((formData[field.name] || 0) % 10000000) / 100000}
                     onChange={(e) =>
-                      handleCurrencyChange(
-                        handleChange,
-                        field.name,
-                        formData[field.name] || 0
-                      )(e, "lakh")
+                      handleCurrencyChange(field, formData[field.name] || 0)(
+                        e,
+                        "lakh"
+                      )
                     }
                     required={field.isRequired}
                   />
@@ -340,7 +301,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                       formData[field.name] || formData[field.dataKey] || ""
                     }
                     onChange={(e) => {
-                      handleChange(field.name, e.target.value);
+                      handleChange(field, e.target.value);
                     }}
                     required={field.isRequired}
                   />
@@ -360,7 +321,10 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
                     }
                     options={field.options || masterData[field.name]}
                     onChange={(selectedOption) =>
-                      handleChange(field.nameType, selectedOption || null)
+                      handleChange(
+                        { ...field, name: field.nameType },
+                        selectedOption || null
+                      )
                     }
                     required={field.isRequired}
                   />
@@ -373,7 +337,7 @@ const FormBuilder = ({ fields, onFormDataChange, propsFormData }) => {
       </div>
     </form>
   );
-};
+});
 
 FormBuilder.propTypes = {
   fields: PropTypes.arrayOf(
@@ -391,7 +355,6 @@ FormBuilder.propTypes = {
       ]).isRequired,
       isRequired: PropTypes.bool.isRequired,
       regex: PropTypes.instanceOf(RegExp),
-      requiredErrorMessage: PropTypes.string,
       regexErrorMessage: PropTypes.string,
       options: PropTypes.arrayOf(
         PropTypes.shape({

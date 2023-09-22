@@ -6,7 +6,6 @@ export const callApi = createAsyncThunk(
   "api/callApi",
   async (options, thunkAPI) => {
     const response = await axios(options).catch((e) => {
-      console.log(e.data.message);
       toast.error(e.data.message)
     });
     return response.data;

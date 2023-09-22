@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import React from "react";
 import * as XLSX from "xlsx";
 import { Button } from "react-bootstrap";
@@ -13,7 +13,6 @@ import FormBuilder from "./FormBuilder";
 import ReusablePopup from "./ReusablePopup";
 import {
   BF_ADMIN,
-  GET,
   NEED_APPROVAL_BY,
   POST,
   PROFILE,
@@ -36,7 +35,7 @@ const TableButtonHeader = ({
   addHeader,
   refreshMethod,
 }) => {
-  console.log("+++++ tableData, fieldConst +++++", tableData, fieldConst);
+  const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [newPopup, setNewPopup] = useState(null);
@@ -70,11 +69,6 @@ const TableButtonHeader = ({
     });
   };
 
-  const handleFormDataChange = (newFormData) => {
-    console.log(newFormData);
-    setFormData(newFormData);
-  };
-
   const handleExportClick = () => {
     convertArrayToExcel(tableData, "data_export");
     toogleExportPopup();
@@ -85,6 +79,7 @@ const TableButtonHeader = ({
   };
 
   const refreshData = () => {
+    console.log(refreshMethod);
     try {
       const options = {
         url: refreshDataApi,
@@ -93,124 +88,133 @@ const TableButtonHeader = ({
         data: {},
       };
       dispatch(callApi(options));
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const handleSubmit = async () => {
-    if (Object.keys(formData).length !== 0) {
-      try {
-        const newFormData = new FormData();
+    const formData = finalizeRef.current();  
+    if (formData) {
+      console.log("Received validated data:", formData);
+      if (Object.keys(formData).length !== 0) {
+        try {
+          const newFormData = new FormData();
 
-        // for (const file of formData?.images || []) {
-        //   newFormData.append("files", file);
-        // }
-        for (const file of formData?.thumbnailFile || []) {
-          newFormData.append("thumbnailFile", file);
-        }
-        for (const file of formData?.normalImageFile || []) {
-          newFormData.append("normalImageFile", file);
-        }
-        for (const file of formData?.threeSixtyImages || []) {
-          newFormData.append("threeSixtyImages", file);
-        }
-        for (const file of formData?.layoutFile || []) {
-          newFormData.append("layoutFile", file);
-        }
-        for (const file of formData?.VideoFile || []) {
-          newFormData.append("videoFile", file);
-        }
-        for (const file of formData?.virtualFile || []) {
-          newFormData.append("virtualFile", file);
-        }
-        newFormData.append("parentId", userProfile._id);
-        newFormData.append(
-          "contactId",
-          userProfile.role === USER_ROLE[PROPERTY_DEALER]
-            ? userProfile.parentId
-            : userProfile._id
-        );
-        newFormData.append([NEED_APPROVAL_BY], userProfile.parentId);
-        newFormData.append("formData", { ...formData });
-        function isObjectNotString(value) {
-          return (
-            typeof value === "object" && !Array.isArray(value) && value !== null
+          // for (const file of formData?.images || []) {
+          //   newFormData.append("files", file);
+          // }
+          for (const file of formData?.thumbnailFile || []) {
+            newFormData.append("thumbnailFile", file);
+          }
+          for (const file of formData?.normalImageFile || []) {
+            newFormData.append("normalImageFile", file);
+          }
+          for (const file of formData?.threeSixtyImages || []) {
+            newFormData.append("threeSixtyImages", file);
+          }
+          for (const file of formData?.layoutFile || []) {
+            newFormData.append("layoutFile", file);
+          }
+          for (const file of formData?.VideoFile || []) {
+            newFormData.append("videoFile", file);
+          }
+          for (const file of formData?.virtualFile || []) {
+            newFormData.append("virtualFile", file);
+          }
+          newFormData.append("parentId", userProfile._id);
+          newFormData.append(
+            "contactId",
+            userProfile.role === USER_ROLE[PROPERTY_DEALER]
+              ? userProfile.parentId
+              : userProfile._id
           );
-        }
-        function hasAnyProperty(object, properties) {
-          if (
-            !object ||
-            typeof object !== "object" ||
-            !properties ||
-            !Array.isArray(properties)
-          ) {
-            // Ensure that object is valid and properties is an array
-            return false;
+          newFormData.append([NEED_APPROVAL_BY], userProfile.parentId);
+          newFormData.append("formData", { ...formData });
+          function isObjectNotString(value) {
+            return (
+              typeof value === "object" &&
+              !Array.isArray(value) &&
+              value !== null
+            );
           }
-
-          for (let i = 0; i < properties.length; i++) {
-            if (object.hasOwnProperty(properties[i])) {
-              return true; // Found at least one property
+          function hasAnyProperty(object, properties) {
+            if (
+              !object ||
+              typeof object !== "object" ||
+              !properties ||
+              !Array.isArray(properties)
+            ) {
+              // Ensure that object is valid and properties is an array
+              return false;
             }
-          }
 
-          return false; // None of the properties were found
-        }
-
-        const imagesCheck = hasAnyProperty(formData, [
-          "thumbnailFile",
-          "normalImageFile",
-          "threeSixtyImages",
-          "layoutFile",
-          "VideoFile",
-          "virtualFile",
-        ]);
-
-        let checked = false;
-        function isFileList(value) {
-          return value instanceof FileList;
-        }
-        Object.keys(formData).map((element) => {
-          if (!isFileList(formData[element])) {
-            if (isObjectNotString(formData[element])) {
-              checked = true;
-              newFormData.append(element, formData[element].value);
-            } else {
-              newFormData.append(element, formData[element]);
+            for (let i = 0; i < properties.length; i++) {
+              if (object.hasOwnProperty(properties[i])) {
+                return true; // Found at least one property
+              }
             }
+
+            return false; // None of the properties were found
           }
-        });
 
-        console.log(formData);
-        const options = {
-          url: API_ENDPOINTS[saveDataApi],
-          method: POST,
-          headers: {
-            "Content-Type": imagesCheck
-              ? "multipart/form-data"
-              : "application/json",
-          },
-          data: imagesCheck
-            ? newFormData
-            : sanitizeFormData({
-              ...formData,
-              parentId: userProfile._id,
-              role:
-                userProfile.role === USER_ROLE[BF_ADMIN]
-                  ? USER_ROLE["channelPartner"]
-                  : USER_ROLE["salesUser"],
-            }),
-        };
+          const imagesCheck = hasAnyProperty(formData, [
+            "thumbnailFile",
+            "normalImageFile",
+            "threeSixtyImages",
+            "layoutFile",
+            "VideoFile",
+            "virtualFile",
+          ]);
 
-        dispatch(callApi(options)).then(() => {
-          setSnackbar({ open: true, message: "Successful!", status: 0 });
-          // on success clear the form data
-          setFormData({});
+          let checked = false;
+          function isFileList(value) {
+            return value instanceof FileList;
+          }
+          Object.keys(formData).map((element) => {
+            if (!isFileList(formData[element])) {
+              if (isObjectNotString(formData[element])) {
+                checked = true;
+                newFormData.append(element, formData[element].value);
+              } else {
+                newFormData.append(element, formData[element]);
+              }
+            }
+          });
+
+          const options = {
+            url: API_ENDPOINTS[saveDataApi],
+            method: POST,
+            headers: {
+              "Content-Type": imagesCheck
+                ? "multipart/form-data"
+                : "application/json",
+            },
+            data: imagesCheck
+              ? newFormData
+              : sanitizeFormData({
+                  ...formData,
+                  parentId: userProfile._id,
+                  role:
+                    userProfile.role === USER_ROLE[BF_ADMIN]
+                      ? USER_ROLE["channelPartner"]
+                      : USER_ROLE["salesUser"],
+                }),
+          };
+
+          dispatch(callApi(options)).then(() => {
+            setSnackbar({ open: true, message: "Successful!", status: 0 });
+            // on success clear the form data
+            setFormData({});
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        setSnackbar({
+          open: true,
+          message: "Required field(s) are empty!",
+          status: -1,
         });
-      } catch (err) {
-        console.log(err);
       }
-    } else {
-      setSnackbar({ open: true, message: "Required field(s) are empty!", status: -1 });
     }
   };
 
@@ -234,17 +238,7 @@ const TableButtonHeader = ({
   const toogleExportPopup = () => {
     setExportPopup(!exportPopup);
   };
-  const handleRefreshClick = () => {
-    try {
-      const options = {
-        url: refreshDataApi,
-        method: GET,
-        headers: { "Content-Type": "application/json" },
-        data: formData,
-      };
-      dispatch(callApi(options));
-    } catch (error) { }
-  };
+
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -255,10 +249,7 @@ const TableButtonHeader = ({
           onCancel={toogleNewPopup}
         >
           <div className="formheadingcontainer">{addHeader}</div>
-          <FormBuilder
-            fields={fieldConst}
-            onFormDataChange={handleFormDataChange}
-          />
+          <FormBuilder ref={finalizeRef} fields={fieldConst} />
         </ReusablePopup>
       ) : null}
       {importPopup ? (
@@ -293,7 +284,7 @@ const TableButtonHeader = ({
         <Button class="btn" onClick={toogleExportPopup}>
           <FaCloudDownloadAlt /> &nbsp;&nbsp; EXPORT
         </Button>
-        <Button class="btn" onClick={handleRefreshClick}>
+        <Button class="btn" onClick={refreshData}>
           <FiRefreshCcw /> &nbsp;&nbsp; REFRESH
         </Button>
       </div>

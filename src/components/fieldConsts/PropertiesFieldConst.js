@@ -90,8 +90,8 @@ export const newPropertyConst = [
     dataKey: "parkFacing",
     isRequired: true,
     options: [
-      { value: true, label: "Yes" },
-      { value: false, label: "No" },
+      { value: "Yes", label: "Yes" },
+      { value: "No", label: "No" },
     ],
     requiredErrorMessage: "Please select an option for park facing.",
   },
@@ -103,8 +103,8 @@ export const newPropertyConst = [
     parentclassName: "property-w-1",
     dataKey: "corner",
     options: [
-      { value: true, label: "Yes" },
-      { value: false, label: "No" },
+      { value: "Yes", label: "Yes" },
+      { value: "No", label: "No" },
     ],
     requiredErrorMessage: "Please select an option for corner.",
   },
@@ -167,6 +167,7 @@ export const newPropertyConst = [
     type: "file",
     isRequired: true,
     requiredErrorMessage: "Please Add 360 Image",
+    acceptedFileTypes: "image/*",
   },
   {
     name: "normalImageFile",
@@ -175,6 +176,7 @@ export const newPropertyConst = [
     parentclassName: "property-w-1",
     isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
+    acceptedFileTypes: "image/*",
   },
   {
     name: "threeSixtyImages",
@@ -183,6 +185,7 @@ export const newPropertyConst = [
     type: "file",
     isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
+    acceptedFileTypes: "image/*",
   },
   {
     name: "layoutFile",
@@ -191,6 +194,7 @@ export const newPropertyConst = [
     type: "file",
     isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
+    acceptedFileTypes: "image/*",
   },
   {
     name: "videoFile",
@@ -199,6 +203,7 @@ export const newPropertyConst = [
     type: "file",
     isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
+    acceptedFileTypes: "video/*",
   },
   {
     name: "virtualFile",
@@ -207,6 +212,7 @@ export const newPropertyConst = [
     type: "file",
     isRequired: false,
     requiredErrorMessage: "Please Add 360 Image",
+    acceptedFileTypes: "video/*",
   },
 ];
 export const bulkuploadheader = [

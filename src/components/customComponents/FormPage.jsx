@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import FormBuilder from "../utils/FormBuilder";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,152 +18,146 @@ import { USER_ROLE } from "../../ScreenJson";
 import _ from "lodash";
 import SnackBar from "../customComponents/SnackBar";
 import { useNavigate } from "react-router-dom";
-import { selectApiData, selectApiStatus } from "../../redux/utils/selectors";
+import { selectApiStatus } from "../../redux/utils/selectors";
 
 const FormPage = () => {
+  const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.profile);
-  const [formData, setFormData] = useState({});
 
-  const snackbarClose = (status) => {
+  const snackbarClose = () => {
     setSnackbar({
       open: false,
       message: "",
     });
-    // based on status proceed with further actions
-  };
-
-  const handleFormDataChange = (newFormData) => {
-    setFormData(newFormData);
   };
 
   const [loading, setLoading] = useState(false);
   const router = useNavigate();
+
   const handleSave = async () => {
     if (!loading) {
       setLoading(true);
-      try {
-        let newFormData = new FormData();
+      const formData = finalizeRef.current();
+      if (formData) {
+        try {
+          let newFormData = new FormData();
+          const fileFields = [
+            "thumbnailFile",
+            "normalImageFile",
+            "threeSixtyImages",
+            "layoutFile",
+            "VideoFile",
+            "virtualFile",
+          ];
 
-        // Populate formData with files (If they exist)
-        const fileFields = [
-          "thumbnailFile",
-          "normalImageFile",
-          "threeSixtyImages",
-          "layoutFile",
-          "VideoFile",
-          "virtualFile",
-        ];
-
-        fileFields.forEach((field) => {
-          if (formData[field]) {
-            for (const file of formData[field]) {
-              newFormData.append(field, file);
+          fileFields.forEach((field) => {
+            if (formData[field]) {
+              for (const file of formData[field]) {
+                newFormData.append(field, file);
+              }
             }
-          }
-        });
+          });
 
-        // Add additional fields to formData
-        newFormData.append("parentId", userProfile._id);
-        newFormData.append(
-          "contactId",
-          userProfile.role === USER_ROLE[PROPERTY_DEALER]
-            ? userProfile.parentId
-            : userProfile._id
-        );
-        newFormData.append(NEED_APPROVAL_BY, userProfile.parentId);
-
-        function isObjectNotString(value) {
-          return (
-            typeof value === "object" && !Array.isArray(value) && value !== null
+          // Add additional fields to formData
+          newFormData.append("parentId", userProfile._id);
+          newFormData.append(
+            "contactId",
+            userProfile.role === USER_ROLE[PROPERTY_DEALER]
+              ? userProfile.parentId
+              : userProfile._id
           );
-        }
+          newFormData.append(NEED_APPROVAL_BY, userProfile.parentId);
 
-        function isFileList(value) {
-          return value instanceof FileList;
-        }
+          function isObjectNotString(value) {
+            return (
+              typeof value === "object" &&
+              !Array.isArray(value) &&
+              value !== null
+            );
+          }
 
-        Object.keys(formData).forEach((element) => {
-          if (!isFileList(formData[element])) {
-            if (isObjectNotString(formData[element])) {
-              newFormData.append(
-                element,
-                JSON.stringify(formData[element].value)
-              );
-            } else {
-              newFormData.append(element, formData[element]);
+          function isFileList(value) {
+            return value instanceof FileList;
+          }
+
+          Object.keys(formData).forEach((element) => {
+            if (!isFileList(formData[element])) {
+              if (isObjectNotString(formData[element])) {
+                newFormData.append(
+                  element,
+                  JSON.stringify(formData[element].value)
+                );
+              } else {
+                newFormData.append(element, formData[element]);
+              }
             }
-          }
-        });
-
-        const imagesCheck = fileFields.some((field) => formData[field]);
-
-        // Set the headers and data based on whether images/files are being uploaded
-        let headers = imagesCheck
-          ? { "Content-Type": "multipart/form-data" }
-          : { "Content-Type": "application/json" };
-
-        let data = imagesCheck
-          ? newFormData
-          : sanitizeFormData({
-            ...formData,
-            parentId: userProfile._id,
-            role:
-              userProfile.role === USER_ROLE[BF_ADMIN]
-                ? USER_ROLE["channelPartner"]
-                : USER_ROLE["salesUser"],
           });
 
-        const err = {};
-        userProfile.formType.forEach((field) => {
-          if (
-            field.isRequired &&
-            ((typeof formData[field.name] === "object" &&
-              formData[field.name].length === 0) ||
-              !formData[field.name])
-          ) {
-            err[field.name] = "This is required";
-          }
-        });
+          const imagesCheck = fileFields.some((field) => formData[field]);
 
-        const options = {
-          url: API_ENDPOINTS[userProfile.formSaveApi],
-          method: POST,
-          headers: headers,
-          data: data,
-        };
+          // Set the headers and data based on whether images/files are being uploaded
+          let headers = imagesCheck
+            ? { "Content-Type": "multipart/form-data" }
+            : { "Content-Type": "application/json" };
 
-        if (Object.keys(err).length === 0) {
-          dispatch(callApi(options)).then(() => {
-            router("/admin");
-            setFormData({});
-            setSnackbar({ open: true, message: `Saved.` });
+          let data = imagesCheck
+            ? newFormData
+            : sanitizeFormData({
+                ...formData,
+                parentId: userProfile._id,
+                role:
+                  userProfile.role === USER_ROLE[BF_ADMIN]
+                    ? USER_ROLE["channelPartner"]
+                    : USER_ROLE["salesUser"],
+              });
+
+          const err = {};
+          userProfile.formType.forEach((field) => {
+            if (
+              field.isRequired &&
+              ((typeof formData[field.name] === "object" &&
+                formData[field.name].length === 0) ||
+                !formData[field.name])
+            ) {
+              err[field.name] = "This is required";
+            }
           });
-        } else {
-          setSnackbar({ open: true, message: `Required fields are empty.` });
+
+          const options = {
+            url: API_ENDPOINTS[userProfile.formSaveApi],
+            method: POST,
+            headers: headers,
+            data: data,
+          };
+
+          if (Object.keys(err).length === 0) {
+            dispatch(callApi(options)).then(() => {
+              router("/admin");
+              // setFormData({});
+              setSnackbar({ open: true, message: `Saved.` });
+            });
+          } else {
+            setSnackbar({ open: true, message: `Required fields are empty.` });
+          }
+          setLoading(false);
+        } catch (error) {
+          setLoading(false);
+          setSnackbar({ open: true, message: `Save Failed.` });
+          console.log(error);
         }
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        setSnackbar({ open: true, message: `Save Failed.` });
-        console.log(error);
       }
     }
-  };
-
-  const handleReset = () => {
-    setFormData({});
-    setSnackbar({ open: true, message: "Form Reset." });
   };
 
   const navigate = useNavigate();
   const loginStatus = useSelector((state) =>
     selectApiStatus(state, ADMIN_DASHBOARD_LOGIN)
   );
-  const userProfile1 = useSelector((state) =>
-    selectApiData(state, ADMIN_DASHBOARD_LOGIN)
-  );
+  // const userProfile1 = useSelector((state) =>
+  //   selectApiData(state, ADMIN_DASHBOARD_LOGIN)
+  // );
 
   const [check, setCheck] = useState(false);
   useEffect(() => {
@@ -182,7 +176,7 @@ const FormPage = () => {
             },
           };
           dispatch(callApi(options));
-        } catch (error) { }
+        } catch (error) {}
         navigate("/admin");
       } else {
         navigate("/login");
@@ -196,20 +190,20 @@ const FormPage = () => {
     <>
       {check && (
         <>
-          {console.log(formData)}
           <div>
             <div className="formheadingcontainer">{userProfile.formName}</div>
             <FormBuilder
+              ref={finalizeRef}
               fields={userProfile.formType}
-              onFormDataChange={handleFormDataChange}
               propsFormData={
                 userProfile.autofill
                   ? filterAutofillData(userProfile.autofill, userProfile)
                   : {}
               }
             />
-            {userProfile?.showResetBtn && <Button onClick={handleReset} color="secondary">Reset</Button>}
-            <Button variant="primary" onClick={handleSave}>Save</Button>
+            <Button variant="primary" onClick={handleSave}>
+              Save
+            </Button>
             <CustomRouteButton
               component={{
                 type: ROUTE_BUTTON,
@@ -223,7 +217,7 @@ const FormPage = () => {
           <SnackBar
             open={snackbar?.open}
             message={snackbar?.message}
-            onClose={(status) => snackbarClose(status)}
+            onClose={snackbarClose}
           />
         </>
       )}

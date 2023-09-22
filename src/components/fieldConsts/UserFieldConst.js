@@ -16,6 +16,8 @@ export const newUserConst = [
     type: TEXT,
     isRequired: true,
     requiredErrorMessage: "Please enter your phone number.",
+    regex: /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+    regexErrorMessage: "Invalid phone number",
   },
   {
     name: "email",
@@ -24,6 +26,8 @@ export const newUserConst = [
     type: TEXT,
     isRequired: true,
     requiredErrorMessage: "Please enter your email.",
+    regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+    regexErrorMessage: "Invalid Email",
   },
   {
     name: "companyName",
@@ -85,6 +89,8 @@ export const editUserConst = [
     type: TEXT,
     isRequired: true,
     requiredErrorMessage: "Please enter your phone number.",
+    regex: /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+    regexErrorMessage: "Invalid phone number",
   },
   {
     name: "email",
@@ -93,6 +99,8 @@ export const editUserConst = [
     type: TEXT,
     isRequired: true,
     requiredErrorMessage: "Please enter your email.",
+    regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+    regexErrorMessage: "Invalid Email",
   },
   {
     name: "companyName",
