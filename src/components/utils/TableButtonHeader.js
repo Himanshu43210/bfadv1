@@ -215,10 +215,16 @@ const TableButtonHeader = ({
       } else {
         setSnackbar({
           open: true,
-          message: "Required field(s) are empty!",
+          message: "Empty required field(s)!",
           status: -1,
         });
       }
+    } else {
+      setSnackbar({
+        open: true,
+        message: "Empty required field(s)!",
+        status: -1,
+      });
     }
   };
 
