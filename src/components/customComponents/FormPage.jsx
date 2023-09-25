@@ -33,11 +33,12 @@ const FormPage = () => {
     });
   };
 
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [saving, setSaving] = useState(false);
   const router = useNavigate();
 
-  const handleSave = async () => {
-    if (!loading) {
+  const handleSubmit = async () => {
+    if (!submitting) {
       const formData = finalizeRef.current();
       if (formData) {
         try {
@@ -111,7 +112,7 @@ const FormPage = () => {
                   ? USER_ROLE["channelPartner"]
                   : USER_ROLE["salesUser"],
             });
-
+          
           const options = {
             url: API_ENDPOINTS[userProfile.formSaveApi],
             method: POST,
@@ -119,23 +120,23 @@ const FormPage = () => {
             data: data,
           };
 
-          setLoading(true);
+          setSubmitting(true);
           dispatch(callApi(options)).then(() => {
-            setLoading(false);
+            setSubmitting(false);
             router("/admin");
-            setSnackbar({ open: true, message: `Saved.` });
+            setSnackbar({ open: true, message: `Submitted.` });
           });
         } catch (error) {
-          setLoading(false);
-          setSnackbar({ open: true, message: `Save Failed.` });
+          setSubmitting(false);
+          setSnackbar({ open: true, message: `Submit Failed.` });
           console.log("--- Save failed ---", error);
         }
       } else {
-        setLoading(false);
+        setSubmitting(false);
         setSnackbar({ open: true, message: `Empty required field(s).` });
       }
     } else {
-      setSnackbar({ open: true, message: `Saving Already.` });
+      setSnackbar({ open: true, message: `Submitting.` });
     }
   };
 
@@ -146,6 +147,17 @@ const FormPage = () => {
   // const userProfile1 = useSelector((state) =>
   //   selectApiData(state, ADMIN_DASHBOARD_LOGIN)
   // );
+  const handleSave = () => {
+    if(!saving) {
+
+    } else {
+      setSnackbar({ open: true, message: `Saving.` });
+    }
+  };
+  
+  const handleReset = () => {
+
+  };
 
   const [check, setCheck] = useState(false);
   useEffect(() => {
@@ -189,7 +201,17 @@ const FormPage = () => {
                   : {}
               }
             />
-            <Button variant="primary" onClick={handleSave} disabled={loading}>{loading ? "Saving" : "Save"}</Button>
+            <Button variant="primary" onClick={handleSubmit} disabled={submitting}>{submitting ? "Submitting..." : "Submit"}</Button>
+            {
+              userProfile.formType.showSaveBtn ? (
+                <Button variant="secondary" onClick={handleSave} disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
+              ) : null
+            }
+            {
+              userProfile.formType.showResetBtn ? (
+                <Button variant="secondary" onClick={handleReset}>Reset</Button>
+              ) : null
+            }
             <CustomRouteButton
               component={{
                 type: ROUTE_BUTTON,
@@ -205,7 +227,7 @@ const FormPage = () => {
             message={snackbar?.message}
             onClose={snackbarClose}
           />
-          {loading === true ? <CircularProgress /> : null}
+          {submitting === true ? <CircularProgress /> : null}
         </>
       )}
     </>

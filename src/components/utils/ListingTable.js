@@ -13,6 +13,7 @@ import {
   CHANNEL_PARTNER,
   DELETE,
   GET,
+  GET_ADMIN_PROPERTY_DATA,
   NEED_APPROVAL_BY,
   POST,
   PROFILE,
@@ -130,22 +131,22 @@ const ListingTable = ({
     } catch (error) { }
   };
 
-  const handleSave = () => {
+  const handleSave = (edit = false) => {
     const formData = finalizeRef.current();
     if (formData) {
       console.log("Received validated data:", formData);
       try {
-        const err = {};
-        fieldConst.forEach((field) => {
-          if (
-            field.isRequired &&
-            ((typeof formData[field.name] === "object" &&
-              formData[field.name]?.length === 0) ||
-              !formData[field.name])
-          ) {
-            err[field.name] = "This is required";
-          }
-        });
+        // const err = {};
+        // fieldConst.forEach((field) => {
+        //   if (
+        //     field.isRequired &&
+        //     ((typeof formData[field.name] === "object" &&
+        //       formData[field.name]?.length === 0) ||
+        //       !formData[field.name])
+        //   ) {
+        //     err[field.name] = "This is required";
+        //   }
+        // });
         const options = {
           url: API_ENDPOINTS[editApi],
           method: POST,
@@ -153,26 +154,29 @@ const ListingTable = ({
           data: sanitizeFormData(formData),
         };
 
-        if (Object.keys(err).length === 0) {
+        // if (Object.keys(err).length === 0) {
           dispatch(callApi(options))
             .then(() => {
-              setSnackbar({ open: true, message: `Saved.`, status: 0 });
+              setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
+              setShowEditModal(false);
+              refreshData();
             })
             .catch(() => {
-              setSnackbar({ open: true, message: `Failed.`, status: -1 });
+              setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
             });
-        } else {
-          setSnackbar({
-            open: true,
-            message: `Fields are missing.`,
-            status: -1,
-          });
-        }
-        refreshData();
+        // } else {
+        //   setSnackbar({
+        //     open: true,
+        //     message: `Empty required field(s).`,
+        //     status: -1,
+        //   });
+        // }
       } catch (error) {
-        setSnackbar({ open: true, message: `Failed.`, status: -1 });
+        setSnackbar({ open: true, message: `Error.`, status: -1 });
         console.log(error);
       }
+    } else {
+      setSnackbar({ open: true, message: `Empty required field(s).`, status: -1 });
     }
   };
 
@@ -274,15 +278,10 @@ const ListingTable = ({
       open: false,
       message: "",
     });
-    // if status == 0, refresh
-    if (status === 0) {
-      refreshData();
-    }
   };
 
   const toogleEdit = () => {
     setShowEditModal(!showEditModal);
-    setShowPreviewModal(false);
   };
   const toogleDelete = () => {
     setShowDeleteModal(!showDeleteModal);
@@ -335,8 +334,7 @@ const ListingTable = ({
       {showEditModal && (
         <ReusablePopup
           onSave={() => {
-            handleSave();
-            toogleEdit();
+            handleSave(true);
           }}
           onHide={toogleEdit}
           onCancel={toogleEdit}
