@@ -185,6 +185,8 @@ const ListingTable = ({
       };
       dispatch(callApi(options)).then(() => {
         setSnackbar({ open: true, message: `Deleted.`, status: 0 });
+        setShowPreviewModal(false);
+        refreshData();
       });
     } catch (error) {
       console.log(error);
@@ -216,37 +218,40 @@ const ListingTable = ({
 
   const handleRemove = (rowId) => {
     const formData = finalizeRef.current();
-    if (formData) {
-      try {
-        const options = {
-          url: API_ENDPOINTS[removeApi],
-          method: POST,
-          headers: { "Content-Type": "application/json" },
-          data: {
-            id: rowId,
-            userId: userProfile._id,
-            rejectedByBFAdmin:
-              userProfile.role === USER_ROLE[BF_ADMIN]
-                ? userProfile._id
-                : undefined,
-            rejectedByCP:
-              userProfile.role === USER_ROLE[CHANNEL_PARTNER]
-                ? userProfile._id
-                : undefined,
-            rejectedByBFAdminComments: formData.rejectedByBFAdminComments,
-            rejectedByCPComments: formData.rejectedByCPComments,
-          },
-        };
-        dispatch(callApi(options)).then(() => {
-          setSnackbar({ open: true, message: `Removed.`, status: 0 });
-          setShowPreviewModal(false);
-          refreshData();
-        });
-      } catch (error) {
-        console.log(error);
-        setSnackbar({ open: true, message: `Removal Failed.`, status: -1 });
-      }
+    // if (formData) {
+    try {
+      const options = {
+        url: API_ENDPOINTS[removeApi],
+        method: POST,
+        headers: { "Content-Type": "application/json" },
+        data: {
+          id: rowId,
+          userId: userProfile._id,
+          rejectedByBFAdmin:
+            userProfile.role === USER_ROLE[BF_ADMIN]
+              ? userProfile._id
+              : undefined,
+          rejectedByCP:
+            userProfile.role === USER_ROLE[CHANNEL_PARTNER]
+              ? userProfile._id
+              : undefined,
+          rejectedByBFAdminComments: formData?.rejectedByBFAdminComments,
+          rejectedByCPComments: formData?.rejectedByCPComments,
+        },
+      };
+      dispatch(callApi(options)).then(() => {
+        setSnackbar({ open: true, message: `Removed.`, status: 0 });
+        setShowPreviewModal(false);
+        refreshData();
+      });
+    } catch (error) {
+      console.log(error);
+      setSnackbar({ open: true, message: `Removal Failed.`, status: -1 });
     }
+    // } else {
+    //   console.log('no rejection due to no comment');
+    //   setSnackbar({ open: true, message: `Removal Failed.`, status: -1 });
+    // }
   };
 
   const filterData = ({
