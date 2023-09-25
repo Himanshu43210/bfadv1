@@ -127,7 +127,7 @@ const ListingTable = ({
         data: {},
       };
       dispatch(callApi(options));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleSave = () => {
@@ -185,6 +185,8 @@ const ListingTable = ({
       };
       dispatch(callApi(options)).then(() => {
         setSnackbar({ open: true, message: `Deleted.`, status: 0 });
+        setShowPreviewModal(false);
+        refreshData();
       });
     } catch (error) {
       console.log(error);
@@ -193,6 +195,7 @@ const ListingTable = ({
   };
   const handleApprove = (rowId) => {
     try {
+      console.log('----- user profile -----', userProfile);
       const options = {
         url: API_ENDPOINTS[approveApi],
         method: POST,
@@ -204,6 +207,8 @@ const ListingTable = ({
       };
       dispatch(callApi(options)).then(() => {
         setSnackbar({ open: true, message: `Approved.`, status: 0 });
+        setShowPreviewModal(false);
+        refreshData();
       });
     } catch (error) {
       console.log(error);
@@ -213,35 +218,40 @@ const ListingTable = ({
 
   const handleRemove = (rowId) => {
     const formData = finalizeRef.current();
-    if (formData) {
-      try {
-        const options = {
-          url: API_ENDPOINTS[removeApi],
-          method: POST,
-          headers: { "Content-Type": "application/json" },
-          data: {
-            id: rowId,
-            userId: userProfile._id,
-            rejectedByBFAdmin:
-              userProfile.role === USER_ROLE[BF_ADMIN]
-                ? userProfile._id
-                : undefined,
-            rejectedByCP:
-              userProfile.role === USER_ROLE[CHANNEL_PARTNER]
-                ? userProfile._id
-                : undefined,
-            rejectedByBFAdminComments: formData.rejectedByBFAdminComments,
-            rejectedByCPComments: formData.rejectedByCPComments,
-          },
-        };
-        dispatch(callApi(options)).then(() => {
-          setSnackbar({ open: true, message: `Removed.`, status: 0 });
-        });
-      } catch (error) {
-        console.log(error);
-        setSnackbar({ open: true, message: `Removal Failed.`, status: -1 });
-      }
+    // if (formData) {
+    try {
+      const options = {
+        url: API_ENDPOINTS[removeApi],
+        method: POST,
+        headers: { "Content-Type": "application/json" },
+        data: {
+          id: rowId,
+          userId: userProfile._id,
+          rejectedByBFAdmin:
+            userProfile.role === USER_ROLE[BF_ADMIN]
+              ? userProfile._id
+              : undefined,
+          rejectedByCP:
+            userProfile.role === USER_ROLE[CHANNEL_PARTNER]
+              ? userProfile._id
+              : undefined,
+          rejectedByBFAdminComments: formData?.rejectedByBFAdminComments,
+          rejectedByCPComments: formData?.rejectedByCPComments,
+        },
+      };
+      dispatch(callApi(options)).then(() => {
+        setSnackbar({ open: true, message: `Removed.`, status: 0 });
+        setShowPreviewModal(false);
+        refreshData();
+      });
+    } catch (error) {
+      console.log(error);
+      setSnackbar({ open: true, message: `Removal Failed.`, status: -1 });
     }
+    // } else {
+    //   console.log('no rejection due to no comment');
+    //   setSnackbar({ open: true, message: `Removal Failed.`, status: -1 });
+    // }
   };
 
   const filterData = ({
@@ -272,6 +282,7 @@ const ListingTable = ({
 
   const toogleEdit = () => {
     setShowEditModal(!showEditModal);
+    setShowPreviewModal(false);
   };
   const toogleDelete = () => {
     setShowDeleteModal(!showDeleteModal);
@@ -363,6 +374,17 @@ const ListingTable = ({
             disableOnClickNavigate={true}
           ></SearchCard>
           <DetailDataCard singledata={currentRowData}></DetailDataCard>
+          {
+            <Button
+              variant="success"
+              onClick={(e) => {
+                e.stopPropagation();
+                toogleEdit();
+              }}
+            >
+              Edit
+            </Button>
+          }
           {approveApi &&
             currentRowData[NEED_APPROVAL_BY] &&
             userProfile._id === currentRowData[NEED_APPROVAL_BY] && (
@@ -488,6 +510,7 @@ const ListingTable = ({
               )}
             </tr>
           </thead>
+          {console.log('----- table data : listing table -----', tableData)}
           <tbody className="tablebody text">
             {tableData.map((element) => (
               <tr
