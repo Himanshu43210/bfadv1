@@ -127,7 +127,7 @@ const ListingTable = ({
         data: {},
       };
       dispatch(callApi(options));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleSave = () => {
@@ -193,6 +193,7 @@ const ListingTable = ({
   };
   const handleApprove = (rowId) => {
     try {
+      console.log('----- user profile -----', userProfile);
       const options = {
         url: API_ENDPOINTS[approveApi],
         method: POST,
@@ -204,6 +205,8 @@ const ListingTable = ({
       };
       dispatch(callApi(options)).then(() => {
         setSnackbar({ open: true, message: `Approved.`, status: 0 });
+        setShowPreviewModal(false);
+        refreshData();
       });
     } catch (error) {
       console.log(error);
@@ -236,6 +239,8 @@ const ListingTable = ({
         };
         dispatch(callApi(options)).then(() => {
           setSnackbar({ open: true, message: `Removed.`, status: 0 });
+          setShowPreviewModal(false);
+          refreshData();
         });
       } catch (error) {
         console.log(error);
@@ -272,6 +277,7 @@ const ListingTable = ({
 
   const toogleEdit = () => {
     setShowEditModal(!showEditModal);
+    setShowPreviewModal(false);
   };
   const toogleDelete = () => {
     setShowDeleteModal(!showDeleteModal);
@@ -363,6 +369,17 @@ const ListingTable = ({
             disableOnClickNavigate={true}
           ></SearchCard>
           <DetailDataCard singledata={currentRowData}></DetailDataCard>
+          {
+            <Button
+              variant="success"
+              onClick={(e) => {
+                e.stopPropagation();
+                toogleEdit();
+              }}
+            >
+              Edit
+            </Button>
+          }
           {approveApi &&
             currentRowData[NEED_APPROVAL_BY] &&
             userProfile._id === currentRowData[NEED_APPROVAL_BY] && (
@@ -488,6 +505,7 @@ const ListingTable = ({
               )}
             </tr>
           </thead>
+          {console.log('----- table data : listing table -----', tableData)}
           <tbody className="tablebody text">
             {tableData.map((element) => (
               <tr
