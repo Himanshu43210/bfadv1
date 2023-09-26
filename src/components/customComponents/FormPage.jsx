@@ -39,7 +39,7 @@ const FormPage = () => {
 
   const handleSubmit = async () => {
     if (!submitting) {
-      const formData = finalizeRef.current();
+      const formData = finalizeRef.current.finalizeData();
       if (formData) {
         try {
           let newFormData = new FormData();
@@ -156,6 +156,8 @@ const FormPage = () => {
   };
   
   const handleReset = () => {
+    finalizeRef.current.resetForm();
+    setSnackbar({ open: true, message: `Form resetted.` });
 
   };
 

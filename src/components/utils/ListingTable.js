@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Table, Button, Container } from "react-bootstrap";
+import { Button as MuiButton } from "@mui/material";
 import ReusablePopup from "./ReusablePopup";
 import FormBuilder from "./FormBuilder";
-import { FaCaretUp, FaCaretDown } from "react-icons/fa";
+import { FaCaretUp, FaCaretDown, FaSearch } from "react-icons/fa";
 import { FaUserEdit, FaRegTrashAlt, FaRegEye } from "react-icons/fa";
 import { API_ENDPOINTS } from "../../redux/utils/api";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -25,7 +26,7 @@ import BasicTablePagination from "../customComponents/TablePagination";
 import { selectApiData } from "../../redux/utils/selectors";
 import { useEffect } from "react";
 import { FcApproval, FcRemoveImage } from "react-icons/fc";
-import _ from "lodash";
+import _, { find } from "lodash";
 import HomeCard from "../customComponents/HomeCard";
 import SearchCard from "../customComponents/SearchCard";
 import DetailDataCard from "../customComponents/DetailedDataCard";
@@ -56,6 +57,7 @@ const ListingTable = ({
   refreshMethod,
   disableRowModal,
   showEditAction,
+  showDeleteAction,
   showColumnFilter,
 }) => {
   const finalizeRef = useRef(null);
@@ -75,6 +77,10 @@ const ListingTable = ({
   const [tableData, setTableData] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
   const [tableFilter, setTableFilter] = useState({});
+  const [showImgEditModal, setShowImgEditModal] = useState(false);
+  const [imgEditor, setImgEditor] = useState({});
+  const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
+  const [confirmFileDeletion, setConfirmFileDeletion] = useState(false);
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -132,45 +138,25 @@ const ListingTable = ({
   };
 
   const handleSave = (edit = false) => {
-    const formData = finalizeRef.current();
+    const formData = finalizeRef.current.finalizeData(edit);
     if (formData) {
-      console.log("Received validated data:", formData);
       try {
-        // const err = {};
-        // fieldConst.forEach((field) => {
-        //   if (
-        //     field.isRequired &&
-        //     ((typeof formData[field.name] === "object" &&
-        //       formData[field.name]?.length === 0) ||
-        //       !formData[field.name])
-        //   ) {
-        //     err[field.name] = "This is required";
-        //   }
-        // });
         const options = {
           url: API_ENDPOINTS[editApi],
           method: POST,
           headers: { "Content-Type": "application/json" },
-          data: sanitizeFormData(formData),
+          data: { ...sanitizeFormData(formData), filesToBeDeleted: imgsToBeDeleted },
         };
 
-        // if (Object.keys(err).length === 0) {
-          dispatch(callApi(options))
-            .then(() => {
-              setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
-              setShowEditModal(false);
-              refreshData();
-            })
-            .catch(() => {
-              setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
-            });
-        // } else {
-        //   setSnackbar({
-        //     open: true,
-        //     message: `Empty required field(s).`,
-        //     status: -1,
-        //   });
-        // }
+        dispatch(callApi(options))
+          .then(() => {
+            setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
+            setShowEditModal(false);
+            refreshData();
+          })
+          .catch(() => {
+            setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
+          });
       } catch (error) {
         setSnackbar({ open: true, message: `Error.`, status: -1 });
         console.log(error);
@@ -199,7 +185,6 @@ const ListingTable = ({
   };
   const handleApprove = (rowId) => {
     try {
-      console.log('----- user profile -----', userProfile);
       const options = {
         url: API_ENDPOINTS[approveApi],
         method: POST,
@@ -221,8 +206,7 @@ const ListingTable = ({
   };
 
   const handleRemove = (rowId) => {
-    const formData = finalizeRef.current();
-    // if (formData) {
+    const formData = finalizeRef.current.finalizeData();
     try {
       const options = {
         url: API_ENDPOINTS[removeApi],
@@ -252,10 +236,6 @@ const ListingTable = ({
       console.log(error);
       setSnackbar({ open: true, message: `Removal Failed.`, status: -1 });
     }
-    // } else {
-    //   console.log('no rejection due to no comment');
-    //   setSnackbar({ open: true, message: `Removal Failed.`, status: -1 });
-    // }
   };
 
   const filterData = ({
@@ -280,6 +260,55 @@ const ListingTable = ({
     });
   };
 
+  useEffect(() => {
+    const fileFields = [
+      "thumbnails",
+      "normalImages",
+      "threeSixtyImages",
+      "layouts",
+      "videos",
+      "virtualFiles",
+    ];
+    const currAllFiles = {};
+    fileFields.forEach((field) => {
+      if (currentRowData[field]) {
+        for (const link of currentRowData[field]) {
+          if (!currAllFiles[field]) {
+            currAllFiles[field] = [];
+          }
+          currAllFiles[field].push(link);
+        }
+      }
+    });
+    setImgEditor({ ...imgEditor, allFiles: { ...currAllFiles } });
+  }, [currentRowData]);
+
+  const handleImgEditModal = (key) => {
+    setImgEditor({ ...imgEditor, selectedImgType: key });
+    setShowImgEditModal(true);
+  };
+
+  const handleImgsToBeDeleted = (key, link) => {
+    const newToBeDeleted = { ...imgsToBeDeleted };
+    if (isSelectedForDeletion(key, link)) {
+      newToBeDeleted[key] = newToBeDeleted[key].filter((entry) => entry !== link);
+    } else {
+      if (!newToBeDeleted[key]) {
+        newToBeDeleted[key] = [];
+      }
+      newToBeDeleted[key].push(link);
+    }
+    setImgsToBeDeleted(newToBeDeleted);
+  };
+
+  const isSelectedForDeletion = (key, link) => {
+    if (imgsToBeDeleted[key] && imgsToBeDeleted[key].includes(link)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const toogleEdit = () => {
     setShowEditModal(!showEditModal);
   };
@@ -295,6 +324,9 @@ const ListingTable = ({
 
   const toggleRemove = () => {
     setShowRemoveModal(!showRemoveModal);
+  };
+  const toggleImgEditor = () => {
+    setShowImgEditModal(!showImgEditModal);
   };
 
   const handleSort = (column) => {
@@ -329,6 +361,25 @@ const ListingTable = ({
     });
   };
 
+  const getImageLabel = (key) => {
+    switch (key) {
+      case "thumbnails":
+        return "Thumbnail images";
+      case "normalImages":
+        return "Normal images";
+      case "threeSixtyImages":
+        return "360 images";
+      case "layouts":
+        return "Layouts";
+      case "videos":
+        return "Videos";
+      case "virtualFiles":
+        return "Virtual Tour images";
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       {showEditModal && (
@@ -345,6 +396,15 @@ const ListingTable = ({
             propsFormData={currentRowData}
             fields={fieldConst}
           />
+          <div className="images-state" style={{ display: "flex" }}>
+            {
+              Object.entries(imgEditor?.allFiles).map((entry) => (
+                <MuiButton variant="secondary" onClick={() => handleImgEditModal(entry[0])} style={{ width: "fit-content" }}>
+                  {entry[1]?.length} {getImageLabel(entry[0])}
+                </MuiButton>
+              ))
+            }
+          </div>
         </ReusablePopup>
       )}
 
@@ -409,7 +469,23 @@ const ListingTable = ({
             )}
         </ReusablePopup>
       )}
-
+      {showImgEditModal && (
+        <ReusablePopup onHide={toggleImgEditor} onClose={toggleImgEditor}>
+          <div className="formheadingcontainer">Edit Property {getImageLabel(imgEditor?.selectedImgType)}</div>
+          <p className="label">{imgEditor?.allFiles[imgEditor?.selectedImgType]?.length} {getImageLabel(imgEditor?.selectedImgType)} ({imgsToBeDeleted[imgEditor?.selectedImgType]?.length || 0} selected for deletion)</p>
+          {
+            imgEditor?.allFiles[imgEditor?.selectedImgType].map((entry, index) => (
+              <div className="img-item">
+                <label htmlFor={index}>
+                  <img src={entry} alt={entry} width={100} height={100} />
+                </label>
+                <input id={index} type="checkbox" checked={isSelectedForDeletion(imgEditor?.selectedImgType, entry)} onChange={() => handleImgsToBeDeleted(imgEditor?.selectedImgType, entry)} />
+              </div>
+            ))
+          }
+          <p className="lbel">(Note: Selected files will be deleted.)</p>
+        </ReusablePopup>
+      )}
       {!disableRowModal && showRowModal && (
         <ReusablePopup onHide={toogleRowClick} onClose={toogleRowClick}>
           <FormBuilder
@@ -460,7 +536,7 @@ const ListingTable = ({
           />
         </ReusablePopup>
       )}
-      <div className="tablediv ">
+      <div className="tablediv">
         <input
           type="text"
           onChange={(e) => {
@@ -528,34 +604,40 @@ const ListingTable = ({
                 ))}
                 {!hideActions && (
                   <td className="tablebody tableborder text actionColumn">
-                    {!hideAlterActions && (
-                      <>
-                        <Button
-                          className="ListingEditbtn"
-                          variant="success"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCurrentRowData(element);
-                            toogleEdit();
-                          }}
-                        >
-                          <FaUserEdit size={20} />
-                        </Button>
-                        &nbsp;
-                        <Button
-                          className="ListingDeletebtn"
-                          variant="danger"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCurrentRowData(element);
-                            toogleDelete();
-                          }}
-                        >
-                          <FaRegTrashAlt size={20} />
-                        </Button>
-                        &nbsp;
-                      </>
-                    )}
+                    <>
+                      {
+                        (!hideAlterActions || showEditAction) && (
+                          <Button
+                            className="ListingEditbtn"
+                            variant="success"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentRowData(element);
+                              toogleEdit();
+                            }}
+                          >
+                            <FaUserEdit size={20} />
+                          </Button>
+                        )
+                      }
+                      &nbsp;
+                      {
+                        (!hideAlterActions || showDeleteAction) && (
+                          <Button
+                            className="ListingDeletebtn"
+                            variant="danger"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentRowData(element);
+                              toogleDelete();
+                            }}
+                          >
+                            <FaRegTrashAlt size={20} />
+                          </Button>
+                        )
+                      }
+                      &nbsp;
+                    </>
                     {isproperty && ( // Conditionally render the Preview button
                       <Button
                         className="ListingPreviewbtn"
