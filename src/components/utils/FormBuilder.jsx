@@ -34,9 +34,11 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
     return errors;
   };
 
-  const finalizeData = () => {
+  const finalizeData = (doValidations = true) => {
+    if (!doValidations) {
+      return formData;
+    }
     const errors = validateAllFields();
-    console.log(formData);
     if (isValueEmpty(errors)) {
       return formData;
     } else {
@@ -47,8 +49,12 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
     }
   };
 
+  const resetForm = () => {
+    setFormData(propsFormData || {});
+  };
+
   // Expose the finalizeData function to the parent using a ref
-  useImperativeHandle(ref, () => finalizeData);
+  useImperativeHandle(ref, () => ({ finalizeData, resetForm }));
 
   const handleChange = (field, value) => {
     const errors = { ...fieldErrors };
@@ -200,9 +206,9 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                     (formData[field.name] &&
                       (typeof formData[field.name] === "string"
                         ? {
-                            label: formData[field.name],
-                            value: formData[field.name],
-                          }
+                          label: formData[field.name],
+                          value: formData[field.name],
+                        }
                         : formData[field.name])) ||
                     field.defaultOption
                   }
@@ -241,7 +247,8 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                         checked={
                           (formData[field.name] &&
                             formData[field.name] === option.value) ||
-                          formData[field.dataKey] === option.value
+                          formData[field.dataKey] === option.value ||
+                          (formData[field.dataKey] === true ? "Yes" : "No") === option.value
                         }
                         onChange={() => handleChange(field, option.value)}
                         required={field.isRequired}
@@ -321,9 +328,9 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                       (formData[field.nameType] &&
                         (typeof formData[field.nameType] === "string"
                           ? {
-                              label: formData[field.nameType],
-                              value: formData[field.nameType],
-                            }
+                            label: formData[field.nameType],
+                            value: formData[field.nameType],
+                          }
                           : formData[field.nameType])) ||
                       field.defaultOption
                     }

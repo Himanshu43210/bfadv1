@@ -64,6 +64,7 @@ export default function UserManagement() {
                   getDataApi={GET_ADMIN_USER_DATA}
                   filterDataUrl={dataApi}
                   itemCount={tableData?.itemCount}
+                  refreshDataApi={dataApi}
                 />
               </Card.Body>
             </Card>

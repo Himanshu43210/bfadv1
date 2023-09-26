@@ -63,6 +63,7 @@ export default function UserManagement() {
                   getDataApi={GET_MASTER_DATA}
                   filterDataUrl={dataApi}
                   itemCount={tableData?.itemCount}
+                  refreshDataApi={dataApi}
                   refreshMethod={GET}
                 />
                 <CustomRouteButton

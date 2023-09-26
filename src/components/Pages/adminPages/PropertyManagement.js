@@ -87,6 +87,7 @@ export default function PropertyManagement() {
                   itemCount={tableData?.itemCount}
                   isproperty={true}
                   onRefreshApiType={POST}
+                  refreshDataApi={dataApi}
                 />
               </Card.Body>
             </Card>

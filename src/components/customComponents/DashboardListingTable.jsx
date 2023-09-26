@@ -35,6 +35,8 @@ const DashboardListing = ({ component }) => {
       isproperty={component.showPreviewButton}
       onRefreshApiType={component.onRefreshApiType}
       hideActions={component.hideActions}
+      showEditAction={component.showEditAction}
+      showDeleteAction={component.showDeleteAction}
       showViewAllListing={component.showViewAllListing}
       hideAlterActions={component.hideAlterActions}
       roleSpecificDesktopHeaders={component.roleSpecificDesktopHeaders}
