@@ -34,8 +34,8 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
     return errors;
   };
 
-  const finalizeData = (doValidations = true) => {
-    if (!doValidations) {
+  const finalizeData = (noValidations = false) => {
+    if (noValidations) {
       return formData;
     }
     const errors = validateAllFields();
@@ -247,8 +247,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                         checked={
                           (formData[field.name] &&
                             formData[field.name] === option.value) ||
-                          formData[field.dataKey] === option.value ||
-                          (formData[field.dataKey] === true ? "Yes" : "No") === option.value
+                          formData[field.dataKey] === option.value
                         }
                         onChange={() => handleChange(field, option.value)}
                         required={field.isRequired}
