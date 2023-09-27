@@ -22,15 +22,34 @@ import { selectApiStatus } from "../../redux/utils/selectors";
 
 const FormPage = () => {
   const finalizeRef = useRef(null);
+  const [message, setMessage] = useState("");
   const [snackbar, setSnackbar] = useState({});
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.profile);
-
+  
   const snackbarClose = () => {
     setSnackbar({
       open: false,
       message: "",
     });
+  };
+
+  const getMessage = (type = "SUBMIT", status = "SUCCESS") => {
+    let message = '';
+    switch (userProfile.formName) {
+      case "Create Channel Partner":
+        message = `Channel Partner ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;
+        break;
+      case "Create Sub User":
+        message = `Sub User ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;
+        break;
+      case "Post Listing":
+        message = `Post ${type === "SUBMIT" ? 'Submitted' : 'Saved'} Successfully.`;
+        break;
+      default:
+        message = "Submitted";
+    }
+    return message;
   };
 
   const [submitting, setSubmitting] = useState(false);
@@ -60,7 +79,7 @@ const FormPage = () => {
             }
           });
 
-          // Add additional fields to formData
+          // Ad"Post Submitted Successfully"d additional fields to formData
           newFormData.append("parentId", userProfile._id);
           newFormData.append(
             "contactId",
@@ -112,7 +131,7 @@ const FormPage = () => {
                   ? USER_ROLE["channelPartner"]
                   : USER_ROLE["salesUser"],
             });
-          
+
           const options = {
             url: API_ENDPOINTS[userProfile.formSaveApi],
             method: POST,
@@ -123,13 +142,15 @@ const FormPage = () => {
           setSubmitting(true);
           dispatch(callApi(options)).then(() => {
             setSubmitting(false);
-            router("/admin");
-            setSnackbar({ open: true, message: `Submitted.` });
+            setTimeout(() => {
+              router("/admin");
+            }, 2000);
+            setSnackbar({ open: true, message: getMessage() });
           });
         } catch (error) {
           setSubmitting(false);
           setSnackbar({ open: true, message: `Submit Failed.` });
-          console.log("--- Save failed ---", error);
+          console.log("--- SUBMIT failed ---", error);
         }
       } else {
         setSubmitting(false);
@@ -148,13 +169,13 @@ const FormPage = () => {
   //   selectApiData(state, ADMIN_DASHBOARD_LOGIN)
   // );
   const handleSave = () => {
-    if(!saving) {
+    if (!saving) {
 
     } else {
       setSnackbar({ open: true, message: `Saving.` });
     }
   };
-  
+
   const handleReset = () => {
     finalizeRef.current.resetForm();
     setSnackbar({ open: true, message: `Form resetted.` });
@@ -205,12 +226,12 @@ const FormPage = () => {
             />
             <Button variant="primary" onClick={handleSubmit} disabled={submitting}>{submitting ? "Submitting..." : "Submit"}</Button>
             {
-              userProfile.formType.showSaveBtn ? (
+              userProfile?.showSaveBtn ? (
                 <Button variant="secondary" onClick={handleSave} disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
               ) : null
             }
             {
-              userProfile.formType.showResetBtn ? (
+              userProfile?.showResetBtn ? (
                 <Button variant="secondary" onClick={handleReset}>Reset</Button>
               ) : null
             }
