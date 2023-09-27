@@ -80,7 +80,6 @@ const ListingTable = ({
   const [showImgEditModal, setShowImgEditModal] = useState(false);
   const [imgEditor, setImgEditor] = useState({});
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
-  const [confirmFileDeletion, setConfirmFileDeletion] = useState(false);
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -138,7 +137,8 @@ const ListingTable = ({
   };
 
   const handleSave = (edit = false) => {
-    const formData = finalizeRef.current.finalizeData(edit);
+    const haveReqFiles = (currentRowData?.thumbnails?.length > 0) && (imgsToBeDeleted?.thumbnails?.length !== currentRowData?.thumbnails?.length);
+    const formData = finalizeRef.current.finalizeData(edit && haveReqFiles);
     if (formData) {
       try {
         const options = {
@@ -483,7 +483,7 @@ const ListingTable = ({
               </div>
             ))
           }
-          <p className="lbel">(Note: Selected files will be deleted.)</p>
+          <p className="lbel">(Note: Selected files will be deleted on save.)</p>
         </ReusablePopup>
       )}
       {!disableRowModal && showRowModal && (
