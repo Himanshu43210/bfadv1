@@ -94,7 +94,7 @@ const TableButtonHeader = ({
   };
 
   const handleSubmit = async () => {
-    const formData = finalizeRef.current();
+    const formData = finalizeRef.current.finalizeData();
     if (formData) {
       console.log("Received validated data:", formData);
       if (Object.keys(formData).length !== 0) {
