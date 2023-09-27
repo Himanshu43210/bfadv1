@@ -18,6 +18,7 @@ import {
   NEED_APPROVAL_BY,
   POST,
   PROFILE,
+  PROPERTY_DEALER,
   REJECTED,
 } from "./Const";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,7 +61,7 @@ const ListingTable = ({
   showDeleteAction,
   showColumnFilter,
 }) => {
-  const finalizeRef = useRef(null);
+    const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -79,7 +80,7 @@ const ListingTable = ({
   const [tableFilter, setTableFilter] = useState({});
   const [showImgEditModal, setShowImgEditModal] = useState(false);
   const [imgEditor, setImgEditor] = useState({});
-  const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
+  const [imgsToBeDeleted, setImgsToBeDeleted] = useState([]);
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -140,26 +141,126 @@ const ListingTable = ({
     const haveReqFiles = (currentRowData?.thumbnails?.length > 0) && (imgsToBeDeleted?.thumbnails?.length !== currentRowData?.thumbnails?.length);
     const formData = finalizeRef.current.finalizeData(edit && haveReqFiles);
     if (formData) {
-      try {
-        const options = {
-          url: API_ENDPOINTS[editApi],
-          method: POST,
-          headers: { "Content-Type": "application/json" },
-          data: { ...sanitizeFormData(formData), filesToBeDeleted: imgsToBeDeleted },
-        };
+      if (Object.keys(formData).length !== 0) {
+        try {
+          const newFormData = new FormData();
+          // for (const file of formData?.images || []) {
+          //   newFormData.append("files", file);
+          // }
+          for (const file of formData?.thumbnailFile || []) {
+            newFormData.append("thumbnailFile", file);
+          }
+          for (const file of formData?.normalImageFile || []) {
+            newFormData.append("normalImageFile", file);
+          }
+          for (const file of formData?.threeSixtyImages || []) {
+            newFormData.append("threeSixtyImages", file);
+          }
+          for (const file of formData?.layoutFile || []) {
+            newFormData.append("layoutFile", file);
+          }
+          for (const file of formData?.VideoFile || []) {
+            newFormData.append("videoFile", file);
+          }
+          for (const file of formData?.virtualFile || []) {
+            newFormData.append("virtualFile", file);
+          }
+          newFormData.append("parentId", userProfile._id);
+          newFormData.append(
+            "contactId",
+            userProfile.role === USER_ROLE[PROPERTY_DEALER]
+              ? userProfile.parentId
+              : userProfile._id
+          );
+          newFormData.append([NEED_APPROVAL_BY], userProfile.parentId);
+          newFormData.append("formData", { ...formData });
+          function isObjectNotString(value) {
+            return (
+              typeof value === "object" &&
+              !Array.isArray(value) &&
+              value !== null
+            );
+          }
+          function hasAnyProperty(object, properties) {
+            if (
+              !object ||
+              typeof object !== "object" ||
+              !properties ||
+              !Array.isArray(properties)
+            ) {
+              // Ensure that object is valid and properties is an array
+              return false;
+            }
 
-        dispatch(callApi(options))
-          .then(() => {
+            for (let i = 0; i < properties.length; i++) {
+              if (object.hasOwnProperty(properties[i])) {
+                return true; // Found at least one property
+              }
+            }
+
+            return false; // None of the properties were found
+          }
+
+          const imagesCheck = hasAnyProperty(formData, [
+            "thumbnailFile",
+            "normalImageFile",
+            "threeSixtyImages",
+            "layoutFile",
+            "VideoFile",
+            "virtualFile",
+          ]);
+
+          let checked = false;
+          function isFileList(value) {
+            return value instanceof FileList;
+          }
+          Object.keys(formData).map((element) => {
+            if (!isFileList(formData[element])) {
+              if (isObjectNotString(formData[element])) {
+                checked = true;
+                newFormData.append(element, formData[element].value);
+              } else {
+                newFormData.append(element, formData[element]);
+              }
+            }
+          });
+
+          console.log('++++++ LISTING TABLE ++++++++', imagesCheck, checked);
+          const options = {
+            url: API_ENDPOINTS[editApi],
+            method: POST,
+            headers: {
+              "Content-Type": imagesCheck
+                ? "multipart/form-data"
+                : "application/json",
+            },
+            data: imagesCheck
+              ? { ...newFormData, filesToBeDeleted: imgsToBeDeleted }
+              : sanitizeFormData({
+                ...formData,
+                parentId: userProfile._id,
+                role:
+                  userProfile.role === USER_ROLE[BF_ADMIN]
+                    ? USER_ROLE["channelPartner"]
+                    : USER_ROLE["salesUser"],
+                filesToBeDeleted: imgsToBeDeleted
+              }),
+          };
+          dispatch(callApi(options)).then(() => {
             setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
             setShowEditModal(false);
             refreshData();
-          })
-          .catch(() => {
-            setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
           });
-      } catch (error) {
-        setSnackbar({ open: true, message: `Error.`, status: -1 });
-        console.log(error);
+        } catch (error) {
+          setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
+          console.log(error);
+        }
+      } else {
+        setSnackbar({
+          open: true,
+          message: "Empty required field(s)!",
+          status: -1,
+        });
       }
     } else {
       setSnackbar({ open: true, message: `Empty required field(s).`, status: -1 });
@@ -264,7 +365,7 @@ const ListingTable = ({
     const fileFields = [
       "thumbnails",
       "normalImages",
-      "threeSixtyImages",
+      "images",
       "layouts",
       "videos",
       "virtualFiles",
@@ -288,21 +389,18 @@ const ListingTable = ({
     setShowImgEditModal(true);
   };
 
-  const handleImgsToBeDeleted = (key, link) => {
-    const newToBeDeleted = { ...imgsToBeDeleted };
-    if (isSelectedForDeletion(key, link)) {
-      newToBeDeleted[key] = newToBeDeleted[key].filter((entry) => entry !== link);
+  const handleImgsToBeDeleted = (link) => {
+    let newToBeDeleted = [...imgsToBeDeleted];
+    if (isSelectedForDeletion(link)) {
+      newToBeDeleted = newToBeDeleted.filter((entry) => entry !== link);
     } else {
-      if (!newToBeDeleted[key]) {
-        newToBeDeleted[key] = [];
-      }
-      newToBeDeleted[key].push(link);
+      newToBeDeleted.push(link);
     }
     setImgsToBeDeleted(newToBeDeleted);
   };
 
-  const isSelectedForDeletion = (key, link) => {
-    if (imgsToBeDeleted[key] && imgsToBeDeleted[key].includes(link)) {
+  const isSelectedForDeletion = (link) => {
+    if (imgsToBeDeleted.includes(link)) {
       return true;
     } else {
       return false;
@@ -367,7 +465,7 @@ const ListingTable = ({
         return "Thumbnail images";
       case "normalImages":
         return "Normal images";
-      case "threeSixtyImages":
+      case "images":
         return "360 images";
       case "layouts":
         return "Layouts";
@@ -380,6 +478,22 @@ const ListingTable = ({
     }
   };
 
+  const formatTableCell = (cellData) => {
+    // check for date
+    if (!isNaN(Date.parse(cellData)) && cellData.length > 20) {
+      return new Date(cellData).toLocaleString('default', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+    // check for true
+    if (cellData === true || cellData === "true") {
+      return "Yes";
+    }
+    // check for false
+    if (cellData === false || cellData === "false") {
+      return "No";
+    }
+    return cellData;
+  };
+
   return (
     <>
       {showEditModal && (
@@ -390,7 +504,7 @@ const ListingTable = ({
           onHide={toogleEdit}
           onCancel={toogleEdit}
         >
-          <div className="formheadingcontainer">Edit User</div>
+          <div className="formheadingcontainer">Edit</div>
           <FormBuilder
             ref={finalizeRef}
             propsFormData={currentRowData}
@@ -405,6 +519,7 @@ const ListingTable = ({
               ))
             }
           </div>
+          {imgsToBeDeleted.length > 0 && <div className="label">{imgsToBeDeleted.length} files to be deleted</div>}
         </ReusablePopup>
       )}
 
@@ -479,7 +594,7 @@ const ListingTable = ({
                 <label htmlFor={index}>
                   <img src={entry} alt={entry} width={100} height={100} />
                 </label>
-                <input id={index} type="checkbox" checked={isSelectedForDeletion(imgEditor?.selectedImgType, entry)} onChange={() => handleImgsToBeDeleted(imgEditor?.selectedImgType, entry)} />
+                <input id={index} type="checkbox" checked={isSelectedForDeletion(entry)} onChange={() => handleImgsToBeDeleted(entry)} />
               </div>
             ))
           }
@@ -599,7 +714,7 @@ const ListingTable = ({
               >
                 {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                   <td className="bodytext" key={index}>
-                    {element[allowedTableColumns[headerLabel]]}
+                    {formatTableCell(element[allowedTableColumns[headerLabel]])}
                   </td>
                 ))}
                 {!hideActions && (
