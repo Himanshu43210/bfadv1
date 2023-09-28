@@ -841,8 +841,8 @@ export const APPROVAL_PROPERTIES = {
           },
           roleSpecificDesktopHeaders: {
             [USER_ROLE.bfAdmin]: {
-              "Company Name": "channelPartnerName",
-              "Mobile Number": "channelPartnerContact",
+              "Company Name": "createdByName",
+              "Mobile Number": "createdByPhoneNumber",
               City: "city",
               "Primary Title": "title",
             },

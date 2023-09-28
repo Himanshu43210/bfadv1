@@ -42,7 +42,7 @@ const DashboardListing = ({ component }) => {
       roleSpecificDesktopHeaders={component.roleSpecificDesktopHeaders}
       disableRowModal={component.disableRowModal}
       showColumnFilter={component.showColumnFilter}
-      refreshDataApi={component.dataApi}
+      refreshDataApi={dataApi}
     />
   );
 };
