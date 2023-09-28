@@ -61,7 +61,7 @@ const ListingTable = ({
   showDeleteAction,
   showColumnFilter,
 }) => {
-    const finalizeRef = useRef(null);
+  const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -129,7 +129,7 @@ const ListingTable = ({
     try {
       const options = {
         url: refreshDataApi,
-        method: refreshMethod ? refreshMethod : POST,
+        method: onRefreshApiType || GET,
         headers: { "Content-Type": "application/json" },
         data: {},
       };
@@ -139,7 +139,7 @@ const ListingTable = ({
 
   const handleSave = (edit = false) => {
     const haveReqFiles = (currentRowData?.thumbnails?.length > 0) && (imgsToBeDeleted?.thumbnails?.length !== currentRowData?.thumbnails?.length);
-    const formData = finalizeRef.current.finalizeData(edit && haveReqFiles);
+    const formData = finalizeRef.current.finalizeData(haveReqFiles ? ["thumbnailFile"] : []);
     if (formData) {
       if (Object.keys(formData).length !== 0) {
         try {
@@ -159,7 +159,7 @@ const ListingTable = ({
           for (const file of formData?.layoutFile || []) {
             newFormData.append("layoutFile", file);
           }
-          for (const file of formData?.VideoFile || []) {
+          for (const file of formData?.videoFile || []) {
             newFormData.append("videoFile", file);
           }
           for (const file of formData?.virtualFile || []) {
@@ -206,7 +206,7 @@ const ListingTable = ({
             "normalImageFile",
             "threeSixtyImages",
             "layoutFile",
-            "VideoFile",
+            "videoFile",
             "virtualFile",
           ]);
 
@@ -225,7 +225,7 @@ const ListingTable = ({
             }
           });
           newFormData.append("filesToBeDeleted", imgsToBeDeleted);
-          
+
           const options = {
             url: API_ENDPOINTS[editApi],
             method: POST,
@@ -249,9 +249,9 @@ const ListingTable = ({
           dispatch(callApi(options)).then(() => {
             setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
             setShowEditModal(false);
-            setTimeout(()=> {
-              refreshData();
-            },1500);
+            refreshData();
+            // setTimeout(()=> {
+            // },1500);
           });
         } catch (error) {
           setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
@@ -364,6 +364,7 @@ const ListingTable = ({
   };
 
   useEffect(() => {
+    setImgsToBeDeleted([]);
     const fileFields = [
       "thumbnails",
       "normalImages",
@@ -372,14 +373,20 @@ const ListingTable = ({
       "videos",
       "virtualFiles",
     ];
+    console.log('******* current row adta **********', currentRowData);
     const currAllFiles = {};
     fileFields.forEach((field) => {
+      console.log('----- stage 1 : field -----', field);
       if (currentRowData[field]) {
+        console.log('----- stage 2 : field -----', currentRowData[field]);
         for (const link of currentRowData[field]) {
+          console.log('----- stage 3 : link -----', link);
           if (!currAllFiles[field]) {
             currAllFiles[field] = [];
           }
-          currAllFiles[field].push(link);
+          if (link && link !== "") {
+            currAllFiles[field].push(link);
+          }
         }
       }
     });
@@ -514,13 +521,17 @@ const ListingTable = ({
           />
           <div className="images-state" style={{ display: "flex" }}>
             {
-              Object.entries(imgEditor?.allFiles).map((entry) => (
-                <MuiButton variant="secondary" onClick={() => handleImgEditModal(entry[0])} style={{ width: "fit-content" }}>
-                  {entry[1]?.length} {getImageLabel(entry[0])}
-                </MuiButton>
-              ))
+              Object.entries(imgEditor?.allFiles).map((entry) => {
+                return (
+                  entry[1]?.length > 0 ? (
+                    <MuiButton variant="secondary" onClick={() => handleImgEditModal(entry[0])} style={{ width: "fit-content" }}>
+                      {entry[1]?.length} {getImageLabel(entry[0])}
+                    </MuiButton>
+                  ) : null
+                )
+              })
             }
-          </div>
+                      </div>
           {imgsToBeDeleted.length > 0 && <div className="label">{imgsToBeDeleted.length} files to be deleted</div>}
         </ReusablePopup>
       )}
@@ -594,7 +605,13 @@ const ListingTable = ({
             imgEditor?.allFiles[imgEditor?.selectedImgType].map((entry, index) => (
               <div className="img-item">
                 <label htmlFor={index}>
-                  <img src={entry} alt={entry} width={100} height={100} />
+                  {
+                    imgEditor?.selectedImgType !== "videos" ? (
+                      <img src={entry} alt={entry} width={100} height={100} />
+                    ) : (
+                      <video src={entry} alt={entry} width={100} height={100} />
+                    )
+                  }
                 </label>
                 <input id={index} type="checkbox" checked={isSelectedForDeletion(entry)} onChange={() => handleImgsToBeDeleted(entry)} />
               </div>

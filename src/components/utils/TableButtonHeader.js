@@ -116,7 +116,7 @@ const TableButtonHeader = ({
           for (const file of formData?.layoutFile || []) {
             newFormData.append("layoutFile", file);
           }
-          for (const file of formData?.VideoFile || []) {
+          for (const file of formData?.videoFile || []) {
             newFormData.append("videoFile", file);
           }
           for (const file of formData?.virtualFile || []) {
@@ -163,7 +163,7 @@ const TableButtonHeader = ({
             "normalImageFile",
             "threeSixtyImages",
             "layoutFile",
-            "VideoFile",
+            "videoFile",
             "virtualFile",
           ]);
 
