@@ -137,6 +137,24 @@ const ListingTable = ({
     } catch (error) { }
   };
 
+  const generateFormData = (formData, jsonData, parentKey) => {
+    if (jsonData && typeof jsonData === 'object' && !(jsonData instanceof Date) && !(jsonData instanceof File) && !(jsonData instanceof Blob)) {
+      Object.keys(jsonData).forEach(key => {
+        generateFormData(formData, jsonData[key], parentKey ? `${parentKey}[${key}]` : key);
+      });
+    } else {
+      const value = jsonData == null ? '' : jsonData;
+
+      formData.append(parentKey, value);
+    }
+  };
+
+  const jsonToFormData = (jsonData) => {
+    const newFormData = new FormData();
+    generateFormData(newFormData, jsonData);
+    return newFormData;
+  };
+
   const handleSave = (edit = false) => {
     const haveReqFiles = (currentRowData?.thumbnails?.length > 0) && (imgsToBeDeleted?.thumbnails?.length !== currentRowData?.thumbnails?.length);
     const formData = finalizeRef.current.finalizeData(haveReqFiles ? ["thumbnailFile"] : []);
@@ -242,25 +260,29 @@ const ListingTable = ({
           });
           newFormData.append("filesToBeDeleted", imgsToBeDeleted);
 
+          const sanitizedFormData = sanitizeFormData({ formData, filesToBeDeleted: imgsToBeDeleted });
+          const newFormData2 = jsonToFormData(sanitizedFormData);
+
           const options = {
             url: API_ENDPOINTS[editApi],
             method: POST,
             headers: {
-              "Content-Type": imagesCheck
-                ? "multipart/form-data"
-                : "application/json",
+              "Content-Type": "multipart/form-data"
+              // "Content-Type": imagesCheck
+              //   ? "multipart/form-data"
+              //   : "application/json",
             },
-            data: imagesCheck
-              ? newFormData
-              : sanitizeFormData({
-                ...formData,
-                filesToBeDeleted: imgsToBeDeleted
-                // parentId: userProfile._id,
-                // role:
-                //   userProfile.role === USER_ROLE[BF_ADMIN]
-                //     ? USER_ROLE["channelPartner"]
-                //     : USER_ROLE["salesUser"],
-              }),
+            data: newFormData
+              // ? newFormData
+              // : sanitizeFormData({
+              //   ...formData,
+              //   filesToBeDeleted: imgsToBeDeleted,
+              //   // parentId: userProfile._id,
+              //   // role:
+              //   //   userProfile.role === USER_ROLE[BF_ADMIN]
+              //   //     ? USER_ROLE["channelPartner"]
+              //   //     : USER_ROLE["salesUser"],
+              // }),
           };
           dispatch(callApi(options)).then(() => {
             setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
