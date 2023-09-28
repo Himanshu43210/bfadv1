@@ -148,27 +148,21 @@ const ListingTable = ({
           //   newFormData.append("files", file);
           // }
           for (const file of formData?.thumbnailFile || []) {
-            console.log('*** thumbnailFile ***', file);
             newFormData.append("thumbnailFile", file);
           }
           for (const file of formData?.normalImageFile || []) {
-            console.log('*** normalImageFile ***', file);
             newFormData.append("normalImageFile", file);
           }
           for (const file of formData?.threeSixtyImages || []) {
-            console.log('*** 360Images ***', file);
             newFormData.append("threeSixtyImages", file);
           }
           for (const file of formData?.layoutFile || []) {
-            console.log('*** layoutFile ***', file);
             newFormData.append("layoutFile", file);
           }
           for (const file of formData?.VideoFile || []) {
-            console.log('*** videoFile ***', file);
             newFormData.append("videoFile", file);
           }
           for (const file of formData?.virtualFile || []) {
-            console.log('*** virtualFile ***', file);
             newFormData.append("virtualFile", file);
           }
           // newFormData.append("parentId", userProfile._id);
@@ -178,7 +172,7 @@ const ListingTable = ({
           //     ? userProfile.parentId
           //     : userProfile._id
           // );
-          newFormData.append([NEED_APPROVAL_BY], userProfile.parentId);
+          // newFormData.append([NEED_APPROVAL_BY], userProfile.parentId);
           newFormData.append("formData", { ...formData });
           function isObjectNotString(value) {
             return (
@@ -244,12 +238,12 @@ const ListingTable = ({
               ? newFormData
               : sanitizeFormData({
                 ...formData,
-                parentId: userProfile._id,
-                role:
-                  userProfile.role === USER_ROLE[BF_ADMIN]
-                    ? USER_ROLE["channelPartner"]
-                    : USER_ROLE["salesUser"],
                 filesToBeDeleted: imgsToBeDeleted
+                // parentId: userProfile._id,
+                // role:
+                //   userProfile.role === USER_ROLE[BF_ADMIN]
+                //     ? USER_ROLE["channelPartner"]
+                //     : USER_ROLE["salesUser"],
               }),
           };
           dispatch(callApi(options)).then(() => {
