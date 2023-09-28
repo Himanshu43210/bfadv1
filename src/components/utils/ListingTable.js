@@ -210,6 +210,22 @@ const ListingTable = ({
             "virtualFile",
           ]);
 
+          const toRemoveFrom = [
+            "thumbnails",
+            "normalImages",
+            "images",
+            "videos",
+            "layouts",
+            "virtualFiles",
+          ];
+
+          // remove from the original file links list if includes in the delete list
+          toRemoveFrom.forEach((entry) => {
+            if (formData[entry]) {
+              formData[entry] = formData[entry].filter((link) => (!imgsToBeDeleted.includes(link)));
+            }
+          });
+
           let checked = false;
           function isFileList(value) {
             return value instanceof FileList;
@@ -531,7 +547,7 @@ const ListingTable = ({
                 )
               })
             }
-                      </div>
+          </div>
           {imgsToBeDeleted.length > 0 && <div className="label">{imgsToBeDeleted.length} files to be deleted</div>}
         </ReusablePopup>
       )}
@@ -600,7 +616,7 @@ const ListingTable = ({
       {showImgEditModal && (
         <ReusablePopup onHide={toggleImgEditor} onClose={toggleImgEditor}>
           <div className="formheadingcontainer">Edit Property {getImageLabel(imgEditor?.selectedImgType)}</div>
-          <p className="label">{imgEditor?.allFiles[imgEditor?.selectedImgType]?.length} {getImageLabel(imgEditor?.selectedImgType)} ({imgsToBeDeleted[imgEditor?.selectedImgType]?.length || 0} selected for deletion)</p>
+          <p className="label">{imgEditor?.allFiles[imgEditor?.selectedImgType]?.length} {getImageLabel(imgEditor?.selectedImgType)}</p>
           {
             imgEditor?.allFiles[imgEditor?.selectedImgType].map((entry, index) => (
               <div className="img-item">
