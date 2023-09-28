@@ -26,6 +26,8 @@ const FormPage = () => {
   const [snackbar, setSnackbar] = useState({});
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.profile);
+
+  console.log('+++++ form page : user profile +++++', useSelector((state) => state));
   
   const snackbarClose = () => {
     setSnackbar({
@@ -60,6 +62,7 @@ const FormPage = () => {
     if (!submitting) {
       const formData = finalizeRef.current.finalizeData();
       if (formData) {
+      console.log("Received validated data:", formData);
         try {
           let newFormData = new FormData();
           const fileFields = [
@@ -67,7 +70,7 @@ const FormPage = () => {
             "normalImageFile",
             "threeSixtyImages",
             "layoutFile",
-            "VideoFile",
+            "videoFile",
             "virtualFile",
           ];
 
@@ -106,7 +109,7 @@ const FormPage = () => {
               if (isObjectNotString(formData[element])) {
                 newFormData.append(
                   element,
-                  JSON.stringify(formData[element].value)
+                  formData[element].value
                 );
               } else {
                 newFormData.append(element, formData[element]);
@@ -144,7 +147,7 @@ const FormPage = () => {
             setSubmitting(false);
             setTimeout(() => {
               router("/admin");
-            }, 2000);
+            }, 1200);
             setSnackbar({ open: true, message: getMessage() });
           });
         } catch (error) {
