@@ -165,14 +165,14 @@ const ListingTable = ({
           for (const file of formData?.virtualFile || []) {
             newFormData.append("virtualFile", file);
           }
-          newFormData.append("parentId", userProfile._id);
-          newFormData.append(
-            "contactId",
-            userProfile.role === USER_ROLE[PROPERTY_DEALER]
-              ? userProfile.parentId
-              : userProfile._id
-          );
-          newFormData.append([NEED_APPROVAL_BY], userProfile.parentId);
+          // newFormData.append("parentId", userProfile._id);
+          // newFormData.append(
+          //   "contactId",
+          //   userProfile.role === USER_ROLE[PROPERTY_DEALER]
+          //     ? userProfile.parentId
+          //     : userProfile._id
+          // );
+          // newFormData.append([NEED_APPROVAL_BY], userProfile.parentId);
           newFormData.append("formData", { ...formData });
           function isObjectNotString(value) {
             return (
@@ -224,8 +224,8 @@ const ListingTable = ({
               }
             }
           });
-
-          console.log('++++++ LISTING TABLE ++++++++', imagesCheck, checked);
+          newFormData.append("filesToBeDeleted", imgsToBeDeleted);
+          
           const options = {
             url: API_ENDPOINTS[editApi],
             method: POST,
@@ -235,21 +235,23 @@ const ListingTable = ({
                 : "application/json",
             },
             data: imagesCheck
-              ? { ...newFormData, filesToBeDeleted: imgsToBeDeleted }
+              ? newFormData
               : sanitizeFormData({
                 ...formData,
-                parentId: userProfile._id,
-                role:
-                  userProfile.role === USER_ROLE[BF_ADMIN]
-                    ? USER_ROLE["channelPartner"]
-                    : USER_ROLE["salesUser"],
                 filesToBeDeleted: imgsToBeDeleted
+                // parentId: userProfile._id,
+                // role:
+                //   userProfile.role === USER_ROLE[BF_ADMIN]
+                //     ? USER_ROLE["channelPartner"]
+                //     : USER_ROLE["salesUser"],
               }),
           };
           dispatch(callApi(options)).then(() => {
             setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
             setShowEditModal(false);
-            refreshData();
+            setTimeout(()=> {
+              refreshData();
+            },1500);
           });
         } catch (error) {
           setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
