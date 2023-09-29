@@ -19,7 +19,7 @@ export default function SearchCard({
   disableOnClickNavigate = false,
 }) {
   const cardDetailUrl = `${onClickNavigate}?title=${element.title?.replaceAll(
-    " ",
+      " ",
     "-"
   )}&id=${element._id}`;
   const handleShareClick = () => {
@@ -130,7 +130,7 @@ export default function SearchCard({
                 api={onClickApi}
                 buttonLabel={`₹ ${element.price / 10000000} Cr.`}
                 queryParams={{ id: element._id }}
-                navigate={cardDetailUrl}
+                navigate={!disableOnClickNavigate ? cardDetailUrl : null}
               />
               <Typography fontWeight="lg">View Details {">>"}</Typography>
             </div>
