@@ -81,7 +81,7 @@ const ListingTable = ({
   const [showImgEditModal, setShowImgEditModal] = useState(false);
   const [imgEditor, setImgEditor] = useState({});
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState([]);
-  const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
+    const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
   const dispatch = useDispatch();
@@ -162,9 +162,7 @@ const ListingTable = ({
       if (Object.keys(formData).length !== 0) {
         try {
           const newFormData = new FormData();
-          // for (const file of formData?.images || []) {
-          //   newFormData.append("files", file);
-          // }
+
           for (const file of formData?.thumbnailFile || []) {
             newFormData.append("thumbnailFile", file);
           }
@@ -183,15 +181,8 @@ const ListingTable = ({
           for (const file of formData?.virtualFile || []) {
             newFormData.append("virtualFile", file);
           }
-          // newFormData.append("parentId", userProfile._id);
-          // newFormData.append(
-          //   "contactId",
-          //   userProfile.role === USER_ROLE[PROPERTY_DEALER]
-          //     ? userProfile.parentId
-          //     : userProfile._id
-          // );
-          // newFormData.append([NEED_APPROVAL_BY], userProfile.parentId);
           newFormData.append("formData", { ...formData });
+
           function isObjectNotString(value) {
             return (
               typeof value === "object" &&
@@ -263,33 +254,26 @@ const ListingTable = ({
           const sanitizedFormData = sanitizeFormData({ formData, filesToBeDeleted: imgsToBeDeleted });
           const newFormData2 = jsonToFormData(sanitizedFormData);
 
+          // form data for edit property and json data for edit user
+          const isPropertyEdit = API_ENDPOINTS[editApi].includes("editProperty");
           const options = {
             url: API_ENDPOINTS[editApi],
             method: POST,
             headers: {
-              "Content-Type": "multipart/form-data"
-              // "Content-Type": imagesCheck
-              //   ? "multipart/form-data"
-              //   : "application/json",
+              "Content-Type": isPropertyEdit
+                ? "multipart/form-data"
+                : "application/json",
             },
-            data: newFormData
-              // ? newFormData
-              // : sanitizeFormData({
-              //   ...formData,
-              //   filesToBeDeleted: imgsToBeDeleted,
-              //   // parentId: userProfile._id,
-              //   // role:
-              //   //   userProfile.role === USER_ROLE[BF_ADMIN]
-              //   //     ? USER_ROLE["channelPartner"]
-              //   //     : USER_ROLE["salesUser"],
-              // }),
+            data: isPropertyEdit
+            ? newFormData
+            : sanitizeFormData({
+              ...formData,
+            }),
           };
           dispatch(callApi(options)).then(() => {
             setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
             setShowEditModal(false);
             refreshData();
-            // setTimeout(()=> {
-            // },1500);
           });
         } catch (error) {
           setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
