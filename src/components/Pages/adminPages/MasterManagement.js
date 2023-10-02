@@ -26,7 +26,11 @@ export default function UserManagement() {
     Label: "fieldLabel",
     Value: "fieldValue",
   };
-  const mobileHeaders = [{ Name: "name" }, { Role: "role" }];
+  const mobileHeaders = {
+    Field: "fieldName",
+    Label: "fieldLabel",
+    Value: "fieldValue",
+  };
   const fieldConst = newMasterConst;
   let tableData = useSelector((state) => selectApiData(state, GET_MASTER_DATA));
   const userProfile = useSelector((state) => state.profile);
@@ -38,46 +42,45 @@ export default function UserManagement() {
     <>
       {!tableData && <AutoFetchApi url={dataApi} method={GET} />}
       {apiStatus === LOADING ? (
-        <CircularProgress className="loader-class" />
+        <div className="loading-class">
+          <CircularProgress className="loader-class" />
+        </div>
       ) : (
-        <div>
-          <div>
-            <Navbar />
-            <Card>
-              <Card.Header className="font">User Details</Card.Header>
-              <Card.Body>
-                <TableButtonHeader
-                  fieldConst={fieldConst}
-                  tableData={_.cloneDeep(tableData?.data || [])}
-                  saveDataApi={ALTER_MASTER_DATA}
-                  refreshDataApi={dataApi}
-                  addHeader="Add Master Data"
-                  refreshMethod={GET}
-                />
-                <ListingTable
-                  headersDesktop={desktopHeaders}
-                  headersMobile={mobileHeaders}
-                  fieldConst={fieldConst}
-                  editApi={ALTER_MASTER_DATA}
-                  deleteApi={DELETE_MASTER_DATA}
-                  getDataApi={GET_MASTER_DATA}
-                  filterDataUrl={dataApi}
-                  itemCount={tableData?.itemCount}
-                  refreshDataApi={dataApi}
-                  refreshMethod={GET}
-                />
-                <CustomRouteButton
-                  component={{
-                    type: ROUTE_BUTTON,
-                    className: "admin-route-button",
-                    label: "Go to Dashboard",
-                    name: "Go to Dashboard",
-                    route: "/admin",
-                  }}
-                />
-              </Card.Body>
-            </Card>
-          </div>
+        <div className="standalone_page master_management_page">
+          <Card>
+            <Card.Header className="card_header font">User Details</Card.Header>
+            <Card.Body className="card_body">
+              <TableButtonHeader
+                fieldConst={fieldConst}
+                tableData={_.cloneDeep(tableData?.data || [])}
+                saveDataApi={ALTER_MASTER_DATA}
+                refreshDataApi={dataApi}
+                addHeader="Add Master Data"
+                refreshMethod={GET}
+              />
+              <ListingTable
+                headersDesktop={desktopHeaders}
+                headersMobile={mobileHeaders}
+                fieldConst={fieldConst}
+                editApi={ALTER_MASTER_DATA}
+                deleteApi={DELETE_MASTER_DATA}
+                getDataApi={GET_MASTER_DATA}
+                filterDataUrl={dataApi}
+                itemCount={tableData?.itemCount}
+                refreshDataApi={dataApi}
+                refreshMethod={GET}
+              />
+              <CustomRouteButton
+                component={{
+                  type: ROUTE_BUTTON,
+                  className: "admin-route-button",
+                  label: "Go to Dashboard",
+                  name: "Go to Dashboard",
+                  route: "/admin",
+                }}
+              />
+            </Card.Body>
+          </Card>
         </div>
       )}
     </>

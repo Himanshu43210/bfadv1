@@ -28,7 +28,7 @@ export default function UserManagement() {
     Role: "role",
     "Parent Id": "parentId",
   };
-  const mobileHeaders = [{ Name: "name" }, { Role: "role" }];
+  const mobileHeaders = { Name: "name", Role: "role" };
   const fieldConst = newUserConst;
   let tableData = useSelector((state) => selectApiData(state, GET_USER_DATA));
   const userProfile = useSelector((state) => state.profile);
@@ -40,35 +40,34 @@ export default function UserManagement() {
     <>
       {!tableData && <AutoFetchApi url={dataApi} method={GET} />}
       {apiStatus === LOADING ? (
-        <CircularProgress className="loader-class" />
+        <div className="loading-class">
+          <CircularProgress className="loader-class" />
+        </div>
       ) : (
-        <div>
-          <div>
-            <Navbar />
-            <Card>
-              <Card.Header className="font">User Details</Card.Header>
-              <Card.Body>
-                <TableButtonHeader
-                  fieldConst={fieldConst}
-                  tableData={_.cloneDeep(tableData?.data || [])}
-                  saveDataApi={ALTER_USER_DATA}
-                  refreshDataApi={dataApi}
-                  addHeader="Add User"
-                />
-                <ListingTable
-                  headersDesktop={desktopHeaders}
-                  headersMobile={mobileHeaders}
-                  fieldConst={fieldConst}
-                  editApi={ALTER_USER_DATA}
-                  deleteApi={DELETE_USER_DATA}
-                  getDataApi={GET_ADMIN_USER_DATA}
-                  filterDataUrl={dataApi}
-                  itemCount={tableData?.itemCount}
-                  refreshDataApi={dataApi}
-                />
-              </Card.Body>
-            </Card>
-          </div>
+        <div className="sub_page user_management_page">
+          <Card>
+            <Card.Header className="card_header font">User Details</Card.Header>
+            <Card.Body className="card_body">
+              <TableButtonHeader
+                fieldConst={fieldConst}
+                tableData={_.cloneDeep(tableData?.data || [])}
+                saveDataApi={ALTER_USER_DATA}
+                refreshDataApi={dataApi}
+                addHeader="Add User"
+              />
+              <ListingTable
+                headersDesktop={desktopHeaders}
+                headersMobile={mobileHeaders}
+                fieldConst={fieldConst}
+                editApi={ALTER_USER_DATA}
+                deleteApi={DELETE_USER_DATA}
+                getDataApi={GET_ADMIN_USER_DATA}
+                filterDataUrl={dataApi}
+                itemCount={tableData?.itemCount}
+                refreshDataApi={dataApi}
+              />
+            </Card.Body>
+          </Card>
         </div>
       )}
     </>

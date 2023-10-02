@@ -94,255 +94,278 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
       <div className="formcontainer">
         {fields.map((field) => (
           <div key={field.name} className={`subform ${field.parentclassName}`}>
-            <div className="lablediv">
-              <label className="lbel" htmlFor={field.name}>
-                {field.label}
-              </label>
-            </div>
+            <div className={`label_and_input_wrapper ${field.type === "textarea" ? 'textarea_wrapper' : ''}`}>
+              <div className="lablediv">
+                <label className="lbel" htmlFor={field.name}>
+                  {field.label}:
+                </label>
+              </div>
 
-            <div className="inputdiv">
-              {/* ... (Other input types can be added similarly) */}
-              {field.type === TEXT && (
-                <input
-                  className="inputtag"
-                  type={TEXT}
-                  disabled={field.disabled}
-                  id={field.name}
-                  name={field.name}
-                  value={formData[field.name] || ""}
-                  onChange={(e) => handleChange(field, e.target.value)}
-                  required={field.isRequired}
-                />
-              )}
-
-              {field.type === EMAIL && (
-                <input
-                  className="inputtag"
-                  type={EMAIL}
-                  id={field.name}
-                  name={field.name}
-                  value={formData[field.name] || ""}
-                  onChange={(e) => handleChange(field, e.target.value)}
-                  required={field.isRequired}
-                />
-              )}
-
-              {field.type === "phoneOTP" && (
-                <div className="phone-otp-button">
-                  <label
-                    onClick={() => {
-                      // handleSendOtp();
-                      // configureCaptcha();
-                    }}
-                  >
-                    Send Otp
-                  </label>
-                  <div id="recaptcha-container"></div>
+              <div className="inputdiv">
+                {/* ... (Other input types can be added similarly) */}
+                {field.type === TEXT && (
                   <input
-                    className="inputtag"
+                    className="inputtag input_elem normal_input"
                     type={TEXT}
+                    disabled={field.disabled}
                     id={field.name}
                     name={field.name}
-                    value={
-                      formData[field.name] || formData[field.dataKey] || ""
-                    }
+                    value={formData[field.name] || ""}
                     onChange={(e) => handleChange(field, e.target.value)}
                     required={field.isRequired}
                   />
-                </div>
-              )}
-              {field.type === "emailOtp" && (
-                <div className="phone-otp-button">
-                  <label
-                    onClick={() => {
-                      // handleSendOtpMail();
-                    }}
-                  >
-                    Send Otp on Mail
-                  </label>
+                )}
+
+                {field.type === EMAIL && (
                   <input
-                    className="inputtag"
+                    className="inputtag input_elem normal_input"
                     type={EMAIL}
                     id={field.name}
                     name={field.name}
-                    value={
-                      formData[field.name] || formData[field.dataKey] || ""
-                    }
+                    value={formData[field.name] || ""}
                     onChange={(e) => handleChange(field, e.target.value)}
                     required={field.isRequired}
                   />
-                </div>
-              )}
-              {field.type === "password" && (
-                <input
-                  className="inputtag"
-                  type="password"
-                  id={field.name}
-                  name={field.name}
-                  value={formData[field.name] || formData[field.dataKey] || ""}
-                  onChange={(e) => handleChange(field, e.target.value)}
-                  required={field.isRequired}
-                />
-              )}
-              {field.type === "textarea" && (
-                <textarea
-                  className="inputtag"
-                  id={field.name}
-                  name={field.name}
-                  value={formData[field.name] || formData[field.dataKey] || ""}
-                  onChange={(e) => handleChange(field, e.target.value)}
-                  required={field.isRequired}
-                />
-              )}
-              {field.type === "select" && (
-                <Select
-                  className="inputtag"
-                  id={field.name}
-                  name={field.name}
-                  value={
-                    (formData[field.name] &&
-                      (typeof formData[field.name] === "string"
-                        ? {
-                          label: formData[field.name],
-                          value: formData[field.name],
-                        }
-                        : formData[field.name])) ||
-                    field.defaultOption
-                  }
-                  options={field.options || masterData[field.name]}
-                  styles={{
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      width: "auto",
-                      display: "flex",
-                      alignItems: "center",
-                      border: state.isFocused ? baseStyles.border : "gray",
-                      borderBottom: "1px solid #ccc",
-                      borderRadius: state.isFocused
-                        ? baseStyles.borderRadius
-                        : "",
-                      textAlign: "center",
-                    }),
-                  }}
-                  onChange={(selectedOption) => {
-                    handleChange(field, selectedOption || null);
-                  }}
-                  closeMenuOnSelect={!field.isMulti}
-                  required={field.isRequired}
-                  isMulti={field.isMulti}
-                />
-              )}
-              {field.type === "radio" && (
-                <div className="radio-button-styling">
-                  {field.options.map((option) => (
-                    <label key={option.value}>
-                      <input
-                        className="inputtag"
-                        type="radio"
-                        name={field.name}
-                        value={option.value}
-                        checked={
-                          (formData[field.name] &&
-                            formData[field.name] === option.value) ||
-                          formData[field.dataKey] === option.value
-                        }
-                        onChange={() => handleChange(field, option.value)}
-                        required={field.isRequired}
-                      />
-                      {option.label}
+                )}
+
+                {field.type === "phoneOTP" && (
+                  <div className="phone-otp-button">
+                    <label
+                      onClick={() => {
+                        // handleSendOtp();
+                        // configureCaptcha();
+                      }}
+                    >
+                      Send Otp
                     </label>
-                  ))}
-                </div>
-              )}
-              {field.type === "file" && (
-                <input
-                  type="file"
-                  name={field.name}
-                  multiple
-                  onChange={(e) => handleChange(field, e.target.files)}
-                  accept={field?.acceptedFileTypes}
-                />
-              )}
-              {field.type === "price" && (
-                <div className={field.className}>
-                  {console.log(field.name)}
+                    <div id="recaptcha-container"></div>
+                    <input
+                      className="inputtag input_elem normal_input"
+                      type={TEXT}
+                      id={field.name}
+                      name={field.name}
+                      value={
+                        formData[field.name] || formData[field.dataKey] || ""
+                      }
+                      onChange={(e) => handleChange(field, e.target.value)}
+                      required={field.isRequired}
+                    />
+                  </div>
+                )}
+                {field.type === "emailOtp" && (
+                  <div className="phone-otp-button">
+                    <label
+                      onClick={() => {
+                        // handleSendOtpMail();
+                      }}
+                    >
+                      Send Otp on Mail
+                    </label>
+                    <input
+                      className="inputtag input_elem normal_input"
+                      type={EMAIL}
+                      id={field.name}
+                      name={field.name}
+                      value={
+                        formData[field.name] || formData[field.dataKey] || ""
+                      }
+                      onChange={(e) => handleChange(field, e.target.value)}
+                      required={field.isRequired}
+                    />
+                  </div>
+                )}
+                {field.type === "password" && (
                   <input
-                    className="inputtag"
-                    type="text"
-                    disabled={field.disabled}
-                    id={`${field.name}-crore`}
-                    name={`${field.name}-crore`}
-                    value={Math.floor((formData[field.name] || 0) / 10000000)}
-                    onChange={(e) =>
-                      handleCurrencyChange(field, formData[field.name] || 0)(
-                        e,
-                        "crore"
-                      )
-                    }
+                    className="inputtag input_elem normal_input"
+                    type="password"
+                    id={field.name}
+                    name={field.name}
+                    value={formData[field.name] || formData[field.dataKey] || ""}
+                    onChange={(e) => handleChange(field, e.target.value)}
                     required={field.isRequired}
                   />
-                  <label>Cr</label>
-                  <input
-                    className="inputtag"
-                    type="text"
-                    disabled={field.disabled}
-                    id={`${field.name}-lakh`}
-                    name={`${field.name}-lakh`}
-                    value={((formData[field.name] || 0) % 10000000) / 100000}
-                    onChange={(e) =>
-                      handleCurrencyChange(field, formData[field.name] || 0)(
-                        e,
-                        "lakh"
-                      )
-                    }
+                )}
+                {field.type === "textarea" && (
+                  <textarea
+                    className="inputtag input_elem textarea"
+                    id={field.name}
+                    name={field.name}
+                    value={formData[field.name] || formData[field.dataKey] || ""}
+                    onChange={(e) => handleChange(field, e.target.value)}
                     required={field.isRequired}
                   />
-                  <label>Lakh</label>
-                </div>
-              )}
-              {field.type === "size" && (
-                <div className={field.className}>
-                  <input
-                    className="inputtag"
-                    type={TEXT}
-                    disabled={field.disabled}
+                )}
+                {field.type === "select" && (
+                  <Select
+                    className="inputtag input_elem"
                     id={field.name}
                     name={field.name}
                     value={
-                      formData[field.name] || formData[field.dataKey] || ""
-                    }
-                    onChange={(e) => {
-                      handleChange(field, e.target.value);
-                    }}
-                    required={field.isRequired}
-                  />
-                  <Select
-                    className="inputtag"
-                    id={field.nameType}
-                    name={field.nameType}
-                    value={
-                      (formData[field.nameType] &&
-                        (typeof formData[field.nameType] === "string"
+                      (formData[field.name] &&
+                        (typeof formData[field.name] === "string"
                           ? {
-                            label: formData[field.nameType],
-                            value: formData[field.nameType],
+                            label: formData[field.name],
+                            value: formData[field.name],
                           }
-                          : formData[field.nameType])) ||
+                          : formData[field.name])) ||
                       field.defaultOption
                     }
                     options={field.options || masterData[field.name]}
-                    onChange={(selectedOption) =>
-                      handleChange(
-                        { ...field, name: field.nameType },
-                        selectedOption || null
-                      )
-                    }
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        width: "auto",
+                        display: "flex",
+                        alignItems: "center",
+                        border: state.isFocused ? baseStyles.border : "gray",
+                        borderBottom: "1px solid #ccc",
+                        borderRadius: state.isFocused
+                          ? baseStyles.borderRadius
+                          : "",
+                        textAlign: "left",
+                      }),
+                    }}
+                    onChange={(selectedOption) => {
+                      handleChange(field, selectedOption || null);
+                    }}
+                    closeMenuOnSelect={!field.isMulti}
                     required={field.isRequired}
+                    isMulti={field.isMulti}
                   />
-                </div>
-              )}
-              {fieldErrors[field.name] && <p>{fieldErrors[field.name]}</p>}
+                )}
+                {field.type === "radio" && (
+                  <div className="radio-button-styling radio_options_list">
+                    {field.options.map((option) => (
+                      <label key={option.value} className="radio_option_label">
+                        <input
+                          className="inputtag normal_input"
+                          type="radio"
+                          name={field.name}
+                          value={option.value}
+                          checked={
+                            (formData[field.name] &&
+                              formData[field.name] === option.value) ||
+                            formData[field.dataKey] === option.value
+                          }
+                          onChange={() => handleChange(field, option.value)}
+                          required={field.isRequired}
+                        />
+                        {option.label}
+                      </label>
+                    ))}
+                  </div>
+                )}
+                {field.type === "file" && (
+                  <input
+                    className="file_input"
+                    type="file"
+                    name={field.name}
+                    multiple
+                    onChange={(e) => handleChange(field, e.target.files)}
+                    accept={field?.acceptedFileTypes}
+                  />
+                )}
+                {field.type === "price" && (
+                  <div className={`price_inputs ${field.className}`}>
+                    {console.log(field.name)}
+                    <div className="price_unit">
+                      <input
+                        className="inputtag input_elem normal_input number_input"
+                        type="text"
+                        disabled={field.disabled}
+                        id={`${field.name}-crore`}
+                        name={`${field.name}-crore`}
+                        value={Math.floor((formData[field.name] || 0) / 10000000)}
+                        onChange={(e) =>
+                          handleCurrencyChange(field, formData[field.name] || 0)(
+                            e,
+                            "crore"
+                          )
+                        }
+                        required={field.isRequired}
+                      />
+                      <label>Cr</label>
+                    </div>
+                    <div className="price_unit">
+                      <input
+                        className="inputtag input_elem normal_input number_input"
+                        type="text"
+                        disabled={field.disabled}
+                        id={`${field.name}-lakh`}
+                        name={`${field.name}-lakh`}
+                        value={((formData[field.name] || 0) % 10000000) / 100000}
+                        onChange={(e) =>
+                          handleCurrencyChange(field, formData[field.name] || 0)(
+                            e,
+                            "lakh"
+                          )
+                        }
+                        required={field.isRequired}
+                      />
+                      <label>Lakh</label>
+                    </div>
+                  </div>
+                )}
+                {field.type === "size" && (
+                  <div className={`size_input_wrapper ${field.className}`}>
+                    <input
+                      className="inputtag input_elem normal_input number_input"
+                      type={TEXT}
+                      disabled={field.disabled}
+                      id={field.name}
+                      name={field.name}
+                      value={
+                        formData[field.name] || formData[field.dataKey] || ""
+                      }
+                      onChange={(e) => {
+                        handleChange(field, e.target.value);
+                      }}
+                      required={field.isRequired}
+                    />
+                    <Select
+                      className="inputtag input_elem"
+                      id={field.nameType}
+                      name={field.nameType}
+                      value={
+                        (formData[field.nameType] &&
+                          (typeof formData[field.nameType] === "string"
+                            ? {
+                              label: formData[field.nameType],
+                              value: formData[field.nameType],
+                            }
+                            : formData[field.nameType])) ||
+                        field.defaultOption
+                      }
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          width: "auto",
+                          display: "flex",
+                          alignItems: "center",
+                          border: state.isFocused ? baseStyles.border : "gray",
+                          borderBottom: "1px solid #ccc",
+                          borderRadius: state.isFocused
+                            ? baseStyles.borderRadius
+                            : "",
+                          textAlign: "left",
+                        }),
+                      }}
+                      options={field.options || masterData[field.name]}
+                      onChange={(selectedOption) =>
+                        handleChange(
+                          { ...field, name: field.nameType },
+                          selectedOption || null
+                        )
+                      }
+                      required={field.isRequired}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
+            <span className="input_validation_error_msg">
+              {fieldErrors[field.name] && <p>{fieldErrors[field.name]}</p>}
+            </span>
           </div>
         ))}
       </div>

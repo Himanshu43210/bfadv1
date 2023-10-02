@@ -28,7 +28,7 @@ const FormPage = () => {
   const userProfile = useSelector((state) => state.profile);
 
   console.log('+++++ form page : user profile +++++', useSelector((state) => state));
-  
+
   const snackbarClose = () => {
     setSnackbar({
       open: false,
@@ -62,7 +62,7 @@ const FormPage = () => {
     if (!submitting) {
       const formData = finalizeRef.current.finalizeData();
       if (formData) {
-      console.log("Received validated data:", formData);
+        console.log("Received validated data:", formData);
         try {
           let newFormData = new FormData();
           const fileFields = [
@@ -216,7 +216,7 @@ const FormPage = () => {
     <>
       {check && (
         <>
-          <div>
+          <div className="standalone_page form_page">
             <div className="formheadingcontainer">{userProfile.formName}</div>
             <FormBuilder
               ref={finalizeRef}
@@ -227,17 +227,19 @@ const FormPage = () => {
                   : {}
               }
             />
-            <Button variant="primary" onClick={handleSubmit} disabled={submitting}>{submitting ? "Submitting..." : "Submit"}</Button>
-            {
-              userProfile?.showSaveBtn ? (
-                <Button variant="secondary" onClick={handleSave} disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
-              ) : null
-            }
-            {
-              userProfile?.showResetBtn ? (
-                <Button variant="secondary" onClick={handleReset}>Reset</Button>
-              ) : null
-            }
+            <div className="form_controls_wrapper">
+              <Button variant="contained" onClick={handleSubmit} disabled={submitting} className="save_btn">{submitting ? "Submitting..." : "Submit"}</Button>
+              {
+                userProfile?.showSaveBtn ? (
+                  <Button variant="secondary" onClick={handleSave} disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
+                ) : null
+              }
+              {
+                userProfile?.showResetBtn ? (
+                  <Button variant="secondary" onClick={handleReset}>Reset</Button>
+                ) : null
+              }
+            </div>
             <CustomRouteButton
               component={{
                 type: ROUTE_BUTTON,

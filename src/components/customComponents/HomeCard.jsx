@@ -22,7 +22,7 @@ export default function HomeCard({
   const navigateTo = useNavigate();
   return (
     <Card
-      className={classname}
+      className={`home-card ${classname}`}
       onClick={() => {
         if (!disableOnClickNavigate)
           navigateTo(
@@ -32,22 +32,23 @@ export default function HomeCard({
             )}&id=${element._id}`
           );
       }}
-      sx={{
-        maxWidth: "345px",
-        width: "auto",
-        minHeight: "auto",
-        marginTop: "0px",
-      }}
+    // sx={{
+    //   maxWidth: "345px",
+    //   width: "auto",
+    //   minHeight: "auto",
+    //   marginTop: "0px",
+    // }}
     >
       <CardActionArea>
         <CardMedia
           component="img"
           height="100"
-          image={element.thumbnails}
+          image={element.thumbnails[0]}
           // image = "https://builderfloors.s3.ap-south-1.amazonaws.com/upload/photos/A329ASL1/1st%20Floor/NORMAL/THUMBNAIL.jpg"
           alt={element.title}
+          className="thumbnail"
         />
-        <CardMedia
+        {/* <CardMedia
           // image = "https://builderfloors.s3.ap-south-1.amazonaws.com/upload/photos/A329ASL1/1st%20Floor/NORMAL/THUMBNAIL.jpg"
           component="img"
           image={
@@ -55,16 +56,16 @@ export default function HomeCard({
           }
           className="360-image-icon"
           alt={"360-image-icon"}
-        />
-        <CardContent style={{ flexDirection: "column", alignItems: "center" }}>
-          <Typography gutterBottom variant="h6" component="div">
+        /> */}
+        <CardContent className="home_card_content">
+          <Typography gutterBottom variant="h6" component="div" className="title">
             {element?.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.primary" className="location">
             {element?.sectorNumber}
           </Typography>
-          <div>
-            <div>
+          <div className="details_list">
+            <div className="list_item">
               <img
                 src="https://builder-floor-flax.vercel.app/assets/imgs/icons/home.svg"
                 alt="img"
@@ -72,11 +73,11 @@ export default function HomeCard({
                 height="20px"
                 width="20px"
               />
-              <Typography variant="body2" className="homecardtext">
-                {element?.accommodation}{" "}
+              <Typography variant="body2" className="homecardtext" color="text.secondary">
+                {element?.accommodation}
               </Typography>
             </div>
-            <div>
+            <div className="list_item">
               <img
                 src="https://builder-floor-flax.vercel.app/assets/imgs/page/homepage5/floor.svg"
                 alt="img"
@@ -84,9 +85,9 @@ export default function HomeCard({
                 height="20px"
                 width="20px"
               />
-              <Typography variant="body2">{element?.floor}</Typography>
+              <Typography variant="body2" color="text.secondary">{element?.floor}</Typography>
             </div>
-            <div>
+            <div className="list_item">
               <img
                 src="https://builder-floor-flax.vercel.app/assets/imgs/icons/area-svg.svg"
                 alt="img"
@@ -94,19 +95,12 @@ export default function HomeCard({
                 height="20px"
                 width="20px"
               />
-              <Typography variant="body2">{element?.size}Sq.Yd.</Typography>
+              <Typography variant="body2" color="text.secondary">{element?.size}Sq.Yd.</Typography>
             </div>
           </div>
         </CardContent>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "20px",
-            paddingInline: "16px",
-          }}
-        >
+        <div className="ratings_and_price">
           <Rating
             name="home-card-fixed-rating"
             value={element?.raiting || 5}
@@ -122,6 +116,7 @@ export default function HomeCard({
               " ",
               "-"
             )}&id=${element._id}`}
+            btnClass="btn price_btn"
           />
         </div>
       </CardActionArea>

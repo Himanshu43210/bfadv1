@@ -258,14 +258,14 @@ const TableButtonHeader = ({
           onHide={toogleNewPopup}
           onCancel={toogleNewPopup}
         >
-          <div className="formheadingcontainer">{addHeader}</div>
+          <h2 className="formheadingcontainer">{addHeader}</h2>
           <FormBuilder ref={finalizeRef} fields={fieldConst} />
         </ReusablePopup>
       ) : null}
       {importPopup ? (
         <ReusablePopup onHide={toogleUploadPopup} onCancel={toogleUploadPopup}>
           <div className="container">
-            <h2 className="lbel">You Can Upload Your Files over Here</h2>
+            <h2 className="formheadingcontainer">You Can Upload Your Files over Here</h2>
             <CSVUpload />
             {/* <Button variant="success" class="btnclass">
               Upload File
@@ -276,14 +276,14 @@ const TableButtonHeader = ({
       {exportPopup ? (
         <ReusablePopup onHide={toogleExportPopup}>
           <div class="container">
-            <p className="lbel">Export Table Data into Excel</p>
+            <div className="formheadingcontainer">Export Table Data into Excel</div>
             <Button variant="success" onClick={handleExportClick}>
               Export to Excel
             </Button>
           </div>
         </ReusablePopup>
       ) : null}
-      <div>
+      <div className="header_btns_list">
         <Button class="btn" variant="success" onClick={toogleNewPopup}>
           <FaUserPlus />
           &nbsp;&nbsp; ADD

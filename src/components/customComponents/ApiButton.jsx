@@ -9,6 +9,7 @@ export default function ApiButton({
   data,
   buttonLabel,
   navigate,
+  btnClass
 }) {
   const apiHeader = { "Content-Type": "application/json" };
   const navigateTo = useNavigate();
@@ -27,7 +28,7 @@ export default function ApiButton({
       {apiType === GET && (
         <ApiHandler method={GET} url={api} params={data}>
           {(doFetch) => (
-            <button onClick={() => handleApiCall(doFetch)}>
+            <button className={`api_btn ${btnClass}`} onClick={() => handleApiCall(doFetch)}>
               {buttonLabel}
             </button>
           )}
@@ -37,7 +38,7 @@ export default function ApiButton({
       {apiType === POST && (
         <ApiHandler method={POST} url={api} data={data} headers={apiHeader}>
           {(doFetch) => (
-            <button onClick={() => handleApiCall(doFetch)}>
+            <button className={`api_btn ${btnClass}`} onClick={() => handleApiCall(doFetch)}>
               {buttonLabel}
             </button>
           )}
@@ -47,7 +48,7 @@ export default function ApiButton({
       {apiType === PUT && (
         <ApiHandler method={PUT} url={api} data={data} headers={apiHeader}>
           {(doFetch) => (
-            <button onClick={() => handleApiCall(doFetch)}>
+            <button className={`api_btn ${btnClass}`} onClick={() => handleApiCall(doFetch)}>
               {buttonLabel}
             </button>
           )}
@@ -57,7 +58,7 @@ export default function ApiButton({
       {apiType === DELETE && (
         <ApiHandler method={DELETE} url={api}>
           {(doFetch) => (
-            <button onClick={() => handleApiCall(doFetch)}>
+            <button className={`api_btn ${btnClass}`} onClick={() => handleApiCall(doFetch)}>
               {buttonLabel}
             </button>
           )}

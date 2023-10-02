@@ -57,10 +57,10 @@ function CSVUpload() {
 
   return (
     <div>
-      <form>
-        <input type="file" accept=".csv" onChange={handleFileUpload} />
-        <button type="submit">Submit</button>
-        <div>{validationMessage}</div>
+      <form className='upload_form'>
+        <input type="file" accept=".csv" onChange={handleFileUpload} className='file_input' />
+        <button type="submit" className='btn save_btn'>Submit</button>
+        <div className='input_validation_error_msg'>{validationMessage}</div>
       </form>
     </div>
   );

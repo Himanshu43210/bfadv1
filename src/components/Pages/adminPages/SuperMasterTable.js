@@ -6,7 +6,7 @@ import RenderComponent from "../../customComponents/ComponentRenderer";
 export default function PropertyManagement() {
   return (
     <>
-      <div style={{ marginTop: "100px" }}>
+      <div className="standalone_page master_table_page">
         <RenderComponent jsonToRender={AD_MASTER_TABLE} />
       </div>
     </>

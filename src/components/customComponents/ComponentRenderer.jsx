@@ -5,7 +5,7 @@ export default function RenderComponent({ jsonToRender }) {
   const renderComponent = (componentList) => {
     return componentList?.map((component) => {
       return (
-        <div className={component?.className} key={component.name}>
+        <div className={`component_wrapper ${component?.className}`} key={component.name}>
           <ComponentSelector key={component.name} component={component} />
         </div>
       );

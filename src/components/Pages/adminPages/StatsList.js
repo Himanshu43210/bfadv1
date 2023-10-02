@@ -6,7 +6,7 @@ import { STATS_LIST } from "../../../UserJson";
 export default function StatsListing() {
   return (
     <>
-      <div style={{ marginTop: "100px" }}>
+      <div className={`standalone_page stats_page`}>
         <RenderComponent jsonToRender={STATS_LIST} />
       </div>
     </>
