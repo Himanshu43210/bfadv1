@@ -74,10 +74,14 @@ export default function DetailDataCard({
     <>
       <div className="detailcomponent">
         <div className="detailed-title-component">
-          <p>{cardData?.title}</p>
+          <p className="card_title">{cardData?.title}</p>
           <div className="detailicondiv">
-            <FaShareAlt size={"23px"} onClick={handleShareClick} />
-            <FaRegHeart size={"23px"} />
+            <Button variant="outlined" onClick={handleShareClick} className="btn sc_btn sc_share_btn">
+              <FaShareAlt size={"23px"} onClick={handleShareClick} className="share_icon" />
+            </Button>
+            <Button className="btn sc_btn sc_fav_btn">
+              <FaRegHeart size={"23px"} className="fav_icon" />
+            </Button>
           </div>
         </div>
         <div className="detail-image-div">
@@ -99,29 +103,25 @@ export default function DetailDataCard({
                       src={imglink}
                       alt={component ? component.title : singledata.title}
                       onClick={() => handleImageChange(imglink)}
+                      className="other_images_item"
                     />
                   </div>
                 )
               );
             })}
           </div>
-          <div variant="outlined" className="detail-button">
+          <div variant="outlined" className="detail-button imgs_info">
             {image360} Images
-            {imageNormal > 0 ? `|| ${imageNormal} Normal` : ""}
+            {imageNormal > 0 ? ` || ${imageNormal} Normal` : ""}
           </div>
         </div>
         <div className="lowercontainer">
           <div className="detail-info-div">
-            {/* Deatils & Button */}
-            <div className="infodiv">
-              <h3>{cardData?.detailTitle}</h3>
-              <br />
-              {cardData?.description}
-              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-              <Button variant="contained" className="detail-button">
-                {"₹ " + price + " Cr."}
-              </Button>
-            </div>
+            <h3 className="detail_title">{cardData?.detailTitle}</h3>
+            {cardData?.description}
+            <Button variant="contained" className="detail-button">
+              {"₹ " + price + " Cr."}
+            </Button>
           </div>
           <div className="detail-icon-div">
             <div className="rowicon">
@@ -166,7 +166,7 @@ export default function DetailDataCard({
               </div>
             </div>
 
-            <div className="rowicon" id="rowicon-btn">
+            <div className="rowicon" id="rowicon-btn contacts-wrapper">
               <Button
                 className="detail-button"
                 variant="contained"
