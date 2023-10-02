@@ -4,7 +4,7 @@ import { APPROVAL_PROPERTIES } from "../../../UserJson";
 
 export default function ApproveListing() {
   return (
-    <div style={{ marginTop: "100px" }}>
+    <div className="standalone_page approve_listing_page">
       <RenderComponent jsonToRender={APPROVAL_PROPERTIES} />
     </div>
   );

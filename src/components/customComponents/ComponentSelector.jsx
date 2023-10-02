@@ -113,9 +113,9 @@ const ComponentSelector = ({ component }) => {
   const getTitle = () => {
     let idx = component.common
       ? 0
-      : userProfile.role == USER_ROLE.bfAdmin
+      : userProfile.role === USER_ROLE.bfAdmin
       ? 0
-      : userProfile.role == USER_ROLE.channelPartner
+      : userProfile.role === USER_ROLE.channelPartner
       ? 1
       : 2;
     return (
@@ -180,6 +180,7 @@ const ComponentSelector = ({ component }) => {
           buttonLabel={component.buttonLabel}
           navigate={component.navigate}
           data={sliceData}
+          btnClass={component.btnClass}
         />
       )}
       {component.type === HEADING && <Heading component={component} />}

@@ -15,37 +15,45 @@ import PageSelector from "../../customComponents/PageSelector";
 
 export default function AdminHome() {
   const userProfile = useSelector((state) => state.profile);
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   const [currentPage, setCurrentPage] = useState(ADMIN_DASHBOARD);
+
+  const handleMenuOverlayClick = () => {
+    setShowMenu(!showMenu);
+  };
 
   return (
     <>
-      <div>
+      <div className="app_header">
         <Button
-          className="admin-menu-button"
+          className="admin_menu_button"
           onClick={() => setShowMenu(!showMenu)}
         >
-          <GiHamburgerMenu />
+          <GiHamburgerMenu className="menu_icon" />
         </Button>
         {/* <Navbar role={userProfile?.role} /> */}
+        <span className="curr_page">Dashboard</span>
       </div>
       <div
-        className={`${"main-admin-container"} ${
-          showMenu ? "menu-is-active" : "menu-is-not-active"
-        } `}
+        className={`${"main_admin_container"} ${showMenu ? "menu-is-active" : "menu-is-not-active"
+          } `}
       >
         {showMenu && (
-          <div className="admin-dashboard-home">
-            <Panel
-              nonSalesUser={userProfile?.role !== USER_ROLE[PROPERTY_DEALER]}
-              handlePageClick={(page) => {
-                setCurrentPage(page);
-              }}
-              onLogoutClick={ADMIN_DASHBOARD_LOGIN}
-            />
-          </div>
+          <>
+            <div className="panel_overlay" onClick={handleMenuOverlayClick}></div>
+            <div className="admin_dashboard_home">
+              <Panel
+                nonSalesUser={userProfile?.role !== USER_ROLE[PROPERTY_DEALER]}
+                handlePageClick={(page) => {
+                  setCurrentPage(page);
+                  setShowMenu(false);
+                }}
+                onLogoutClick={ADMIN_DASHBOARD_LOGIN}
+              />
+            </div>
+          </>
         )}
-        <div>
+        <div className="page_container">
           <PageSelector pageName={currentPage} />
         </div>
       </div>

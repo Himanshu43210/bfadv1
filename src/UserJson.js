@@ -98,7 +98,7 @@ export const AD_USER_DASHBOARD = {
           children: [
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Create Channel Partner",
               name: "Create Channel Partner",
               form: newUserConst,
@@ -107,35 +107,35 @@ export const AD_USER_DASHBOARD = {
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Manage Channel Partner",
               name: "Manage Channel Partner",
               route: "/admin/user",
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Approve Channel Partner Listngs",
               name: "Approve Channel Partner Listngs",
               route: "/admin/approveListing",
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Statistics",
               name: "Statistics",
               route: "/admin/statistics",
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Field Changes Master Data",
               name: "Field Changes Master Data",
               route: "/admin/master",
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Master Data of Super Admin",
               name: "Master Data of Super Admin",
               route: "/admin/masterTable",
@@ -188,7 +188,7 @@ export const CP_USER_DASHBOARD = {
           children: [
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Create Sub User",
               name: "Create Sub User",
               form: newUserConst,
@@ -204,28 +204,28 @@ export const CP_USER_DASHBOARD = {
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Manage Sub User",
               name: "Manage Sub User",
               route: "/admin/user",
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Approve Sub User Listngs",
               name: "Approve Sub User Listngs",
               route: "/admin/approveListing",
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Statistics",
               name: "Statistics",
               route: "/admin/statistics",
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Post Listing",
               name: "Post Listing",
               form: newPropertyConst,
@@ -235,7 +235,7 @@ export const CP_USER_DASHBOARD = {
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Master Data of Channel Partner",
               name: "Master Data of Channel Partner",
               route: "/admin/masterTable",
@@ -288,14 +288,14 @@ export const SU_USER_DASHBOARD = {
           children: [
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Statistics",
               name: "Statistics",
               route: "/admin/statistics",
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Post Listing",
               name: "Post Listing",
               form: newPropertyConst,
@@ -304,7 +304,7 @@ export const SU_USER_DASHBOARD = {
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin-route-button",
+              className: "admin_route_button",
               label: "Master Data of Sub User",
               name: "Master Data of Sub User",
               route: "/admin/masterTable",
@@ -373,7 +373,7 @@ export const AD_MASTER_TABLE = {
             "Master Data of Sub User",
           ],
         },
-        { type: HORIZONTAL_LINE },
+        // { type: HORIZONTAL_LINE },
 
         {
           type: DASHBOARD_LISTING,
@@ -566,7 +566,10 @@ export const MANAGE_USER = {
                     // "Parent Id": "parentId",
                     // "Status": "status",
                   },
-                  mobileHeaders: [{ Name: "name" }, { Role: "role" }],
+                  mobileHeaders: {
+                    Name: "name",
+                    Role: "role"
+                  },
                   fieldConst: editUserConst,
                   editApi: ALTER_USER_DATA,
                   deleteApi: DELETE_USER_DATA,
@@ -664,7 +667,7 @@ export const STATS_LIST = {
                   },
                   removeApi: REJECT_PROPERTY,
                   user: true,
-                  mobileHeaders: [{ Name: "name" }, { Role: "role" }],
+                  mobileHeaders: { Name: "name", Role: "role" },
                   fieldConst: newUserConst,
                   editApi: ALTER_USER_DATA,
                   deleteApi: DELETE_USER_DATA,
@@ -730,6 +733,7 @@ export const VIEW_LISTING = {
           buttonLabel: "Refresh",
           apiType: GET,
           api: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID],
+          btnClass: "btn refresh_btn standalone_btn"
         },
         {
           type: DASHBOARD_LISTING,
@@ -755,6 +759,11 @@ export const VIEW_LISTING = {
             "Dated of Posting": "",
             Status: "status",
             "Link Share": "",
+          },
+          mobileHeaders: {
+            Title: "title",
+            Price: "price",
+            Accommodation: "accommodation",
           },
           user: true,
           getDataApi: GET_PROPERTY_LIST_BY_USER_ID,

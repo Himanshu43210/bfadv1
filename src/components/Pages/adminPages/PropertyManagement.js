@@ -58,13 +58,14 @@ export default function PropertyManagement() {
         <AutoFetchApi url={dataApi} method={POST} data={{ filter: {} }} />
       )}
       {apiStatus === LOADING ? (
-        <CircularProgress className="loader-class" />
+        <div className="loading-class">
+          <CircularProgress className="loader-class" />
+        </div>
       ) : (
-        <div>
-          <div>
+        <div className="sub_page property_management">
             <Card>
-              <Card.Header className="font">Property Details</Card.Header>
-              <Card.Body>
+              <Card.Header className="card_header font">Property Details</Card.Header>
+              <Card.Body className="card_body">
                 <TableButtonHeader
                   fieldConst={fieldConst}
                   tableData={_.cloneDeep(tableData?.data || [])}
@@ -91,7 +92,6 @@ export default function PropertyManagement() {
                 />
               </Card.Body>
             </Card>
-          </div>
         </div>
       )}
     </>

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Table, Button, Container } from "react-bootstrap";
 import { Button as MuiButton } from "@mui/material";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ReusablePopup from "./ReusablePopup";
 import FormBuilder from "./FormBuilder";
 import { FaCaretUp, FaCaretDown, FaSearch } from "react-icons/fa";
@@ -81,7 +82,7 @@ const ListingTable = ({
   const [showImgEditModal, setShowImgEditModal] = useState(false);
   const [imgEditor, setImgEditor] = useState({});
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState([]);
-    const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
+  const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
   const dispatch = useDispatch();
@@ -265,10 +266,10 @@ const ListingTable = ({
                 : "application/json",
             },
             data: isPropertyEdit
-            ? newFormData
-            : sanitizeFormData({
-              ...formData,
-            }),
+              ? newFormData
+              : sanitizeFormData({
+                ...formData,
+              }),
           };
           dispatch(callApi(options)).then(() => {
             setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
@@ -554,7 +555,7 @@ const ListingTable = ({
               })
             }
           </div>
-          {imgsToBeDeleted.length > 0 && <div className="label">{imgsToBeDeleted.length} files to be deleted</div>}
+          {imgsToBeDeleted.length > 0 && <div className="label warning_text">{imgsToBeDeleted.length} images/videos to be deleted</div>}
         </ReusablePopup>
       )}
 
@@ -572,7 +573,26 @@ const ListingTable = ({
       )}
 
       {showPreviewModal && (
-        <ReusablePopup onHide={tooglePreview} onClose={tooglePreview}>
+        <ReusablePopup
+          onHide={tooglePreview} onClose={tooglePreview}
+          onEdit={(e) => {
+            e.stopPropagation();
+            toogleEdit();
+          }}
+          onApprove={approveApi &&
+            currentRowData[NEED_APPROVAL_BY] &&
+            userProfile._id === currentRowData[NEED_APPROVAL_BY] && ((e) => {
+              e.stopPropagation();
+              toogleApproval();
+            })}
+          onRemove={approveApi &&
+            currentRowData[NEED_APPROVAL_BY] &&
+            userProfile._id === currentRowData[NEED_APPROVAL_BY] && ((e) => {
+              e.stopPropagation();
+              toggleRemove();
+            })}
+        >
+          <div className="formheadingcontainer popup_title">Property Preview</div>
           <HomeCard
             element={currentRowData}
             disableOnClickNavigate={true}
@@ -582,7 +602,7 @@ const ListingTable = ({
             disableOnClickNavigate={true}
           ></SearchCard>
           <DetailDataCard singledata={currentRowData}></DetailDataCard>
-          {
+          {/* {
             <Button
               variant="success"
               onClick={(e) => {
@@ -592,8 +612,8 @@ const ListingTable = ({
             >
               Edit
             </Button>
-          }
-          {approveApi &&
+          } */}
+          {/* {approveApi &&
             currentRowData[NEED_APPROVAL_BY] &&
             userProfile._id === currentRowData[NEED_APPROVAL_BY] && (
               <>
@@ -616,30 +636,32 @@ const ListingTable = ({
                   Reject
                 </Button>
               </>
-            )}
+            )} */}
         </ReusablePopup>
       )}
       {showImgEditModal && (
         <ReusablePopup onHide={toggleImgEditor} onClose={toggleImgEditor}>
-          <div className="formheadingcontainer">Edit Property {getImageLabel(imgEditor?.selectedImgType)}</div>
+          <div className="formheadingcontainer popup_title">Edit Property {getImageLabel(imgEditor?.selectedImgType)}</div>
           <p className="label">{imgEditor?.allFiles[imgEditor?.selectedImgType]?.length} {getImageLabel(imgEditor?.selectedImgType)}</p>
-          {
-            imgEditor?.allFiles[imgEditor?.selectedImgType].map((entry, index) => (
-              <div className="img-item">
-                <label htmlFor={index}>
-                  {
-                    imgEditor?.selectedImgType !== "videos" ? (
-                      <img src={entry} alt={entry} width={100} height={100} />
-                    ) : (
-                      <video src={entry} alt={entry} width={100} height={100} />
-                    )
-                  }
-                </label>
-                <input id={index} type="checkbox" checked={isSelectedForDeletion(entry)} onChange={() => handleImgsToBeDeleted(entry)} />
-              </div>
-            ))
-          }
-          <p className="lbel">(Note: Selected files will be deleted on save.)</p>
+          <div className="delete_media_list">
+            {
+              imgEditor?.allFiles[imgEditor?.selectedImgType].map((entry, index) => (
+                <div className="img-item">
+                  <label htmlFor={index}>
+                    {
+                      imgEditor?.selectedImgType !== "videos" ? (
+                        <img src={entry} alt={entry} width={100} height={100} className="delete_media" />
+                      ) : (
+                        <video src={entry} alt={entry} width={100} height={100} className="delete_media" />
+                      )
+                    }
+                  </label>
+                  <input id={index} type="checkbox" checked={isSelectedForDeletion(entry)} onChange={() => handleImgsToBeDeleted(entry)} />
+                </div>
+              ))
+            }
+          </div>
+          <p className="lbel warning_text">(Note: Selected images/videos will be deleted on save.)</p>
         </ReusablePopup>
       )}
       {!disableRowModal && showRowModal && (
@@ -693,19 +715,28 @@ const ListingTable = ({
         </ReusablePopup>
       )}
       <div className="tablediv">
-        <input
-          type="text"
-          onChange={(e) => {
-            setTableFilter({
-              search: e.target.value,
-            });
-          }}
-          value={[tableFilter["search"]] || ""}
-        />
-        <Button onClick={() => applyFilters()}>Filter Data</Button>
-        {showColumnFilter && (
-          <Button onClick={() => setShowFilters(!showFilters)}>Filter</Button>
-        )}
+        <div className="table_controls_wrapper">
+          <input
+            type="text"
+            onChange={(e) => {
+              setTableFilter({
+                search: e.target.value,
+              });
+            }}
+            value={[tableFilter["search"]] || ""}
+            className="filter_input"
+          />
+          <Button onClick={() => applyFilters()} className="filter_submit filter_btn">
+            <FilterAltIcon className="filter_icon" />
+            Filter&nbsp;Data
+          </Button>
+          {showColumnFilter && (
+            <Button onClick={() => setShowFilters(!showFilters)} className="filter_btn">
+              <FilterAltIcon className="filter_icon" />
+              Filter
+            </Button>
+          )}
+        </div>
         <Table striped bordered hover responsive size="sm">
           <thead>
             <tr>
@@ -734,7 +765,7 @@ const ListingTable = ({
                   )}
                 </th>
               ))}
-              {!hideActions && <th className="tablehead text">Actions</th>}
+              {!hideActions && <th className="tablehead text"><div>Actions</div></th>}
               {showViewAllListing && (
                 <th className="tablehead text">View all Listing</th>
               )}
@@ -764,7 +795,7 @@ const ListingTable = ({
                       {
                         (!hideAlterActions || showEditAction) && (
                           <Button
-                            className="ListingEditbtn"
+                            className="row_action_btn edit_btn ListingEditbtn"
                             variant="success"
                             onClick={(e) => {
                               e.stopPropagation();
@@ -780,7 +811,7 @@ const ListingTable = ({
                       {
                         (!hideAlterActions || showDeleteAction) && (
                           <Button
-                            className="ListingDeletebtn"
+                            className="row_action_btn delete_btn ListingDeletebtn"
                             variant="danger"
                             onClick={(e) => {
                               e.stopPropagation();
@@ -796,7 +827,7 @@ const ListingTable = ({
                     </>
                     {isproperty && ( // Conditionally render the Preview button
                       <Button
-                        className="ListingPreviewbtn"
+                        className="row_action_btn preview_btn ListingPreviewbtn"
                         onClick={(e) => {
                           e.stopPropagation();
                           setCurrentRowData(element);
@@ -812,6 +843,7 @@ const ListingTable = ({
                       userProfile._id === element[NEED_APPROVAL_BY] && (
                         <>
                           <Button
+                            className="row_action_btn approve_btn"
                             onClick={(e) => {
                               e.stopPropagation();
                               setCurrentRowData(element);
@@ -821,6 +853,7 @@ const ListingTable = ({
                             <FcApproval size={12} />
                           </Button>
                           <Button
+                            className="row_action_btn reject_btn"
                             onClick={(e) => {
                               e.stopPropagation();
                               setCurrentRowData(element);
@@ -836,6 +869,7 @@ const ListingTable = ({
                 {showViewAllListing && (
                   <td>
                     <Button
+                      className="row_action_btn"
                       onClick={(e) => {
                         navigateTo(showViewAllListing + "?id=" + element._id);
                       }}

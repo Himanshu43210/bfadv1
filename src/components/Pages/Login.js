@@ -59,11 +59,12 @@ const Login = () => {
   return (
     <div className="contain">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login_form">
         <div className="form-group">
           <label className="lab-class">Email</label>
 
           <input
+          className="normal_input"
             type={EMAIL}
             value={email}
             onChange={handleEmailChange}
@@ -73,7 +74,7 @@ const Login = () => {
         <div className="form-group">
           <label>Password</label>
           <input
-            className="inpt"
+            className="inpt normal_input"
             type="password"
             value={password}
             onChange={handlePasswordChange}
@@ -85,7 +86,7 @@ const Login = () => {
             <CircularProgress />
           </div>
         ) : (
-          <button type="submit">Login</button>
+          <button type="submit" className="btn">Login</button>
         )}
       </form>
     </div>

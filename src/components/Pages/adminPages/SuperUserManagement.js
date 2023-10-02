@@ -5,7 +5,7 @@ import { MANAGE_USER } from "../../../UserJson";
 
 export default function UserManagement() {
   return (
-    <div style={{ marginTop: "100px" }}>
+    <div className="standalone_page user_management_page">
       <RenderComponent jsonToRender={MANAGE_USER} />
     </div>
   );

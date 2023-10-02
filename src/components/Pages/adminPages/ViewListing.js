@@ -24,7 +24,7 @@ export default function ViewListing() {
   }, [id]);
   return (
     <>
-      <div style={{ marginTop: "100px" }}>
+      <div className="standalone_page ">
         <RenderComponent jsonToRender={VIEW_LISTING} />
       </div>
     </>
