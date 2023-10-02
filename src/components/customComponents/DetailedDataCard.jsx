@@ -91,6 +91,7 @@ export default function DetailDataCard({
                 src={imageLink}
                 title="Example Website"
                 allowFullScreen
+                iframeClass="img360_iframe"
               />
             </div>
           </div>
