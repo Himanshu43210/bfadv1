@@ -7,17 +7,16 @@ export default function Footer({ component }) {
   return (
     <footer className="footerdiv">
       <div className="footerlogo">
-        <a className="footerlink">
-          <a href={component.HomeLinks.url}>
-            <img
-              src="https://www.builderfloor.com/assets/imgs/template/BUILDER.png"
-              alt=""
-              width="80px"
-              height="90px"
-            />
-          </a>
+        <a className="footerlink" href={component.HomeLinks.url}>
+          <img
+            src="https://www.builderfloor.com/assets/imgs/template/BUILDER.png"
+            alt=""
+            width="80px"
+            height="90px"
+          />
         </a>
       </div>
+      <hr />
       <hr />
       <div className="footerlowerdiv">
         <div className="footer-social-icon">
@@ -25,7 +24,7 @@ export default function Footer({ component }) {
             const SocialIcon =
               social.name === LINKEDIN_ICON ? LinkedInIcon : InstagramIcon;
             return (
-              <a key={index} href={social.url}>
+              <a key={index} href={social.url} className="btn footer_social_btn" target="blank">
                 <SocialIcon />
               </a>
             );

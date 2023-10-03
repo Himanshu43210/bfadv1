@@ -6,6 +6,7 @@ export default function SliderComponent({
   component,
   value,
   handleValueChange,
+  sliderClass
 }) {
   const name = component.text;
   const minVal = component.minValue;
@@ -25,10 +26,9 @@ export default function SliderComponent({
 
   // (value,2141)
   return (
-    <div>
-      <div>
-        <Typography variant="caption">{minValue + " Cr."}</Typography>
-        <Typography variant="caption">{maxValue + " Cr."}</Typography>
+    <div className={`slider_comp ${sliderClass}`}>
+      <div className="slider_range">
+        <Typography variant="caption" className="slider_min">{minValue + " Cr."}</Typography>
       </div>
       <Slider
         key={name}
@@ -40,7 +40,11 @@ export default function SliderComponent({
         onChange={handleChange}
         valueLabelDisplay="off"
         valueLabelFormat={(value) => convertToCr(value.toFixed(1)) + " Cr."}
+        className="slider"
       />
+      <div className="slider_range">
+        <Typography variant="caption" className="slider_max">{maxValue + " Cr."}</Typography>
+      </div>
     </div>
   );
 }

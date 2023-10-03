@@ -120,7 +120,7 @@ export default function DetailDataCard({
           <div className="detail-info-div">
             <h3 className="detail_title">{cardData?.detailTitle}</h3>
             {cardData?.description}
-            <Button variant="contained" className="detail-button">
+            <Button variant="contained" className="detail-button detail_price_btn">
               {"₹ " + price + " Cr."}
             </Button>
           </div>
@@ -167,7 +167,7 @@ export default function DetailDataCard({
               </div>
             </div>
 
-            <div className="rowicon" id="rowicon-btn contacts-wrapper">
+            <div className="rowicon contacts-wrapper" id="rowicon-btn">
               <Button
                 className="detail-button"
                 variant="contained"

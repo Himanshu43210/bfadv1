@@ -114,7 +114,7 @@ export const HOME_SCREEN = {
       children: [
         {
           type: SELECT,
-          className: "select-city-button",
+          className: "btn select-city-button",
           sliceName: "filter",
           name: "city",
           defaultValue: { label: "Gurgaon", value: "Gurgaon" },
@@ -135,7 +135,7 @@ export const HOME_SCREEN = {
           sliceName: "filter",
           name: "search",
           buttonLabel: "Search",
-          className: "home-search-button",
+          btnClass: "btn home-search-button",
           apiType: POST,
           navigate: "/searchResult",
           api: API_ENDPOINTS[GET_SEARCH_RESULT],
@@ -177,7 +177,6 @@ export const CARD_DETAILS_SCREEN = {
   name: "Card Detail Screen",
   children: [
     HEADER,
-    { type: HORIZONTAL_LINE },
     {
       type: AUTO_FETCH_API,
       api: API_ENDPOINTS[GET_SIMILAR_PROPERTY_DATA],
@@ -185,10 +184,9 @@ export const CARD_DETAILS_SCREEN = {
     },
     {
       type: DETAILED_VIEW,
-
       name: "detailedViewImage",
       loadingApi: GET_CARD_DATA,
-      className: "home-page-banner",
+      className: "property_images_container",
       apiSliceName: GET_CARD_DATA,
       whatsappText: `Hi! I saw a property {link} on BuilderFloor.com and i am interested in it. Is it available?`,
       icons: {
@@ -203,13 +201,17 @@ export const CARD_DETAILS_SCREEN = {
         parkFacing: "https://www.builderfloor.com/assets/imgs/icons/park.png",
         corner: "https://www.builderfloor.com/assets/imgs/icons/right.png",
       },
-      moreOptionText: "Explore similar options to match your choice",
     },
-    { type: HORIZONTAL_LINE },
+    { type: HORIZONTAL_LINE, className: "property_details_divider" },
+    {
+      type: HEADING,
+      className: "explore_similar_options_heading",
+      text: "Explore similar options to match your choice"
+    },
     {
       type: DYNAMIC_CARD_CONTAINER,
       loadingApi: GET_SIMILAR_PROPERTY_DATA,
-      className: "default-home-cards",
+      className: "default-home-cards similar_options_list",
       apiName: GET_SIMILAR_PROPERTY_DATA,
       renderComponentsInLoop: { type: HOME_CARD, className: "homeCards" },
       cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
@@ -227,14 +229,13 @@ export const SEARCH_RESULT = {
   className: "klk",
   children: [
     HEADER,
-    { type: HORIZONTAL_LINE },
     {
       type: CONTAINER,
       className: "actioncontainer",
       children: [
         {
           type: SELECT,
-          className: "select-city-button",
+          className: "btn select-city-button",
           sliceName: "filter",
           name: "city",
           defaultValue: { label: "Gurgaon", value: "Gurgaon" },
@@ -243,6 +244,7 @@ export const SEARCH_RESULT = {
         {
           type: SLIDER,
           sliceName: "filter",
+          className: "select-range",
           name: "budget",
           minValue: 10000000,
           maxValue: 100000000,
@@ -282,6 +284,7 @@ export const SEARCH_RESULT = {
           children: [
             {
               type: CONTAINER,
+              subtype: "FILTERS",
               className: "filter-button-div-overflowed",
               children: [
                 {
@@ -446,6 +449,7 @@ export const SEARCH_RESULT = {
           cardPerPage: 5,
           onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
           onClickApiMethod: POST,
+          paginationClass: "search_pagination",
           renderComponentsInLoop: {
             type: SEARCH_CARD,
             className: "homeCards",
@@ -454,6 +458,8 @@ export const SEARCH_RESULT = {
           cardClickNavigate: "/builderFloorDetails",
           cardClickApiType: GET,
         },
+        FOOTER,
+        SCROLLTOP,
       ],
     },
 
