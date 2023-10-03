@@ -3,13 +3,13 @@ export default function Banner({ component }) {
     <>
       <article
         key={component.name}
-        className={component.className}
+        className={`banner ${component.className}`}
         style={{ backgroundImage: `url(${component.bgImage})` }}
       >
-        <h1>
+        <h1 className={`banner_text ${component.textClass}`}>
           {component.text}
           <br />
-          {component.spanText && <span>{component.spanText}</span>}
+          {component.spanText && <span className="banner_subtext">{component.spanText}</span>}
         </h1>
       </article>
     </>

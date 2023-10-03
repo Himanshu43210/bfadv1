@@ -73,12 +73,15 @@ const HEADER = {
     {
       type: HAMBURGER_MENU,
       items: MENU_ITEMS,
+      className: "menu_comp",
+      text: "Menu"
     },
     {
       type: PAGE_HEADER,
       url: "https://builder-floor-admin-pannel.vercel.app/",
       image: "https://www.builderfloor.com/assets/imgs/template/BUILDER.png",
       title: "BuilderFloor.com",
+      className: "page_header_comp",
     },
   ],
 };
@@ -91,7 +94,6 @@ export const HOME_SCREEN = {
   name: "Home Screen",
   children: [
     HEADER,
-    { type: HORIZONTAL_LINE },
     {
       type: AUTO_FETCH_API,
       api: API_ENDPOINTS[GET_HOME_SCREEN_DATA],
