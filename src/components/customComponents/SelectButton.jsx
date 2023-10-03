@@ -41,7 +41,7 @@ export default function SelectButton({
     //   }
     // />
     <div
-      className={`select-container-parent "heighted-clasas-1`}
+      className={`select-container-parent heighted-clasas-1`}
     >
       <div
         onClick={() => {

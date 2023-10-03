@@ -26,7 +26,7 @@ export const ScrollToTop = () => {
 
   return (
     <div
-      className={`scroll-to-top ${isVisible ? "show" : ""}`}
+      className={`btn scroll-to-top ${isVisible ? "show" : ""}`}
       onClick={scrollToTop}
     >
       <AiOutlineArrowUp />

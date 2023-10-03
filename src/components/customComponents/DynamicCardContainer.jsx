@@ -23,10 +23,10 @@ export default function DynamicCardContainer({ component, handleValueChange }) {
         : dataSelector.data
       : dataSelector;
 
-  useEffect(() => {}, [dataToRender]);
+  useEffect(() => { }, [dataToRender]);
 
   return (
-    <div className="searchdiv">
+    <div className={`searchdiv ${component.className}`}>
       {dataToRender?.map((element) => {
         return (
           <>
@@ -52,6 +52,7 @@ export default function DynamicCardContainer({ component, handleValueChange }) {
       })}
       {component.paginatioName && dataToRender && (
         <BasicPagination
+          paginationClass={component.paginationClass}
           handlePageChange={(e, newPage) => {
             handleValueChange(newPage);
             setPage(newPage);

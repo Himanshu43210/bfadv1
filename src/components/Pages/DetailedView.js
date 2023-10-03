@@ -7,7 +7,7 @@ import { CARD_DETAILS_SCREEN } from "../../ScreenJson";
 export default function DetailedView() {
   return (
     <>
-      <Card className="detail-screen">
+      <Card className="property_page detail-screen">
         <RenderComponent jsonToRender={CARD_DETAILS_SCREEN} />
       </Card>
     </>
