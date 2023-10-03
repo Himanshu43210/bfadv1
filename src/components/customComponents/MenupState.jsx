@@ -12,8 +12,9 @@ const  MenupState = (MenuItems) => {
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
         <React.Fragment>
-          <Button  {...bindTrigger(popupState)}>
+          <Button  {...bindTrigger(popupState)} className='menu_btn'>
           <BiMenuAltLeft size={30} color="blue" />
+          <span className='menu_btn_label'>Menu</span>
           </Button>
           <Menu {...bindMenu(popupState)}>
           {

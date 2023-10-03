@@ -22,11 +22,11 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/searchResult" element={<SearchResult />} />
           <Route path="/builderFloorDetails" element={<DetailedView />} />
           <Route path="/admin/property" element={<PropertyManagement />} />
-          <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/admin/form" element={<FormPage />} />
           <Route path="/admin/TableForm" element={<TableFormPage />} />
           <Route path="/admin/user" element={<UserManagement />} />
