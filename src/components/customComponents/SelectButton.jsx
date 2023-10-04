@@ -73,6 +73,7 @@ export default function SelectButton({
                 onClick={() => {
                   setCurr(item.label);
                   handleValueChange(item);
+                  setClicked(false);
                 }}
                 className={`custom_select_popup_item ${
                   check && "selected_popup_item"

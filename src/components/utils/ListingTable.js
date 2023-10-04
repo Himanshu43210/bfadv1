@@ -233,7 +233,6 @@ const ListingTable = ({
 
           console.log('====== HANDLING LINKS ======');
           mediaLinkTypes.forEach(mediaLinkType => {
-            console.log('+++ media link type +++', mediaLinkType);
             // append individually in formData
             if (Array.isArray(formData[mediaLinkType])) {
               for (const mediaLink of formData[mediaLinkType]) {
@@ -242,12 +241,10 @@ const ListingTable = ({
                 if (!imgsToBeDeleted[mediaLinkType]?.includes(mediaLink)) {
                   newFormData.append(mediaLinkType, mediaLink);
                 } else {
-                  console.log('+++++ this media lint to be deleted +++++', mediaLinkType, mediaLink);
                 }
               }
             }
             if (!newFormData.has(mediaLinkType)) {
-              console.log('+++++ this media type does not exist in new form data +++++', mediaLinkType);
               newFormData.append(mediaLinkType, []);
             }
           });
@@ -258,8 +255,11 @@ const ListingTable = ({
 
           Object.keys(formData).map((element) => {
             if (!isFileList(formData[element])) {
-              if (isObjectNotString(formData[element])) {
-                // newFormData.append(element, formData[element].value);
+              if (!mediaLinkTypes.includes(element) && typeof formData[element] === "object" && !Array.isArray(formData[element])) {
+                newFormData.append(element, formData[element].value);
+              }
+              else if (isObjectNotString(formData[element])) {
+                // ignore
               } else {
                 newFormData.append(element, formData[element]);
               }
@@ -430,13 +430,10 @@ const ListingTable = ({
   };
 
   const handleImgsToBeDeleted = (type, link) => {
-    console.log('======= handle imgs to be deleted =======', type, link);
     let newToBeDeleted = { ...imgsToBeDeleted };
     if (isSelectedForDeletion(type, link)) {
-      console.log('=== selected for deletion ===');
       newToBeDeleted[type] = newToBeDeleted[type].filter((entry) => entry !== link);
     } else {
-      console.log('=== not selected for deletion ===');
       if (!newToBeDeleted[type]) {
         newToBeDeleted[type] = [];
       }
@@ -444,7 +441,6 @@ const ListingTable = ({
     }
     let totalToBeDeleted = 0;
     Object.keys(newToBeDeleted).forEach(key => {
-      console.log('=== counter ===', key, newToBeDeleted[key]?.length);
       totalToBeDeleted += newToBeDeleted[key]?.length || 0;
     });
     setImgsToBeDeleted({ ...newToBeDeleted, totalToBeDeleted });
