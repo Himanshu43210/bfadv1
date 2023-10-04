@@ -157,7 +157,7 @@ const ListingTable = ({
   };
 
   const handleSave = (edit = false) => {
-    const haveReqFiles = (currentRowData?.thumbnails?.length > 0) && (imgsToBeDeleted?.thumbnails?.length !== currentRowData?.thumbnails?.length) && (currentRowData?.thumbnails[0] !== "");
+    const haveReqFiles = (currentRowData?.thumbnails?.length > 0) && ((imgsToBeDeleted?.thumbnails?.length || 0) < currentRowData?.thumbnails?.length) && (currentRowData?.thumbnails[0] !== "");
     const formData = finalizeRef.current.finalizeData(haveReqFiles ? ["thumbnailFile"] : []);
     if (formData) {
       if (Object.keys(formData).length !== 0) {
@@ -216,10 +216,6 @@ const ListingTable = ({
             }
 
             return false; // None of the properties were found
-          }
-
-          function checkForMultipleExistence() {
-
           }
 
           const imagesCheck = hasAnyProperty(formData, [
@@ -617,41 +613,6 @@ const ListingTable = ({
             disableOnClickNavigate={true}
           ></SearchCard>
           <DetailDataCard singledata={currentRowData}></DetailDataCard>
-          {/* {
-            <Button
-              variant="success"
-              onClick={(e) => {
-                e.stopPropagation();
-                toogleEdit();
-              }}
-            >
-              Edit
-            </Button>
-          } */}
-          {/* {approveApi &&
-            currentRowData[NEED_APPROVAL_BY] &&
-            userProfile._id === currentRowData[NEED_APPROVAL_BY] && (
-              <>
-                <Button
-                  variant="success"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toogleApproval();
-                  }}
-                >
-                  Approve
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleRemove();
-                  }}
-                >
-                  Reject
-                </Button>
-              </>
-            )} */}
         </ReusablePopup>
       )}
       {showImgEditModal && (

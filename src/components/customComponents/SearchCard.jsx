@@ -42,7 +42,7 @@ export default function SearchCard({
           component="img"
           height="100"
           // image={element.thumbnails?.[0]}
-          src={element.thumbnails}
+          src={Array.isArray(element.thumbnails) ? element.thumbnails[0] : element.thumbnails}
           // alt="Left_Image"
           alt={element.title}
           className="thumbnail"
