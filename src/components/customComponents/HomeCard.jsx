@@ -43,7 +43,7 @@ export default function HomeCard({
         <CardMedia
           component="img"
           height="100"
-          image={element.thumbnails}
+          image={Array.isArray(element.thumbnails) ? element.thumbnails[0] : element.thumbnails}
           // image = "https://builderfloors.s3.ap-south-1.amazonaws.com/upload/photos/A329ASL1/1st%20Floor/NORMAL/THUMBNAIL.jpg"
           alt={element.title}
           className="thumbnail"

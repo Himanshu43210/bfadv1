@@ -4,7 +4,7 @@ import Select from "react-select";
 import { EMAIL, GET_MASTER_DATA_ON_HOME, TEXT } from "./Const";
 import { useSelector } from "react-redux";
 import { selectMasterData } from "../../redux/utils/selectors";
-import _ from "lodash";
+import _, { capitalize } from "lodash";
 import { useImperativeHandle } from "react";
 import { isValueEmpty } from "./reusableMethods";
 
@@ -244,8 +244,8 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                           value={option.value}
                           checked={
                             (formData[field.name] &&
-                              formData[field.name] === option.value) ||
-                            formData[field.dataKey] === option.value
+                              capitalize(formData[field.name]) === option.value) ||
+                            capitalize(formData[field.dataKey]) === option.value
                           }
                           onChange={() => handleChange(field, option.value)}
                           required={field.isRequired}

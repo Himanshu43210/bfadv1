@@ -55,10 +55,26 @@ export default function DetailDataCard({
   const [imageLink, setImageLink] = useState(cardData.images?.[0]);
   const image360 = cardData?.images?.length;
   const imageNormal = cardData?.normalImages?.length;
+  const otherImages = [];
+  const imageTypes = [
+    "virtualFiles",
+    "layouts",
+    "thumbnails",
+  ];
   const price = convertToCr(cardData?.price);
 
   const handleImageChange = (newImageLink) => {
     setImageLink(newImageLink);
+  };
+
+  const extractAllImages = () => {
+    Object.keys(cardData).forEach(prop => {
+      if (imageTypes.includes(prop)) {
+        cardData[prop].forEach(link => {
+          otherImages.push(link);
+        });
+      }
+    });
   };
 
   //... Rest of the code remains the same
@@ -69,6 +85,8 @@ export default function DetailDataCard({
       url: cardDetailUrl,
     });
   };
+
+  extractAllImages();
 
   return (
     <>
@@ -110,9 +128,23 @@ export default function DetailDataCard({
                 )
               );
             })}
+            {otherImages?.map((imglink) => {
+              return (
+                imageLink !== imglink && (
+                  <div className="other-images">
+                    <img
+                      src={imglink}
+                      alt={component ? component.title : singledata.title}
+                      onClick={() => handleImageChange(imglink)}
+                      className="other_images_item"
+                    />
+                  </div>
+                )
+              );
+            })}
           </div>
           <div variant="outlined" className="detail-button imgs_info">
-            {image360} Images
+            {image360 + otherImages.length} Images
             {imageNormal > 0 ? ` || ${imageNormal} Normal` : ""}
           </div>
         </div>
