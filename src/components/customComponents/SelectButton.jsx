@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function SelectButton({
   name,
@@ -11,7 +12,7 @@ export default function SelectButton({
 }) {
   const [clicked, setClicked] = useState(false);
   const [hover, setHover] = useState(false);
-  const [curr, setCurr] = useState(name);
+  const [curr, setCurr] = useState(defaultValue?.value || name);
   useEffect(() => {
     const onPointerDown = () => {
       if (!hover) {
@@ -41,15 +42,16 @@ export default function SelectButton({
     //   }
     // />
     <div
-      className={`select-container-parent heighted-clasas-1`}
+      className={`custom_select_container`}
     >
       <div
         onClick={() => {
           setClicked(true);
         }}
-        className="select-labeled-container"
+        className="custom_select_curr"
       >
         {curr}
+        <ExpandMoreIcon />
       </div>
       {clicked && (
         <div
@@ -59,7 +61,7 @@ export default function SelectButton({
           onMouseLeave={() => {
             setHover(false);
           }}
-          className="select-popup-temp"
+          className="custom_select_popup"
         >
           {options.map((item, i) => {
             const val = typeof value === "object" ? value?.value : value;
@@ -72,9 +74,9 @@ export default function SelectButton({
                   setCurr(item.label);
                   handleValueChange(item);
                 }}
-                className={`${
-                  check && "selected-popup-temp-item"
-                }  select-popup-temp-item`}
+                className={`custom_select_popup_item ${
+                  check && "selected_popup_item"
+                }`}
               >
                 {item.label}
               </div>

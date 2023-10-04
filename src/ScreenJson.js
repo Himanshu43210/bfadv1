@@ -114,7 +114,7 @@ export const HOME_SCREEN = {
       children: [
         {
           type: SELECT,
-          className: "btn select-city-button",
+          className: "select-city-button",
           sliceName: "filter",
           name: "city",
           defaultValue: { label: "Gurgaon", value: "Gurgaon" },
@@ -135,7 +135,7 @@ export const HOME_SCREEN = {
           sliceName: "filter",
           name: "search",
           buttonLabel: "Search",
-          btnClass: "btn home-search-button",
+          btnClass: "home-search-button",
           apiType: POST,
           navigate: "/searchResult",
           api: API_ENDPOINTS[GET_SEARCH_RESULT],
@@ -235,7 +235,7 @@ export const SEARCH_RESULT = {
       children: [
         {
           type: SELECT,
-          className: "btn select-city-button",
+          className: "select-city-button",
           sliceName: "filter",
           name: "city",
           defaultValue: { label: "Gurgaon", value: "Gurgaon" },
