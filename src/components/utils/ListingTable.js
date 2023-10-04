@@ -81,7 +81,7 @@ const ListingTable = ({
   const [tableFilter, setTableFilter] = useState({});
   const [showImgEditModal, setShowImgEditModal] = useState(false);
   const [imgEditor, setImgEditor] = useState({});
-  const [imgsToBeDeleted, setImgsToBeDeleted] = useState([]);
+  const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -157,7 +157,7 @@ const ListingTable = ({
   };
 
   const handleSave = (edit = false) => {
-    const haveReqFiles = (currentRowData?.thumbnails?.length > 0) && (imgsToBeDeleted?.thumbnails?.length !== currentRowData?.thumbnails?.length);
+    const haveReqFiles = (currentRowData?.thumbnails?.length > 0) && (imgsToBeDeleted?.thumbnails?.length !== currentRowData?.thumbnails?.length) && (currentRowData?.thumbnails[0] !== "");
     const formData = finalizeRef.current.finalizeData(haveReqFiles ? ["thumbnailFile"] : []);
     if (formData) {
       if (Object.keys(formData).length !== 0) {
@@ -218,6 +218,10 @@ const ListingTable = ({
             return false; // None of the properties were found
           }
 
+          function checkForMultipleExistence() {
+
+          }
+
           const imagesCheck = hasAnyProperty(formData, [
             "thumbnailFile",
             "normalImageFile",
@@ -234,14 +238,15 @@ const ListingTable = ({
             if (Array.isArray(formData[mediaLinkType])) {
               for (const mediaLink of formData[mediaLinkType]) {
                 // add to new form data only if not to be deleted
-                if (!imgsToBeDeleted.includes(mediaLink)) {
+                // and not exist multiple times
+                if (!imgsToBeDeleted[mediaLinkType]?.includes(mediaLink)) {
                   newFormData.append(mediaLinkType, mediaLink);
                 } else {
                   console.log('+++++ this media lint to be deleted +++++', mediaLinkType, mediaLink);
                 }
               }
             }
-            if(!newFormData.has(mediaLinkType)) {
+            if (!newFormData.has(mediaLinkType)) {
               console.log('+++++ this media type does not exist in new form data +++++', mediaLinkType);
               newFormData.append(mediaLinkType, []);
             }
@@ -260,10 +265,6 @@ const ListingTable = ({
               }
             }
           });
-          newFormData.append("filesToBeDeleted", imgsToBeDeleted);
-
-          const sanitizedFormData = sanitizeFormData({ formData, filesToBeDeleted: imgsToBeDeleted });
-          const newFormData2 = jsonToFormData(sanitizedFormData);
 
           // form data for edit property and json data for edit user
           const isPropertyEdit = API_ENDPOINTS[editApi].includes("editProperty");
@@ -428,18 +429,29 @@ const ListingTable = ({
     setShowImgEditModal(true);
   };
 
-  const handleImgsToBeDeleted = (link) => {
-    let newToBeDeleted = [...imgsToBeDeleted];
-    if (isSelectedForDeletion(link)) {
-      newToBeDeleted = newToBeDeleted.filter((entry) => entry !== link);
+  const handleImgsToBeDeleted = (type, link) => {
+    console.log('======= handle imgs to be deleted =======', type, link);
+    let newToBeDeleted = { ...imgsToBeDeleted };
+    if (isSelectedForDeletion(type, link)) {
+      console.log('=== selected for deletion ===');
+      newToBeDeleted[type] = newToBeDeleted[type].filter((entry) => entry !== link);
     } else {
-      newToBeDeleted.push(link);
+      console.log('=== not selected for deletion ===');
+      if (!newToBeDeleted[type]) {
+        newToBeDeleted[type] = [];
+      }
+      newToBeDeleted[type].push(link);
     }
-    setImgsToBeDeleted(newToBeDeleted);
+    let totalToBeDeleted = 0;
+    Object.keys(newToBeDeleted).forEach(key => {
+      console.log('=== counter ===', key, newToBeDeleted[key]?.length);
+      totalToBeDeleted += newToBeDeleted[key]?.length || 0;
+    });
+    setImgsToBeDeleted({ ...newToBeDeleted, totalToBeDeleted });
   };
 
-  const isSelectedForDeletion = (link) => {
-    if (imgsToBeDeleted.includes(link)) {
+  const isSelectedForDeletion = (type, link) => {
+    if (imgsToBeDeleted[type]?.includes(link)) {
       return true;
     } else {
       return false;
@@ -562,7 +574,7 @@ const ListingTable = ({
               })
             }
           </div>
-          {imgsToBeDeleted.length > 0 && <div className="label warning_text">{imgsToBeDeleted.length} images/videos to be deleted</div>}
+          {imgsToBeDeleted.totalToBeDeleted > 0 && <div className="label warning_text">{imgsToBeDeleted.totalToBeDeleted} images/videos to be deleted</div>}
         </ReusablePopup>
       )}
 
@@ -663,7 +675,7 @@ const ListingTable = ({
                       )
                     }
                   </label>
-                  <input id={index} type="checkbox" checked={isSelectedForDeletion(entry)} onChange={() => handleImgsToBeDeleted(entry)} />
+                  <input id={index} type="checkbox" checked={isSelectedForDeletion(imgEditor?.selectedImgType, entry)} onChange={() => handleImgsToBeDeleted(imgEditor?.selectedImgType, entry)} />
                 </div>
               ))
             }
