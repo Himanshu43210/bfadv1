@@ -163,7 +163,14 @@ const ListingTable = ({
       if (Object.keys(formData).length !== 0) {
         try {
           const newFormData = new FormData();
-
+          const mediaLinkTypes = [
+            "thumbnails",
+            "normalImages",
+            "images",
+            "videos",
+            "layouts",
+            "virtualFiles"
+          ];
           for (const file of formData?.thumbnailFile || []) {
             newFormData.append("thumbnailFile", file);
           }
@@ -187,7 +194,7 @@ const ListingTable = ({
           function isObjectNotString(value) {
             return (
               typeof value === "object" &&
-              !Array.isArray(value) &&
+              Array.isArray(value) &&
               value !== null
             );
           }
@@ -220,31 +227,34 @@ const ListingTable = ({
             "virtualFile",
           ]);
 
-          const toRemoveFrom = [
-            "thumbnails",
-            "normalImages",
-            "images",
-            "videos",
-            "layouts",
-            "virtualFiles",
-          ];
-
-          // remove from the original file links list if includes in the delete list
-          toRemoveFrom.forEach((entry) => {
-            if (formData[entry]) {
-              formData[entry] = formData[entry].filter((link) => (!imgsToBeDeleted.includes(link)));
+          console.log('====== HANDLING LINKS ======');
+          mediaLinkTypes.forEach(mediaLinkType => {
+            console.log('+++ media link type +++', mediaLinkType);
+            // append individually in formData
+            if (Array.isArray(formData[mediaLinkType])) {
+              for (const mediaLink of formData[mediaLinkType]) {
+                // add to new form data only if not to be deleted
+                if (!imgsToBeDeleted.includes(mediaLink)) {
+                  newFormData.append(mediaLinkType, mediaLink);
+                } else {
+                  console.log('+++++ this media lint to be deleted +++++', mediaLinkType, mediaLink);
+                }
+              }
+            }
+            if(!newFormData.has(mediaLinkType)) {
+              console.log('+++++ this media type does not exist in new form data +++++', mediaLinkType);
+              newFormData.append(mediaLinkType, []);
             }
           });
 
-          let checked = false;
           function isFileList(value) {
             return value instanceof FileList;
           }
+
           Object.keys(formData).map((element) => {
             if (!isFileList(formData[element])) {
               if (isObjectNotString(formData[element])) {
-                checked = true;
-                newFormData.append(element, formData[element].value);
+                // newFormData.append(element, formData[element].value);
               } else {
                 newFormData.append(element, formData[element]);
               }
@@ -278,7 +288,7 @@ const ListingTable = ({
           });
         } catch (error) {
           setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
-          console.log(error);
+          console.log("Edit failed : listing table ", error);
         }
       } else {
         setSnackbar({
@@ -399,11 +409,8 @@ const ListingTable = ({
     console.log('******* current row adta **********', currentRowData);
     const currAllFiles = {};
     fileFields.forEach((field) => {
-      console.log('----- stage 1 : field -----', field);
       if (currentRowData[field]) {
-        console.log('----- stage 2 : field -----', currentRowData[field]);
         for (const link of currentRowData[field]) {
-          console.log('----- stage 3 : link -----', link);
           if (!currAllFiles[field]) {
             currAllFiles[field] = [];
           }
