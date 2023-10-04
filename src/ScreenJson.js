@@ -256,6 +256,7 @@ export const SEARCH_RESULT = {
           sliceName: "filter",
           name: "search",
           buttonLabel: "Search",
+          btnClass: "sr-search-button",
           apiType: POST,
           navigate: "/searchResult",
           api: API_ENDPOINTS[GET_SEARCH_RESULT],
