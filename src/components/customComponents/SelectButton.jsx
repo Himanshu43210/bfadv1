@@ -9,6 +9,7 @@ export default function SelectButton({
   defaultValue,
   label, //from json
   value, //from screen
+  zIndex
 }) {
   const [clicked, setClicked] = useState(false);
   const [hover, setHover] = useState(false);
@@ -43,6 +44,7 @@ export default function SelectButton({
     // />
     <div
       className={`custom_select_container`}
+      style={{zIndex: zIndex}}
     >
       <div
         onClick={() => {

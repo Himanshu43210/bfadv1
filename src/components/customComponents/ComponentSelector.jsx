@@ -164,6 +164,7 @@ const ComponentSelector = ({ component }) => {
           handleValueChange={handleValueChange}
           label={component.label}
           value={sliceData[component.name]}
+          zIndex={component.zIndex}
         />
       )}
       {component.type === SLIDER && (

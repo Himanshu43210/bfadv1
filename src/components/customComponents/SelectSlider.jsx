@@ -6,14 +6,15 @@ export const SelectSlider = ({
   component,
   handleValueChange,
   stateValue = component.defaultValue,
+  className
 }) => {
   const [showComponent, setShowComponent] = useState(false);
   return (
     <>
-      <div>
+      <div className={`select_slider_wrapper ${className}`}>
         <MuiButton
           key={component.name}
-          className={component.className}
+          className={`slider_btn ${component.className}`}
           onClick={() => {
             setShowComponent(!showComponent);
           }}
@@ -22,8 +23,8 @@ export const SelectSlider = ({
           {component.buttonLabel}
         </MuiButton>
         {showComponent && (
-          <div className="slider-select-popup-container" >
-            <div className="slider-select-inputs">
+          <div className="select_slider_popup_container" style={{ zIndex: component.zIndex }}>
+            <div className="select_slider_inputs">
               <TextField
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 onChange={(e) => {
@@ -40,6 +41,7 @@ export const SelectSlider = ({
               />
             </div>
             <Slider
+              className="select_slider"
               key={component.name}
               name={component.name}
               value={stateValue}
@@ -52,9 +54,9 @@ export const SelectSlider = ({
               valueLabelDisplay="auto"
               valueLabelFormat={(value) => value.toFixed(1)}
             />
-            <div className="slider-select-labels">
-              <label>Max:{stateValue[0]}Sq.Yd.</label>
-              <label>Min:{stateValue[1]}Sq.Yd.</label>
+            <div className="select_slider_labels">
+              <label>Min:{stateValue[0]}Sq.Yd.</label>
+              <label>Max:{stateValue[1]}Sq.Yd.</label>
             </div>
           </div>
         )}

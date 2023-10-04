@@ -306,6 +306,7 @@ export const SEARCH_RESULT = {
                       value: "basementPlusFirstFloor",
                     },
                   ],
+                  zIndex: 90,
                 },
                 {
                   type: SELECT,
@@ -331,18 +332,20 @@ export const SEARCH_RESULT = {
                     { label: "South City 1", value: "South City 1" },
                     { label: "Sushant Lok 1", value: "Sushant Lok 1" },
                   ],
+                  zIndex: 89,
                 },
                 {
                   type: SELECT_SLIDER,
                   sliceName: "filter",
                   name: "size",
                   buttonLabel: "Size",
-                  minValue: 0.0,
+                                    minValue: 0.0,
                   maxValue: 1000.0,
                   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
                   onClickApiMethod: POST,
                   step: 0.1,
                   defaultValue: [180.0, 360.0],
+                  zIndex: 88,
                 },
                 {
                   type: SELECT,
@@ -359,6 +362,7 @@ export const SEARCH_RESULT = {
                     { label: "5 BHK", value: "5 BHK" },
                     { label: "6 BHK", value: "6 BHK" },
                   ],
+                  zIndex: 87,
                 },
                 {
                   type: SELECT,
@@ -376,6 +380,7 @@ export const SEARCH_RESULT = {
                     { label: "9 Months", value: "9 Months" },
                     { label: "12 Months", value: "12 Months" },
                   ],
+                  zIndex: 86,
                 },
                 {
                   type: SELECT,
@@ -395,6 +400,7 @@ export const SEARCH_RESULT = {
                     { label: "South-East", value: "South-East" },
                     { label: "South-West", value: "South-West" },
                   ],
+                  zIndex: 85,
                 },
                 {
                   type: SELECT,
@@ -408,6 +414,7 @@ export const SEARCH_RESULT = {
                     { label: "Price High to Low", value: "Price High to Low" },
                     { label: "Price Low to High", value: "Price Low to High" },
                   ],
+                  zIndex: 84,
                 },
                 {
                   type: TOGGLE_BUTTON,
