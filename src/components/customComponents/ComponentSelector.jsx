@@ -106,6 +106,7 @@ const ComponentSelector = ({ component }) => {
               : value,
         },
       };
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       dispatch(callApi(options));
     }
   };
@@ -114,10 +115,10 @@ const ComponentSelector = ({ component }) => {
     let idx = component.common
       ? 0
       : userProfile.role === USER_ROLE.bfAdmin
-      ? 0
-      : userProfile.role === USER_ROLE.channelPartner
-      ? 1
-      : 2;
+        ? 0
+        : userProfile.role === USER_ROLE.channelPartner
+          ? 1
+          : 2;
     return (
       <Heading
         component={{

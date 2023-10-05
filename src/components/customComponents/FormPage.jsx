@@ -255,7 +255,7 @@ const FormPage = () => {
             message={snackbar?.message}
             onClose={snackbarClose}
           />
-          {submitting === true ? <CircularProgress /> : null}
+          {submitting === true ? <CircularProgress className="loader-class" /> : null}
         </>
       )}
     </>
