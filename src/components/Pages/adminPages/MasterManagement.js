@@ -42,9 +42,7 @@ export default function UserManagement() {
     <>
       {!tableData && <AutoFetchApi url={dataApi} method={GET} />}
       {apiStatus === LOADING ? (
-        <div className="loading-class">
-          <CircularProgress className="loader-class" />
-        </div>
+        <CircularProgress className="loader-class" />
       ) : (
         <div className="standalone_page master_management_page">
           <Card>

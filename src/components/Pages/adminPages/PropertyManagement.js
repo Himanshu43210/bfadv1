@@ -58,40 +58,38 @@ export default function PropertyManagement() {
         <AutoFetchApi url={dataApi} method={POST} data={{ filter: {} }} />
       )}
       {apiStatus === LOADING ? (
-        <div className="loading-class">
-          <CircularProgress className="loader-class" />
-        </div>
+        <CircularProgress className="loader-class" />
       ) : (
         <div className="sub_page property_management">
-            <Card>
-              <Card.Header className="card_header font">Property Details</Card.Header>
-              <Card.Body className="card_body">
-                <TableButtonHeader
-                  fieldConst={fieldConst}
-                  tableData={_.cloneDeep(tableData?.data || [])}
-                  saveDataApi={ALTER_PROPERTY_DATA}
-                  refreshDataApi={dataApi}
-                  refreshMethod={POST}
-                  addHeader="Add Property"
-                />
-                <ListingTable
-                  // data={_.cloneDeep(tableData?.data || [])}
-                  data={{ filter: {} }}
-                  headersDesktop={desktopHeaders}
-                  headersMobile={mobileHeaders}
-                  fieldConst={fieldConst}
-                  editApi={ALTER_PROPERTY_DATA}
-                  deleteApi={DELETE_PROPERTY_DATA}
-                  getDataApi={GET_ADMIN_PROPERTY_DATA}
-                  filterDataUrl={dataApi}
-                  approveApi={APPROVE_PROPERTY_DATA}
-                  itemCount={tableData?.itemCount}
-                  isproperty={true}
-                  onRefreshApiType={POST}
-                  refreshDataApi={dataApi}
-                />
-              </Card.Body>
-            </Card>
+          <Card>
+            <Card.Header className="card_header font">Property Details</Card.Header>
+            <Card.Body className="card_body">
+              <TableButtonHeader
+                fieldConst={fieldConst}
+                tableData={_.cloneDeep(tableData?.data || [])}
+                saveDataApi={ALTER_PROPERTY_DATA}
+                refreshDataApi={dataApi}
+                refreshMethod={POST}
+                addHeader="Add Property"
+              />
+              <ListingTable
+                // data={_.cloneDeep(tableData?.data || [])}
+                data={{ filter: {} }}
+                headersDesktop={desktopHeaders}
+                headersMobile={mobileHeaders}
+                fieldConst={fieldConst}
+                editApi={ALTER_PROPERTY_DATA}
+                deleteApi={DELETE_PROPERTY_DATA}
+                getDataApi={GET_ADMIN_PROPERTY_DATA}
+                filterDataUrl={dataApi}
+                approveApi={APPROVE_PROPERTY_DATA}
+                itemCount={tableData?.itemCount}
+                isproperty={true}
+                onRefreshApiType={POST}
+                refreshDataApi={dataApi}
+              />
+            </Card.Body>
+          </Card>
         </div>
       )}
     </>

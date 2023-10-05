@@ -54,7 +54,7 @@ const Login = () => {
       localStorage.setItem("email", email);
       localStorage.setItem("password", password);
       dispatch(callApi(options));
-    } catch (error) {}
+    } catch (error) { }
   };
   return (
     <div className="contain">
@@ -64,7 +64,7 @@ const Login = () => {
           <label className="lab-class">Email</label>
 
           <input
-          className="normal_input"
+            className="normal_input"
             type={EMAIL}
             value={email}
             onChange={handleEmailChange}
@@ -82,9 +82,7 @@ const Login = () => {
           />
         </div>
         {loginStatus === LOADING ? (
-          <div className="loading-class">
-            <CircularProgress />
-          </div>
+          <CircularProgress className="loader-class" />
         ) : (
           <button type="submit" className="btn">Login</button>
         )}
