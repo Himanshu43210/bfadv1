@@ -157,10 +157,11 @@ const ListingTable = ({
     return newFormData;
   };
 
+  const isPropertyEdit = API_ENDPOINTS[editApi].includes("editProperty");
+
   const handleSave = (edit = false) => {
-    const alreadyHaveThumbanils = currentRowData?.thumbnails.filter(link => link !== "");
-    const haveReqFiles = (alreadyHaveThumbanils.length > 0) && ((imgsToBeDeleted?.thumbnails?.length || 0) < alreadyHaveThumbanils.length) && (alreadyHaveThumbanils[0] !== "");
-    console.log('***** have req. files *****', currentRowData?.thumbnails?.length > 0, (imgsToBeDeleted?.thumbnails?.length || 0), currentRowData?.thumbnails?.length, currentRowData?.thumbnails[0] !== "");
+    const alreadyHaveThumbanils = currentRowData?.thumbnails?.filter(link => link !== "") || [];
+    const haveReqFiles = isPropertyEdit ? ((alreadyHaveThumbanils.length > 0) && ((imgsToBeDeleted?.thumbnails?.length || 0) < alreadyHaveThumbanils.length) && (alreadyHaveThumbanils[0] !== "")) : false;
     const formData = finalizeRef.current.finalizeData(haveReqFiles ? ["thumbnailFile"] : []);
     if (formData) {
       if (Object.keys(formData).length !== 0) {
@@ -284,7 +285,6 @@ const ListingTable = ({
           newFormData.append("filesToBeDeleted", filesToBeDeleted);
 
           // form data for edit property and json data for edit user
-          const isPropertyEdit = API_ENDPOINTS[editApi].includes("editProperty");
           const options = {
             url: API_ENDPOINTS[editApi],
             method: POST,
