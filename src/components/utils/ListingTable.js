@@ -28,7 +28,7 @@ import BasicTablePagination from "../customComponents/TablePagination";
 import { selectApiData } from "../../redux/utils/selectors";
 import { useEffect } from "react";
 import { FcApproval, FcRemoveImage } from "react-icons/fc";
-import _, { find } from "lodash";
+import _, { find, replace } from "lodash";
 import HomeCard from "../customComponents/HomeCard";
 import SearchCard from "../customComponents/SearchCard";
 import DetailDataCard from "../customComponents/DetailedDataCard";
@@ -79,6 +79,7 @@ const ListingTable = ({
   const [tableData, setTableData] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
   const [tableFilter, setTableFilter] = useState({});
+  const [showLoader, setShowLoader] = useState(false);
   const [showImgEditModal, setShowImgEditModal] = useState(false);
   const [imgEditor, setImgEditor] = useState({});
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
@@ -157,7 +158,9 @@ const ListingTable = ({
   };
 
   const handleSave = (edit = false) => {
-    const haveReqFiles = (currentRowData?.thumbnails?.length > 0) && ((imgsToBeDeleted?.thumbnails?.length || 0) < currentRowData?.thumbnails?.length) && (currentRowData?.thumbnails[0] !== "");
+    const alreadyHaveThumbanils = currentRowData?.thumbnails.filter(link => link !== "");
+    const haveReqFiles = (alreadyHaveThumbanils.length > 0) && ((imgsToBeDeleted?.thumbnails?.length || 0) < alreadyHaveThumbanils.length) && (alreadyHaveThumbanils[0] !== "");
+    console.log('***** have req. files *****', currentRowData?.thumbnails?.length > 0, (imgsToBeDeleted?.thumbnails?.length || 0), currentRowData?.thumbnails?.length, currentRowData?.thumbnails[0] !== "");
     const formData = finalizeRef.current.finalizeData(haveReqFiles ? ["thumbnailFile"] : []);
     if (formData) {
       if (Object.keys(formData).length !== 0) {
@@ -171,7 +174,10 @@ const ListingTable = ({
             "layouts",
             "virtualFiles"
           ];
+          const filesToBeDeleted = [];
+          const replaceFiles = {};
           for (const file of formData?.thumbnailFile || []) {
+            replaceFiles.thumbnails = true;
             newFormData.append("thumbnailFile", file);
           }
           for (const file of formData?.normalImageFile || []) {
@@ -227,8 +233,6 @@ const ListingTable = ({
             "virtualFile",
           ]);
 
-          const filesToBeDeleted = [];
-
           console.log('====== HANDLING LINKS ======');
           mediaLinkTypes.forEach(mediaLinkType => {
             // append individually in formData
@@ -239,15 +243,15 @@ const ListingTable = ({
                 if (!imgsToBeDeleted[mediaLinkType]?.includes(mediaLink)) {
                   newFormData.append(mediaLinkType, mediaLink);
                 } else {
-                  if (!filesToBeDeleted.includes(mediaLink)) {
+                  if (!filesToBeDeleted.includes(mediaLink) || replaceFiles[mediaLinkType] === true) {
                     filesToBeDeleted.push(mediaLink);
                   }
                 }
               }
             }
-            // if (!newFormData.has(mediaLinkType)) {
-            //   newFormData.append(mediaLinkType, []);
-            // }
+            if (!newFormData.has(mediaLinkType)) {
+              newFormData.append(mediaLinkType, []);
+            }
           });
 
           function isFileList(value) {
@@ -256,8 +260,9 @@ const ListingTable = ({
 
           Object.keys(formData).map((element) => {
             if (!isFileList(formData[element])) {
-              if (!mediaLinkTypes.includes(element) && typeof formData[element] === "object" && !Array.isArray(formData[element])) {
-                newFormData.append(element, formData[element].value);
+              if (!mediaLinkTypes.includes(element) && typeof formData[element] == "object" && !Array.isArray(formData[element])) {
+                console.log('++++++++++ not array is object ++++++++++', element, formData[element]);
+                newFormData.append(element, formData[element]?.value);
               }
               else if (isObjectNotString(formData[element])) {
                 // ignore
@@ -267,9 +272,16 @@ const ListingTable = ({
             }
           });
 
-          filesToBeDeleted.forEach((link)=> {
-            newFormData.append("filesToBeDeleted", link);
+          // filesToBeDeleted.forEach((link) => {
+          //   newFormData.append("filesToBeDeleted", link);
+          // });
+          Object.keys(replaceFiles).forEach(key => {
+            formData[key].forEach(link => {
+              filesToBeDeleted.push(link);
+            });
           });
+
+          newFormData.append("filesToBeDeleted", filesToBeDeleted);
 
           // form data for edit property and json data for edit user
           const isPropertyEdit = API_ENDPOINTS[editApi].includes("editProperty");
@@ -287,12 +299,15 @@ const ListingTable = ({
                 ...formData,
               }),
           };
+          setShowLoader(true);
           dispatch(callApi(options)).then(() => {
+            setShowLoader(false);
             setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
             setShowEditModal(false);
             refreshData();
           });
         } catch (error) {
+          setShowLoader(false);
           setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
           console.log("Edit failed : listing table ", error);
         }
@@ -434,21 +449,32 @@ const ListingTable = ({
     setShowImgEditModal(true);
   };
 
-  const handleImgsToBeDeleted = (type, link) => {
-        let newToBeDeleted = { ...imgsToBeDeleted };
-    if (isSelectedForDeletion(type, link)) {
-      newToBeDeleted[type] = newToBeDeleted[type].filter((entry) => entry !== link);
-    } else {
+  const handleImgsToBeDeleted = (type, link, isArray = false) => {
+    let newToBeDeleted = { ...imgsToBeDeleted };
+    if (isArray) {
       if (!newToBeDeleted[type]) {
         newToBeDeleted[type] = [];
       }
-      newToBeDeleted[type].push(link);
+      link.forEach(lk => {
+        if (lk !== "") {
+          newToBeDeleted[type].push(lk);
+        }
+      });
+    } else {
+      if (isSelectedForDeletion(type, link)) {
+        newToBeDeleted[type] = newToBeDeleted[type].filter((entry) => entry !== link);
+      } else {
+        if (!newToBeDeleted[type]) {
+          newToBeDeleted[type] = [];
+        }
+        newToBeDeleted[type].push(link);
+      }
     }
     let totalToBeDeleted = 0;
     Object.keys(newToBeDeleted).forEach(key => {
       totalToBeDeleted += newToBeDeleted[key]?.length || 0;
     });
-        setImgsToBeDeleted({ ...newToBeDeleted, totalToBeDeleted });
+    setImgsToBeDeleted({ ...newToBeDeleted, totalToBeDeleted });
   };
 
   const isSelectedForDeletion = (type, link) => {
@@ -868,17 +894,8 @@ const ListingTable = ({
           </tbody>
         </Table>
       </div>
-      {apiStatus === "loading" ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "50px",
-          }}
-        >
-          <CircularProgress className="loader-class" />
-        </div>
+      {(apiStatus === "loading" || showLoader) ? (
+        <CircularProgress className="loader-class" />
       ) : (
         tableData.length > 0 && (
           <BasicTablePagination
