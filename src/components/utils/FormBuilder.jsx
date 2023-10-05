@@ -260,7 +260,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                     className="file_input"
                     type="file"
                     name={field.name}
-                    multiple
+                    multiple={field.isMulti}
                     onChange={(e) => handleChange(field, e.target.files)}
                     accept={field?.acceptedFileTypes}
                   />
