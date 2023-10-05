@@ -303,7 +303,7 @@ const TableButtonHeader = ({
         message={snackbar?.message}
         onClose={(status) => snackbarClose(status)}
       />
-      {loading === true ? <CircularProgress /> : null}
+      {loading === true ? <CircularProgress className="loader-class" /> : null}
     </>
   );
 };

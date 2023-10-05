@@ -227,6 +227,8 @@ const ListingTable = ({
             "virtualFile",
           ]);
 
+          const filesToBeDeleted = [];
+
           console.log('====== HANDLING LINKS ======');
           mediaLinkTypes.forEach(mediaLinkType => {
             // append individually in formData
@@ -237,12 +239,15 @@ const ListingTable = ({
                 if (!imgsToBeDeleted[mediaLinkType]?.includes(mediaLink)) {
                   newFormData.append(mediaLinkType, mediaLink);
                 } else {
+                  if (!filesToBeDeleted.includes(mediaLink)) {
+                    filesToBeDeleted.push(mediaLink);
+                  }
                 }
               }
             }
-            if (!newFormData.has(mediaLinkType)) {
-              newFormData.append(mediaLinkType, []);
-            }
+            // if (!newFormData.has(mediaLinkType)) {
+            //   newFormData.append(mediaLinkType, []);
+            // }
           });
 
           function isFileList(value) {
@@ -260,6 +265,10 @@ const ListingTable = ({
                 newFormData.append(element, formData[element]);
               }
             }
+          });
+
+          filesToBeDeleted.forEach((link)=> {
+            newFormData.append("filesToBeDeleted", link);
           });
 
           // form data for edit property and json data for edit user
@@ -426,7 +435,7 @@ const ListingTable = ({
   };
 
   const handleImgsToBeDeleted = (type, link) => {
-    let newToBeDeleted = { ...imgsToBeDeleted };
+        let newToBeDeleted = { ...imgsToBeDeleted };
     if (isSelectedForDeletion(type, link)) {
       newToBeDeleted[type] = newToBeDeleted[type].filter((entry) => entry !== link);
     } else {
@@ -439,7 +448,7 @@ const ListingTable = ({
     Object.keys(newToBeDeleted).forEach(key => {
       totalToBeDeleted += newToBeDeleted[key]?.length || 0;
     });
-    setImgsToBeDeleted({ ...newToBeDeleted, totalToBeDeleted });
+        setImgsToBeDeleted({ ...newToBeDeleted, totalToBeDeleted });
   };
 
   const isSelectedForDeletion = (type, link) => {
@@ -868,7 +877,7 @@ const ListingTable = ({
             height: "50px",
           }}
         >
-          <CircularProgress />
+          <CircularProgress className="loader-class" />
         </div>
       ) : (
         tableData.length > 0 && (
