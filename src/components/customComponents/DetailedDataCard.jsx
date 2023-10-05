@@ -57,9 +57,9 @@ export default function DetailDataCard({
   const imageNormal = cardData?.normalImages?.length;
   const otherImages = [];
   const imageTypes = [
+    "normalImages",
     "virtualFiles",
     "layouts",
-    "thumbnails",
   ];
   const price = convertToCr(cardData?.price);
 
@@ -71,7 +71,9 @@ export default function DetailDataCard({
     Object.keys(cardData).forEach(prop => {
       if (imageTypes.includes(prop)) {
         cardData[prop].forEach(link => {
-          otherImages.push(link);
+          if (link !== "") {
+            otherImages.push(link);
+          }
         });
       }
     });
