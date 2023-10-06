@@ -51,7 +51,7 @@ const FOOTER = {
   className: "default-home-footer-div",
   HomeLinks: {
     icon: "https://www.builderfloor.com/assets/imgs/template/BUILDER.png",
-    url: "https://builder-floor-admin-pannel.vercel.app/",
+    url: "/",
   },
   social_media: [
     {
@@ -78,7 +78,7 @@ const HEADER = {
     },
     {
       type: PAGE_HEADER,
-      url: "https://builder-floor-admin-pannel.vercel.app/",
+      url: "/",
       image: "https://www.builderfloor.com/assets/imgs/template/BUILDER.png",
       title: "BuilderFloor.com",
       className: "page_header_comp",
