@@ -54,7 +54,7 @@ export default function DynamicCardContainer({ component, handleValueChange }) {
         <BasicPagination
           paginationClass={component.paginationClass}
           handlePageChange={(e, newPage) => {
-            handleValueChange({label: "page", value: newPage});
+            handleValueChange({label: "page", value: (newPage - 1)});
             setPage(newPage);
           }}
           currentPage={page || defaultPage}

@@ -23,17 +23,23 @@ export default function SearchCard({
     " ",
     "-"
   )}&id=${element._id}`;
-  const handleShareClick = () => {
-    navigator.share({
-      title: "WebShare",
-      url: cardDetailUrl,
-    });
+  const handleShareClick = (e) => {
+    e.preventDefault();
+    if (navigator.share !== undefined) {
+      navigator.share({
+        title: "WebShare",
+        url: cardDetailUrl,
+      });
+    }
   };
   const navigateTo = useNavigate();
   return (
     <Card
       onClick={() => {
-        if (!disableOnClickNavigate) navigateTo(cardDetailUrl);
+        if (!disableOnClickNavigate) {
+          window.open(cardDetailUrl, "_blank");
+          // navigateTo(cardDetailUrl);
+        }
       }}
       className={`search_card ${classname}`}
     >
@@ -53,7 +59,7 @@ export default function SearchCard({
               {element.title}
             </Typography>
             <div className="detailicondiv">
-              <Button variant="outlined" onClick={handleShareClick} className="btn sc_btn sc_share_btn">
+              <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn">
                 <FaShareAlt size={"23px"} className="share_icon" />
               </Button>
               <Button className="btn sc_btn sc_fav_btn">
@@ -79,7 +85,7 @@ export default function SearchCard({
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />
-                <Typography fontWeight="lg">{element.size}</Typography>
+                <Typography fontWeight="lg">{element.size} Sq. Yd.</Typography>
               </div>
               <div className="detail_list_item">
                 <img
@@ -126,6 +132,7 @@ export default function SearchCard({
                 queryParams={{ id: element._id }}
                 navigate={!disableOnClickNavigate ? cardDetailUrl : null}
                 btnClass={`btn price_btn`}
+                newTab={true}
               />
               <Typography fontWeight="lg">View Details {">>"}</Typography>
             </div>

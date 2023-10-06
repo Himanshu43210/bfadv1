@@ -10,6 +10,7 @@ import { convertToCr } from "../utils/HelperMethods";
 import IframeBuilder from "./IframeBuilder";
 import { FaShareAlt, FaRegHeart } from "react-icons/fa";
 import { CARD_DETAILS_SCREEN } from "../../ScreenJson";
+import { useLocation } from "react-router-dom";
 
 export default function DetailDataCard({
   component,
@@ -32,9 +33,12 @@ export default function DetailDataCard({
   const getApiEndpoint = data.apiSliceName;
   const apiEndpoint = API_ENDPOINTS[getApiEndpoint] + `?id=${id}`;
   const dispatch = useDispatch();
+  const { search } = useLocation();
 
   useEffect(() => {
+    console.log('************* useEffect : DetailedDataCard **************', singledata);
     if (!singledata) {
+      console.log('+++++++ useEffect : single data is undefined ++++++');
       dispatch(
         callApi({
           url: apiEndpoint,
@@ -45,14 +49,23 @@ export default function DetailDataCard({
     }
   }, []);
 
+  useEffect(() => {
+    const parsedParams = search.split("&").map(param => param.split("="));
+    const newId = parsedParams?.[1]?.[1];
+    dispatch(
+      callApi({
+        url: API_ENDPOINTS[getApiEndpoint] + `?id=${newId}`,
+        method: GET,
+        headers: { "Content-Type": "application/json" },
+      })
+    );
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+  }, [search]);
+
   const apiData = useSelector(
     (state) => selectApiData(state, getApiEndpoint)?.data
   );
   const cardData = singledata || apiData || {};
-  // ("cardData", cardData?.title);
-
-  const [ShowNumber, setShowNumber] = useState();
-  const [imageLink, setImageLink] = useState(cardData.images?.[0]);
   const image360 = cardData?.images?.length;
   const imageNormal = cardData?.normalImages?.length;
   const otherImages = [];
@@ -62,6 +75,10 @@ export default function DetailDataCard({
     "layouts",
   ];
   const price = convertToCr(cardData?.price);
+
+  const [ShowNumber, setShowNumber] = useState();
+  const [imageLink, setImageLink] = useState(cardData.images?.[0] || cardData?.normalImages?.[0]);
+  console.log('------------- imageLink --------------', imageLink, cardData, cardData.images?.[0]);
 
   const handleImageChange = (newImageLink) => {
     setImageLink(newImageLink);
@@ -82,10 +99,12 @@ export default function DetailDataCard({
   //... Rest of the code remains the same
   const cardDetailUrl = window.location.href;
   const handleShareClick = () => {
-    navigator.share({
-      title: "WebShare",
-      url: cardDetailUrl,
-    });
+    if (navigator.share !== undefined) {
+      navigator.share({
+        title: "WebShare",
+        url: cardDetailUrl,
+      });
+    }
   };
 
   extractAllImages();
