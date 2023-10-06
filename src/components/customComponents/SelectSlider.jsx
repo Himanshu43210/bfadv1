@@ -55,8 +55,8 @@ export const SelectSlider = ({
               valueLabelFormat={(value) => value.toFixed(1)}
             />
             <div className="select_slider_labels">
-              <label>Min:{stateValue[0]}Sq.Yd.</label>
-              <label>Max:{stateValue[1]}Sq.Yd.</label>
+              <label>Min: <span className="slider_value">{stateValue[0]}</span>Sq.Yd.</label>
+              <label>Max: <span className="slider_value">{stateValue[1]}</span>Sq.Yd.</label>
             </div>
           </div>
         )}

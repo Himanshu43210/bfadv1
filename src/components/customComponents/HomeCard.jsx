@@ -24,13 +24,18 @@ export default function HomeCard({
     <Card
       className={`home-card ${classname}`}
       onClick={() => {
-        if (!disableOnClickNavigate)
-          navigateTo(
-            `${onClickNavigate}?title=${element.title?.replaceAll(
-              " ",
-              "-"
-            )}&id=${element._id}`
-          );
+        if (!disableOnClickNavigate) {
+          window.open(`${onClickNavigate}?title=${element.title?.replaceAll(
+            " ",
+            "-"
+          )}&id=${element._id}`, "_blank");
+          // navigateTo(
+          //   `${onClickNavigate}?title=${element.title?.replaceAll(
+          //     " ",
+          //     "-"
+          //   )}&id=${element._id}`
+          // );
+        }
       }}
     // sx={{
     //   maxWidth: "345px",

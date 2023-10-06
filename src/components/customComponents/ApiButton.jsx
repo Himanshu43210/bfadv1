@@ -9,7 +9,8 @@ export default function ApiButton({
   data,
   buttonLabel,
   navigate,
-  btnClass
+  btnClass,
+  newTab = false
 }) {
   const apiHeader = { "Content-Type": "application/json" };
   const navigateTo = useNavigate();
@@ -17,6 +18,9 @@ export default function ApiButton({
   const handleApiCall = async (doFetch) => {
     await doFetch(); // Wait for API call
     if (navigate) {
+      if (newTab) {
+        window.open(navigate, "_blank");
+      }
       // If navigate prop is provided
       navigateTo(navigate); // Navigate to the given page
     }
