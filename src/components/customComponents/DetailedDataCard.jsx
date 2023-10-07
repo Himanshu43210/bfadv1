@@ -78,7 +78,6 @@ export default function DetailDataCard({
 
   const [ShowNumber, setShowNumber] = useState();
   const [imageLink, setImageLink] = useState(cardData.images?.[0] || cardData?.normalImages?.[0]);
-  console.log('------------- imageLink --------------', imageLink, cardData, cardData.images?.[0]);
 
   const handleImageChange = (newImageLink) => {
     setImageLink(newImageLink);
@@ -108,6 +107,10 @@ export default function DetailDataCard({
   };
 
   extractAllImages();
+
+  useEffect(() => {
+    setImageLink(cardData.images?.[0] || cardData?.normalImages?.[0]);
+  },[cardData]);
 
   return (
     <>
@@ -256,9 +259,6 @@ export default function DetailDataCard({
         {component ? component.moreOptionText : singledata.moreOptionText}
       </div>
       <HORIZONTAL_LINE />
-      <div>
-        <div></div>
-      </div>
     </>
   );
 }
