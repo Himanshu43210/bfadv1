@@ -7,7 +7,7 @@ import { HOME_CARD, SEARCH_CARD } from "../utils/Const";
 import BasicPagination from "./Pagination";
 import MuiButton from "@mui/material/Button";
 
-export default function DynamicCardContainer({ component, handleValueChange }) {
+export default function DynamicCardContainer({ component, handleValueChange, onLoadMore }) {
   const apiName = component.apiName;
   const onClickApi = component.cardClickApi;
   const onClickNavigate = component.cardClickNavigate;
@@ -28,6 +28,7 @@ export default function DynamicCardContainer({ component, handleValueChange }) {
 
   const handleLoadMore = () => {
     console.log('+++++++++++ HANDLE LOAD MORE ++++++++++++');
+    onLoadMore();
   };
 
   return (

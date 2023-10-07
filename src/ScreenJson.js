@@ -243,6 +243,8 @@ export const SEARCH_RESULT = {
           name: "city",
           defaultValue: { label: "Gurgaon", value: "Gurgaon" },
           options: [{ label: "Gurgaon", value: "Gurgaon" }],
+          onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
+          onClickApiMethod: POST,
         },
         {
           type: SLIDER,
@@ -288,7 +290,6 @@ export const SEARCH_RESULT = {
           children: [
             {
               type: CONTAINER,
-              subtype: "FILTERS",
               className: "filter-button-div-overflowed",
               children: [
                 {
