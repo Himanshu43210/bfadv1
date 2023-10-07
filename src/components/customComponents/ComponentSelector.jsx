@@ -199,26 +199,6 @@ const ComponentSelector = ({ component }) => {
     }
   };
 
-  const handleFilterUpdate = (payload) => {
-    if (!payload) {
-      // reset filters
-      dispatch(resetFilterData({
-        budget: sliceData?.budget,
-        city: sliceData?.city
-      }));
-    } else {
-      // store the stringified payload in localstorage/sessionstorage
-
-      // dispatch storeFilterData
-      dispatch(resetFilterData({ ...sliceData, ...payload }));
-      // update the dynamic card container component for pagination (automatically)
-    }
-    if (component.onClickApi) {
-      console.log('=============== HANDLE FILTER UPDATE ================', payload);
-      getData(payload);
-    }
-  };
-
   const getTitle = () => {
     let idx = component.common
       ? 0
@@ -249,7 +229,7 @@ const ComponentSelector = ({ component }) => {
             [component.name]: parsedFilters[component.name],
           })
         );
-        if (component.onClickApi) {
+        if (component.onClickApi && component.name === "budget") {
           console.log('------------- useEffect calling GETDATA --------------');
           getData(parsedFilters[component.name]);
         }
