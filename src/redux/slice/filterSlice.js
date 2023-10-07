@@ -9,7 +9,7 @@ const fliterSlice = createSlice({
       state[key] = value;
     },
     resetFilterData: (state, action) => {
-      return {};
+      return { ...action.payload };
     },
   },
 });

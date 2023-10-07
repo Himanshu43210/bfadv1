@@ -12,6 +12,7 @@ export const TEXT = "text";
 export const EMAIL = "email";
 // components
 export const SELECT = "SELECT";
+export const SELECT2 = "SELECT2";
 export const DASHBOARD_LISTING = "DASHBOARD_LISTING";
 export const IMAGE = "IMAGE";
 export const SLIDER = "SLIDER";
@@ -47,6 +48,8 @@ export const PAGE_HEADER = "PAGE_HEADER";
 export const HORIZONTAL_LINE = "HORIZONTAL_LINE";
 export const SPAN_TEXT = "SPAN_TEXT";
 export const PANEL_HEADER = "PANEL_HEADER";
+export const FILTERS = "FILTERS";
+export const FILTER_RESET = "FILTER_RESET";
 
 //
 export const LOADING = "loading";

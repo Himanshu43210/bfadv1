@@ -15,7 +15,7 @@ import FormPage from "./components/customComponents/FormPage";
 import ViewListing from "./components/Pages/adminPages/ViewListing";
 import ApproveListing from "./components/Pages/adminPages/ApproveListings";
 import TableFormPage from "./components/customComponents/TableFormData";
-// import './new-styles.css';
+
 function App() {
   const userProfile = useSelector((state) => state.profile);
   return (
@@ -23,10 +23,10 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
           <Route path="/searchResult" element={<SearchResult />} />
           <Route path="/builderFloorDetails" element={<DetailedView />} />
           <Route path="/admin/property" element={<PropertyManagement />} />
-          <Route path="/" element={<Home />} />
           <Route path="/admin/form" element={<FormPage />} />
           <Route path="/admin/TableForm" element={<TableFormPage />} />
           <Route path="/admin/user" element={<UserManagement />} />

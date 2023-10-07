@@ -5,6 +5,7 @@ import HomeCard from "./HomeCard";
 import SearchCard from "./SearchCard";
 import { HOME_CARD, SEARCH_CARD } from "../utils/Const";
 import BasicPagination from "./Pagination";
+import MuiButton from "@mui/material/Button";
 
 export default function DynamicCardContainer({ component, handleValueChange }) {
   const apiName = component.apiName;
@@ -24,6 +25,10 @@ export default function DynamicCardContainer({ component, handleValueChange }) {
       : dataSelector;
 
   useEffect(() => { }, [dataToRender]);
+
+  const handleLoadMore = () => {
+    console.log('+++++++++++ HANDLE LOAD MORE ++++++++++++');
+  };
 
   return (
     <div className={`searchdiv ${component.className}`}>
@@ -50,11 +55,16 @@ export default function DynamicCardContainer({ component, handleValueChange }) {
           </>
         );
       })}
+      {component.loadMore && dataToRender && (
+        <div className="load_more_btn_container">
+          <MuiButton variant="contained" className="dcc_load_more_btn" onClick={handleLoadMore}>{component.loadMore}</MuiButton>
+        </div>
+      )}
       {component.paginatioName && dataToRender && (
         <BasicPagination
           paginationClass={component.paginationClass}
           handlePageChange={(e, newPage) => {
-            handleValueChange({label: "page", value: (newPage - 1)});
+            handleValueChange({ label: "page", value: (newPage - 1) });
             setPage(newPage);
           }}
           currentPage={page || defaultPage}
