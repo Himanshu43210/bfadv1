@@ -180,42 +180,42 @@ export default function DetailDataCard({
           <div className="detail-icon-div">
             <div className="rowicon">
               <div>
-                <img src={iconList?.sectorNumber} alt="" />
+                <img src={iconList?.sectorNumber} alt="location" />
                 {cardData?.sectorNumber}
               </div>
               <div>
-                <img src={iconList?.size} alt="" />
+                <img src={iconList?.size} alt="area" />
                 {cardData?.size}
               </div>
               <div>
-                <img src={iconList?.accommodation} alt="" />
+                <img src={iconList?.accommodation} alt="accommodation" />
                 {cardData?.accommodation}
               </div>
             </div>
 
             <div className="rowicon">
               <div>
-                <img src={iconList?.floor} alt="" />
+                <img src={iconList?.floor} alt="floor" />
                 {cardData?.floor}
               </div>
               <div>
-                <img src={iconList?.facing} alt="" />
+                <img src={iconList?.facing} alt="facing" />
                 {cardData?.facing}
               </div>
               <div>
-                <img src={iconList?.possession} alt="" />
+                <img src={iconList?.possession} alt="possession" />
                 {cardData?.possession}
               </div>
             </div>
 
             <div className="rowicon">
               <div>
-                <img src={iconList?.parkFacing} alt="" />
+                <img src={iconList?.parkFacing} alt="park facing" />
                 {cardData?.parkFacing}
               </div>
 
               <div>
-                <img src={iconList?.corner} alt="" />
+                <img src={iconList?.corner} alt="corner" />
                 {cardData?.corner}
               </div>
             </div>

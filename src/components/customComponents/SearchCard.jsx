@@ -81,7 +81,7 @@ export default function SearchCard({
               <div className="detail_list_item">
                 <img
                   className="detailimages"
-                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/home.png"
+                  src="https://www.builderfloor.com/assets/imgs/icons/area.png"
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />

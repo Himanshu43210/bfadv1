@@ -127,13 +127,18 @@ const ListingTable = ({
     }
   }, [getApiDataFromRedux]);
 
-  const refreshData = () => {
+  const refreshData = (reqPayload = {
+    sortColumn: "updatedAt",
+    sortType: "desc",
+  }) => {
     try {
       const options = {
         url: refreshDataApi,
         method: onRefreshApiType || GET,
         headers: { "Content-Type": "application/json" },
-        data: {},
+        data: onRefreshApiType === POST
+          ? reqPayload
+          : {},
       };
       dispatch(callApi(options));
     } catch (error) { }

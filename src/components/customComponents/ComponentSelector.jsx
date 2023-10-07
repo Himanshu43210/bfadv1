@@ -30,6 +30,9 @@ import {
   TITLE,
   PANEL_HEADER,
   LOGIN_REFRESH,
+  BUTTON,
+  FILTERS,
+  SELECT2,
 } from "../utils/Const";
 import Banner from "./Banner";
 import Footer from "./Footer";
@@ -44,7 +47,7 @@ import NavigateButton from "./NavigateButton";
 import { SelectSlider } from "./SelectSlider";
 import RenderComponent from "./ComponentRenderer";
 import DynamicCardContainer from "./DynamicCardContainer";
-import { storeFilterData } from "../../redux/slice/filterSlice";
+import { resetFilterData, storeFilterData } from "../../redux/slice/filterSlice";
 import { callApi } from "../../redux/utils/apiActions";
 import { ScrollToTop } from "./ScrollToTop";
 import DetailDataCard from "./DetailedDataCard";
@@ -60,14 +63,57 @@ import ApiHandler from "./AutoFetchApiPost";
 import { USER_ROLE } from "../../ScreenJson";
 import PanelHeader from "./PanelHeader";
 import LoginRefresh from "./LoginRefresh";
+import { useEffect, useState } from "react";
+import Button from "./Button";
+import Filters from "./Filters";
+import DropSelect from "./DropSelect";
 
 const ComponentSelector = ({ component }) => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
   const sliceData = useSelector((state) => state[component.sliceName]);
   const apiStatus = useSelector((state) =>
     selectApiStatus(state, component.loadingApi || "")
   );
   const userProfile = useSelector((state) => state.profile);
+
+  const updateLocalFilters = (key, value) => {
+    const searchFilters = localStorage.getItem("searchFilters");
+    if (searchFilters) {
+      const parsedFilters = JSON.parse(searchFilters);
+      parsedFilters[key] = (typeof value === "object")
+        ? Array.isArray(value)
+          ? value
+          : value.value
+        : value;
+      console.log('+++++++++++++ UPDATED LOCAL FILTER ++++++++++++++++', parsedFilters);
+      localStorage.setItem("searchFilters", JSON.stringify(parsedFilters));
+    } else {
+      const filters = {};
+      filters[key] = (typeof value === "object")
+        ? Array.isArray(value)
+          ? value
+          : value.value
+        : value;
+      console.log('+++++++++++++ UPDATED LOCAL FILTER ++++++++++++++++', filters);
+      localStorage.setItem("searchFilters", JSON.stringify(filters));
+    }
+  };
+
+  useEffect(() => {
+    if (component.sliceName === "filter") {
+      const searchFilters = localStorage.getItem("searchFilters");
+      const parsedFilters = JSON.parse(searchFilters);
+      console.log('============== PARSED FILTERS : useEffect ==============', parsedFilters);
+      if (parsedFilters[component.name]) {
+        dispatch(
+          storeFilterData({
+            ...sliceData,
+            [component.name]: parsedFilters[component.name],
+          })
+        );
+      }
+    }
+  }, []);
 
   function hasValueProperty(input) {
     // Check if the input is an object
@@ -79,35 +125,81 @@ const ComponentSelector = ({ component }) => {
     }
   }
 
+  const getData = (payload) => {
+    console.log('++++++++++ payload : get data ++++++++++', payload, component.paginatioName || component.name);
+    const page = (component.paginatioName || component.name) !== "page" ? sliceData.page : 0;
+    const data = (payload == null)
+      ? {
+        budget: sliceData?.budget,
+        city: sliceData?.city,
+      }
+      : {
+        ...sliceData,
+        [component.paginatioName || component.name]: (typeof payload === "object")
+          ? Array.isArray(payload)
+            ? payload
+            : payload.value
+          : payload,
+      };
+    const options = {
+      url: component.onClickApi,
+      method: component.onClickApiMethod,
+      headers: { "Content-Type": "application/json" },
+      data: data,
+    };
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    console.log('+========= get daat ++++++++==', data, options);
+    dispatch(callApi(options));
+  };
+
   const handleValueChange = (value) => {
-    dispatch(
-      storeFilterData({
-        key: component.paginatioName || component.name,
-        value:
-          typeof value === "object"
-            ? Array.isArray(value)
-              ? value
-              : value.value
-            : value,
-      })
-    );
-    if (component.onClickApi) {
-      const options = {
-        url: component.onClickApi,
-        method: component.onClickApiMethod,
-        headers: { "Content-Type": "application/json" },
-        data: {
-          ...sliceData,
-          [component.paginatioName || component.name]:
+    console.log('--------------- HANDLE VALUE CHANGE -------------', component.paginatioName || component.name, value, sliceData);
+    if ((component.paginatioName || component.name) === "Reset") {
+      // reset filters
+      dispatch(resetFilterData({
+        budget: sliceData?.budget,
+        city: sliceData?.city,
+        page: 0
+      }));
+      if (component.onClickApi) {
+        getData(null);
+      }
+    } else {
+      updateLocalFilters(component.paginatioName || component.name, value);
+      dispatch(
+        storeFilterData({
+          key: component.paginatioName || component.name,
+          value:
             typeof value === "object"
               ? Array.isArray(value)
                 ? value
                 : value.value
               : value,
-        },
-      };
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      dispatch(callApi(options));
+        })
+      );
+      if (component.onClickApi) {
+        getData(value);
+      }
+    }
+  };
+
+  const handleFilterUpdate = (payload) => {
+    if (!payload) {
+      // reset filters
+      dispatch(resetFilterData({
+        budget: sliceData?.budget,
+        city: sliceData?.city
+      }));
+    } else {
+      // store the stringified payload in localstorage/sessionstorage
+
+      // dispatch storeFilterData
+      dispatch(resetFilterData({ ...sliceData, ...payload }));
+      // update the dynamic card container component for pagination (automatically)
+    }
+    if (component.onClickApi) {
+      console.log('=============== HANDLE FILTER UPDATE ================', payload);
+      getData(payload);
     }
   };
 
@@ -168,6 +260,13 @@ const ComponentSelector = ({ component }) => {
           zIndex={component.zIndex}
         />
       )}
+      {component.type === SELECT2 && (
+        <DropSelect
+          component={component}
+          values={sliceData[component.name]}
+          onSubmit={handleValueChange}
+        />
+      )}
       {component.type === SLIDER && (
         <Slider
           component={component}
@@ -207,6 +306,7 @@ const ComponentSelector = ({ component }) => {
       {component.type === HAMBURGER_MENU && (
         <MenuState MenuItems={component.items} />
       )}
+      {component.type === FILTERS && <Filters component={component} onUpdate={handleFilterUpdate} />}
       {component.type === SELECT_SLIDER && (
         <SelectSlider
           component={component}
@@ -220,6 +320,9 @@ const ComponentSelector = ({ component }) => {
           handleValueChange={handleValueChange}
           value={sliceData[component.name]}
         />
+      )}
+      {component.type === BUTTON && (
+        <Button className={component.className} label={component.label} handleOnClick={handleValueChange} />
       )}
       {component.type === SCROLL_TO_TOP && (
         <ScrollToTop component={component} />

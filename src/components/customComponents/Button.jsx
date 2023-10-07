@@ -6,7 +6,7 @@ export default function Button({ name, label, className, handleOnClick }) {
       key={name}
       className={className}
       onClick={() => {
-        handleOnClick();
+        handleOnClick(true);
       }}
       variant="contained"
     >
