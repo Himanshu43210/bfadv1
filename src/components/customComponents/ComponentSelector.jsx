@@ -47,7 +47,7 @@ import NavigateButton from "./NavigateButton";
 import { SelectSlider } from "./SelectSlider";
 import RenderComponent from "./ComponentRenderer";
 import DynamicCardContainer from "./DynamicCardContainer";
-import { resetFilterData, storeFilterData } from "../../redux/slice/filterSlice";
+import { deleteFilterData, resetFilterData, storeFilterData } from "../../redux/slice/filterSlice";
 import { callApi } from "../../redux/utils/apiActions";
 import { ScrollToTop } from "./ScrollToTop";
 import DetailDataCard from "./DetailedDataCard";
@@ -69,7 +69,7 @@ import Filters from "./Filters";
 import DropSelect from "./DropSelect";
 
 const ComponentSelector = ({ component }) => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const sliceData = useSelector((state) => state[component.sliceName]);
   const apiStatus = useSelector((state) =>
     selectApiStatus(state, component.loadingApi || "")
@@ -128,12 +128,15 @@ const ComponentSelector = ({ component }) => {
   const getData = (payload) => {
     console.log('++++++++++ payload : get data ++++++++++', payload, component.paginatioName || component.name);
     const page = (component.paginatioName || component.name) !== "page" ? sliceData.page : 0;
-    const data = (payload == null)
-      ? {
+    let reqPayload = {};
+    if (payload == null) {
+      reqPayload = {
         budget: sliceData?.budget,
         city: sliceData?.city,
-      }
-      : {
+        page: page,
+      };
+    } else {
+      reqPayload = {
         ...sliceData,
         [component.paginatioName || component.name]: (typeof payload === "object")
           ? Array.isArray(payload)
@@ -141,15 +144,39 @@ const ComponentSelector = ({ component }) => {
             : payload.value
           : payload,
       };
+    }
+    const markForDeletion = [];
+    Object.keys(reqPayload).forEach((key) => {
+      if (
+        reqPayload[key] === false ||
+        (Array.isArray(reqPayload[key]) && reqPayload[key].length === 0)
+      ) {
+        markForDeletion.push(key);
+      }
+      if (reqPayload[key] === true) {
+        reqPayload[key] = "YES";
+      }
+    });
+    markForDeletion.forEach(key => {
+      delete reqPayload[key];
+    });
     const options = {
       url: component.onClickApi,
       method: component.onClickApiMethod,
       headers: { "Content-Type": "application/json" },
-      data: data,
+      data: reqPayload,
     };
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    console.log('+========= get daat ++++++++==', data, options);
     dispatch(callApi(options));
+  };
+
+  const eqvValue = (value) => {
+    if (value === true) {
+      return "YES";
+    } else if (value === false) {
+      return "NO";
+    }
+    return value;
   };
 
   const handleValueChange = (value) => {
