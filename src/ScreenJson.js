@@ -422,7 +422,7 @@ export const SEARCH_RESULT = {
                   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
                   onClickApiMethod: POST,
                   label: "Park",
-                  name: "Park",
+                  name: "parkFacing",
                 },
                 {
                   type: TOGGLE_BUTTON,
@@ -431,7 +431,7 @@ export const SEARCH_RESULT = {
                   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
                   onClickApiMethod: POST,
                   label: "Corner",
-                  name: "Corner",
+                  name: "corner",
                 },
                 {
                   type: BUTTON,
