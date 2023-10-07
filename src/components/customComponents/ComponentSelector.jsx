@@ -163,7 +163,9 @@ const ComponentSelector = ({ component }) => {
       data: reqPayload,
     };
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    dispatch(callApi(options));
+    if (Object.keys(reqPayload).includes("budget")) {
+      dispatch(callApi(options));
+    }
   };
 
   const handleValueChange = (value) => {

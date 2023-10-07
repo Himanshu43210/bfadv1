@@ -21,8 +21,10 @@ const DropSelect = ({
             setSelections([values]);
         } else if (typeof values === "object") {
             setSelections([...values]);
+        } else {
+            setSelections([]);
         }
-    }, []);
+    }, [values]);
 
     const debounceSearch = () => {
 
@@ -41,7 +43,6 @@ const DropSelect = ({
     const handleSubmit = () => {
         if (popupState) {
             if (modified) {
-                console.log('=========== HANDLE SUBMIT ============', component.name, selections);
                 onSubmit(selections);
                 setModified(false);
             }
