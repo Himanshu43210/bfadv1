@@ -65,7 +65,6 @@ import PanelHeader from "./PanelHeader";
 import LoginRefresh from "./LoginRefresh";
 import { useEffect, useState } from "react";
 import Button from "./Button";
-import Filters from "./Filters";
 import DropSelect from "./DropSelect";
 
 const ComponentSelector = ({ component }) => {
@@ -76,44 +75,41 @@ const ComponentSelector = ({ component }) => {
   );
   const userProfile = useSelector((state) => state.profile);
 
-  const updateLocalFilters = (key, value) => {
-    const searchFilters = localStorage.getItem("searchFilters");
-    if (searchFilters) {
-      const parsedFilters = JSON.parse(searchFilters);
-      parsedFilters[key] = (typeof value === "object")
-        ? Array.isArray(value)
-          ? value
-          : value.value
-        : value;
-      console.log('+++++++++++++ UPDATED LOCAL FILTER ++++++++++++++++', parsedFilters);
-      localStorage.setItem("searchFilters", JSON.stringify(parsedFilters));
-    } else {
-      const filters = {};
-      filters[key] = (typeof value === "object")
-        ? Array.isArray(value)
-          ? value
-          : value.value
-        : value;
-      console.log('+++++++++++++ UPDATED LOCAL FILTER ++++++++++++++++', filters);
-      localStorage.setItem("searchFilters", JSON.stringify(filters));
-    }
+  const updateLocalFilters = (key = null, value = null) => {
+    console.log('================ UPDATING LOCAL FILTERS ==================', sliceData?.budget, sliceData?.city, sliceData?.page);
+    localStorage.setItem("searchFilters", JSON.stringify({
+      budget: sliceData?.budget,
+      city: sliceData?.city,
+      page: sliceData?.page,
+    }));
+    console.log('------------ READING LOCALSTORAGE AFTER SAVE ------------', localStorage.getItem("searchFilters"));
+    // if (key === null && value === null) {
+    //   const page = (component.paginatioName || component.name) !== "page" ? sliceData.page : 0;
+    //   console.log('================ UPDATE LOCAL FILTER : RESETTED ===============', key);
+    // } else {
+    //   const searchFilters = localStorage.getItem("searchFilters");
+    //   if (searchFilters) {
+    //     console.log('------------- SEARCH FILTERS ------------', searchFilters);
+    //     const parsedFilters = JSON.parse(searchFilters);
+    //     parsedFilters[key] = (typeof value === "object")
+    //       ? Array.isArray(value)
+    //         ? value
+    //         : value.value
+    //       : value;
+    //     console.log('+++++++++++++ UPDATED LOCAL FILTER ++++++++++++++++', parsedFilters);
+    //     localStorage.setItem("searchFilters", JSON.stringify(parsedFilters));
+    //   } else {
+    //     const filters = {};
+    //     filters[key] = (typeof value === "object")
+    //       ? Array.isArray(value)
+    //         ? value
+    //         : value.value
+    //       : value;
+    //     console.log('+++++++++++++ UPDATED LOCAL FILTER ++++++++++++++++', filters);
+    //     localStorage.setItem("searchFilters", JSON.stringify(filters));
+    //   }
+    // }
   };
-
-  useEffect(() => {
-    if (component.sliceName === "filter") {
-      const searchFilters = localStorage.getItem("searchFilters");
-      const parsedFilters = JSON.parse(searchFilters);
-      console.log('============== PARSED FILTERS : useEffect ==============', parsedFilters);
-      if (parsedFilters[component.name]) {
-        dispatch(
-          storeFilterData({
-            ...sliceData,
-            [component.name]: parsedFilters[component.name],
-          })
-        );
-      }
-    }
-  }, []);
 
   function hasValueProperty(input) {
     // Check if the input is an object
@@ -170,15 +166,6 @@ const ComponentSelector = ({ component }) => {
     dispatch(callApi(options));
   };
 
-  const eqvValue = (value) => {
-    if (value === true) {
-      return "YES";
-    } else if (value === false) {
-      return "NO";
-    }
-    return value;
-  };
-
   const handleValueChange = (value) => {
     console.log('--------------- HANDLE VALUE CHANGE -------------', component.paginatioName || component.name, value, sliceData);
     if ((component.paginatioName || component.name) === "Reset") {
@@ -188,11 +175,11 @@ const ComponentSelector = ({ component }) => {
         city: sliceData?.city,
         page: 0
       }));
+      updateLocalFilters();
       if (component.onClickApi) {
         getData(null);
       }
     } else {
-      updateLocalFilters(component.paginatioName || component.name, value);
       dispatch(
         storeFilterData({
           key: component.paginatioName || component.name,
@@ -204,6 +191,8 @@ const ComponentSelector = ({ component }) => {
               : value,
         })
       );
+      updateLocalFilters();
+      console.log('============ CALLING THE GET DATA ONLY IF onClickApi ==============', component.onClickApi);
       if (component.onClickApi) {
         getData(value);
       }
@@ -247,6 +236,26 @@ const ComponentSelector = ({ component }) => {
       />
     );
   };
+
+  useEffect(() => {
+    if (component.sliceName === "filter" && (component.name === "budget" || component.name === "city")) {
+      const searchFilters = localStorage.getItem("searchFilters");
+      const parsedFilters = JSON.parse(searchFilters);
+      console.log('============== PARSED FILTERS : useEffect ==============', parsedFilters);
+      if (parsedFilters[component.name]) {
+        dispatch(
+          storeFilterData({
+            ...sliceData,
+            [component.name]: parsedFilters[component.name],
+          })
+        );
+        if (component.onClickApi) {
+          console.log('------------- useEffect calling GETDATA --------------');
+          getData(parsedFilters[component.name]);
+        }
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -333,7 +342,6 @@ const ComponentSelector = ({ component }) => {
       {component.type === HAMBURGER_MENU && (
         <MenuState MenuItems={component.items} />
       )}
-      {component.type === FILTERS && <Filters component={component} onUpdate={handleFilterUpdate} />}
       {component.type === SELECT_SLIDER && (
         <SelectSlider
           component={component}
