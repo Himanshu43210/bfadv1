@@ -55,7 +55,7 @@ export default function PropertyManagement() {
   return (
     <>
       {!tableData && (
-        <AutoFetchApi url={dataApi} method={POST} data={{ filter: {} }} />
+        <AutoFetchApi url={dataApi} method={POST} data={{ filter: { sortColumn: "updatedAt", sortType: "desc" } }} />
       )}
       {apiStatus === LOADING ? (
         <CircularProgress className="loader-class" />
@@ -74,7 +74,7 @@ export default function PropertyManagement() {
               />
               <ListingTable
                 // data={_.cloneDeep(tableData?.data || [])}
-                data={{ filter: {} }}
+                data={{ filter: { sortColumn: "updatedAt", sortType: "desc" } }}
                 headersDesktop={desktopHeaders}
                 headersMobile={mobileHeaders}
                 fieldConst={fieldConst}

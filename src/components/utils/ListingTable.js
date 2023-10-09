@@ -61,6 +61,7 @@ const ListingTable = ({
   showEditAction,
   showDeleteAction,
   showColumnFilter,
+  data
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -74,8 +75,8 @@ const ListingTable = ({
   const [activePage, setActivePage] = useState(0);
   const [itemsCountPerPage, setItemsCountPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(10);
-  const [sortType, setSortType] = useState("asc");
-  const [sortColumn, setSortColumn] = useState("id");
+  const [sortType, setSortType] = useState("desc");
+  const [sortColumn, setSortColumn] = useState("updatedAt");
   const [tableData, setTableData] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
   const [tableFilter, setTableFilter] = useState({});
@@ -127,17 +128,16 @@ const ListingTable = ({
     }
   }, [getApiDataFromRedux]);
 
-  const refreshData = (reqPayload = {
-    sortColumn: "updatedAt",
-    sortType: "desc",
-  }) => {
+  const refreshData = () => {
     try {
       const options = {
         url: refreshDataApi,
         method: onRefreshApiType || GET,
         headers: { "Content-Type": "application/json" },
         data: onRefreshApiType === POST
-          ? reqPayload
+          ? {
+            sortColumn, sortType
+          }
           : {},
       };
       dispatch(callApi(options));

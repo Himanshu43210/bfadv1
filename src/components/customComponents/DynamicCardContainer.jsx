@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectApiData } from "../../redux/utils/selectors";
 import HomeCard from "./HomeCard";
@@ -14,9 +14,11 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
   const defaultPage = component.defaultPage;
   let ComponentType = component.renderComponentsInLoop.type;
   const [page, setPage] = React.useState(defaultPage);
+  const [limit, setLimit] = useState(component.defaultLimit);
+  const [cumulatedData, setCumulatedData] = useState([]);
 
   const dataSelector = useSelector((state) => selectApiData(state, apiName));
-
+  
   const dataToRender =
     typeof dataSelector === "object"
       ? Array.isArray(dataSelector)
@@ -24,15 +26,46 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
         : dataSelector.data
       : dataSelector;
 
-  useEffect(() => { }, [dataToRender]);
+  let [pageYOffset, setPageYOffset] = useState(window.scrollY);
+
+  useLayoutEffect(() => {
+    window.scroll({ top: pageYOffset });
+  }, [dataToRender]);
 
   const handleLoadMore = () => {
-    console.log('+++++++++++ HANDLE LOAD MORE ++++++++++++');
-    onLoadMore();
+    if (Array.isArray(dataToRender) && cumulatedData?.[0]?._id !== dataToRender?.[0]?._id) {
+      setPageYOffset(window.scrollY);
+      setCumulatedData([...cumulatedData, ...dataToRender]);
+    }
+    onLoadMore({ page: page + 1, limit });
+    setPage(page + 1);
   };
 
   return (
     <div className={`searchdiv ${component.className}`}>
+      {cumulatedData?.map((element) => {
+        return (
+          <>
+            {ComponentType === HOME_CARD && (
+              <HomeCard
+                element={element}
+                onClickApi={onClickApi}
+                onClickNavigate={onClickNavigate}
+                apiType={component.cardClickApiType}
+              />
+            )}
+            {ComponentType === SEARCH_CARD && (
+              <SearchCard
+                element={element}
+                onClickApi={onClickApi}
+                onClickNavigate={onClickNavigate}
+                classname={component.renderComponentsInLoop.className}
+                apiType={component.cardClickApiType}
+              />
+            )}
+          </>
+        );
+      })}
       {dataToRender?.map((element) => {
         return (
           <>

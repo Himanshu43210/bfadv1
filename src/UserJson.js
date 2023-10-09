@@ -342,7 +342,10 @@ export const AD_MASTER_TABLE = {
         {
           type: AUTO_FETCH_API_USER,
           api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-          data: { filter: {} },
+          data: { filter: {
+            sortType: "desc",
+            sortColumn: "updatedAt"
+          } },
           method: POST,
           className: "header",
           user: true,
