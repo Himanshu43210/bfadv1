@@ -430,11 +430,12 @@ export const SEARCH_RESULT = {
                   zIndex: 90,
                 },
                 {
-                  type: SELECT,
+                  type: SELECT2,
                   sliceName: "filter",
-                  className: "filterbutton",
                   name: "sortBy",
                   label: "Sort By",
+                  className: "filterbutton",
+                  maxAllowed: 1,
                   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
                   onClickApiMethod: POST,
                   options: [

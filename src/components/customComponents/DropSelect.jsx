@@ -31,19 +31,24 @@ const DropSelect = ({
     };
 
     const handleChange = (option) => {
-        if (selections.includes(option.value)) {
-            setSelections(selections.filter(selection => selection !== option.value));
+        if (component.maxAllowed === 1) {
+            setSelections([option.value]);
             setModified(true);
         } else {
-            setSelections([...selections, option.value]);
-            setModified(true);
+            if (selections.includes(option.value)) {
+                setSelections(selections.filter(selection => selection !== option.value));
+                setModified(true);
+            } else {
+                setSelections([...selections, option.value]);
+                setModified(true);
+            }
         }
     };
 
     const handleSubmit = () => {
         if (popupState) {
             if (modified) {
-                onSubmit(selections);
+                onSubmit(component.maxAllowed === 1 ? selections[0] : selections);
                 setModified(false);
             }
             setPopupState(false);
