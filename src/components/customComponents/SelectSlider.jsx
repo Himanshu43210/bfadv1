@@ -1,5 +1,6 @@
 import { Slider, TextField } from "@mui/material";
 import MuiButton from "@mui/material/Button";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useState } from "react";
 
 export const SelectSlider = ({
@@ -40,13 +41,14 @@ export const SelectSlider = ({
       >
         <MuiButton
           key={component.name}
-          className={`slider_btn ${component.className}`}
+          className={`slider_btn select_btn ${component.className} ${(selections[0] != component.defaultValue[0] || selections[1] != component.defaultValue[1]) ? "active_filter" : "inactive_filter"}`}
           onClick={() => {
             setShowComponent(!showComponent);
           }}
           variant="contained"
         >
           {component.buttonLabel}
+          <ExpandMoreIcon className='expand_icon' />
         </MuiButton>
         {showComponent && (
           <div className="select_slider_popup_container" style={{ zIndex: component.zIndex }}>

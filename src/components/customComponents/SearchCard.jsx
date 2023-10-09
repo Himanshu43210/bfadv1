@@ -73,7 +73,7 @@ export default function SearchCard({
               <div className="detail_list_item">
                 <img
                   className="detailimages"
-                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/location.png"
+                  src="/icons/location.png"
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />
@@ -82,7 +82,7 @@ export default function SearchCard({
               <div className="detail_list_item">
                 <img
                   className="detailimages"
-                  src="https://www.builderfloor.com/assets/imgs/icons/area.png"
+                  src="/icons/area.png"
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />
@@ -91,7 +91,7 @@ export default function SearchCard({
               <div className="detail_list_item">
                 <img
                   className="detailimages"
-                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/check.png"
+                  src="/icons/check.png"
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />
@@ -100,7 +100,7 @@ export default function SearchCard({
               <div className="detail_list_item">
                 <img
                   className="detailimages"
-                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/stairs.png"
+                  src="/icons/stairs.png"
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />
@@ -109,7 +109,7 @@ export default function SearchCard({
               <div className="detail_list_item">
                 <img
                   className="detailimages"
-                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/home.png"
+                  src="/icons/home.png"
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />
@@ -118,7 +118,7 @@ export default function SearchCard({
               <div className="detail_list_item">
                 <img
                   className="detailimages"
-                  src="https://builder-floor-flax.vercel.app/assets/imgs/icons/compass.png"
+                  src="/icons/compass.png"
                   alt=""
                   style={{ paddingRight: "6px" }}
                 />
