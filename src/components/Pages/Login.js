@@ -23,8 +23,8 @@ const Login = () => {
   const userProfile = useSelector((state) =>
     selectApiData(state, ADMIN_DASHBOARD_LOGIN)
   );
-  const [email, setEmail] = useState("admin@builderfloor.com");
-  const [password, setPassword] = useState("123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (loginStatus === SUCCESS) {
