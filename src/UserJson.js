@@ -342,10 +342,10 @@ export const AD_MASTER_TABLE = {
         {
           type: AUTO_FETCH_API_USER,
           api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-          data: { filter: {
+          data: {
             sortType: "desc",
             sortColumn: "updatedAt"
-          } },
+          },
           method: POST,
           className: "header",
           user: true,
@@ -459,8 +459,8 @@ export const AD_MASTER_TABLE = {
               Corner: "corner",
               Possession: "possession",
               "Builder Name": "builderName",
-              "Builder Contact Name": "builderContact",
-              "Created By": "parentId",
+              "Builder Contact": "builderContact",
+              "Created By": "channelPartner",
               "Date of Posting": "createdAt",
               "Link Share": "",
             },
@@ -477,7 +477,7 @@ export const AD_MASTER_TABLE = {
               Possession: "possession",
               "Builder Name": "builderName",
               "Builder Contact Name": "builderContact",
-              "Created By": "parentId",
+              "Created By": "channelPartner",
               "Date of Posting": "createdAt",
               "Link Share": "",
             },

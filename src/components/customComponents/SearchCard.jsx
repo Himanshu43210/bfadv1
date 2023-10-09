@@ -25,6 +25,7 @@ export default function SearchCard({
   )}&id=${element._id}`;
   const handleShareClick = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (navigator.share !== undefined) {
       navigator.share({
         title: "WebShare",

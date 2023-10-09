@@ -62,7 +62,7 @@ import ApiHandler from "./AutoFetchApiPost";
 import { USER_ROLE } from "../../ScreenJson";
 import PanelHeader from "./PanelHeader";
 import LoginRefresh from "./LoginRefresh";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import DropSelect from "./DropSelect";
 import { useLocation } from "react-router-dom";
@@ -75,6 +75,7 @@ const ComponentSelector = ({ component }) => {
     selectApiStatus(state, component.loadingApi || "")
   );
   const userProfile = useSelector((state) => state.profile);
+  const [refresh, setRefresh] = useState(true);
 
   const updateLocalFilters = (key = null, value = null) => {
     console.log('================ UPDATING LOCAL FILTERS ==================', sliceData?.budget, sliceData?.city, sliceData?.page);
@@ -234,24 +235,18 @@ const ComponentSelector = ({ component }) => {
   };
 
   useEffect(() => {
-    // just read the querystring and also update the querystring on filters change
-    // if (component.sliceName === "filter" && (component.name === "budget" || component.name === "city")) {
-    //   const searchFilters = localStorage.getItem("searchFilters");
-    //   const parsedFilters = JSON.parse(searchFilters);
-    //   console.log('============== PARSED FILTERS : useEffect ==============', parsedFilters);
-    //   if (parsedFilters[component.name]) {
-    //     dispatch(
-    //       storeFilterData({
-    //         ...sliceData,
-    //         [component.name]: parsedFilters[component.name],
-    //       })
-    //     );
-    //     if (component.onClickApi && component.name === "budget") {
-    //       console.log('------------- useEffect calling GETDATA --------------');
-    //       getData(parsedFilters[component.name]);
-    //     }
-    //   }
-    // }
+    // just read the querystring & update the filters accordingly and also update the querystring on filters change
+
+    // if component.slicename is budget then set the slicedata budget to the components default
+    if ((component.paginatioName || component.name) === "budget" && refresh && window.location.pathname === "/") {
+      setRefresh(false);
+      dispatch(
+        storeFilterData({
+          key: "budget",
+          value: component.defaultValue,
+        })
+      );
+    }
   }, []);
 
   return (
@@ -260,7 +255,7 @@ const ComponentSelector = ({ component }) => {
         <CircularProgress className="loader-class" />
       )}
       {component.type === AUTO_FETCH_API && (
-        <AutoFetchApi url={component.api} method={GET} />
+        <AutoFetchApi url={component.api} method={GET} params={component.params} />
       )}
       {component.type === AUTO_FETCH_API_POST && (
         <AutoFetchApi url={component.api} method={POST} data={component.data} />
@@ -276,7 +271,7 @@ const ComponentSelector = ({ component }) => {
       )}
       {component.type === TITLE && getTitle()}
       {component.type === CONTAINER && (
-        <RenderComponent jsonToRender={component} key={location.key} />
+        <RenderComponent jsonToRender={component} />
       )}
       {
         component.type === PANEL_HEADER && <PanelHeader component={component} />

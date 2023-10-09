@@ -130,6 +130,7 @@ const ListingTable = ({
 
   const refreshData = () => {
     try {
+      setTableFilter({ ...tableFilter, search: "" });
       const options = {
         url: refreshDataApi,
         method: onRefreshApiType || GET,
@@ -511,7 +512,7 @@ const ListingTable = ({
   };
 
   const handleSort = (column) => {
-    const newSortType = sortType === "asc" ? "desc" : "asc";
+    const newSortType = sortType !== "asc" ? "desc" : "asc";
     setSortType(newSortType);
     setSortColumn(column);
     filterData({
