@@ -31,7 +31,6 @@ import {
   PANEL_HEADER,
   LOGIN_REFRESH,
   BUTTON,
-  FILTERS,
   SELECT2,
 } from "../utils/Const";
 import Banner from "./Banner";
@@ -47,7 +46,7 @@ import NavigateButton from "./NavigateButton";
 import { SelectSlider } from "./SelectSlider";
 import RenderComponent from "./ComponentRenderer";
 import DynamicCardContainer from "./DynamicCardContainer";
-import { deleteFilterData, resetFilterData, storeFilterData } from "../../redux/slice/filterSlice";
+import { resetFilterData, storeFilterData } from "../../redux/slice/filterSlice";
 import { callApi } from "../../redux/utils/apiActions";
 import { ScrollToTop } from "./ScrollToTop";
 import DetailDataCard from "./DetailedDataCard";
@@ -63,11 +62,13 @@ import ApiHandler from "./AutoFetchApiPost";
 import { USER_ROLE } from "../../ScreenJson";
 import PanelHeader from "./PanelHeader";
 import LoginRefresh from "./LoginRefresh";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Button from "./Button";
 import DropSelect from "./DropSelect";
+import { useLocation } from "react-router-dom";
 
 const ComponentSelector = ({ component }) => {
+  const location = useLocation();
   const dispatch = useDispatch();
   const sliceData = useSelector((state) => state[component.sliceName]);
   const apiStatus = useSelector((state) =>
@@ -80,7 +81,7 @@ const ComponentSelector = ({ component }) => {
     localStorage.setItem("searchFilters", JSON.stringify({
       budget: sliceData?.budget,
       city: sliceData?.city,
-      page: sliceData?.page,
+      // page: sliceData?.page,
     }));
     console.log('------------ READING LOCALSTORAGE AFTER SAVE ------------', localStorage.getItem("searchFilters"));
     // if (key === null && value === null) {
@@ -201,6 +202,19 @@ const ComponentSelector = ({ component }) => {
     }
   };
 
+  const handleLoadMore = (payload) => {
+    console.log('============== HANDLE LOAD MORE ================', payload);
+    const options = {
+      url: component.api,
+      method: component.apiType,
+      headers: { "Content-Type": "application/json" },
+      params: payload,
+    };
+    if (component.api) {
+      dispatch(callApi(options));
+    }
+  };
+
   const getTitle = () => {
     let idx = component.common
       ? 0
@@ -220,23 +234,24 @@ const ComponentSelector = ({ component }) => {
   };
 
   useEffect(() => {
-    if (component.sliceName === "filter" && (component.name === "budget" || component.name === "city")) {
-      const searchFilters = localStorage.getItem("searchFilters");
-      const parsedFilters = JSON.parse(searchFilters);
-      console.log('============== PARSED FILTERS : useEffect ==============', parsedFilters);
-      if (parsedFilters[component.name]) {
-        dispatch(
-          storeFilterData({
-            ...sliceData,
-            [component.name]: parsedFilters[component.name],
-          })
-        );
-        if (component.onClickApi && component.name === "budget") {
-          console.log('------------- useEffect calling GETDATA --------------');
-          getData(parsedFilters[component.name]);
-        }
-      }
-    }
+    // just read the querystring and also update the querystring on filters change
+    // if (component.sliceName === "filter" && (component.name === "budget" || component.name === "city")) {
+    //   const searchFilters = localStorage.getItem("searchFilters");
+    //   const parsedFilters = JSON.parse(searchFilters);
+    //   console.log('============== PARSED FILTERS : useEffect ==============', parsedFilters);
+    //   if (parsedFilters[component.name]) {
+    //     dispatch(
+    //       storeFilterData({
+    //         ...sliceData,
+    //         [component.name]: parsedFilters[component.name],
+    //       })
+    //     );
+    //     if (component.onClickApi && component.name === "budget") {
+    //       console.log('------------- useEffect calling GETDATA --------------');
+    //       getData(parsedFilters[component.name]);
+    //     }
+    //   }
+    // }
   }, []);
 
   return (
@@ -261,7 +276,7 @@ const ComponentSelector = ({ component }) => {
       )}
       {component.type === TITLE && getTitle()}
       {component.type === CONTAINER && (
-        <RenderComponent jsonToRender={component} />
+        <RenderComponent jsonToRender={component} key={location.key} />
       )}
       {
         component.type === PANEL_HEADER && <PanelHeader component={component} />
@@ -283,6 +298,7 @@ const ComponentSelector = ({ component }) => {
           component={component}
           values={sliceData[component.name]}
           onSubmit={handleValueChange}
+          key={location.key}
         />
       )}
       {component.type === SLIDER && (
@@ -310,6 +326,7 @@ const ComponentSelector = ({ component }) => {
         <DynamicCardContainer
           component={component}
           handleValueChange={handleValueChange}
+          onLoadMore={handleLoadMore}
         />
       )}
       {component.type === DETAILED_VIEW && (
