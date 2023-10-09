@@ -93,6 +93,8 @@ const TableButtonHeader = ({
     } catch (error) { }
   };
 
+  console.log('>>>>>>>>>>>>>>>>>>> USER PROFILE <<<<<<<<<<<<<<<<<<<<', userProfile);
+
   const handleSubmit = async () => {
     const formData = finalizeRef.current.finalizeData();
     if (formData) {
@@ -181,6 +183,12 @@ const TableButtonHeader = ({
               }
             }
           });
+
+          // add channelPartner & channelContact
+          newFormData.append("companyName", userProfile?.companyName);
+          newFormData.append("channelPartner", userProfile?.channelPartner);
+          newFormData.append("channelContact", userProfile?.channelContact);
+          newFormData.append("createdBy", userProfile?.name);
 
           const options = {
             url: API_ENDPOINTS[saveDataApi],

@@ -16,9 +16,11 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
   const [page, setPage] = React.useState(defaultPage);
   const [limit, setLimit] = useState(component.defaultLimit);
   const [cumulatedData, setCumulatedData] = useState([]);
+  const [isBottom, setIsBottom] = useState(false);
+  const [pageYOffset, setPageYOffset] = useState(window.scrollY);
 
   const dataSelector = useSelector((state) => selectApiData(state, apiName));
-  
+
   const dataToRender =
     typeof dataSelector === "object"
       ? Array.isArray(dataSelector)
@@ -26,10 +28,26 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
         : dataSelector.data
       : dataSelector;
 
-  let [pageYOffset, setPageYOffset] = useState(window.scrollY);
+  const handleScroll = () => {
+    // scroll only if 
+    const offsetHeight = document.documentElement.offsetHeight;
+    const innerHeight = window.innerHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= 20;
+    console.log('============= HAS REACHED BOTTOM ==============', hasReachedBottom);
+    if (hasReachedBottom && isBottom === false) {
+      console.log('============= HAS REACHED BOTTOM & isBottom false ==============');
+      setIsBottom(true);
+      setPageYOffset(window.scrollY);
+      handleLoadMore();
+    }
+    console.log('************* windows ***************', offsetHeight, innerHeight, scrollTop);
+
+  };
 
   useLayoutEffect(() => {
     window.scroll({ top: pageYOffset });
+    setIsBottom(false);
   }, [dataToRender]);
 
   const handleLoadMore = () => {
@@ -40,6 +58,15 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
     onLoadMore({ page: page + 1, limit });
     setPage(page + 1);
   };
+
+  useEffect(() => {
+    // if (component.loadMore) {
+    //   window.addEventListener("scroll", handleScroll);
+    //   return () => {
+    //     window.removeEventListener("scroll", handleScroll);
+    //   };
+    // }
+  }, []);
 
   return (
     <div className={`searchdiv ${component.className}`}>

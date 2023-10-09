@@ -55,7 +55,9 @@ export default function PropertyManagement() {
   return (
     <>
       {!tableData && (
-        <AutoFetchApi url={dataApi} method={POST} data={{ filter: { sortColumn: "updatedAt", sortType: "desc" } }} />
+        <AutoFetchApi url={dataApi} method={POST}
+          data={{ sortColumn: "updatedAt", sortType: "desc" }}
+        />
       )}
       {apiStatus === LOADING ? (
         <CircularProgress className="loader-class" />

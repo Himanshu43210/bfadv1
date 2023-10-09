@@ -5,8 +5,10 @@ import {
   CardMedia,
   Rating,
   Typography,
+  Button
 } from "@mui/material";
 import ApiButton from "./ApiButton";
+import { FaShareAlt } from "react-icons/fa";
 import { convertToCr } from "../utils/HelperMethods";
 import { useNavigate } from "react-router-dom";
 import { GET } from "../utils/Const";
@@ -20,6 +22,21 @@ export default function HomeCard({
   disableOnClickNavigate = false,
 }) {
   const navigateTo = useNavigate();
+  const cardDetailUrl = `${onClickNavigate}?title=${element.title?.replaceAll(
+    " ",
+    "-"
+  )}&id=${element._id}`;
+  const handleShareClick = (e) => {
+    console.log('+++++++++++++ handle share click ++++++++++++++')
+    e.preventDefault();
+    e.stopPropagation();
+    if (navigator.share !== undefined) {
+      navigator.share({
+        title: "WebShare",
+        url: cardDetailUrl,
+      });
+    }
+  };
   return (
     <Card
       className={`home-card ${classname}`}
@@ -44,7 +61,7 @@ export default function HomeCard({
     //   marginTop: "0px",
     // }}
     >
-      <CardActionArea>
+      <CardActionArea className="hc_action">
         <CardMedia
           component="img"
           height="100"
@@ -123,6 +140,9 @@ export default function HomeCard({
             )}&id=${element._id}`}
             btnClass="btn price_btn"
           />
+          <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn hc_share_btn">
+            <FaShareAlt size={"23px"} className="share_icon" />
+          </Button>
         </div>
       </CardActionArea>
     </Card>
