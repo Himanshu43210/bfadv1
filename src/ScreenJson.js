@@ -52,7 +52,7 @@ const FOOTER = {
   type: PAGE_FOOTER,
   className: "default-home-footer-div",
   HomeLinks: {
-    icon: "https://www.builderfloor.com/assets/imgs/template/BUILDER.png",
+    icon: "/BUILDER.png",
     url: "/",
   },
   social_media: [
@@ -81,7 +81,7 @@ const HEADER = {
     {
       type: PAGE_HEADER,
       url: "/",
-      image: "https://www.builderfloor.com/assets/imgs/template/BUILDER.png",
+      image: "/BUILDER.png",
       title: "BuilderFloor.com",
       className: "page_header_comp",
     },
@@ -198,16 +198,14 @@ export const CARD_DETAILS_SCREEN = {
       apiSliceName: GET_CARD_DATA,
       whatsappText: `Hi! I saw a property {link} on BuilderFloor.com and i am interested in it. Is it available?`,
       icons: {
-        sectorNumber:
-          "https://www.builderfloor.com/assets/imgs/icons/location.png",
-        size: "https://www.builderfloor.com/assets/imgs/icons/area.png",
-        accommodation:
-          "https://www.builderfloor.com/assets/imgs/icons/home.png",
-        floor: "https://www.builderfloor.com/assets/imgs/icons/stairs.png",
-        facing: "https://www.builderfloor.com/assets/imgs/icons/compass.png",
-        possession: "https://www.builderfloor.com/assets/imgs/icons/check.png",
-        parkFacing: "https://www.builderfloor.com/assets/imgs/icons/park.png",
-        corner: "https://www.builderfloor.com/assets/imgs/icons/right.png",
+        sectorNumber: "/icons/location.png",
+        size: "/icons/area.png",
+        accommodation: "/icons/home.png",
+        floor: "/icons/stairs.png",
+        facing: "/icons/compass.png",
+        possession: "/icons/check.png",
+        parkFacing: "/icons/park.png",
+        corner: "/icons/right.png",
       },
     },
     { type: HORIZONTAL_LINE, className: "property_details_divider" },
@@ -222,6 +220,7 @@ export const CARD_DETAILS_SCREEN = {
       className: "default-home-cards similar_options_list",
       apiName: GET_SIMILAR_PROPERTY_DATA,
       renderComponentsInLoop: { type: HOME_CARD, className: "homeCards" },
+      defaultLimit: 4,
       cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
       cardClickNavigate: "/builderFloorDetails",
       addQueryParam: "{title}-{id}",
