@@ -3,6 +3,7 @@ import {
   API_HEADING,
   AUTO_FETCH_API,
   BUTTON,
+  CHATBOT,
   CONTAINER,
   DETAILED_VIEW,
   DYNAMIC_CARD_CONTAINER,
@@ -92,6 +93,7 @@ const SCROLLTOP = {
   type: SCROLL_TO_TOP,
   name: "ScrollToTop",
 };
+
 export const HOME_SCREEN = {
   name: "Home Screen",
   children: [
@@ -128,10 +130,10 @@ export const HOME_SCREEN = {
           sliceName: "filter",
           className: "select-range",
           name: "budget",
-          minValue: 10000000,
-          maxValue: 100000000,
+          minValue: 0,
+          maxValue: 200000000,
           step: 1000000,
-          defaultValue: [20000000, 30000000],
+          defaultValue: [20000000, 50000000],
         },
         {
           type: API_BUTTON,
@@ -178,6 +180,7 @@ export const HOME_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
+    { type: CHATBOT }
   ],
 };
 
@@ -228,6 +231,7 @@ export const CARD_DETAILS_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
+    { type: CHATBOT }
   ],
 };
 
@@ -497,6 +501,7 @@ export const SEARCH_RESULT = {
         },
         FOOTER,
         SCROLLTOP,
+        { type: CHATBOT }
       ],
     },
 
