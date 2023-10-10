@@ -126,6 +126,9 @@ export default function HomeCard({
         </CardContent>
 
         <div className="ratings_and_price">
+          <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn hc_share_btn">
+            <FaShareAlt size={"23px"} className="share_icon" />
+          </Button>
           <Rating
             name="home-card-fixed-rating"
             value={element?.raiting || 5}
@@ -143,9 +146,6 @@ export default function HomeCard({
             )}&id=${element._id}`}
             btnClass="btn price_btn"
           />
-          <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn hc_share_btn">
-            <FaShareAlt size={"23px"} className="share_icon" />
-          </Button>
         </div>
       </CardActionArea>
     </Card>

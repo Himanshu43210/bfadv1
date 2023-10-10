@@ -32,6 +32,7 @@ import {
   LOGIN_REFRESH,
   BUTTON,
   SELECT2,
+  CHATBOT,
 } from "../utils/Const";
 import Banner from "./Banner";
 import Footer from "./Footer";
@@ -66,6 +67,7 @@ import { useEffect, useState } from "react";
 import Button from "./Button";
 import DropSelect from "./DropSelect";
 import { useLocation } from "react-router-dom";
+import Chatbot from "./Chatbot";
 
 const ComponentSelector = ({ component }) => {
   const location = useLocation();
@@ -355,6 +357,9 @@ const ComponentSelector = ({ component }) => {
       )}
       {component.type === SCROLL_TO_TOP && (
         <ScrollToTop component={component} />
+      )}
+      {component.type === CHATBOT && (
+        <Chatbot />
       )}
       {component.type === DASHBOARD_LISTING && (
         <DashboardListing component={component} />

@@ -86,7 +86,9 @@ export default function DetailDataCard({
   const allImages = [];
   Object.keys(cardData).forEach(prop => {
     if (imageTypes.includes(prop)) {
+      console.log('======= IMAGE TYPE INCLUDES PROP =======', prop);
       cardData[prop].forEach(link => {
+        console.log(link);
         if (link !== "") {
           typeCounts[prop] = typeCounts[prop] + 1;
           allImages.push({ type: prop, link: link });
@@ -98,6 +100,7 @@ export default function DetailDataCard({
 
   const [ShowNumber, setShowNumber] = useState(false);
   const [currMedia, setCurrMedia] = useState({ ...allImages?.[0], index: 0 });
+  console.log('======== INITIAL CURR MEDIA ==========', currMedia);
   const [isInitial, setIsInitial] = useState(true);
 
   const handleImageChange = (index, payload, dir) => {
@@ -166,7 +169,6 @@ export default function DetailDataCard({
 
   const renderMainMedia = () => {
     console.log('-------------- RENDER MAIN MEDIA -----------', currMedia);
-    // setCurrMedia(allImages?.[0]);
     switch (currMedia?.type) {
       case "images":
         return render360Media();
@@ -199,13 +201,13 @@ export default function DetailDataCard({
             {renderMainMedia()}
             {
               currMedia?.index > 0 && (
-                <Button className="slider_ctrl_btn slide_back" onClick={() => handleImageChange(null, null, "PREV")}>
+                <Button className="slider_ctrl_btn slide_back" onClick={() => handleImageChange(null, null, "PREV")} title="Previous">
                   <ArrowBackIosIcon className="slider_icon" />
                 </Button>
               )
             }{
               currMedia?.index < (allImages.length - 1) && (
-                <Button className="slider_ctrl_btn slide_next" onClick={() => handleImageChange(null, null, "NEXT")}>
+                <Button className="slider_ctrl_btn slide_next" onClick={() => handleImageChange(null, null, "NEXT")} title="Next">
                   <ArrowForwardIosIcon className="slider_icon" />
                 </Button>
               )
