@@ -29,6 +29,7 @@ export default function PropertyManagement() {
     Accommodation: "accommodation",
     Possession: "possession",
     Facing: "facing",
+    "created At": "updatedAt",
   };
 
   const apiStatus = useSelector((state) =>

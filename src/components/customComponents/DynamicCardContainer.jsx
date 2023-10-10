@@ -29,21 +29,30 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
       : dataSelector;
 
   const handleScroll = () => {
-    // scroll only if 
     const offsetHeight = document.documentElement.offsetHeight;
     const innerHeight = window.innerHeight;
     const scrollTop = document.documentElement.scrollTop;
-    const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= 20;
+    const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= 50;
     console.log('============= HAS REACHED BOTTOM ==============', hasReachedBottom);
     if (hasReachedBottom && isBottom === false) {
       console.log('============= HAS REACHED BOTTOM & isBottom false ==============');
       setIsBottom(true);
-      setPageYOffset(window.scrollY);
       handleLoadMore();
     }
     console.log('************* windows ***************', offsetHeight, innerHeight, scrollTop);
 
   };
+
+  const throttle = (fn, wait) => {
+    let time = Date.now();
+    return function () {
+      if ((time + wait - Date.now()) < 0) {
+        fn();
+        time = Date.now();
+      }
+    }
+  }
+
 
   useLayoutEffect(() => {
     window.scroll({ top: pageYOffset });
@@ -52,16 +61,16 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
 
   const handleLoadMore = () => {
     if (Array.isArray(dataToRender) && cumulatedData?.[0]?._id !== dataToRender?.[0]?._id) {
-      setPageYOffset(window.scrollY);
       setCumulatedData([...cumulatedData, ...dataToRender]);
     }
+    setPageYOffset(window.scrollY);
     onLoadMore({ page: page + 1, limit });
     setPage(page + 1);
   };
 
   useEffect(() => {
     // if (component.loadMore) {
-    //   window.addEventListener("scroll", handleScroll);
+    //   window.addEventListener("scroll", throttle(handleScroll, 600));
     //   return () => {
     //     window.removeEventListener("scroll", handleScroll);
     //   };
