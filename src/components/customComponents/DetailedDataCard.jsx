@@ -110,7 +110,7 @@ export default function DetailDataCard({
 
   useEffect(() => {
     setImageLink(cardData.images?.[0] || cardData?.normalImages?.[0]);
-  },[cardData]);
+  }, [cardData]);
 
   return (
     <>
@@ -181,44 +181,37 @@ export default function DetailDataCard({
             </Button>
           </div>
           <div className="detail-icon-div">
-            <div className="rowicon">
-              <div>
-                <img src={iconList?.sectorNumber} alt="location" />
+            <div className="icons_wrapper">
+              <div className="detail_icon_wrapper">
+                <img src={iconList?.sectorNumber} alt="location" className="location_icon" />
                 {cardData?.sectorNumber}
               </div>
-              <div>
-                <img src={iconList?.size} alt="area" />
+              <div className="detail_icon_wrapper">
+                <img src={iconList?.size} alt="area" className="size_icon" />
                 {cardData?.size}
               </div>
-              <div>
-                <img src={iconList?.accommodation} alt="accommodation" />
+              <div className="detail_icon_wrapper">
+                <img src={iconList?.accommodation} alt="accommodation" className="acc_icon" />
                 {cardData?.accommodation}
               </div>
-            </div>
-
-            <div className="rowicon">
-              <div>
-                <img src={iconList?.floor} alt="floor" />
+              <div className="detail_icon_wrapper">
+                <img src={iconList?.floor} alt="floor" className="floor_icon" />
                 {cardData?.floor}
               </div>
-              <div>
-                <img src={iconList?.facing} alt="facing" />
+              <div className="detail_icon_wrapper">
+                <img src={iconList?.facing} alt="facing" className="facing_icon" />
                 {cardData?.facing}
               </div>
-              <div>
-                <img src={iconList?.possession} alt="possession" />
+              <div className="detail_icon_wrapper">
+                <img src={iconList?.possession} alt="possession" className="poss_icon" />
                 {cardData?.possession}
               </div>
-            </div>
-
-            <div className="rowicon">
-              <div>
-                <img src={iconList?.parkFacing} alt="park facing" />
+              <div className="detail_icon_wrapper">
+                <img src={iconList?.parkFacing} alt="park facing" className="park_icon" />
                 {cardData?.parkFacing}
               </div>
-
-              <div>
-                <img src={iconList?.corner} alt="corner" />
+              <div className="detail_icon_wrapper">
+                <img src={iconList?.corner} alt="corner" className="corner_icon" />
                 {cardData?.corner}
               </div>
             </div>
