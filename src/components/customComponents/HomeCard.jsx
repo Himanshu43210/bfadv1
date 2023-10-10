@@ -27,7 +27,6 @@ export default function HomeCard({
     "-"
   )}&id=${element._id}`;
   const handleShareClick = (e) => {
-    console.log('+++++++++++++ handle share click ++++++++++++++')
     e.preventDefault();
     e.stopPropagation();
     if (navigator.share !== undefined) {
@@ -80,9 +79,13 @@ export default function HomeCard({
           alt={"360-image-icon"}
         /> */}
         <CardContent className="home_card_content">
-          <Typography gutterBottom variant="h6" component="div" className="title">
-            {element?.title}
-          </Typography>
+          <a href={cardDetailUrl} className="property_link" target="_blank" onClick={(e) => {
+            e.preventDefault();
+          }}>
+            <Typography gutterBottom variant="h6" component="div" className="title">
+              {element?.title}
+            </Typography>
+          </a>
           <Typography variant="body2" color="text.primary" className="location">
             {element?.sectorNumber}
           </Typography>

@@ -11,6 +11,9 @@ import IframeBuilder from "./IframeBuilder";
 import { FaShareAlt, FaRegHeart } from "react-icons/fa";
 import { CARD_DETAILS_SCREEN } from "../../ScreenJson";
 import { useLocation } from "react-router-dom";
+import * as _ from "lodash";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function DetailDataCard({
   component,
@@ -66,33 +69,49 @@ export default function DetailDataCard({
     (state) => selectApiData(state, getApiEndpoint)?.data
   );
   const cardData = singledata || apiData || {};
-  const image360 = cardData?.images?.length;
-  const imageNormal = cardData?.normalImages?.length;
-  const otherImages = [];
   const imageTypes = [
+    "images",
     "normalImages",
     "virtualFiles",
     "layouts",
+    "videos",
   ];
+  const typeCounts = {
+    images: 0,
+    normalImages: 0,
+    virtualFiles: 0,
+    layouts: 0,
+    videos: 0
+  };
+  const allImages = [];
+  Object.keys(cardData).forEach(prop => {
+    if (imageTypes.includes(prop)) {
+      cardData[prop].forEach(link => {
+        if (link !== "") {
+          typeCounts[prop] = typeCounts[prop] + 1;
+          allImages.push({ type: prop, link: link });
+        }
+      });
+    }
+  });
   const price = convertToCr(cardData?.price);
 
-  const [ShowNumber, setShowNumber] = useState();
-  const [imageLink, setImageLink] = useState(cardData.images?.[0] || cardData?.normalImages?.[0]);
+  const [ShowNumber, setShowNumber] = useState(false);
+  const [currMedia, setCurrMedia] = useState({ ...allImages?.[0], index: 0 });
+  const [isInitial, setIsInitial] = useState(true);
 
-  const handleImageChange = (newImageLink) => {
-    setImageLink(newImageLink);
-  };
-
-  const extractAllImages = () => {
-    Object.keys(cardData).forEach(prop => {
-      if (imageTypes.includes(prop)) {
-        cardData[prop].forEach(link => {
-          if (link !== "") {
-            otherImages.push(link);
-          }
-        });
-      }
-    });
+  const handleImageChange = (index, payload, dir) => {
+    console.log('+++++++++++ HANDLE IMAGE CHANGE ++++++++++++', index, payload)
+    let newIndex;
+    if (index) {
+      newIndex = index % allImages.length;
+      setCurrMedia({ ...payload, index: (index % allImages.length) });
+    } else {
+      newIndex = dir === "PREV"
+        ? ((currMedia?.index || 0) - 1) : ((currMedia?.index || 0) + 1);
+      newIndex = newIndex % allImages.length;
+      setCurrMedia({ ...allImages[newIndex], index: newIndex });
+    }
   };
 
   //... Rest of the code remains the same
@@ -106,11 +125,60 @@ export default function DetailDataCard({
     }
   };
 
-  extractAllImages();
+  const getTotalImgsExcept = (type = null) => {
+    let total = 0;
+    Object.keys(typeCounts).forEach(key => {
+      if (key != type) {
+        total += typeCounts[key];
+      }
+    });
+    return total;
+  };
 
-  useEffect(() => {
-    setImageLink(cardData.images?.[0] || cardData?.normalImages?.[0]);
-  }, [cardData]);
+  const render360Media = () => {
+    console.log('-------------- RENDER 360 MEDIA -----------', currMedia);
+    return (
+      <div className="img360">
+        <IframeBuilder
+          src={currMedia?.link}
+          title={cardData?.title}
+          allowFullScreen
+          iframeClass="img360_iframe"
+        />
+      </div>
+    );
+  };
+
+  const renderGeneralMedia = () => {
+    console.log('-------------- RENDER GENERAL MEDIA -----------', currMedia);
+    return (
+      <div className="general_media_wrapper">
+        {
+          currMedia.type === "videos" ? (
+            <video src={currMedia?.link} controls width={320} height={260} className="media_video"></video>
+          ) : (
+            <img src={currMedia?.link} alt={cardData?.title} width={300} height={300} className="media_img" />
+          )
+        }
+      </div>
+    );
+  };
+
+  const renderMainMedia = () => {
+    console.log('-------------- RENDER MAIN MEDIA -----------', currMedia);
+    // setCurrMedia(allImages?.[0]);
+    switch (currMedia?.type) {
+      case "images":
+        return render360Media();
+      case "normalImages":
+      case "virtualFiles":
+      case "layouts":
+      case "videos":
+        return renderGeneralMedia();
+      default:
+        return null;
+    }
+  };
 
   return (
     <>
@@ -128,48 +196,51 @@ export default function DetailDataCard({
         </div>
         <div className="detail-image-div">
           <div className="main-images">
-            <div className="img360">
-              <IframeBuilder
-                src={imageLink}
-                title="Example Website"
-                allowFullScreen
-                iframeClass="img360_iframe"
-              />
-            </div>
+            {renderMainMedia()}
+            {
+              currMedia?.index > 0 && (
+                <Button className="slider_ctrl_btn slide_back" onClick={() => handleImageChange(null, null, "PREV")}>
+                  <ArrowBackIosIcon className="slider_icon" />
+                </Button>
+              )
+            }{
+              currMedia?.index < (allImages.length - 1) && (
+                <Button className="slider_ctrl_btn slide_next" onClick={() => handleImageChange(null, null, "NEXT")}>
+                  <ArrowForwardIosIcon className="slider_icon" />
+                </Button>
+              )
+            }
           </div>
           <div className="side-images">
-            {cardData.images?.map((imglink) => {
+            {allImages?.map((image, index) => {
               return (
-                imageLink !== imglink && (
+                currMedia?.link !== image.link && (
                   <div className="other-images">
-                    <img
-                      src={imglink}
-                      alt={component ? component.title : singledata.title}
-                      onClick={() => handleImageChange(imglink)}
-                      className="other_images_item"
-                    />
-                  </div>
-                )
-              );
-            })}
-            {otherImages?.map((imglink) => {
-              return (
-                imageLink !== imglink && (
-                  <div className="other-images">
-                    <img
-                      src={imglink}
-                      alt={component ? component.title : singledata.title}
-                      onClick={() => handleImageChange(imglink)}
-                      className="other_images_item"
-                    />
+                    {
+                      image.type === "videos" ? (
+                        <video
+                          src={image.link}
+                          alt={component ? component.title : singledata.title}
+                          onClick={() => handleImageChange(index, image)}
+                          className="other_images_item"
+                        ></video>
+                      ) : (
+                        <img
+                          src={image.link}
+                          alt={component ? component.title : singledata.title}
+                          onClick={() => handleImageChange(index, image)}
+                          className="other_images_item"
+                        />
+                      )
+                    }
                   </div>
                 )
               );
             })}
           </div>
           <div variant="outlined" className="detail-button imgs_info">
-            {image360 + otherImages.length} Images
-            {imageNormal > 0 ? ` || ${imageNormal} Normal` : ""}
+            {getTotalImgsExcept()} Images
+            {typeCounts.normalImages > 0 ? ` || ${typeCounts.normalImages} Normal` : ""}
           </div>
         </div>
         <div className="lowercontainer">
@@ -188,7 +259,7 @@ export default function DetailDataCard({
               </div>
               <div className="detail_icon_wrapper">
                 <img src={iconList?.size} alt="area" className="size_icon" />
-                {cardData?.size}
+                {cardData?.size} Sq. Yd.
               </div>
               <div className="detail_icon_wrapper">
                 <img src={iconList?.accommodation} alt="accommodation" className="acc_icon" />
