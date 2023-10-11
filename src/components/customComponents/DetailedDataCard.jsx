@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import * as _ from "lodash";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import Tooltip from '@mui/material/Tooltip';
 
 export default function DetailDataCard({
   component,
@@ -188,12 +189,16 @@ export default function DetailDataCard({
         <div className="detailed-title-component">
           <p className="card_title">{cardData?.title}</p>
           <div className="detailicondiv">
-            <Button variant="outlined" onClick={handleShareClick} className="btn sc_btn sc_share_btn">
-              <FaShareAlt size={"23px"} onClick={handleShareClick} className="share_icon" />
-            </Button>
-            <Button className="btn sc_btn sc_fav_btn">
-              <FaRegHeart size={"23px"} className="fav_icon" />
-            </Button>
+            <Tooltip title="Share" arrow classes="tooltip">
+              <Button variant="outlined" onClick={handleShareClick} className="btn sc_btn sc_share_btn">
+                <FaShareAlt size={"23px"} onClick={handleShareClick} className="share_icon" />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Save" arrow classes="tooltip">
+              <Button className="btn sc_btn sc_fav_btn">
+                <FaRegHeart size={"23px"} className="fav_icon" />
+              </Button>
+            </Tooltip>
           </div>
         </div>
         <div className="detail-image-div">
@@ -201,15 +206,19 @@ export default function DetailDataCard({
             {renderMainMedia()}
             {
               currMedia?.index > 0 && (
-                <Button className="slider_ctrl_btn slide_back" onClick={() => handleImageChange(null, null, "PREV")} title="Previous">
-                  <ArrowBackIosIcon className="slider_icon" />
-                </Button>
+                <Tooltip title="Previous" arrow classes="tooltip">
+                  <Button className="slider_ctrl_btn slide_back" onClick={() => handleImageChange(null, null, "PREV")}>
+                    <ArrowBackIosIcon className="slider_icon" />
+                  </Button>
+                </Tooltip>
               )
             }{
               currMedia?.index < (allImages.length - 1) && (
-                <Button className="slider_ctrl_btn slide_next" onClick={() => handleImageChange(null, null, "NEXT")} title="Next">
-                  <ArrowForwardIosIcon className="slider_icon" />
-                </Button>
+                <Tooltip title="Next" arrow classes="tooltip">
+                  <Button className="slider_ctrl_btn slide_next" onClick={() => handleImageChange(null, null, "NEXT")}>
+                    <ArrowForwardIosIcon className="slider_icon" />
+                  </Button>
+                </Tooltip>
               )
             }
           </div>

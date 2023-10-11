@@ -444,7 +444,7 @@ export const AD_MASTER_TABLE = {
               "Company Name": "companyName",
               City: "city",
               State: "state",
-              "Date of Posting": "updatedAt",
+              "Updated At": "updatedAt",
               "Link Share": "",
             },
             [USER_ROLE.channelPartner]: {
@@ -461,7 +461,7 @@ export const AD_MASTER_TABLE = {
               "Builder Name": "builderName",
               "Builder Contact": "builderContact",
               "Created By": "channelPartner",
-              "Date of Posting": "updatedAt",
+              "Updated At": "updatedAt",
               "Link Share": "",
             },
             [USER_ROLE.salesUser]: {
@@ -478,7 +478,7 @@ export const AD_MASTER_TABLE = {
               "Builder Name": "builderName",
               "Builder Contact Name": "builderContact",
               "Created By": "channelPartner",
-              "Date of Posting": "updatedAt",
+              "Updated At": "updatedAt",
               "Link Share": "",
             },
           },

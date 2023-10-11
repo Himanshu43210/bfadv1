@@ -259,10 +259,10 @@ export const SEARCH_RESULT = {
           sliceName: "filter",
           className: "select-range",
           name: "budget",
-          minValue: 10000000,
-          maxValue: 100000000,
+          minValue: 0,
+          maxValue: 200000000,
           step: 1000000,
-          defaultValue: [20000000, 30000000],
+          defaultValue: [20000000, 60000000],
         },
         {
           type: API_BUTTON,

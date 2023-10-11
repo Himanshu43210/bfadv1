@@ -52,15 +52,17 @@ function Chatbot() {
 
     const handleChatSubmit = (e) => {
         e.preventDefault();
-        const newChat = {
-            timestamp: new Date(),
-            type: "query",
-            payload: {
-                text: query
-            }
-        };
-        setChats([...chats, newChat]);
-        setQuery("");
+        if (query.trim() !== "") {
+            const newChat = {
+                timestamp: new Date(),
+                type: "query",
+                payload: {
+                    text: query
+                }
+            };
+            setChats([...chats, newChat]);
+            setQuery("");
+        }
     };
 
     const renderChatUnit = (payload) => {
@@ -102,16 +104,12 @@ function Chatbot() {
     const renderInputUnit = () => {
         return (
             <form className='chat_form' onSubmit={(e) => handleChatSubmit(e)}>
-                <textarea value={query} name="chat_input" id="chat_input" className='chat_input' rows="1" onInput={(e) => handleChatInput(e)} placeholder='Write Your query ...'></textarea>
+                <textarea value={query} name="chat_input" id="chat_input" className='chat_input' rows="1" onInput={(e) => handleChatInput(e)} placeholder='Write Your query ...' required></textarea>
                 <Button type='submit' className='chat_submit_btn'>
                     <SendRoundedIcon className='send_icon' />
                 </Button>
             </form>
         );
-    };
-
-    const renderChats = () => {
-
     };
 
     return (

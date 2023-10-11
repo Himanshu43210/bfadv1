@@ -13,6 +13,7 @@ import {
 import { callApi } from "../../redux/utils/apiActions";
 import { selectApiData, selectApiStatus } from "../../redux/utils/selectors";
 import { storeUserData } from "../../redux/slice/userSlice";
+import { storeParentData } from "../../redux/slice/parentSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,12 +24,13 @@ const Login = () => {
   const userProfile = useSelector((state) =>
     selectApiData(state, ADMIN_DASHBOARD_LOGIN)
   );
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@builderfloor.com");
+  const [password, setPassword] = useState("123");
 
   useEffect(() => {
     if (loginStatus === SUCCESS) {
       dispatch(storeUserData(userProfile?.profile));
+      dispatch(storeParentData(userProfile?.parentUser));
       navigate("/admin");
     }
   }, [loginStatus]);

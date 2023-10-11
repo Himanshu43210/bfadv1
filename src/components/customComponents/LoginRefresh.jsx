@@ -6,6 +6,7 @@ import { selectApiData, selectApiStatus } from "../../redux/utils/selectors";
 import { API_ENDPOINTS } from "../../redux/utils/api";
 import { callApi } from "../../redux/utils/apiActions";
 import { storeUserData } from "../../redux/slice/userSlice";
+import { storeParentData } from "../../redux/slice/parentSlice";
 import RenderComponent from "./ComponentRenderer";
 
 const LoginRefresh = ({ component }) => {
@@ -36,7 +37,7 @@ const LoginRefresh = ({ component }) => {
             },
           };
           dispatch(callApi(options));
-        } catch (error) {}
+        } catch (error) { }
       } else {
         navigate("/login");
       }
@@ -47,6 +48,7 @@ const LoginRefresh = ({ component }) => {
   useEffect(() => {
     if (loginStatus === SUCCESS) {
       dispatch(storeUserData(userProfile1?.profile));
+      dispatch(storeParentData(userProfile1?.parentUser));
     }
     if (userProfile._id) {
       setCheck(true);

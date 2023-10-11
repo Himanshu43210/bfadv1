@@ -10,6 +10,7 @@ import ApiButton from "./ApiButton";
 import { FaShareAlt, FaRegHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { GET } from "../utils/Const";
+import Tooltip from '@mui/material/Tooltip';
 
 export default function SearchCard({
   element = {},
@@ -60,12 +61,16 @@ export default function SearchCard({
               {element.title}
             </Typography>
             <div className="detailicondiv">
-              <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn">
-                <FaShareAlt size={"23px"} className="share_icon" />
-              </Button>
-              <Button className="btn sc_btn sc_fav_btn">
-                <FaRegHeart size={"23px"} className="fav_icon" />
-              </Button>
+              <Tooltip title="Share" arrow classes="tooltip">
+                <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn">
+                  <FaShareAlt size={"23px"} className="share_icon" />
+                </Button>
+              </Tooltip>
+              <Tooltip title="Save" arrow classes="tooltip">
+                <Button className="btn sc_btn sc_fav_btn">
+                  <FaRegHeart size={"23px"} className="fav_icon" />
+                </Button>
+              </Tooltip>
             </div>
           </div>
           <div className="contentdiv">
