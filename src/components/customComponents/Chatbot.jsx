@@ -10,6 +10,7 @@ import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 
 function Chatbot() {
     const [showChatbot, setShowChatbot] = useState(false);
+    const [receiving, setReceiving] = useState(false);
     const [chats, setChats] = useState([
         {
             timestamp: new Date(),
@@ -51,6 +52,7 @@ function Chatbot() {
     };
 
     const handleChatSubmit = (e) => {
+        if (receiving) setReceiving(false);
         e.preventDefault();
         if (query.trim() !== "") {
             const newChat = {
@@ -62,7 +64,20 @@ function Chatbot() {
             };
             setChats([...chats, newChat]);
             setQuery("");
+            setTimeout(() => {
+                setReceiving(true);
+            }, 300);
         }
+    };
+
+    const formatDateTime = (timestamp, format = "dd mon yyyy") => {
+        const date = new Date();
+        // if today show the time
+        // if yesterday show tomorrow
+        const formattedDate = date.toLocaleString('default', {
+            hour12: true, hour: "2-digit", minute: "2-digit", day: 'numeric', month: '2-digit', year: "numeric",
+        });
+        return formattedDate;
     };
 
     const renderChatUnit = (payload) => {
@@ -83,7 +98,7 @@ function Chatbot() {
                         </div>
                         <div className='chat_item_right'>
                             <div className='chat_item_metadata'>
-                                <small className='chat_time_data'>4:29PM</small>
+                                <small className='chat_time_data'>{formatDateTime(payload.timestamp)}</small>
                             </div>
                             <div className='chat_item_body'>
                                 {payload.payload.text && (
@@ -92,6 +107,19 @@ function Chatbot() {
                                 {payload.payload.link && (
                                     <a href={payload.payload.link} target='_blank' className='unreadable_data'>{payload.payload.link}</a>
                                 )}
+                            </div>
+                        </div>
+                    </div>
+                );
+            case "recv":
+                return (
+                    <div className={`chat_item_wrapper receiving_wrapper`}>
+                        <div className='chat_item_left'>
+                            <SmartToyRoundedIcon className='sender_img' />
+                        </div>
+                        <div className='chat_item_right'>
+                            <div className='chat_item_body'>
+                                <span>Wait...</span>
                             </div>
                         </div>
                     </div>
@@ -142,6 +170,7 @@ function Chatbot() {
                                 return renderChatUnit(chat);
                             })
                         }
+                        {receiving && renderChatUnit({ type: "recv" })}
                     </div>
                     <div className='section_footer'>
                         {renderInputUnit()}

@@ -307,7 +307,7 @@ export default function DetailDataCard({
                 }}
               >
                 <img src={component?.icons?.phone} alt="" />
-                {ShowNumber ? cardData?.channelContact : "Call"}
+                {ShowNumber ? cardData?.parentId?.phoneNumber : "Call"}
               </Button>
               <Button
                 className="detail-button"
