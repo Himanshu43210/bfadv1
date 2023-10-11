@@ -86,6 +86,10 @@ const HEADER = {
       title: "BuilderFloor.com",
       className: "page_header_comp",
     },
+    // {
+    //   type: "OTP_LOGIN",
+    //   className: "ol_comp_wrapper"
+    // }
   ],
 };
 
@@ -180,7 +184,7 @@ export const HOME_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
-    { type: CHATBOT }
+    // { type: CHATBOT }
   ],
 };
 
@@ -231,7 +235,7 @@ export const CARD_DETAILS_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
-    { type: CHATBOT }
+    // { type: CHATBOT }
   ],
 };
 
@@ -501,7 +505,7 @@ export const SEARCH_RESULT = {
         },
         FOOTER,
         SCROLLTOP,
-        { type: CHATBOT }
+        // { type: CHATBOT }
       ],
     },
 
