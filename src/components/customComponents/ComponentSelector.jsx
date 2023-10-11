@@ -33,6 +33,7 @@ import {
   BUTTON,
   SELECT2,
   CHATBOT,
+  OTP_LOGIN,
 } from "../utils/Const";
 import Banner from "./Banner";
 import Footer from "./Footer";
@@ -68,6 +69,7 @@ import Button from "./Button";
 import DropSelect from "./DropSelect";
 import { useLocation } from "react-router-dom";
 import Chatbot from "./Chatbot";
+import OtpLogin from "./OtpLogin";
 
 const ComponentSelector = ({ component }) => {
   const location = useLocation();
@@ -335,6 +337,7 @@ const ComponentSelector = ({ component }) => {
       )}
       {component.type === PAGE_FOOTER && <Footer component={component} />}
       {component.type === PAGE_HEADER && <Header component={component} />}
+      {component.type === OTP_LOGIN && <OtpLogin />}
       {component.type === HAMBURGER_MENU && (
         <MenuState MenuItems={component.items} />
       )}

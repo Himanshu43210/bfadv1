@@ -15,6 +15,8 @@ import * as _ from "lodash";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Tooltip from '@mui/material/Tooltip';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 export default function DetailDataCard({
   component,
@@ -306,8 +308,9 @@ export default function DetailDataCard({
                   setShowNumber(!ShowNumber);
                 }}
               >
-                <img src={component?.icons?.phone} alt="" />
-                {ShowNumber ? cardData?.parentId?.phoneNumber : "Call"}
+                {/* <img src={component?.icons?.phone} alt="" /> */}
+                <LocalPhoneIcon className="detail_btn_icon" />
+                <span className="detail_btn_label">{ShowNumber ? cardData?.parentId?.phoneNumber : "Call"}</span>
               </Button>
               <Button
                 className="detail-button"
@@ -323,8 +326,9 @@ export default function DetailDataCard({
                   );
                 }}
               >
-                <img src={component?.icons?.whatsapp} alt="" />
-                WhatsApp
+                {/* <img src={component?.icons?.whatsapp} alt="" /> */}
+                <WhatsAppIcon className="detail_btn_icon" />
+                <span className="detail_btn_label">WhatsApp</span>
               </Button>
             </div>
           </div>

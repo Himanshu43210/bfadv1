@@ -89,6 +89,7 @@ const ListingTable = ({
     selectApiData(state, getDataApi)
   );
   const userProfile = useSelector((state) => state[PROFILE]);
+  console.log('>>>>>>>>>>>>>>>> USER PROFILE <<<<<<<<<<<<<<<<<<<<', userProfile);
   const navigateTo = useNavigate();
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
@@ -268,7 +269,11 @@ const ListingTable = ({
           Object.keys(formData).map((element) => {
             if (!isFileList(formData[element])) {
               if (!mediaLinkTypes.includes(element) && typeof formData[element] == "object" && !Array.isArray(formData[element])) {
-                newFormData.append(element, formData[element]?.value);
+                if (element === "parentId") {
+                  newFormData.append(element, formData[element]?._id);
+                } else {
+                  newFormData.append(element, formData[element]?.value);
+                }
               }
               else if (isObjectNotString(formData[element])) {
                 // ignore
