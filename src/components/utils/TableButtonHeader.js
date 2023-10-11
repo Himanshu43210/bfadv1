@@ -45,6 +45,7 @@ const TableButtonHeader = ({
   const [exportPopup, setExportPopup] = useState(null);
   const [formData, setFormData] = useState({});
   const userProfile = useSelector((state) => state[PROFILE]);
+  const parentProfile = useSelector((state) => state["parent"]);
 
   const dispatch = useDispatch();
 
@@ -93,7 +94,7 @@ const TableButtonHeader = ({
     } catch (error) { }
   };
 
-  console.log('>>>>>>>>>>>>>>>>>>> USER PROFILE <<<<<<<<<<<<<<<<<<<<', userProfile);
+  console.log('>>>>>>>>>>>>>>>>>>> USER PROFILE <<<<<<<<<<<<<<<<<<<<', userProfile, parentProfile);
 
   const handleSubmit = async () => {
     const formData = finalizeRef.current.finalizeData();
@@ -184,10 +185,9 @@ const TableButtonHeader = ({
             }
           });
 
-          // add channelPartner & channelContact
-          newFormData.append("companyName", userProfile?.companyName);
-          newFormData.append("channelPartner", userProfile?.channelPartner);
-          newFormData.append("channelContact", userProfile?.channelContact);
+          newFormData.append("companyName", parentProfile?.companyName);
+          newFormData.append("channelPartner", parentProfile?.name);
+          newFormData.append("channelContact", parentProfile?.phoneNumber);
           newFormData.append("createdBy", userProfile?.name);
 
           const options = {

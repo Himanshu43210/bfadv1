@@ -101,4 +101,6 @@ export const MASTER_MANAGEMENT = "MASTER_MANAGEMENT";
 // options
 export const YES = "yes";
 export const PROFILE = "profile";
+export const PARENT = "parent";
+export const FILTER = "filter";
 export const NEED_APPROVAL_BY = "needApprovalBy";

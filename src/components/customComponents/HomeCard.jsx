@@ -12,6 +12,7 @@ import { FaShareAlt } from "react-icons/fa";
 import { convertToCr } from "../utils/HelperMethods";
 import { useNavigate } from "react-router-dom";
 import { GET } from "../utils/Const";
+import Tooltip from '@mui/material/Tooltip';
 
 export default function HomeCard({
   element,
@@ -126,9 +127,11 @@ export default function HomeCard({
         </CardContent>
 
         <div className="ratings_and_price">
+        <Tooltip title="Share" arrow classes="tooltip">
           <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn hc_share_btn">
             <FaShareAlt size={"23px"} className="share_icon" />
           </Button>
+        </Tooltip>
           <Rating
             name="home-card-fixed-rating"
             value={element?.raiting || 5}

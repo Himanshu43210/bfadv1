@@ -15,12 +15,9 @@ import {
   CHANNEL_PARTNER,
   DELETE,
   GET,
-  GET_ADMIN_PROPERTY_DATA,
   NEED_APPROVAL_BY,
   POST,
   PROFILE,
-  PROPERTY_DEALER,
-  REJECTED,
 } from "./Const";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "../../redux/utils/apiActions";
@@ -135,9 +132,13 @@ const ListingTable = ({
         url: refreshDataApi,
         method: onRefreshApiType || GET,
         headers: { "Content-Type": "application/json" },
+        params: {
+          page: activePage,
+          limit: itemsCountPerPage
+        },
         data: onRefreshApiType === POST
           ? {
-            sortColumn, sortType
+            sortColumn, sortType, activePage, itemsCountPerPage
           }
           : {},
       };
@@ -240,7 +241,6 @@ const ListingTable = ({
             "virtualFile",
           ]);
 
-          console.log('====== HANDLING LINKS ======');
           mediaLinkTypes.forEach(mediaLinkType => {
             // append individually in formData
             if (Array.isArray(formData[mediaLinkType])) {
@@ -268,7 +268,6 @@ const ListingTable = ({
           Object.keys(formData).map((element) => {
             if (!isFileList(formData[element])) {
               if (!mediaLinkTypes.includes(element) && typeof formData[element] == "object" && !Array.isArray(formData[element])) {
-                console.log('++++++++++ not array is object ++++++++++', element, formData[element]);
                 newFormData.append(element, formData[element]?.value);
               }
               else if (isObjectNotString(formData[element])) {
@@ -525,7 +524,7 @@ const ListingTable = ({
 
   const handlePageChange = (action, pageNumber) => {
     if (pageNumber > 0) setActivePage(pageNumber);
-    filterData({
+        filterData({
       activePage: pageNumber,
       itemsCountPerPage,
       sortColumn,
