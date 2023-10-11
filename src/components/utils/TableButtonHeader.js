@@ -185,11 +185,6 @@ const TableButtonHeader = ({
             }
           });
 
-          newFormData.append("companyName", parentProfile?.companyName);
-          newFormData.append("channelPartner", parentProfile?.name);
-          newFormData.append("channelContact", parentProfile?.phoneNumber);
-          newFormData.append("createdBy", userProfile?.name);
-
           const options = {
             url: API_ENDPOINTS[saveDataApi],
             method: POST,

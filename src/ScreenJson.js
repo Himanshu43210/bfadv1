@@ -349,7 +349,7 @@ export const SEARCH_RESULT = {
                     { label: "Sector Southend", value: "SECTOR 57" },
                     { label: "South City 1", value: "SOUTH CITY 1" },
                     { label: "Sushant Lok 1", value: "SUSHANT LOK 1" },
-                    { label: "Sushant Lok 1", value: "SUSHANT LOK 3" },
+                    { label: "Sushant Lok 3", value: "SUSHANT LOK 3" },
                     { label: "Nirvana Country", value: "NIRVANA COUNTRY" },
                     { label: "Emaar Emerald Hills", value: "EMAAR EMERALD HILLS" },
                     { label: "New Colony", value: "NEW COLONY" },
