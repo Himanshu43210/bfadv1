@@ -524,7 +524,7 @@ const ListingTable = ({
 
   const handlePageChange = (action, pageNumber) => {
     if (pageNumber > 0) setActivePage(pageNumber);
-        filterData({
+    filterData({
       activePage: pageNumber,
       itemsCountPerPage,
       sortColumn,
@@ -561,7 +561,14 @@ const ListingTable = ({
     }
   };
 
-  const formatTableCell = (cellData) => {
+  const formatTableCell = (element, headerLabel) => {
+    let cellData;
+    const splittedKeys = allowedTableColumns[headerLabel].split(".");
+    if (splittedKeys.length === 1) {
+      cellData = element?.[allowedTableColumns?.[headerLabel]];
+    } else if (splittedKeys.length > 1) {
+      cellData = element?.[splittedKeys?.[0]]?.[splittedKeys?.[1]];
+    }
     // check for date
     if (!isNaN(Date.parse(cellData)) && cellData.length > 20) {
       return new Date(cellData).toLocaleString('default', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -802,7 +809,7 @@ const ListingTable = ({
               >
                 {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                   <td className="bodytext" key={index}>
-                    {formatTableCell(element[allowedTableColumns[headerLabel]])}
+                    {formatTableCell(element, headerLabel)}
                   </td>
                 ))}
                 {!hideActions && (
