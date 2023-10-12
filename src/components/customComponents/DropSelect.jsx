@@ -11,6 +11,7 @@ const DropSelect = ({
     onSubmit
 }) => {
     const [modified, setModified] = useState(false);
+    const [visited, setVisited] = useState(false);
     const [selections, setSelections] = useState([]);
     const [popupState, setPopupState] = useState(false);
     const [showSearchResults, setShowSearchResults] = useState(false);
@@ -50,10 +51,12 @@ const DropSelect = ({
             if (modified) {
                 onSubmit(component.maxAllowed === 1 ? selections[0] : selections);
                 setModified(false);
+                setVisited(false);
             }
             setPopupState(false);
         } else {
             setPopupState(true);
+            setVisited(false);
         }
     };
 
@@ -72,7 +75,7 @@ const DropSelect = ({
         <div
             className={`drop_select_wrapper ${component?.className}`}
             onMouseLeave={() => {
-                if (popupState) {
+                if (popupState && visited) {
                     handleSubmit();
                 }
             }}
@@ -85,7 +88,7 @@ const DropSelect = ({
                 <ExpandMoreIcon className='expand_icon' />
             </MuiButton>
             {popupState && (
-                <div className='dd_popup'>
+                <div className='dd_popup' onMouseEnter={() => setVisited(true)}>
                     {component.options.length > 10 && (
                         <div className='dd_search_box'>
                             <SearchIcon className='search_icon' />
