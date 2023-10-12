@@ -10,6 +10,7 @@ export const SelectSlider = ({
   className
 }) => {
   const [modified, setModified] = useState(false);
+  const [visited, setVisited] = useState(false);
   const [selections, setSelections] = useState(stateValue);
   const [showComponent, setShowComponent] = useState(false);
 
@@ -20,13 +21,15 @@ export const SelectSlider = ({
 
   const handleSubmit = () => {
     if (showComponent) {
-      if (modified) {
+      if (modified && visited) {
         handleValueChange(selections);
         setModified(false);
+        setVisited(false)
       }
       setShowComponent(false);
     } else {
       setShowComponent(true);
+      setVisited(false);
     }
   };
 
@@ -34,16 +37,16 @@ export const SelectSlider = ({
     <>
       <div className={`select_slider_wrapper ${className}`}
         onMouseLeave={() => {
-          if (showComponent) {
+          if (showComponent && visited) {
             handleSubmit();
           }
         }}
       >
         <MuiButton
           key={component.name}
-          className={`slider_btn select_btn ${component.className} ${(selections[0] != component.defaultValue[0] || selections[1] != component.defaultValue[1]) ? "active_filter" : "inactive_filter"}`}
+          className={`slider_btn select_btn ${component.className} ${(selections[0] !== component.defaultValue[0] || selections[1] !== component.defaultValue[1]) ? "active_filter" : "inactive_filter"}`}
           onClick={() => {
-            setShowComponent(!showComponent);
+            handleSubmit();
           }}
           variant="contained"
         >
@@ -51,7 +54,7 @@ export const SelectSlider = ({
           <ExpandMoreIcon className='expand_icon' />
         </MuiButton>
         {showComponent && (
-          <div className="select_slider_popup_container" style={{ zIndex: component.zIndex }}>
+          <div className="select_slider_popup_container" style={{ zIndex: component.zIndex }} onMouseEnter={() => setVisited(true)}>
             <div className="select_slider_inputs">
               <TextField
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
