@@ -24,6 +24,17 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
   <title>BuilderFloor.com</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P43PLQ2NH2" />
+  <script dangerouslySetInnerHTML={{
+      __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-P43PLQ2NH2');
+      `,
+    }} />
 </head>
 
 <body>
@@ -39,7 +50,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-
 </body>
 
 </html>
