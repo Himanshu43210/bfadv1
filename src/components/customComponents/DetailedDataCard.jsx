@@ -317,7 +317,7 @@ export default function DetailDataCard({
                 variant="contained"
                 onClick={() => {
                   window.open(
-                    `https://wa.me/${cardData?.parentId?.phoneNumber
+                    `https://wa.me/+91${cardData?.parentId?.phoneNumber
                     }?text=${component.whatsappText?.replace(
                       "{link}",
                       pathname
