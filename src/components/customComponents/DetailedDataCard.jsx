@@ -320,7 +320,7 @@ export default function DetailDataCard({
                     `https://wa.me/+91${cardData?.parentId?.phoneNumber
                     }?text=${component.whatsappText?.replace(
                       "{link}",
-                      pathname
+                      window.location.href
                     )}`,
                     "_blank"
                   );

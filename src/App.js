@@ -15,6 +15,7 @@ import FormPage from "./components/customComponents/FormPage";
 import ViewListing from "./components/Pages/adminPages/ViewListing";
 import ApproveListing from "./components/Pages/adminPages/ApproveListings";
 import TableFormPage from "./components/customComponents/TableFormData";
+import AccountTabs from './components/Pages/AccountTabs';
 
 function App() {
   const userProfile = useSelector((state) => state.profile);
@@ -26,6 +27,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/searchResult" element={<SearchResult />} />
           <Route path="/builderFloorDetails" element={<DetailedView />} />
+          <Route path="/account/tab" element={<AccountTabs />} />
           <Route path="/admin/property" element={<PropertyManagement />} />
           <Route path="/admin/form" element={<FormPage />} />
           <Route path="/admin/TableForm" element={<TableFormPage />} />
