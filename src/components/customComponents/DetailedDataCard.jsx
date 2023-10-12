@@ -193,7 +193,7 @@ export default function DetailDataCard({
           <div className="detailicondiv">
             <Tooltip title="Share" arrow classes="tooltip">
               <Button variant="outlined" onClick={handleShareClick} className="btn sc_btn sc_share_btn">
-                <FaShareAlt size={"23px"} onClick={handleShareClick} className="share_icon" />
+                <FaShareAlt size={"23px"} className="share_icon" />
               </Button>
             </Tooltip>
             <Tooltip title="Save" arrow classes="tooltip">
@@ -317,7 +317,7 @@ export default function DetailDataCard({
                 variant="contained"
                 onClick={() => {
                   window.open(
-                    `https://wa.me/${cardData?.channelContact
+                    `https://wa.me/${cardData?.parentId?.phoneNumber
                     }?text=${component.whatsappText?.replace(
                       "{link}",
                       pathname
