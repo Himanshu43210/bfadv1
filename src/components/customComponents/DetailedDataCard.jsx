@@ -131,6 +131,18 @@ export default function DetailDataCard({
     }
   };
 
+  const handleWhatsappContact = () => {
+    console.log('=========== HANDLE WHATSAPP CONTACT ============', cardDetailUrl);
+    const text = component.whatsappText?.replace("{link}", cardDetailUrl);
+    console.log('------ text -----', text);
+    const payload = `https://wa.me/+91${cardData?.parentId?.phoneNumber
+      }?text=${text}`;
+    window.open(
+      payload,
+      "_blank"
+    );
+  };
+
   const getTotalImgsExcept = (type = null) => {
     let total = 0;
     Object.keys(typeCounts).forEach(key => {
@@ -315,16 +327,7 @@ export default function DetailDataCard({
               <Button
                 className="detail-button"
                 variant="contained"
-                onClick={() => {
-                  window.open(
-                    `https://wa.me/+91${cardData?.parentId?.phoneNumber
-                    }?text=${component.whatsappText?.replace(
-                      "{link}",
-                      window.location.href
-                    )}`,
-                    "_blank"
-                  );
-                }}
+                onClick={handleWhatsappContact}
               >
                 {/* <img src={component?.icons?.whatsapp} alt="" /> */}
                 <WhatsAppIcon className="detail_btn_icon" />

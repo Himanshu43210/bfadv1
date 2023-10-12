@@ -84,6 +84,7 @@ const HEADER = {
       url: "/",
       image: "/BUILDER.png",
       title: "BuilderFloor.com",
+      titleMobile: "BuilderFloor",
       className: "page_header_comp",
     },
     // {

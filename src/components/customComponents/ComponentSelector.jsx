@@ -72,6 +72,7 @@ import Chatbot from "./Chatbot";
 import OtpLogin from "./OtpLogin";
 
 const ComponentSelector = ({ component }) => {
+  const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const location = useLocation();
   const dispatch = useDispatch();
   const sliceData = useSelector((state) => state[component.sliceName]);
@@ -336,7 +337,7 @@ const ComponentSelector = ({ component }) => {
         <NavigateButton to={component.navigate} label={component.buttonLabel} />
       )}
       {component.type === PAGE_FOOTER && <Footer component={component} />}
-      {component.type === PAGE_HEADER && <Header component={component} />}
+      {component.type === PAGE_HEADER && <Header component={component} isMobile={isMobile} />}
       {component.type === OTP_LOGIN && <OtpLogin />}
       {component.type === HAMBURGER_MENU && (
         <MenuState MenuItems={component.items} />
