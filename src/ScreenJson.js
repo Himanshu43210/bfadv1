@@ -28,6 +28,7 @@ import {
   SELECT2,
   SELECT_SLIDER,
   SLIDER,
+  TABS,
   TOGGLE_BUTTON,
 } from "./components/utils/Const";
 import { API_ENDPOINTS } from "./redux/utils/api";
@@ -189,6 +190,43 @@ export const HOME_SCREEN = {
   ],
 };
 
+export const ACCOUNT_TABS_SCREEN = {
+  name: "Account Tabs",
+  children: [
+    HEADER,
+    {
+      type: AUTO_FETCH_API,
+      className: "header",
+      api: API_ENDPOINTS[GET_SIMILAR_PROPERTY_DATA],
+    },
+    {
+      type: TABS,
+      tabs: [
+        { label: "Recent Searches", key: 0 },
+        { label: "Viewed", key: 1 },
+        { label: "Contacted", key: 2 },
+        { label: "Shortlisted", key: 3 },
+        { label: "Recommendations", key: 4 },
+      ]
+    },
+    {
+      type: DYNAMIC_CARD_CONTAINER,
+      loadingApi: GET_SIMILAR_PROPERTY_DATA,
+      className: "default-home-cards similar_options_list",
+      apiName: GET_SIMILAR_PROPERTY_DATA,
+      renderComponentsInLoop: { type: HOME_CARD, className: "homeCards" },
+      defaultLimit: 4,
+      cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
+      cardClickNavigate: "/builderFloorDetails",
+      addQueryParam: "{title}-{id}",
+      cardClickApiType: GET,
+    },
+    FOOTER,
+    SCROLLTOP,
+    // { type: CHATBOT }
+  ]
+};
+
 export const CARD_DETAILS_SCREEN = {
   name: "Card Detail Screen",
   children: [
@@ -204,7 +242,7 @@ export const CARD_DETAILS_SCREEN = {
       loadingApi: GET_CARD_DATA,
       className: "property_images_container",
       apiSliceName: GET_CARD_DATA,
-      whatsappText: `Hi! I saw a property {link} on BuilderFloor.com and i am interested in it. Is it available?`,
+      whatsappText: `Hi! I saw a property {link} on BuilderFloor.com and I am interested in it. Is it available?`,
       icons: {
         sectorNumber: "/icons/location.png",
         size: "/icons/area.png",
