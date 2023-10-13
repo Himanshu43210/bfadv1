@@ -18,6 +18,8 @@ import Tooltip from '@mui/material/Tooltip';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import CloseIcon from '@mui/icons-material/Close';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
 export default function DetailDataCard({
   component,
@@ -88,6 +90,7 @@ export default function DetailDataCard({
   const [fullscreen, setFullscreen] = useState(false);
   const cardData = singledata || apiData || {};
   const imageTypes = [
+    "thumbnails",
     "images",
     "normalImages",
     "virtualFiles",
@@ -99,12 +102,12 @@ export default function DetailDataCard({
     normalImages: 0,
     virtualFiles: 0,
     layouts: 0,
-    videos: 0
+    videos: 0,
+    thumbnails: 0
   };
   const allImages = [];
   Object.keys(cardData).forEach(prop => {
     if (imageTypes.includes(prop)) {
-      console.log('======= IMAGE TYPE INCLUDES PROP =======', prop);
       cardData[prop].forEach(link => {
         console.log(link);
         if (link !== "") {
@@ -225,6 +228,7 @@ export default function DetailDataCard({
     switch (currMedia?.type) {
       case "images":
         return render360Media();
+      case "thumbnails":
       case "normalImages":
       case "virtualFiles":
       case "layouts":
@@ -275,7 +279,8 @@ export default function DetailDataCard({
                   </Button>
                 </Tooltip>
               )
-            }{
+            }
+            {
               currMedia?.index < (allImages.length - 1) && (
                 <Tooltip title="Next" arrow classes="tooltip">
                   <Button className="slider_ctrl_btn slide_next" onClick={(e) => {
@@ -283,6 +288,18 @@ export default function DetailDataCard({
                     handleImageChange(null, null, "NEXT");
                   }}>
                     <ArrowForwardIosIcon className="slider_icon" />
+                  </Button>
+                </Tooltip>
+              )
+            }
+            {
+              !fullscreen && (
+                <Tooltip title="Fullscreen" arrow classes="tooltip">
+                  <Button className="slider_ctrl_btn fullscreen_btn" onClick={(e) => {
+                    e.stopPropagation();
+                    setFullscreen(!fullscreen);
+                  }}>
+                    <FullscreenIcon className="fullscreen_icon" />
                   </Button>
                 </Tooltip>
               )
