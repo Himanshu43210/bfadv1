@@ -141,10 +141,10 @@ export default function HomeCard({
             api={onClickApi}
             buttonLabel={`₹ ${convertToCr(element?.price)} Cr.`}
             queryParams={{ id: element?._id }}
-            navigate={!disableOnClickNavigate && `${onClickNavigate}?title=${element?.title?.replaceAll(
-              " ",
-              "-"
-            )}&id=${element._id}`}
+            // navigate={!disableOnClickNavigate && `/${element?.title?.replaceAll(
+            //   " ",
+            //   "-"
+            // )}/${element._id}`}
             btnClass="btn price_btn"
           />
         </div>

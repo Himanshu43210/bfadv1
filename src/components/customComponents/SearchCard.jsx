@@ -137,7 +137,7 @@ export default function SearchCard({
                 api={onClickApi}
                 buttonLabel={`₹ ${element.price / 10000000} Cr.`}
                 queryParams={{ id: element._id }}
-                navigate={!disableOnClickNavigate ? cardDetailUrl : null}
+                // navigate={!disableOnClickNavigate ? cardDetailUrl : null}
                 btnClass={`btn price_btn`}
                 newTab={true}
               />
