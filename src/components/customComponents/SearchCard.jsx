@@ -141,7 +141,12 @@ export default function SearchCard({
                 btnClass={`btn price_btn`}
                 newTab={true}
               />
-              <Typography fontWeight="lg">View Details {">>"}</Typography>
+              <Typography className="view_details" fontWeight="lg" onClick={() => {
+                if (!disableOnClickNavigate) {
+                  window.open(cardDetailUrl, "_blank");
+                  // navigateTo(cardDetailUrl);
+                }
+              }}>View Details {">>"}</Typography>
             </div>
           </div>
         </CardContent>

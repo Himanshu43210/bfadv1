@@ -26,7 +26,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/searchResult" element={<SearchResult />} />
-          <Route path="/builderFloorDetails" element={<DetailedView />} />
+          <Route path="/:pid" element={<DetailedView />} />
           <Route path="/account/tab" element={<AccountTabs />} />
           <Route path="/admin/property" element={<PropertyManagement />} />
           <Route path="/admin/form" element={<FormPage />} />
