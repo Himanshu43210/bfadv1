@@ -15,6 +15,8 @@ function OtpLogin() {
     const [errors, setErrors] = useState({});
     const [resend, setResend] = useState(-1);
     const [snackbar, setSnackbar] = useState({});
+    const [visited, setVisited] = useState(false);
+
     const userProfile = {
         name: "Tanish",
         phoneNumber: "********84"
@@ -30,6 +32,7 @@ function OtpLogin() {
         setOpen(false);
         setFormData({});
         setLoginStage(1);
+        setVisited(false);
     };
 
     const validateField = (key, value) => {
@@ -87,6 +90,11 @@ function OtpLogin() {
             message: "",
         });
     };
+
+    const handleMenuClose = () => {
+        setOpen(false);
+        setVisited(false);
+    }
 
     const renderDetailsForm = () => {
         return (
@@ -153,7 +161,7 @@ function OtpLogin() {
 
     const renderMenuPopup = () => {
         return (
-            <div className='menu_popup'>
+            <div className='menu_popup' onMouseEnter={() => setVisited(true)}>
                 <div className='menu_sec menu_sec_top'>
                     <Typography className='profile_name'>{userProfile.name}</Typography>
                     <span className='acc_contact'>{userProfile.phoneNumber}</span>
@@ -200,12 +208,16 @@ function OtpLogin() {
 
     return (
         <>
-            <div className='otp_login_component'>
+            <div className='otp_login_component' onMouseLeave={() => {
+                if (visited) {
+                    handleMenuClose();
+                }
+            }}>
                 <Button className={`ol_open_btn ${loginStage === 0 ? "acc_btn" : "signin_btn"}`} onClick={() => setOpen(!open)}>
                     {loginStage === 0 ? (
                         <>
                             <AccountCircleIcon className='acc_profile_icon' />
-                            <ExpandMoreIcon className='expand_icon' />
+                            {/* <ExpandMoreIcon className='expand_icon' /> */}
                         </>
                     ) : (
                         <Typography className='ol_open_btn_label'>Sign In</Typography>
@@ -219,14 +231,6 @@ function OtpLogin() {
                 onClose={(status) => snackbarClose(status)}
             />
         </>
-    );
-}
-
-function Account() {
-    return (
-        <div className='acc_menu_component'>
-
-        </div>
     );
 }
 

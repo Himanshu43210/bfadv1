@@ -24,6 +24,7 @@ export const TITLE = "title";
 
 export const CARD_DETAILS = "CARD_DETAILS";
 export const DETAILED_VIEW = "DETAILED_VIEW";
+export const TABS = "TABS";
 export const HOME_CARD = "HOME_CARD";
 export const IMAGE_BANNER = "IMAGE_BANNER";
 export const DYNAMIC_CONTAINER = "DYNAMIC_CONTAINER";

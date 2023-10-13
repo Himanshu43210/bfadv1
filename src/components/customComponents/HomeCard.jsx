@@ -23,10 +23,10 @@ export default function HomeCard({
   disableOnClickNavigate = false,
 }) {
   const navigateTo = useNavigate();
-  const cardDetailUrl = `${onClickNavigate}?title=${element.title?.replaceAll(
+  const cardDetailUrl = `/${element.title?.replaceAll(
     " ",
     "-"
-  )}&id=${element._id}`;
+  )}-${element._id}`;
   const handleShareClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -40,20 +40,6 @@ export default function HomeCard({
   return (
     <Card
       className={`home-card ${classname}`}
-      onClick={() => {
-        if (!disableOnClickNavigate) {
-          window.open(`${onClickNavigate}?title=${element.title?.replaceAll(
-            " ",
-            "-"
-          )}&id=${element._id}`, "_blank");
-          // navigateTo(
-          //   `${onClickNavigate}?title=${element.title?.replaceAll(
-          //     " ",
-          //     "-"
-          //   )}&id=${element._id}`
-          // );
-        }
-      }}
     // sx={{
     //   maxWidth: "345px",
     //   width: "auto",
@@ -69,6 +55,20 @@ export default function HomeCard({
           // image = "https://builderfloors.s3.ap-south-1.amazonaws.com/upload/photos/A329ASL1/1st%20Floor/NORMAL/THUMBNAIL.jpg"
           alt={element.title}
           className="thumbnail"
+          onClick={() => {
+            if (!disableOnClickNavigate) {
+              window.open(`/${element.title?.replaceAll(
+                " ",
+                "-"
+              )}-${element._id}`, "_blank");
+              // navigateTo(
+              //   `${onClickNavigate}?title=${element.title?.replaceAll(
+              //     " ",
+              //     "-"
+              //   )}&id=${element._id}`
+              // );
+            }
+          }}
         />
         {/* <CardMedia
           // image = "https://builderfloors.s3.ap-south-1.amazonaws.com/upload/photos/A329ASL1/1st%20Floor/NORMAL/THUMBNAIL.jpg"
@@ -80,9 +80,7 @@ export default function HomeCard({
           alt={"360-image-icon"}
         /> */}
         <CardContent className="home_card_content">
-          <a href={cardDetailUrl} className="property_link" target="_blank" onClick={(e) => {
-            e.preventDefault();
-          }}>
+          <a href={cardDetailUrl} className="property_link" target="_blank">
             <Typography gutterBottom variant="h6" component="div" className="title">
               {element?.title}
             </Typography>
@@ -93,7 +91,7 @@ export default function HomeCard({
           <div className="details_list">
             <div className="list_item">
               <img
-                src="https://builder-floor-flax.vercel.app/assets/imgs/icons/home.svg"
+                src="/icons/home.svg"
                 alt="img"
                 className="homecardicon"
                 height="20px"
@@ -115,7 +113,7 @@ export default function HomeCard({
             </div>
             <div className="list_item">
               <img
-                src="https://builder-floor-flax.vercel.app/assets/imgs/icons/area-svg.svg"
+                src="/icons/area-svg.svg"
                 alt="img"
                 className="homecardicon"
                 height="20px"
@@ -127,11 +125,11 @@ export default function HomeCard({
         </CardContent>
 
         <div className="ratings_and_price">
-        <Tooltip title="Share" arrow classes="tooltip">
-          <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn hc_share_btn">
-            <FaShareAlt size={"23px"} className="share_icon" />
-          </Button>
-        </Tooltip>
+          <Tooltip title="Share" arrow classes="tooltip">
+            <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn hc_share_btn">
+              <FaShareAlt size={"23px"} className="share_icon" />
+            </Button>
+          </Tooltip>
           <Rating
             name="home-card-fixed-rating"
             value={element?.raiting || 5}

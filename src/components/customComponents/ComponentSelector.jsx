@@ -34,6 +34,7 @@ import {
   SELECT2,
   CHATBOT,
   OTP_LOGIN,
+  TABS,
 } from "../utils/Const";
 import Banner from "./Banner";
 import Footer from "./Footer";
@@ -67,11 +68,13 @@ import LoginRefresh from "./LoginRefresh";
 import { useEffect, useState } from "react";
 import Button from "./Button";
 import DropSelect from "./DropSelect";
+import Tabbar from './Tabbar';
 import { useLocation } from "react-router-dom";
 import Chatbot from "./Chatbot";
 import OtpLogin from "./OtpLogin";
 
 const ComponentSelector = ({ component }) => {
+  const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const location = useLocation();
   const dispatch = useDispatch();
   const sliceData = useSelector((state) => state[component.sliceName]);
@@ -336,10 +339,13 @@ const ComponentSelector = ({ component }) => {
         <NavigateButton to={component.navigate} label={component.buttonLabel} />
       )}
       {component.type === PAGE_FOOTER && <Footer component={component} />}
-      {component.type === PAGE_HEADER && <Header component={component} />}
+      {component.type === PAGE_HEADER && <Header component={component} isMobile={isMobile} />}
       {component.type === OTP_LOGIN && <OtpLogin />}
       {component.type === HAMBURGER_MENU && (
         <MenuState MenuItems={component.items} />
+      )}
+      {component.type === TABS && (
+        <Tabbar component={component} />
       )}
       {component.type === SELECT_SLIDER && (
         <SelectSlider
