@@ -20,10 +20,10 @@ export default function SearchCard({
   classname,
   disableOnClickNavigate = false,
 }) {
-  const cardDetailUrl = `${onClickNavigate}?title=${element.title?.replaceAll(
+  const cardDetailUrl = `/${element.title?.replaceAll(
     " ",
     "-"
-  )}&id=${element._id}`;
+  )}-${element._id}`;
   const handleShareClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -36,14 +36,7 @@ export default function SearchCard({
   };
   const navigateTo = useNavigate();
   return (
-    <Card
-      onClick={() => {
-        if (!disableOnClickNavigate) {
-          window.open(cardDetailUrl, "_blank");
-          // navigateTo(cardDetailUrl);
-        }
-      }}
-      className={`search_card ${classname}`}
+    <Card className={`search_card ${classname}`}
     >
       <CardActionArea className="searchcardiv">
         <CardMedia
@@ -54,12 +47,20 @@ export default function SearchCard({
           // alt="Left_Image"
           alt={element.title}
           className="thumbnail"
+          onClick={() => {
+            if (!disableOnClickNavigate) {
+              window.open(cardDetailUrl, "_blank");
+              // navigateTo(cardDetailUrl);
+            }
+          }}
         />
         <CardContent className="card_details">
           <div className="detailcardheadingdiv">
-            <Typography variant="h5" gutterBottom className="detailcardheading">
-              {element.title}
-            </Typography>
+            <a href={cardDetailUrl} className="property_link" target="_blank">
+              <Typography variant="h5" gutterBottom className="detailcardheading">
+                {element.title}
+              </Typography>
+            </a>
             <div className="detailicondiv">
               <Tooltip title="Share" arrow classes="tooltip">
                 <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn">

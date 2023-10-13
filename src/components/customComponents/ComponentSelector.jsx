@@ -34,6 +34,7 @@ import {
   SELECT2,
   CHATBOT,
   OTP_LOGIN,
+  TABS,
 } from "../utils/Const";
 import Banner from "./Banner";
 import Footer from "./Footer";
@@ -67,6 +68,7 @@ import LoginRefresh from "./LoginRefresh";
 import { useEffect, useState } from "react";
 import Button from "./Button";
 import DropSelect from "./DropSelect";
+import Tabbar from './Tabbar';
 import { useLocation } from "react-router-dom";
 import Chatbot from "./Chatbot";
 import OtpLogin from "./OtpLogin";
@@ -341,6 +343,9 @@ const ComponentSelector = ({ component }) => {
       {component.type === OTP_LOGIN && <OtpLogin />}
       {component.type === HAMBURGER_MENU && (
         <MenuState MenuItems={component.items} />
+      )}
+      {component.type === TABS && (
+        <Tabbar component={component} />
       )}
       {component.type === SELECT_SLIDER && (
         <SelectSlider

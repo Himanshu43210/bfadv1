@@ -33,9 +33,21 @@ export default function DetailDataCard({
       }
     });
   }
+  function getStringAfterLastHyphen(inputString) {
+    // Split the input string into an array using "-" as the separator
+    const parts = inputString.split("-");
+
+    // If there is only one part or the last character of the inputString is "-", return an empty string
+    if (parts.length === 1 || inputString.endsWith("-")) {
+      return "";
+    }
+
+    // Otherwise, return the last part of the array
+    return parts[parts.length - 1];
+  }
   // If using component prop, fetch additional data from API
   const pathname = window.location.href;
-  const id = pathname.split("id=").pop();
+  const id = getStringAfterLastHyphen(pathname);
   const getApiEndpoint = data.apiSliceName;
   const apiEndpoint = API_ENDPOINTS[getApiEndpoint] + `?id=${id}`;
   const dispatch = useDispatch();
@@ -107,15 +119,18 @@ export default function DetailDataCard({
   const [isInitial, setIsInitial] = useState(true);
 
   const handleImageChange = (index, payload, dir) => {
-    console.log('+++++++++++ HANDLE IMAGE CHANGE ++++++++++++', index, payload)
+    console.log('+++++++++++ HANDLE IMAGE CHANGE ++++++++++++', index, payload, dir);
     let newIndex;
     if (index) {
       newIndex = index % allImages.length;
+      // console.log('-------- NEW INDEX ---------', newIndex);
       setCurrMedia({ ...payload, index: (index % allImages.length) });
     } else {
       newIndex = dir === "PREV"
         ? ((currMedia?.index || 0) - 1) : ((currMedia?.index || 0) + 1);
+      console.log('-------- NEW INDEX 1 ---------', newIndex, allImages.length);
       newIndex = newIndex % allImages.length;
+      console.log('-------- NEW INDEX 2 ---------', newIndex);
       setCurrMedia({ ...allImages[newIndex], index: newIndex });
     }
   };
@@ -132,11 +147,12 @@ export default function DetailDataCard({
   };
 
   const handleWhatsappContact = () => {
-    console.log('=========== HANDLE WHATSAPP CONTACT ============', cardDetailUrl);
+    console.log('=========== HANDLE WHATSAPP CONTACT ============', encodeURIComponent(cardDetailUrl));
     const text = component.whatsappText?.replace("{link}", cardDetailUrl);
     console.log('------ text -----', text);
     const payload = `https://wa.me/+91${cardData?.parentId?.phoneNumber
-      }?text=${text}`;
+      }?text=${encodeURIComponent(text)}`;
+    console.log('------ payload ------', payload);
     window.open(
       payload,
       "_blank"
@@ -152,6 +168,27 @@ export default function DetailDataCard({
     });
     return total;
   };
+
+  const keyNavigation = (e) => {
+    console.log('============== KEY DOWN ==============', e.key);
+    switch (e.key) {
+      case "ArrowLeft":
+        handleImageChange(null, null, "PREV");
+        break;
+      case "ArrowRight":
+        handleImageChange(null, null, "NEXT");
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", keyNavigation);
+    return () => {
+      document.removeEventListener("keydown", keyNavigation);
+    };
+  }, []);
 
   const render360Media = () => {
     console.log('-------------- RENDER 360 MEDIA -----------', currMedia);

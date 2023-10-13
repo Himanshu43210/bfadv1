@@ -217,7 +217,7 @@ function OtpLogin() {
                     {loginStage === 0 ? (
                         <>
                             <AccountCircleIcon className='acc_profile_icon' />
-                            <ExpandMoreIcon className='expand_icon' />
+                            {/* <ExpandMoreIcon className='expand_icon' /> */}
                         </>
                     ) : (
                         <Typography className='ol_open_btn_label'>Sign In</Typography>
