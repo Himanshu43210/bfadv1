@@ -17,6 +17,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Tooltip from '@mui/material/Tooltip';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function DetailDataCard({
   component,
@@ -67,22 +68,24 @@ export default function DetailDataCard({
     }
   }, []);
 
-  useEffect(() => {
-    const parsedParams = search.split("&").map(param => param.split("="));
-    const newId = parsedParams?.[1]?.[1];
-    dispatch(
-      callApi({
-        url: API_ENDPOINTS[getApiEndpoint] + `?id=${newId}`,
-        method: GET,
-        headers: { "Content-Type": "application/json" },
-      })
-    );
-    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
-  }, [search]);
+  // useEffect(() => {
+  //   const parsedParams = search.split("&").map(param => param.split("="));
+  //   const newId = parsedParams?.[1]?.[1];
+  //   dispatch(
+  //     callApi({
+  //       url: API_ENDPOINTS[getApiEndpoint] + `?id=${newId}`,
+  //       method: GET,
+  //       headers: { "Content-Type": "application/json" },
+  //     })
+  //   );
+  //   window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+  // }, [search]);
 
   const apiData = useSelector(
     (state) => selectApiData(state, getApiEndpoint)?.data
   );
+  const [mediaPrepared, setMediaPrepared] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
   const cardData = singledata || apiData || {};
   const imageTypes = [
     "images",
@@ -107,6 +110,9 @@ export default function DetailDataCard({
         if (link !== "") {
           typeCounts[prop] = typeCounts[prop] + 1;
           allImages.push({ type: prop, link: link });
+          if (!mediaPrepared) {
+            setMediaPrepared(true);
+          }
         }
       });
     }
@@ -115,11 +121,18 @@ export default function DetailDataCard({
 
   const [ShowNumber, setShowNumber] = useState(false);
   const [currMedia, setCurrMedia] = useState({ ...allImages?.[0], index: 0 });
-  console.log('======== INITIAL CURR MEDIA ==========', currMedia);
-  const [isInitial, setIsInitial] = useState(true);
+
+  useEffect(() => {
+    if (mediaPrepared) {
+      setCurrMedia({ ...allImages?.[0], index: 0 });
+      window.addEventListener("keydown", keyNavigation);
+    }
+    return () => {
+      window.removeEventListener("keydown", keyNavigation);
+    };
+  }, [mediaPrepared]);
 
   const handleImageChange = (index, payload, dir) => {
-    console.log('+++++++++++ HANDLE IMAGE CHANGE ++++++++++++', index, payload, dir);
     let newIndex;
     if (index) {
       newIndex = index % allImages.length;
@@ -147,12 +160,10 @@ export default function DetailDataCard({
   };
 
   const handleWhatsappContact = () => {
-    console.log('=========== HANDLE WHATSAPP CONTACT ============', encodeURIComponent(cardDetailUrl));
     const text = component.whatsappText?.replace("{link}", cardDetailUrl);
     console.log('------ text -----', text);
     const payload = `https://wa.me/+91${cardData?.parentId?.phoneNumber
       }?text=${encodeURIComponent(text)}`;
-    console.log('------ payload ------', payload);
     window.open(
       payload,
       "_blank"
@@ -183,17 +194,9 @@ export default function DetailDataCard({
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("keydown", keyNavigation);
-    return () => {
-      document.removeEventListener("keydown", keyNavigation);
-    };
-  }, []);
-
   const render360Media = () => {
-    console.log('-------------- RENDER 360 MEDIA -----------', currMedia);
     return (
-      <div className="img360">
+      <div className="img360" onClick={() => setFullscreen(true)}>
         <IframeBuilder
           src={currMedia?.link}
           title={cardData?.title}
@@ -205,7 +208,6 @@ export default function DetailDataCard({
   };
 
   const renderGeneralMedia = () => {
-    console.log('-------------- RENDER GENERAL MEDIA -----------', currMedia);
     return (
       <div className="general_media_wrapper">
         {
@@ -220,7 +222,6 @@ export default function DetailDataCard({
   };
 
   const renderMainMedia = () => {
-    console.log('-------------- RENDER MAIN MEDIA -----------', currMedia);
     switch (currMedia?.type) {
       case "images":
         return render360Media();
@@ -252,13 +253,24 @@ export default function DetailDataCard({
             </Tooltip>
           </div>
         </div>
-        <div className="detail-image-div">
-          <div className="main-images">
+        {/* {fullscreen && (
+          <div className="slider_overlay">
+
+          </div>
+        )} */}
+        <div className={`detail-image-div ${fullscreen ? "fullscreen_img_slider" : ""}`}>
+          <div className="main-images" onClick={() => {
+            console.log('============ UPDATE FULL SCREEN STATE ==============', fullscreen);
+            setFullscreen(true);
+          }}>
             {renderMainMedia()}
             {
               currMedia?.index > 0 && (
                 <Tooltip title="Previous" arrow classes="tooltip">
-                  <Button className="slider_ctrl_btn slide_back" onClick={() => handleImageChange(null, null, "PREV")}>
+                  <Button className="slider_ctrl_btn slide_back" onClick={(e) => {
+                    e.stopPropagation();
+                    handleImageChange(null, null, "PREV");
+                  }}>
                     <ArrowBackIosIcon className="slider_icon" />
                   </Button>
                 </Tooltip>
@@ -266,7 +278,10 @@ export default function DetailDataCard({
             }{
               currMedia?.index < (allImages.length - 1) && (
                 <Tooltip title="Next" arrow classes="tooltip">
-                  <Button className="slider_ctrl_btn slide_next" onClick={() => handleImageChange(null, null, "NEXT")}>
+                  <Button className="slider_ctrl_btn slide_next" onClick={(e) => {
+                    e.stopPropagation();
+                    handleImageChange(null, null, "NEXT");
+                  }}>
                     <ArrowForwardIosIcon className="slider_icon" />
                   </Button>
                 </Tooltip>
@@ -304,6 +319,11 @@ export default function DetailDataCard({
             {getTotalImgsExcept()} Images
             {typeCounts.normalImages > 0 ? ` || ${typeCounts.normalImages} Normal` : ""}
           </div>
+          {fullscreen && (
+            <Button className="fullscreen_close_btn" onClick={() => setFullscreen(false)}>
+              <CloseIcon className="fullscreen_close_icon" />
+            </Button>
+          )}
         </div>
         <div className="lowercontainer">
           <div className="detail-info-div">
