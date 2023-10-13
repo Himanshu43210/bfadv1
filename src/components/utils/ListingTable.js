@@ -128,7 +128,7 @@ const ListingTable = ({
 
   const refreshData = () => {
     try {
-      setTableFilter({ ...tableFilter, search: "" });
+      setTableFilter({ ...tableFilter });
       const options = {
         url: refreshDataApi,
         method: onRefreshApiType || GET,
