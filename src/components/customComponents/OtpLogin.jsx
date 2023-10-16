@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
@@ -6,6 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SnackBar from './SnackBar';
+import { Link } from 'react-router-dom';
 
 function OtpLogin() {
     const [open, setOpen] = useState(false);
@@ -167,21 +168,31 @@ function OtpLogin() {
                     <span className='acc_contact'>{userProfile.phoneNumber}</span>
                 </div>
                 <div className='menu_sec menu_sec_middle'>
-                    <div className='menu_item'>
-                        <span>Recent Searches</span>
-                    </div>
-                    <div className='menu_item'>
-                        <span>Contacted</span>
-                    </div>
-                    <div className='menu_item'>
-                        <span>Shortlisted</span>
-                    </div>
-                    <div className='menu_item'>
-                        <span>Viewed</span>
-                    </div>
-                    <div className='menu_item'>
-                        <span>Recommendations</span>
-                    </div>
+                    <Link to="/account/tab?t=recent_searches" className='acc_menu_item'>
+                        <div className='menu_item'>
+                            <span>Recent Searches</span>
+                        </div>
+                    </Link>
+                    <Link to="/account/tab?t=contacted" className='acc_menu_item'>
+                        <div className='menu_item'>
+                            <span>Contacted</span>
+                        </div>
+                    </Link>
+                    <Link to="/account/tab?t=shortlisted" className='acc_menu_item'>
+                        <div className='menu_item'>
+                            <span>Shortlisted</span>
+                        </div>
+                    </Link>
+                    <Link to="/account/tab?t=viewed" className='acc_menu_item'>
+                        <div className='menu_item'>
+                            <span>Viewed</span>
+                        </div>
+                    </Link>
+                    <Link to="/account/tab?t=recommendations" className='acc_menu_item'>
+                        <div className='menu_item'>
+                            <span>Recommendations</span>
+                        </div>
+                    </Link>
                 </div>
                 <div className='menu_sec menu_sec_bottom'>
                     <Button className='signout_btn' onClick={handleSignOut}>Sign Out</Button>

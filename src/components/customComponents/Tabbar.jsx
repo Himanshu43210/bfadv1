@@ -9,11 +9,12 @@ function Tabbar({
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
+        console.log('=========== HANDLE CHANGE : TAB ==========', newValue);
         setValue(newValue);
     };
     return (
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }} classes='tabs_box'>
-            <Tabs value={value} onChange={handleChange} centered classes='tabs_wrapper'>
+            <Tabs value={value} onChange={handleChange} classes='tabs_wrapper' variant='scrollable'>
                 {
                     component.tabs?.map((tab, index) => (
                         <Tab label={tab.label} key={index} className='tab_item' />

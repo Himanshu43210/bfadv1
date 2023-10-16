@@ -6,6 +6,7 @@ import UserManagement from "../Pages/adminPages/UserManagement";
 import {
   ADMIN_DASHBOARD,
   ADMIN_DASHBOARD_LOGIN,
+  CUSTOMER_MANAGEMENT,
   MASTER_MANAGEMENT,
   POST,
   PROPERTY_MANAGEMENT,
@@ -19,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../../redux/utils/api";
 import { callApi } from "../../redux/utils/apiActions";
 import { storeUserData } from "../../redux/slice/userSlice";
+import CustomerManagement from "../Pages/adminPages/CustomerManagement";
 
 export default function PageSelector({ pageName }) {
   const navigate = useNavigate();
@@ -48,7 +50,7 @@ export default function PageSelector({ pageName }) {
             },
           };
           dispatch(callApi(options));
-        } catch (error) {}
+        } catch (error) { }
       } else {
         navigate("/login");
       }
@@ -63,7 +65,7 @@ export default function PageSelector({ pageName }) {
     if (userProfile._id) {
       setCheck(true);
     }
-  }, [loginStatus,userProfile]);
+  }, [loginStatus, userProfile]);
 
   return (
     <>
@@ -76,6 +78,7 @@ export default function PageSelector({ pageName }) {
           {pageName === USER_MANAGEMENT && <UserManagement />}
           {pageName === PROPERTY_MANAGEMENT && <PropertyManagement />}
           {pageName === MASTER_MANAGEMENT && <MasterManagement />}
+          {pageName === CUSTOMER_MANAGEMENT && <CustomerManagement />}
         </>
       )}
     </>
