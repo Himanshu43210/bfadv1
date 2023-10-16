@@ -38,22 +38,27 @@ const MENU_ITEMS = [
   {
     name: "Home",
     path: "/",
+    icon: "HOME",
   },
   {
     name: "Login",
     path: "/login",
+    icon: "LOGIN",
   },
   {
     name: "About Us",
     path: "/about_us",
+    icon: "ORG",
   },
   {
     name: "Contact Us",
     path: "/contact_us",
+    icon: "CONTACT",
   },
   {
     name: "Our Blog",
     path: "/blog",
+    icon: "DOC",
   }
 ];
 
@@ -215,11 +220,11 @@ export const ACCOUNT_TABS_SCREEN = {
     {
       type: TABS,
       tabs: [
-        { label: "Recent Searches", key: 0 },
-        { label: "Viewed", key: 1 },
-        { label: "Contacted", key: 2 },
-        { label: "Shortlisted", key: 3 },
-        { label: "Recommendations", key: 4 },
+        { label: "Recent Searches", key: "recentSearches" },
+        { label: "Recommendations", key: "recommendations" },
+        { label: "Viewed", key: "viewed" },
+        { label: "Contacted", key: "contacted" },
+        { label: "Shortlisted", key: "shortlisted" },
       ],
       className: "tabs_wrapper"
     },
