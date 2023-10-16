@@ -19,6 +19,7 @@ export default function SearchCard({
   onClickNavigate,
   classname,
   disableOnClickNavigate = false,
+  showOptions = false,
 }) {
   const cardDetailUrl = `/${element.title?.replaceAll(
     " ",
@@ -35,6 +36,40 @@ export default function SearchCard({
     }
   };
   const navigateTo = useNavigate();
+
+  const renderOptions = () => {
+    return (
+      <div className="sc_options_wrapper">
+        <ul className="options_list">
+          <li className="option_item">
+            <input type="radio" id="1" className="radio_input" name="customerRemark" />
+            <label htmlFor="1" className="radio_label">Didn't liked this property</label>
+          </li>
+          <li className="option_item">
+            <input type="radio" id="2" className="radio_input" name="customerRemark" />
+            <label htmlFor="2" className="radio_label">Liked this property</label>
+          </li>
+          <li className="option_item">
+            <input type="radio" id="3" className="radio_input" name="customerRemark" />
+            <label htmlFor="3" className="radio_label">Save for later</label>
+          </li>
+          <li className="option_item">
+            <input type="radio" id="4" className="radio_input" name="customerRemark" />
+            <label htmlFor="4" className="radio_label">Option 4</label>
+          </li>
+          <li className="option_item">
+            <input type="radio" id="5" className="radio_input" name="customerRemark" />
+            <label htmlFor="5" className="radio_label">Option 5</label>
+          </li>
+          <li className="option_item">
+            <input type="radio" id="6" className="radio_input" name="customerRemark" />
+            <label htmlFor="6" className="radio_label">Option 6</label>
+          </li>
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <Card className={`search_card ${classname}`}
     >
@@ -151,6 +186,7 @@ export default function SearchCard({
           </div>
         </CardContent>
       </CardActionArea>
+      {showOptions && renderOptions()}
     </Card>
   );
 }

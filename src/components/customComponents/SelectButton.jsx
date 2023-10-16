@@ -25,9 +25,9 @@ export default function SelectButton({
       document.removeEventListener("pointerdown", onPointerDown);
     };
   });
-  // if (defaultValue) {
-  //   handleValueChange(defaultValue);
-  // }
+  if (defaultValue) {
+    handleValueChange(defaultValue);
+  }
   return (
     // <Select
     //   key={name}

@@ -7,6 +7,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SnackBar from './SnackBar';
 import { Link } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
+import YoutubeSearchedForSharpIcon from '@mui/icons-material/YoutubeSearchedForSharp';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
+import CallIcon from '@mui/icons-material/Call';
+import RecommendIcon from '@mui/icons-material/Recommend';
 
 function OtpLogin() {
     const [open, setOpen] = useState(false);
@@ -17,6 +23,7 @@ function OtpLogin() {
     const [resend, setResend] = useState(-1);
     const [snackbar, setSnackbar] = useState({});
     const [visited, setVisited] = useState(false);
+    const isMobile = window.innerWidth < 768;
 
     const userProfile = {
         name: "Tanish",
@@ -106,8 +113,10 @@ function OtpLogin() {
                     <label className='field_label'>Enter Phone Number*</label>
                     <input type="number" value={formData.phoneNumber} className='ol_input_field phone_input' name='phoneNumber' id='phoneNumber' required={true} onInput={(e) => handleInput("phoneNumber", e.target.value)} />
                 </div>
-                <Button type='submit' className='ol_submit_btn' onClick={handleSubmit}>Send OTP</Button>
-                <Button type='reset' variant='outlined' className='ol_cancel_btn' onClick={handleCancelSignin}>Cancel</Button>
+                <div className='form_btns_wrapper'>
+                    <Button type='submit' className='form_btn ol_submit_btn' onClick={handleSubmit}>Send OTP</Button>
+                    <Button type='reset' variant='outlined' className='form_btn ol_cancel_btn' onClick={handleCancelSignin}>Cancel</Button>
+                </div>
             </form>
         );
     };
@@ -123,8 +132,10 @@ function OtpLogin() {
                         <span>in 30s</span>
                     </div>
                 </div>
-                <Button type='submit' className='ol_submit_btn' onClick={handleSubmit}>Submit</Button>
-                <Button type='reset' variant='outlined' className='ol_cancel_btn' onClick={handleCancelSignin}>Cancel</Button>
+                <div className='form_btns_wrapper'>
+                    <Button type='submit' className='form_btn ol_submit_btn' onClick={handleSubmit}>Submit</Button>
+                    <Button type='reset' variant='outlined' className='form_btn ol_cancel_btn' onClick={handleCancelSignin}>Cancel</Button>
+                </div>
             </form>
         );
     };
@@ -170,32 +181,40 @@ function OtpLogin() {
                 <div className='menu_sec menu_sec_middle'>
                     <Link to="/account/tab?t=recent_searches" className='acc_menu_item'>
                         <div className='menu_item'>
+                            <YoutubeSearchedForSharpIcon className='menu_item_icon' />
                             <span>Recent Searches</span>
+                        </div>
+                    </Link>
+                    <Link to="/account/tab?t=viewed" className='acc_menu_item'>
+                        <div className='menu_item'>
+                            <VisibilityIcon className='menu_item_icon' />
+                            <span>Viewed</span>
                         </div>
                     </Link>
                     <Link to="/account/tab?t=contacted" className='acc_menu_item'>
                         <div className='menu_item'>
+                            <CallIcon className='menu_item_icon' />
                             <span>Contacted</span>
                         </div>
                     </Link>
                     <Link to="/account/tab?t=shortlisted" className='acc_menu_item'>
                         <div className='menu_item'>
+                            <FilterListOutlinedIcon className='menu_item_icon' />
                             <span>Shortlisted</span>
-                        </div>
-                    </Link>
-                    <Link to="/account/tab?t=viewed" className='acc_menu_item'>
-                        <div className='menu_item'>
-                            <span>Viewed</span>
                         </div>
                     </Link>
                     <Link to="/account/tab?t=recommendations" className='acc_menu_item'>
                         <div className='menu_item'>
+                            <RecommendIcon className='menu_item_icon' />
                             <span>Recommendations</span>
                         </div>
                     </Link>
                 </div>
                 <div className='menu_sec menu_sec_bottom'>
-                    <Button className='signout_btn' onClick={handleSignOut}>Sign Out</Button>
+                    <Button className='menu_item signout_btn' onClick={handleSignOut}>
+                        <LogoutIcon className='menu_item_icon' />
+                        <span className='menu_item_label'>Sign Out</span>
+                    </Button>
                 </div>
             </div>
         )
@@ -220,7 +239,7 @@ function OtpLogin() {
     return (
         <>
             <div className='otp_login_component' onMouseLeave={() => {
-                if (visited) {
+                if (visited || isMobile) {
                     handleMenuClose();
                 }
             }}>
