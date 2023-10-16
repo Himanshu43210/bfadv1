@@ -199,7 +199,7 @@ export const HOME_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
-    { type: CHATBOT }
+    // { type: CHATBOT }
   ],
 };
 
