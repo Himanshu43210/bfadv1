@@ -50,7 +50,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
     setFormData(propsFormData || {});
   };
 
-  // Expose the finalizeData function to the parent using a ref
+  // Expose the finalizeData & reset function to the parent using a ref
   useImperativeHandle(ref, () => ({ finalizeData, resetForm }));
 
   const handleChange = (field, value) => {

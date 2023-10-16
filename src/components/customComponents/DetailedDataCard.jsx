@@ -128,11 +128,11 @@ export default function DetailDataCard({
   useEffect(() => {
     if (mediaPrepared) {
       setCurrMedia({ ...allImages?.[0], index: 0 });
-      window.addEventListener("keydown", keyNavigation);
+      // window.addEventListener("keydown", keyNavigation);
     }
-    return () => {
-      window.removeEventListener("keydown", keyNavigation);
-    };
+    // return () => {
+    //   window.removeEventListener("keydown", keyNavigation);
+    // };
   }, [mediaPrepared]);
 
   const handleImageChange = (index, payload, dir) => {
@@ -292,18 +292,20 @@ export default function DetailDataCard({
                 </Tooltip>
               )
             }
-            {
-              !fullscreen && (
-                <Tooltip title="Fullscreen" arrow classes="tooltip">
-                  <Button className="slider_ctrl_btn fullscreen_btn" onClick={(e) => {
-                    e.stopPropagation();
-                    setFullscreen(!fullscreen);
-                  }}>
+            <Tooltip title={`${fullscreen ? "Exit Fullscreen" : "Fullscreen"}`} arrow classes="tooltip">
+              <Button className="slider_ctrl_btn fullscreen_btn" onClick={(e) => {
+                e.stopPropagation();
+                setFullscreen(!fullscreen);
+              }}>
+                {
+                  fullscreen ? (
+                    <CloseIcon className="fullscreen_close_icon" />
+                  ) : (
                     <FullscreenIcon className="fullscreen_icon" />
-                  </Button>
-                </Tooltip>
-              )
-            }
+                  )
+                }
+              </Button>
+            </Tooltip>
           </div>
           <div className="side-images">
             {allImages?.map((image, index) => {
@@ -336,11 +338,6 @@ export default function DetailDataCard({
             {getTotalImgsExcept()} Images
             {typeCounts.normalImages > 0 ? ` || ${typeCounts.normalImages} Normal` : ""}
           </div>
-          {fullscreen && (
-            <Button className="fullscreen_close_btn" onClick={() => setFullscreen(false)}>
-              <CloseIcon className="fullscreen_close_icon" />
-            </Button>
-          )}
         </div>
         <div className="lowercontainer">
           <div className="detail-info-div">

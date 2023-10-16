@@ -25,7 +25,9 @@ export default function SelectButton({
       document.removeEventListener("pointerdown", onPointerDown);
     };
   });
-  if (defaultValue) handleValueChange(defaultValue);
+  // if (defaultValue) {
+  //   handleValueChange(defaultValue);
+  // }
   return (
     // <Select
     //   key={name}
@@ -57,7 +59,7 @@ export default function SelectButton({
       </div>
       {clicked && (
         <div
-          onMouseOver={() => {
+          onMouseEnter={() => {
             setHover(true);
           }}
           onMouseLeave={() => {

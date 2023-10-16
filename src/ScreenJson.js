@@ -19,6 +19,7 @@ import {
   IMAGE_BANNER,
   INSTAGRAM_ICON,
   LINKEDIN_ICON,
+  OTP_LOGIN,
   PAGE_FOOTER,
   PAGE_HEADER,
   POST,
@@ -42,6 +43,18 @@ const MENU_ITEMS = [
     name: "Login",
     path: "/login",
   },
+  {
+    name: "About Us",
+    path: "/about_us",
+  },
+  {
+    name: "Contact Us",
+    path: "/contact_us",
+  },
+  {
+    name: "Our Blog",
+    path: "/blog",
+  }
 ];
 
 export const USER_ROLE = {
@@ -89,8 +102,8 @@ const HEADER = {
       className: "page_header_comp",
     },
     // {
-    //   type: "OTP_LOGIN",
-    //   className: "ol_comp_wrapper"
+    //   type: OTP_LOGIN,
+    //   className: "ol_comp_wrapper",
     // }
   ],
 };
@@ -186,7 +199,7 @@ export const HOME_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
-    // { type: CHATBOT }
+    { type: CHATBOT }
   ],
 };
 
@@ -207,7 +220,8 @@ export const ACCOUNT_TABS_SCREEN = {
         { label: "Contacted", key: 2 },
         { label: "Shortlisted", key: 3 },
         { label: "Recommendations", key: 4 },
-      ]
+      ],
+      className: "tabs_wrapper"
     },
     {
       type: DYNAMIC_CARD_CONTAINER,

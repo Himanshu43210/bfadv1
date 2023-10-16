@@ -70,7 +70,7 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
 
   useEffect(() => {
     // if (component.loadMore) {
-    //   window.addEventListener("scroll", throttle(handleScroll, 600));
+    //   window.addEventListener("scroll", throttle(handleScroll, 500));
     //   return () => {
     //     window.removeEventListener("scroll", handleScroll);
     //   };

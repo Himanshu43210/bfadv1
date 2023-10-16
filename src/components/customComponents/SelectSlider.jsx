@@ -44,7 +44,7 @@ export const SelectSlider = ({
       >
         <MuiButton
           key={component.name}
-          className={`slider_btn select_btn ${component.className} ${(selections[0] !== component.defaultValue[0] || selections[1] !== component.defaultValue[1]) ? "active_filter" : "inactive_filter"}`}
+          className={`slider_btn select_btn ${component.className}`}
           onClick={() => {
             handleSubmit();
           }}
@@ -89,8 +89,8 @@ export const SelectSlider = ({
               valueLabelFormat={(value) => value.toFixed(1)}
             />
             <div className="select_slider_labels">
-              <label>Min: <span className="slider_value">{selections[0]}</span>Sq.Yd.</label>
-              <label>Max: <span className="slider_value">{selections[1]}</span>Sq.Yd.</label>
+              <label>Min: <span className="slider_value">{selections[0]} </span>Sq.Yd.</label>
+              <label>Max: <span className="slider_value">{selections[1]} </span>Sq.Yd.</label>
             </div>
           </div>
         )}

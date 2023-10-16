@@ -3,6 +3,7 @@ import { FaClipboardList, FaUsers, FaCog, FaUserShield } from "react-icons/fa";
 import { AiFillHome, AiOutlineLogout } from "react-icons/ai";
 import {
   ADMIN_DASHBOARD,
+  CUSTOMER_MANAGEMENT,
   MASTER_MANAGEMENT,
   PROPERTY_MANAGEMENT,
   USER_MANAGEMENT,
@@ -21,7 +22,7 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
             <h6>BuilderFloor</h6>
           </Link> */}
         <a
-          href="https://www.builderfloor.com"
+          href="/"
           className="panel-link"
           target="_blank"
           rel="noopener noreferrer"
@@ -64,6 +65,13 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
         >
           <FaCog className="admin-panel-icons" />
           <h6 className="panel_link_label">Property</h6>
+        </Button>
+        <Button
+          onClick={() => handlePageClick(CUSTOMER_MANAGEMENT)}
+          className="panel-link"
+        >
+          <FaCog className="admin-panel-icons" />
+          <h6 className="panel_link_label">Customer</h6>
         </Button>
         <Button
           onClick={() => {
