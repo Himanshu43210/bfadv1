@@ -19,6 +19,8 @@ import {
   IMAGE_BANNER,
   INSTAGRAM_ICON,
   LINKEDIN_ICON,
+  LIST,
+  NAVIGATE_BUTTON,
   OTP_LOGIN,
   PAGE_FOOTER,
   PAGE_HEADER,
@@ -221,10 +223,10 @@ export const ACCOUNT_TABS_SCREEN = {
       type: TABS,
       tabs: [
         { label: "Recent Searches", key: "recentSearches" },
-        { label: "Recommendations", key: "recommendations" },
         { label: "Viewed", key: "viewed" },
         { label: "Contacted", key: "contacted" },
         { label: "Shortlisted", key: "shortlisted" },
+        { label: "Recommendations", key: "recommendations" },
       ],
       className: "tabs_wrapper"
     },
@@ -324,7 +326,7 @@ export const SEARCH_RESULT = {
           minValue: 0,
           maxValue: 200000000,
           step: 1000000,
-          defaultValue: [20000000, 60000000],
+          defaultValue: [20000000, 50000000],
         },
         {
           type: API_BUTTON,
@@ -607,7 +609,100 @@ export const BLOG_SCREEN = {
           tag: "h3",
           text: "Coming Soon",
           className: "coming_soon_label"
-        }
+        },
+        // {
+        //   type: CONTAINER,
+        //   className: "page_content_container",
+        //   children: [
+        //     {
+        //       type: HEADING,
+        //       className: "page_title",
+        //       text: "Our Blog",
+        //     },
+        //     {
+        //       type: CONTAINER,
+        //       className: "blog_container",
+        //       children: [
+        //         {
+        //           type: HEADING,
+        //           tag: "h1",
+        //           className: "section_title",
+        //           text: "The Perfect Builder Floor Is An Important And Exciting Journey"
+        //         },
+        //         {
+        //           type: HEADING,
+        //           tag: "p",
+        //           className: "blog_para",
+        //           text: "A builder floor refers to an independent residential unit or apartment that is typically constructed by a builder or developer on a single plot of land. In simple terms, it is a low-rise building that consists of multiple floors, with each floor being a separate dwelling unit."
+        //         },
+        //         {
+        //           type: HEADING,
+        //           tag: "p",
+        //           className: "blog_para",
+        //           text: "Builder Floors Are Commonly Found In Urban Areas, Particularly In Cities And Towns Where Land Availability Is Limited. They Are Often Built As A Part Of A Larger Housing Project Or As Standalone Structures. Each Floor Of A Builder Floor Usually Has Its Own Separate Entrance, And The Building Usually Has An Elevator."
+        //         },
+        //         {
+        //           type: HEADING,
+        //           tag: "p",
+        //           className: "blog_para",
+        //           text: "These Residential Units Are Designed To Provide More Privacy And Independence Compared To Traditional Apartment Buildings Or Multi-Story Complexes. Each Floor Is Typically Owned By A Different Individual Or Family, And They May Have Control Over The Design And Layout Of Their Respective Units. Builder Floors Can Vary In Size And Configuration, Ranging From Small Apartments To Spacious Duplexes Or Triplexes."
+        //         },
+        //         {
+        //           type: HEADING,
+        //           tag: "p",
+        //           className: "blog_para",
+        //           text: `It's Important To Note That The Term "Builder Floor" May Have Different Regional Interpretations And Can Vary In Its Exact Meaning And Characteristics Depending On The Specific Location.`
+        //         },
+        //         {
+        //           type: HEADING,
+        //           tag: "h1",
+        //           className: "section_title",
+        //           text: "Advantages Of Purchasing A Builder Floor:"
+        //         },
+        //         {
+        //           type: LIST,
+        //           subtype: "ul",
+        //           children: [
+        //             {
+        //               heading: "Privacy:",
+        //               text: "Each Floor Is A Separate Unit, Providing More Privacy And Fewer Shared Common Areas Compared To High-Rise Apartment Buildings.",
+        //             },
+        //             {
+        //               heading: "Customization:",
+        //               text: "Owners Have More Flexibility In Customizing Their Living Spaces According To Their Preferences And Needs.",
+        //             },
+        //             {
+        //               heading: "Lower Density:",
+        //               text: "As Builder Floors Are Usually Low-Rise Buildings, The Number Of Units Per Floor Is Typically Lower, Resulting In A Lower Population Density And Potentially A Quieter Living Environment.",
+        //             },
+        //             {
+        //               heading: "Exclusivity:",
+        //               text: "Builder Floors Often Cater To A Niche Market And Can Be Associated With A Certain Level Of Exclusivity Or Premium Status.",
+        //             },
+        //             {
+        //               heading: "Lower Maintenance Charges:",
+        //               text: "Builder Floor Has Lower Maintenance Charges As Compared To High Rise Apartment. You Have To Pay Even For Those Services Which You Never Use.",
+        //             },
+        //             {
+        //               heading: "Unbeatable Edge:",
+        //               text: "Builder Floor Owner Also Gets Proportionate Land Share Rights Of The Plot Underneath. Since The Prices Of Land Increase Considerably Over A Passage Of Time, The Owner Of Builder Floor Gets Benefit Of The Same Indirectly.",
+        //             },
+        //             {
+        //               heading: "Peace Of Mind:",
+        //               text: "Builder Floor Owner Feels Much Safer In The Event Of Earthquake Or Fire.",
+        //             },
+        //           ]
+        //         },
+        //         {
+        //           type: NAVIGATE_BUTTON,
+        //           btnClass: "home_navigate_btn",
+        //           navigate: "/",
+        //           buttonLabel: "Start Exploring Your Dream Builder Floor Now...",
+        //         }
+        //       ]
+        //     },
+        //   ],
+        // },
       ],
     },
     FOOTER,

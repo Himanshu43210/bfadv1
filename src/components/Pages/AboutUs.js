@@ -6,11 +6,6 @@ function AboutUs() {
     return (
         <div className='aboutus-screen'>
             <RenderComponent jsonToRender={ABOUTUS_SCREEN} />
-            {/* <iframe
-                title='About Us'
-                className='frame_page'
-                src='https://builder-floor-flax.vercel.app/about'
-            ></iframe> */}
         </div>
     );
 }

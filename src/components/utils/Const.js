@@ -21,6 +21,7 @@ export const API_BUTTON = "API_BUTTON";
 export const HEADING = "HEADING";
 export const CONTAINER = "CONTAINER";
 export const TITLE = "title";
+export const LIST = "LIST";
 
 export const CARD_DETAILS = "CARD_DETAILS";
 export const DETAILED_VIEW = "DETAILED_VIEW";

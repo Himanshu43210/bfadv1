@@ -9,7 +9,7 @@ function NavigateButton({ to, label, ...props }) {
   };
 
   return (
-    <button onClick={handleClick} {...props}>
+    <button onClick={handleClick} {...props} className={`navigate_btn ${props.btnClass}`}>
       {label}
     </button>
   );
