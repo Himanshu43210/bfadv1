@@ -128,11 +128,7 @@ export default function DetailDataCard({
   useEffect(() => {
     if (mediaPrepared) {
       setCurrMedia({ ...allImages?.[0], index: 0 });
-      // window.addEventListener("keydown", keyNavigation);
     }
-    // return () => {
-    //   window.removeEventListener("keydown", keyNavigation);
-    // };
   }, [mediaPrepared]);
 
   const handleImageChange = (index, payload, dir) => {

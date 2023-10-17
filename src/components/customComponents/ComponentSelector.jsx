@@ -35,6 +35,7 @@ import {
   CHATBOT,
   OTP_LOGIN,
   TABS,
+  LIST,
 } from "../utils/Const";
 import Banner from "./Banner";
 import Footer from "./Footer";
@@ -72,6 +73,7 @@ import Tabbar from './Tabbar';
 import { useLocation } from "react-router-dom";
 import Chatbot from "./Chatbot";
 import OtpLogin from "./OtpLogin";
+import List from "./List";
 
 const ComponentSelector = ({ component }) => {
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
@@ -324,6 +326,7 @@ const ComponentSelector = ({ component }) => {
       {component.type === API_HEADING && (
         <DynamicHeading component={component} />
       )}
+      {component.type === LIST && <List component={component} />}
       {component.type === DYNAMIC_CARD_CONTAINER && (
         <DynamicCardContainer
           component={component}
@@ -336,7 +339,7 @@ const ComponentSelector = ({ component }) => {
         <DetailDataCard component={component} />
       )}
       {component.type === NAVIGATE_BUTTON && (
-        <NavigateButton to={component.navigate} label={component.buttonLabel} />
+        <NavigateButton to={component.navigate} label={component.buttonLabel} btnClass={component.btnClass} />
       )}
       {component.type === PAGE_FOOTER && <Footer component={component} />}
       {component.type === PAGE_HEADER && <Header component={component} isMobile={isMobile} />}
