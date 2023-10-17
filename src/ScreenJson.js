@@ -52,7 +52,7 @@ const MENU_ITEMS = [
   },
   {
     name: "Contact Us",
-    path: "/contact_us",
+    path: "/about_us#contact",
     icon: "CONTACT",
   },
   {
@@ -108,7 +108,7 @@ const HEADER = {
     },
     // {
     //   type: OTP_LOGIN,
-    //   className: "ol_comp_wrapper",
+      //   className: "ol_comp_wrapper",
     // }
   ],
 };
@@ -568,6 +568,52 @@ export const SEARCH_RESULT = {
     },
 
   ],
+};
+
+export const ABOUTUS_SCREEN = {
+  name: "About Us",
+  className: "about_us",
+  children: [
+    HEADER,
+    {
+      type: CONTAINER,
+      className: "about_us_container coming_soon_container",
+      children: [
+        {
+          type: HEADING,
+          tag: "h3",
+          text: "Coming Soon",
+          className: "coming_soon_label"
+        }
+      ],
+    },
+    FOOTER,
+    SCROLLTOP,
+    { type: CHATBOT }
+  ]
+};
+
+export const BLOG_SCREEN = {
+  name: "Out Blog",
+  className: "our_blog",
+  children: [
+    HEADER,
+    {
+      type: CONTAINER,
+      className: "our_blog_container coming_soon_container",
+      children: [
+        {
+          type: HEADING,
+          tag: "h3",
+          text: "Coming Soon",
+          className: "coming_soon_label"
+        }
+      ],
+    },
+    FOOTER,
+    SCROLLTOP,
+    { type: CHATBOT }
+  ]
 };
 
 export const SCREENS_TO_RENDER = [HOME_SCREEN];
