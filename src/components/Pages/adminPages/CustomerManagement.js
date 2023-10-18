@@ -33,6 +33,7 @@ function CustomerManagement() {
     // recommendations ---
     // plot no, location, title, accommodation, possession, facing, updatedAt, customer response, customer remark
     // actions : unrecommend
+    
     return (
         <>
             {!tableData && <AutoFetchApi url={dataApi} method={GET} />}
