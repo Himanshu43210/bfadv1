@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 import { callApi } from "../../redux/utils/apiActions";
 import { useDispatch } from "react-redux";
-import { DETAILED_VIEW, GET, HORIZONTAL_LINE, SAMPLE_CARD_DATA } from "../utils/Const";
+import { DETAILED_VIEW, GET, HORIZONTAL_LINE } from "../utils/Const";
 import { selectApiData } from "../../redux/utils/selectors";
 import { API_ENDPOINTS } from "../../redux/utils/api";
 import { convertToCr } from "../utils/HelperMethods";
@@ -135,14 +135,11 @@ export default function DetailDataCard({
     let newIndex;
     if (index) {
       newIndex = index % allImages.length;
-      // console.log('-------- NEW INDEX ---------', newIndex);
       setCurrMedia({ ...payload, index: (index % allImages.length) });
     } else {
       newIndex = dir === "PREV"
         ? ((currMedia?.index || 0) - 1) : ((currMedia?.index || 0) + 1);
-      console.log('-------- NEW INDEX 1 ---------', newIndex, allImages.length);
       newIndex = newIndex % allImages.length;
-      console.log('-------- NEW INDEX 2 ---------', newIndex);
       setCurrMedia({ ...allImages[newIndex], index: newIndex });
     }
   };
@@ -160,7 +157,6 @@ export default function DetailDataCard({
 
   const handleWhatsappContact = () => {
     const text = component.whatsappText?.replace("{link}", cardDetailUrl);
-    console.log('------ text -----', text);
     const payload = `https://wa.me/+91${cardData?.parentId?.phoneNumber
       }?text=${encodeURIComponent(text)}`;
     window.open(
@@ -172,7 +168,7 @@ export default function DetailDataCard({
   const getTotalImgsExcept = (type = null) => {
     let total = 0;
     Object.keys(typeCounts).forEach(key => {
-      if (key != type) {
+      if (!type.includes(key)) {
         total += typeCounts[key];
       }
     });
@@ -180,7 +176,6 @@ export default function DetailDataCard({
   };
 
   const keyNavigation = (e) => {
-    console.log('============== KEY DOWN ==============', e.key);
     switch (e.key) {
       case "ArrowLeft":
         handleImageChange(null, null, "PREV");
@@ -191,6 +186,23 @@ export default function DetailDataCard({
       default:
         break;
     }
+  };
+
+  const getMediaCounts = () => {
+    let str = "";
+    const ct = getTotalImgsExcept(["videos"]);
+    if (ct > 0) {
+      str = str + `${ct} Images`;
+    }
+    if (typeCounts.normalImages > 0) {
+      if (str !== "") str += " | ";
+      str = str + `${typeCounts.normalImages} Normal`;
+    }
+    if (typeCounts.videos > 0) {
+      if (str !== "") str += " | ";
+      str = str + `${typeCounts.videos} Videos`;
+    }
+    return str;
   };
 
   const render360Media = () => {
@@ -260,7 +272,6 @@ export default function DetailDataCard({
         )} */}
         <div className={`detail-image-div ${fullscreen ? "fullscreen_img_slider" : ""}`}>
           <div className="main-images" onClick={() => {
-            console.log('============ UPDATE FULL SCREEN STATE ==============', fullscreen);
             setFullscreen(true);
           }}>
             {renderMainMedia()}
@@ -331,8 +342,7 @@ export default function DetailDataCard({
             })}
           </div>
           <div variant="outlined" className="detail-button imgs_info">
-            {getTotalImgsExcept()} Images
-            {typeCounts.normalImages > 0 ? ` || ${typeCounts.normalImages} Normal` : ""}
+            {getMediaCounts()}
           </div>
         </div>
         <div className="lowercontainer">

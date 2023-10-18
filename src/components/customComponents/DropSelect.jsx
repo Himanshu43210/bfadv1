@@ -4,18 +4,37 @@ import React, { useEffect, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
+import { useDispatch } from "react-redux";
+import { callApi } from "../../redux/utils/apiActions";
+import { GET } from "../utils/Const";
 
 const DropSelect = ({
     component,
     values,
     onSubmit
 }) => {
+    const dispatch = useDispatch();
     const [modified, setModified] = useState(false);
     const [visited, setVisited] = useState(false);
     const [selections, setSelections] = useState([]);
     const [popupState, setPopupState] = useState(false);
     const [showSearchResults, setShowSearchResults] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
+    const [options, setOptions] = useState(component.options);
+
+    useEffect(() => {
+        if (component.fetchOptionsApi) {
+            dispatch(callApi({
+                url: component.fetchOptionsApi,
+                method: GET,
+                headers: { "Content-Type": "application/json" },
+            })).then((res) => {
+                if (res.payload?.data?.["sectorNumber"]) {
+                    setOptions(res.payload?.data?.[component.optionKey]);
+                }
+            });
+        }
+    }, []);
 
     useEffect(() => {
         if (typeof values === "string") {
@@ -66,7 +85,7 @@ const DropSelect = ({
             setSearchResults([]);
         } else {
             setShowSearchResults(true);
-            const filteredOptions = component.options.filter(option => (option.value.toLowerCase().includes(e.target.value.toLowerCase()) || option.label.toLowerCase().includes(e.target.value.toLowerCase()))) || [];
+            const filteredOptions = options.filter(option => (option.value.toLowerCase().includes(e.target.value.toLowerCase()) || option.label.toLowerCase().includes(e.target.value.toLowerCase()))) || [];
             setSearchResults(filteredOptions);
         }
     };
@@ -89,7 +108,7 @@ const DropSelect = ({
             </MuiButton>
             {popupState && (
                 <div className='dd_popup' onMouseEnter={() => setVisited(true)}>
-                    {component.options.length > 10 && (
+                    {options.length > 10 && (
                         <div className='dd_search_box'>
                             <SearchIcon className='search_icon' />
                             <input type="text" className='dd_search_input' name={component.name} onInput={handleSearch} autoComplete="off" />
@@ -107,7 +126,7 @@ const DropSelect = ({
                                 </div>
                             ))
                         ) : (
-                            component?.options.map((option) => (
+                            options.map((option) => (
                                 <div
                                     className='dd_item'
                                     onClick={() => handleChange(option)}
