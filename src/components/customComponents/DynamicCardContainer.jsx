@@ -8,6 +8,7 @@ import BasicPagination from "./Pagination";
 import MuiButton from "@mui/material/Button";
 
 export default function DynamicCardContainer({ component, handleValueChange, onLoadMore }) {
+  const showOptions = component.showOptions;
   const apiName = component.apiName;
   const onClickApi = component.cardClickApi;
   const onClickNavigate = component.cardClickNavigate;
@@ -51,8 +52,7 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
         time = Date.now();
       }
     }
-  }
-
+  };
 
   useLayoutEffect(() => {
     window.scroll({ top: pageYOffset });
@@ -97,6 +97,7 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
                 onClickNavigate={onClickNavigate}
                 classname={component.renderComponentsInLoop.className}
                 apiType={component.cardClickApiType}
+                showOptions={showOptions}
               />
             )}
           </>
@@ -120,6 +121,7 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
                 onClickNavigate={onClickNavigate}
                 classname={component.renderComponentsInLoop.className}
                 apiType={component.cardClickApiType}
+                showOptions={showOptions}
               />
             )}
           </>

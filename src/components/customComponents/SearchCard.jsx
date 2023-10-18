@@ -42,28 +42,28 @@ export default function SearchCard({
       <div className="sc_options_wrapper">
         <ul className="options_list">
           <li className="option_item">
-            <input type="radio" id="1" className="radio_input" name="customerRemark" />
-            <label htmlFor="1" className="radio_label">Didn't liked this property</label>
+            <input type="radio" id={`${element._id}-1`} className="radio_input" name={element._id} />
+            <label htmlFor={`${element._id}-1`} className="radio_label">Didn't liked this property</label>
           </li>
           <li className="option_item">
-            <input type="radio" id="2" className="radio_input" name="customerRemark" />
-            <label htmlFor="2" className="radio_label">Liked this property</label>
+            <input type="radio" id={`${element._id}-2`} className="radio_input" name={element._id} />
+            <label htmlFor={`${element._id}-2`} className="radio_label">Liked this property</label>
           </li>
           <li className="option_item">
-            <input type="radio" id="3" className="radio_input" name="customerRemark" />
-            <label htmlFor="3" className="radio_label">Save for later</label>
+            <input type="radio" id={`${element._id}-3`} className="radio_input" name={element._id} />
+            <label htmlFor={`${element._id}-3`} className="radio_label">Save for later</label>
           </li>
           <li className="option_item">
-            <input type="radio" id="4" className="radio_input" name="customerRemark" />
-            <label htmlFor="4" className="radio_label">Option 4</label>
+            <input type="radio" id={`${element._id}-4`} className="radio_input" name={element._id} />
+            <label htmlFor={`${element._id}-4`} className="radio_label">Option 4</label>
           </li>
           <li className="option_item">
-            <input type="radio" id="5" className="radio_input" name="customerRemark" />
-            <label htmlFor="5" className="radio_label">Option 5</label>
+            <input type="radio" id={`${element._id}-5`} className="radio_input" name={element._id} />
+            <label htmlFor={`${element._id}-5`} className="radio_label">Option 5</label>
           </li>
           <li className="option_item">
-            <input type="radio" id="6" className="radio_input" name="customerRemark" />
-            <label htmlFor="6" className="radio_label">Option 6</label>
+            <input type="radio" id={`${element._id}-6`} className="radio_input" name={element._id} />
+            <label htmlFor={`${element._id}-6`} className="radio_label">Option 6</label>
           </li>
         </ul>
       </div>
