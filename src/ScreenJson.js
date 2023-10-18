@@ -2,6 +2,7 @@ import {
   API_BUTTON,
   API_HEADING,
   AUTO_FETCH_API,
+  AUTO_FETCH_API_POST,
   BUTTON,
   CHATBOT,
   CONTAINER,
@@ -55,7 +56,7 @@ const MENU_ITEMS = [
   },
   {
     name: "Contact Us",
-    path: "/about_us#contact",
+    path: "/about_us#contact_us",
     icon: "CONTACT",
   },
   {
@@ -216,9 +217,9 @@ export const ACCOUNT_TABS_SCREEN = {
   children: [
     HEADER,
     {
-      type: AUTO_FETCH_API,
+      type: AUTO_FETCH_API_POST,
+      api: API_ENDPOINTS[GET_SEARCH_RESULT],
       className: "header",
-      api: API_ENDPOINTS[GET_SIMILAR_PROPERTY_DATA],
     },
     {
       type: TABS,
@@ -233,15 +234,21 @@ export const ACCOUNT_TABS_SCREEN = {
     },
     {
       type: DYNAMIC_CARD_CONTAINER,
-      loadingApi: GET_SIMILAR_PROPERTY_DATA,
-      className: "default-home-cards similar_options_list",
-      apiName: GET_SIMILAR_PROPERTY_DATA,
-      renderComponentsInLoop: { type: HOME_CARD, className: "homeCards" },
-      defaultLimit: 4,
+      loadingApi: GET_SEARCH_RESULT,
+      sliceName: "filter",
+      className: "result-searchdiv",
+      apiName: GET_SEARCH_RESULT,
+      onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
+      onClickApiMethod: POST,
+      paginationClass: "search_pagination",
+      renderComponentsInLoop: {
+        type: SEARCH_CARD,
+        className: "homeCards",
+      },
       cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
       cardClickNavigate: "/builderFloorDetails",
-      addQueryParam: "{title}-{id}",
       cardClickApiType: GET,
+      showOptions: true,
     },
     FOOTER,
     SCROLLTOP,
@@ -582,175 +589,90 @@ export const ABOUTUS_SCREEN = {
     HEADER,
     {
       type: CONTAINER,
-      className: "about_us_container coming_soon_container",
+      className: "about_us_container",
       children: [
+        // { type: "ABOUT_HERO" },
         {
-          type: HEADING,
-          tag: "h3",
-          text: "Coming Soon",
-          className: "coming_soon_label"
+          type: CONTAINER,
+          className: "aboutus_section",
+          children: [
+            {
+              type: CONTAINER,
+              className: "about_content",
+              children: [
+                {
+                  type: HEADING,
+                  tag: "h1",
+                  className: "section_title aboutus_title",
+                  text: "About Us?"
+                },
+                {
+                  type: HEADING,
+                  tag: "p",
+                  className: "blog_para",
+                  text: "At BuilderFloor.com, we are dedicated to helping you find your dream builder floor in the vibrant city of Gurgaon. We understand that finding the perfect builder floor is an important and exciting journey, and we are here to make that process seamless and enjoyable for you."
+                },
+                {
+                  type: HEADING,
+                  tag: "p",
+                  className: "blog_para",
+                  text: "Our platform exclusively focuses on new builder floors in Gurgaon, offering a wide range of options at all price points and locations. Whether you're a first-time buyer, a growing family, or an investor looking for a lucrative opportunity, we have the right builder floor to meet your unique requirements."
+                },
+                {
+                  type: HEADING,
+                  tag: "p",
+                  className: "blog_para",
+                  text: "We know and very well understand that finding and selecting a Builder Floor for one self is really a tough job. It is our endeavour to help you find the best match for you within your budget and also according to your taste & requirement. We have brought the world of builder floors at your door steps with the help of our verified channel partners."
+                },
+                {
+                  type: HEADING,
+                  tag: "h1",
+                  className: "section_title aboutus_title",
+                  text: "Why Choose BuilderFloor.Com?"
+                },
+                {
+                  type: LIST,
+                  subtype: "ul",
+                  children: [
+                    {
+                      heading: "Extensive Selection:",
+                      text: "Our comprehensive database showcases a diverse collection of new builder floors in Gurgaon. From affordable options to luxury residences, we have something to suit every taste and budget.",
+                    },
+                    {
+                      heading: "Trusted Channel Partners:",
+                      text: "We collaborate with reputed Channel Partners who in turn contact different builders and developers in Gurgaon with a proven track record of delivering quality constructions and enlist the best builder floors on our platform which meet the highest standards of craftsmanship and design.",
+                    },
+                    {
+                      heading: "Location Expertise:",
+                      text: "Gurgaon is a dynamic city with numerous neighborhoods and localities, each with its own charm and amenities. Our channel partners are a team of real estate professionals, who have in-depth knowledge of the Gurgaon market and can guide you towards the ideal location that aligns with your lifestyle and preferences.",
+                    },
+                    {
+                      heading: "Personalized Assistance:",
+                      text: "Our channel partners will provide a personalized experience to every customer. They, as a team, are dedicatedly ready to assist you throughout your home-buying journey, offering expert advice, answering your queries, and facilitating smooth transactions.",
+                    },
+                    {
+                      heading: "Transparent Information:",
+                      text: "We understand the importance of transparency in the real estate industry. On BuilderFloor.com, you will find detailed information, including floor plans, specifications, amenities, and pricing, empowering you to make informed decisions.",
+                    },
+                  ]
+                },
+                {
+                  type: HEADING,
+                  tag: "p",
+                  className: "blog_para",
+                  text: "At BuilderFloor.com, our mission is to simplify your search for the perfect builder floor and help you embark on a new chapter of your life. We are passionate about real estate and committed to exceeding your expectations."
+                },
+                {
+                  type: HEADING,
+                  tag: "p",
+                  className: "blog_para",
+                  text: "Start exploring our listings today and let us be your trusted partner in finding your dream builder floor in Gurgaon."
+                },
+              ]
+            },
+          ],
         },
-        // {
-        //   type: CONTAINER,
-        //   className: "top_hero_section",
-        //   children: [
-        //     {
-        //       type: CONTAINER,
-        //       className: "hero_section_content",
-        //       children: [
-        //         {
-        //           type: CONTAINER,
-        //           className: "top_hero_left",
-        //           children: [
-        //             {
-        //               type: HEADING,
-        //               tag: "h1",
-        //               className: "section_title aboutus_title",
-        //               text: "Find Your Dream Builder Floor Today"
-        //             },
-        //             {
-        //               type: HEADING,
-        //               tag: "p",
-        //               className: "blog_para section_subtitle",
-        //               text: "We understand the importance of transparency in the real estate"
-        //             },
-        //             {
-        //               type: BUTTON,
-
-        //             }
-        //           ],
-        //         },
-        //         {
-        //           type: CONTAINER,
-        //           className: "top_hero_center",
-        //           children: [
-
-        //           ],
-        //         },
-        //         {
-        //           type: CONTAINER,
-        //           className: "top_hero_right",
-        //           children: [
-
-        //           ],
-        //         },
-        //       ],
-        //     },
-        //   ],
-        // },
-        // {
-        //   type: CONTAINER,
-        //   className: "aboutus_section",
-        //   children: [
-        //     {
-        //       type: CONTAINER,
-        //       className: "about_content",
-        //       children: [
-        //         {
-        //           type: HEADING,
-        //           tag: "h1",
-        //           className: "section_title aboutus_title",
-        //           text: "About Us?"
-        //         },
-        //         {
-        //           type: HEADING,
-        //           tag: "p",
-        //           className: "blog_para",
-        //           text: "At BuilderFloor.com, we are dedicated to helping you find your dream builder floor in the vibrant city of Gurgaon. We understand that finding the perfect builder floor is an important and exciting journey, and we are here to make that process seamless and enjoyable for you."
-        //         },
-        //         {
-        //           type: HEADING,
-        //           tag: "p",
-        //           className: "blog_para",
-        //           text: "Our platform exclusively focuses on new builder floors in Gurgaon, offering a wide range of options at all price points and locations. Whether you&apos;re a first-time buyer, a growing family, or an investor looking for a lucrative opportunity, we have the right builder floor to meet your unique requirements."
-        //         },
-        //         {
-        //           type: HEADING,
-        //           tag: "p",
-        //           className: "blog_para",
-        //           text: "We know and very well understand that finding and selecting a Builder Floor for one self is really a tough job. It is our endeavour to help you find the best match for you within your budget and also according to your taste & requirement. We have brought the world of builder floors at your door steps with the help of our verified channel partners."
-        //         },
-        //         {
-        //           type: HEADING,
-        //           tag: "h1",
-        //           className: "section_title aboutus_title",
-        //           text: "Why Choose BuilderFloor.Com?"
-        //         },
-        //         {
-        //           type: LIST,
-        //           subtype: "ul",
-        //           children: [
-        //             {
-        //               heading: "Extensive Selection:",
-        //               text: "Our comprehensive database showcases a diverse collection of new builder floors in Gurgaon. From affordable options to luxury residences, we have something to suit every taste and budget.",
-        //             },
-        //             {
-        //               heading: "Trusted Channel Partners:",
-        //               text: "We collaborate with reputed Channel Partners who in turn contact different builders and developers in Gurgaon with a proven track record of delivering quality constructions and enlist the best builder floors on our platform which meet the highest standards of craftsmanship and design.",
-        //             },
-        //             {
-        //               heading: "Location Expertise:",
-        //               text: "Gurgaon is a dynamic city with numerous neighborhoods and localities, each with its own charm and amenities. Our channel partners are a team of real estate professionals, who have in-depth knowledge of the Gurgaon market and can guide you towards the ideal location that aligns with your lifestyle and preferences.",
-        //             },
-        //             {
-        //               heading: "Personalized Assistance:",
-        //               text: "Our channel partners will provide a personalized experience to every customer. They, as a team, are dedicatedly ready to assist you throughout your home-buying journey, offering expert advice, answering your queries, and facilitating smooth transactions.",
-        //             },
-        //             {
-        //               heading: "Transparent Information:",
-        //               text: "We understand the importance of transparency in the real estate industry. On BuilderFloor.com, you will find detailed information, including floor plans, specifications, amenities, and pricing, empowering you to make informed decisions.",
-        //             },
-        //           ]
-        //         },
-        //         {
-        //           type: HEADING,
-        //           tag: "p",
-        //           className: "blog_para",
-        //           text: "At BuilderFloor.com, our mission is to simplify your search for the perfect builder floor and help you embark on a new chapter of your life. We are passionate about real estate and committed to exceeding your expectations."
-        //         },
-        //         {
-        //           type: HEADING,
-        //           tag: "p",
-        //           className: "blog_para",
-        //           text: "Start exploring our listings today and let us be your trusted partner in finding your dream builder floor in Gurgaon."
-        //         },
-        //       ]
-        //     },
-        //   ],
-        // },
-        // {
-        //   type: CONTAINER,
-        //   className: "contact_section",
-        //   children: [
-        //     {
-        //       type: CONTAINER,
-        //       className: "contact_top",
-        //       children: [
-
-        //       ]
-        //     },
-        //     {
-        //       type: CONTAINER,
-        //       className: "contact_bottom",
-        //       children: [
-        //         {
-        //           type: CONTAINER,
-        //           className: "contact_details_wrapper",
-        //           children: [
-
-        //           ]
-        //         },
-        //         {
-        //           type: CONTAINER,
-        //           className: "contact_form",
-        //           children: [
-
-        //           ]
-        //         },
-        //       ],
-        //     }
-        //   ],
-        // },
+        { type: "CONTACT_US" }
       ],
     },
     FOOTER,
@@ -881,6 +803,11 @@ export const REDIRECTION = {
 //   [HOME_SCREEN]: "/",
 //   [SEARCH_RESULT]: "/searchResult",
 // };
+
+export const APP_ROUTE = {
+  "/": HOME_SCREEN,
+
+}
 
 export const ExpetedHeader = {
   user: ["Name", "Phone Number", "Address", "Email", "Role", "Parent Id"],

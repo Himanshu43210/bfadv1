@@ -74,6 +74,8 @@ import { useLocation } from "react-router-dom";
 import Chatbot from "./Chatbot";
 import OtpLogin from "./OtpLogin";
 import List from "./List";
+import AboutHero from "./AboutHero";
+import ContactForm from "./ContactForm";
 
 const ComponentSelector = ({ component }) => {
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
@@ -85,42 +87,6 @@ const ComponentSelector = ({ component }) => {
   );
   const userProfile = useSelector((state) => state.profile);
   const [refresh, setRefresh] = useState(true);
-
-  const updateLocalFilters = (key = null, value = null) => {
-    console.log('================ UPDATING LOCAL FILTERS ==================', sliceData?.budget, sliceData?.city, sliceData?.page);
-    localStorage.setItem("searchFilters", JSON.stringify({
-      budget: sliceData?.budget,
-      city: sliceData?.city,
-      // page: sliceData?.page,
-    }));
-    console.log('------------ READING LOCALSTORAGE AFTER SAVE ------------', localStorage.getItem("searchFilters"));
-    // if (key === null && value === null) {
-    //   const page = (component.paginatioName || component.name) !== "page" ? sliceData.page : 0;
-    //   console.log('================ UPDATE LOCAL FILTER : RESETTED ===============', key);
-    // } else {
-    //   const searchFilters = localStorage.getItem("searchFilters");
-    //   if (searchFilters) {
-    //     console.log('------------- SEARCH FILTERS ------------', searchFilters);
-    //     const parsedFilters = JSON.parse(searchFilters);
-    //     parsedFilters[key] = (typeof value === "object")
-    //       ? Array.isArray(value)
-    //         ? value
-    //         : value.value
-    //       : value;
-    //     console.log('+++++++++++++ UPDATED LOCAL FILTER ++++++++++++++++', parsedFilters);
-    //     localStorage.setItem("searchFilters", JSON.stringify(parsedFilters));
-    //   } else {
-    //     const filters = {};
-    //     filters[key] = (typeof value === "object")
-    //       ? Array.isArray(value)
-    //         ? value
-    //         : value.value
-    //       : value;
-    //     console.log('+++++++++++++ UPDATED LOCAL FILTER ++++++++++++++++', filters);
-    //     localStorage.setItem("searchFilters", JSON.stringify(filters));
-    //   }
-    // }
-  };
 
   function hasValueProperty(input) {
     // Check if the input is an object
@@ -188,7 +154,6 @@ const ComponentSelector = ({ component }) => {
         city: sliceData?.city,
         page: 0
       }));
-      updateLocalFilters();
       if (component.onClickApi) {
         getData(null);
       }
@@ -204,7 +169,6 @@ const ComponentSelector = ({ component }) => {
               : value,
         })
       );
-      updateLocalFilters();
       console.log('============ CALLING THE GET DATA ONLY IF onClickApi ==============', component.onClickApi);
       if (component.onClickApi) {
         getData(value);
@@ -385,6 +349,8 @@ const ComponentSelector = ({ component }) => {
       {component.type === LOGIN_REFRESH && (
         <LoginRefresh component={component} />
       )}
+      {component.type === "ABOUT_HERO" && <AboutHero />}
+      {component.type === "CONTACT_US" && <ContactForm />}
     </>
   );
 };

@@ -1,5 +1,4 @@
 import { USER_ROLE } from "./ScreenJson";
-import { newMasterConst } from "./components/fieldConsts/MasterFieldConst";
 import { newPropertyConst } from "./components/fieldConsts/PropertiesFieldConst";
 import {
   editUserConst,
@@ -9,9 +8,7 @@ import {
   ALTER_PROPERTY_DATA,
   ALTER_USER_DATA,
   API_BUTTON,
-  API_HEADING,
   APPROVE_PROPERTY_DATA,
-  AUTO_FETCH_API_POST,
   AUTO_FETCH_API_USER,
   CONTAINER,
   DASHBOARD_LISTING,
@@ -25,20 +22,13 @@ import {
   GET_PROPERTY_LIST_BY_USER_ID,
   GET_PROPERTY_USER,
   HEADING,
-  HORIZONTAL_LINE,
   LABEL_MAP,
   PANEL_HEADER,
   LOGIN_REFRESH,
   POST,
   REJECT_PROPERTY,
   ROUTE_BUTTON,
-  SELECT,
-  SELECT_SLIDER,
-  SLIDER,
-  TABLE_HEADER,
   TITLE,
-  TOGGLE_BUTTON,
-  ALTER_MASTER_DATA,
 } from "./components/utils/Const";
 import { API_ENDPOINTS } from "./redux/utils/api";
 
@@ -853,8 +843,8 @@ export const APPROVAL_PROPERTIES = {
           },
           roleSpecificDesktopHeaders: {
             [USER_ROLE.bfAdmin]: {
-              "Company Name": "cpName",
-              "Mobile Number": "cpPhoneNumber",
+              "Company Name": "createdByName",
+              "Mobile Number": "createdByPhoneNumber",
               City: "city",
               "Primary Title": "title",
             },
