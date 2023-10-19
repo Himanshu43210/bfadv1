@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineArrowUp } from "react-icons/ai";
+import { useLocation } from "react-router-dom";
 export const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { pathname } = useLocation();
 
   const handleScroll = () => {
     // Show the "Scroll To Top" button when the user scrolls down 100px from the top
@@ -24,9 +26,13 @@ export const ScrollToTop = () => {
     };
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({top: 0, left: 0, behavior: "smooth"});
+  }, [pathname]);
+
   return (
     <div
-      className={`btn scroll-to-top ${isVisible ? "show" : ""}`}
+      className={`btn scroll-to-top ${isVisible ? "show-scroll-to-top" : ""}`}
       onClick={scrollToTop}
     >
       <AiOutlineArrowUp />

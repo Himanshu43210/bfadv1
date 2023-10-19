@@ -236,7 +236,7 @@ export const ACCOUNT_TABS_SCREEN = {
       type: DYNAMIC_CARD_CONTAINER,
       loadingApi: GET_SEARCH_RESULT,
       sliceName: "filter",
-      className: "result-searchdiv",
+      className: "result-searchdiv tab_data",
       apiName: GET_SEARCH_RESULT,
       onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
       onClickApiMethod: POST,
@@ -797,17 +797,26 @@ export const REDIRECTION = {
   [HOME_SCREEN]: "/",
   [SEARCH_RESULT]: "/searchResult",
 };
-// export const SCREENS_TO_RENDER = [HOME_SCREEN];
 
-// export const REDIRECTION = {
-//   [HOME_SCREEN]: "/",
-//   [SEARCH_RESULT]: "/searchResult",
-// };
-
-export const APP_ROUTE = {
-  "/": HOME_SCREEN,
-
-}
+export const APP_ROUTES = {
+  "/": { key: 'HomeScreen', data: HOME_SCREEN },
+  "/login": { key: 'LoginScreen', data: HOME_SCREEN },
+  "/searchResult": { key: 'SearchResultScreen', data: SEARCH_RESULT },
+  "/aboutUs": { key: 'AboutUsScreen', data: HOME_SCREEN },
+  "/blog": { key: 'BlogScreen', data: HOME_SCREEN },
+  "/:pid": { key: 'PropertyDetailScreen', data: HOME_SCREEN },
+  "/account/tab": { key: 'AccountTabsScreen', data: HOME_SCREEN },
+  "/admin/property": { key: 'PropertyManagementScreen', data: HOME_SCREEN },
+  "/admin/form": { key: 'FormScreen', data: HOME_SCREEN },
+  "/admin/TableForm": { key: 'TableFormScreen', data: HOME_SCREEN },
+  "/admin/user": { key: 'UserManagementScreen', data: HOME_SCREEN },
+  "/admin/approveListing": { key: 'ApproveListingScreen', data: HOME_SCREEN },
+  "/admin/master": { key: 'MasterManagementScreen', data: HOME_SCREEN },
+  "/admin/masterTable": { key: 'MasterTableScreen', data: HOME_SCREEN },
+  "/admin/statistics": { key: 'StatsScreen', data: HOME_SCREEN },
+  "/admin/statistics/listingData": { key: 'ViewListingScreen', data: HOME_SCREEN },
+  "/admin": { key: 'AdminHomeScreen', data: HOME_SCREEN },
+};
 
 export const ExpetedHeader = {
   user: ["Name", "Phone Number", "Address", "Email", "Role", "Parent Id"],
