@@ -157,7 +157,7 @@ export default function DetailDataCard({
 
   const handleWhatsappContact = () => {
     const text = component.whatsappText?.replace("{link}", cardDetailUrl);
-    const payload = `https://wa.me/+91${cardData?.parentId?.phoneNumber
+    const payload = `https://wa.me/+91${cardData?.parentId?.phoneNumber || cardData.cpPhoneNumber
       }?text=${encodeURIComponent(text)}`;
     window.open(
       payload,
@@ -203,6 +203,10 @@ export default function DetailDataCard({
       str = str + `${typeCounts.videos} Videos`;
     }
     return str;
+  };
+
+  const getContactNumber = () => {
+    return cardData?.parentId?.phoneNumber || cardData?.cpPhoneNumber;
   };
 
   const render360Media = () => {
@@ -399,7 +403,7 @@ export default function DetailDataCard({
               >
                 {/* <img src={component?.icons?.phone} alt="" /> */}
                 <LocalPhoneIcon className="detail_btn_icon" />
-                <span className="detail_btn_label">{ShowNumber ? cardData?.parentId?.phoneNumber : "Call"}</span>
+                <span className="detail_btn_label">{ShowNumber ? getContactNumber() : "Call"}</span>
               </Button>
               <Button
                 className="detail-button"
