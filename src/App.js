@@ -48,7 +48,6 @@ function App() {
             path="/admin"
             element={<AdminHome role={userProfile.role} />}
           />
-          <Route path="/" element={<Login />} />
         </Routes>
       </div>
     </Router>

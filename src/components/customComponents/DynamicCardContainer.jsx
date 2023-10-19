@@ -18,7 +18,7 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
   const [limit, setLimit] = useState(component.defaultLimit);
   const [cumulatedData, setCumulatedData] = useState([]);
   const [isBottom, setIsBottom] = useState(false);
-  const [pageYOffset, setPageYOffset] = useState(window.scrollY);
+  const [pageYOffset, setPageYOffset] = useState(0);
 
   const dataSelector = useSelector((state) => selectApiData(state, apiName));
 
