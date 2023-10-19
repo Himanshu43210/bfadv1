@@ -17,7 +17,6 @@ import ApproveListing from "./components/Pages/adminPages/ApproveListings";
 import TableFormPage from "./components/customComponents/TableFormData";
 import AccountTabs from './components/Pages/AccountTabs';
 import AboutUs from "./components/Pages/AboutUs";
-import ContactUs from "./components/Pages/ContactUs";
 import Blog from "./components/Pages/Blog";
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/searchResult" element={<SearchResult />} />
           <Route path="/about_us" element={<AboutUs />} />
-          <Route path="/contact_us" element={<ContactUs />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/:pid" element={<DetailedView />} />
           <Route path="/account/tab" element={<AccountTabs />} />

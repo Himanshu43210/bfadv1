@@ -570,7 +570,17 @@ const ListingTable = ({
     let cellData;
     const splittedKeys = allowedTableColumns[headerLabel].split(".");
     if (splittedKeys.length === 1) {
-      cellData = element?.[allowedTableColumns?.[headerLabel]];
+      if (userProfile.role === USER_ROLE[BF_ADMIN]) {
+        if (splittedKeys[0] === "createdByName") {
+          cellData = element["cpName"] || element["createdByName"];
+        } else if (splittedKeys[0] === "createdByPhoneNumber") {
+          cellData = element["cpPhoneNumber"] || element["createdByPhoneNumber"];
+        } else {
+          cellData = element?.[allowedTableColumns?.[headerLabel]];
+        }
+      } else {
+        cellData = element?.[allowedTableColumns?.[headerLabel]];
+      }
     } else if (splittedKeys.length > 1) {
       cellData = element?.[splittedKeys?.[0]]?.[splittedKeys?.[1]];
     }
