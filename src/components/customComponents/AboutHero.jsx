@@ -8,9 +8,9 @@ function AboutHero() {
                 <div className='hero_left'>
                     <h1 className='hero_title'>Find Your Dream Builder Floor Today</h1>
                     <p className='hero_subtitle'>We understand the importance of transparency in the real estate</p>
-                    <a href="#contact_us" className='hero_action_btn'>
-                        <span className='action_btn_label'>Contact Us</span>
-                        <ArrowForwardIcon className='action_btn_icon' />
+                    <a href="#contact_us" className='contact_submit hero_action_btn'>
+                        <span className='btn_label action_btn_label'>Contact Us</span>
+                        <ArrowForwardIcon className='btn_icon' />
                     </a>
                 </div>
                 <div className='hero_right'>

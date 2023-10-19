@@ -591,7 +591,7 @@ export const ABOUTUS_SCREEN = {
       type: CONTAINER,
       className: "about_us_container",
       children: [
-        // { type: "ABOUT_HERO" },
+        { type: "ABOUT_HERO" },
         {
           type: CONTAINER,
           className: "aboutus_section",
