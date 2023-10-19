@@ -14,7 +14,27 @@ function AboutHero() {
                     </a>
                 </div>
                 <div className='hero_right'>
-
+                    <div className='hero_img_container'>
+                        <img src="/icons/banner.png" alt="" className='hero_img' />
+                    </div>
+                    <div className='hero_right_entity'>
+                        <div className='hre_left'>
+                            <img src="/icons/icon-officer.svg" alt="" className='hre_icon' />
+                        </div>
+                        <div className='hre_right'>
+                            <span className='hre_entity_data'>+5k</span>
+                            <p className='hre_entity_label'>Verified Builder Floors Alloted</p>
+                        </div>
+                    </div>
+                    <div className='hero_right_entity'>
+                        <div className='hre_left'>
+                            <img src="/icons/icon-officer.svg" alt="" className='hre_icon' />
+                        </div>
+                        <div className='hre_right'>
+                            <span className='hre_entity_data'>+30</span>
+                            <p className='hre_entity_label'>Verified Channel Partners</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
