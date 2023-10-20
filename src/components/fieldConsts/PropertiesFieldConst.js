@@ -30,7 +30,7 @@ export const newPropertyConst = [
     label: "Plot Number",
     parentclassName: "property-w-1",
     type: TEXT,
-    isRequired: true,
+    isRequired: false,
     requiredErrorMessage: "Please enter a plot number.",
   },
   {
@@ -122,7 +122,7 @@ export const newPropertyConst = [
     label: "Builder Name",
     parentclassName: "property-w-2",
     type: TEXT,
-    isRequired: true,
+    isRequired: false,
     requiredErrorMessage: "Please enter a builder name.",
   },
   {
@@ -130,7 +130,7 @@ export const newPropertyConst = [
     label: "Builder Contact",
     parentclassName: "property-w-2",
     type: TEXT,
-    isRequired: true,
+    isRequired: false,
     requiredErrorMessage: "Please enter a builder contact.",
     regex: /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
     regexErrorMessage: "Invalid builder contact",

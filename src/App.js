@@ -10,7 +10,6 @@ import StatsList from "./components/Pages/adminPages/StatsList";
 import Home from "./components/Pages/Home";
 import DetailedView from "./components/Pages/DetailedView";
 import SearchResult from "./components/Pages/SearchResult";
-import { useSelector } from "react-redux";
 import FormPage from "./components/customComponents/FormPage";
 import ViewListing from "./components/Pages/adminPages/ViewListing";
 import ApproveListing from "./components/Pages/adminPages/ApproveListings";
@@ -20,7 +19,6 @@ import AboutUs from "./components/Pages/AboutUs";
 import Blog from "./components/Pages/Blog";
 
 function App() {
-  const userProfile = useSelector((state) => state.profile);
   return (
     <Router>
       <div className="App">
@@ -31,7 +29,7 @@ function App() {
           <Route path="/about_us" element={<AboutUs />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/:pid" element={<DetailedView />} />
-          <Route path="/account/tab" element={<AccountTabs />} />
+          <Route path="/account/tabs" element={<AccountTabs />} />
           <Route path="/admin/property" element={<PropertyManagement />} />
           <Route path="/admin/form" element={<FormPage />} />
           <Route path="/admin/TableForm" element={<TableFormPage />} />
@@ -46,7 +44,7 @@ function App() {
           />
           <Route
             path="/admin"
-            element={<AdminHome role={userProfile.role} />}
+            element={<AdminHome />}
           />
         </Routes>
       </div>
