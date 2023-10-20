@@ -35,7 +35,7 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
       const offsetHeight = document.documentElement.offsetHeight;
       const innerHeight = window.innerHeight;
       const scrollTop = document.documentElement.scrollTop;
-      const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= 50;
+      const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= 200;
       if (hasReachedBottom && isBottom === false) {
         setIsBottom(true);
         handleLoadMore();
