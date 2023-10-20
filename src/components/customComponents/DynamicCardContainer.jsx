@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectApiData } from "../../redux/utils/selectors";
 import HomeCard from "./HomeCard";
@@ -14,11 +14,12 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
   const onClickNavigate = component.cardClickNavigate;
   const defaultPage = component.defaultPage;
   let ComponentType = component.renderComponentsInLoop.type;
-  const [page, setPage] = React.useState(defaultPage);
   const [limit, setLimit] = useState(component.defaultLimit);
   const [cumulatedData, setCumulatedData] = useState([]);
   const [isBottom, setIsBottom] = useState(false);
   const [pageYOffset, setPageYOffset] = useState(0);
+  let prevScrollY = useRef(0);
+  let page = useRef(defaultPage);
 
   const dataSelector = useSelector((state) => selectApiData(state, apiName));
 
@@ -30,18 +31,17 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
       : dataSelector;
 
   const handleScroll = () => {
-    const offsetHeight = document.documentElement.offsetHeight;
-    const innerHeight = window.innerHeight;
-    const scrollTop = document.documentElement.scrollTop;
-    const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= 50;
-    console.log('============= HAS REACHED BOTTOM ==============', hasReachedBottom);
-    if (hasReachedBottom && isBottom === false) {
-      console.log('============= HAS REACHED BOTTOM & isBottom false ==============');
-      setIsBottom(true);
-      handleLoadMore();
+    if (prevScrollY < window.scrollY) {
+      const offsetHeight = document.documentElement.offsetHeight;
+      const innerHeight = window.innerHeight;
+      const scrollTop = document.documentElement.scrollTop;
+      const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= 50;
+      if (hasReachedBottom && isBottom === false) {
+        setIsBottom(true);
+        handleLoadMore();
+      }
     }
-    console.log('************* windows ***************', offsetHeight, innerHeight, scrollTop);
-
+    prevScrollY = window.scrollY;
   };
 
   const throttle = (fn, wait) => {
@@ -56,25 +56,32 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
 
   useLayoutEffect(() => {
     window.scroll({ top: pageYOffset });
+  }, [dataToRender]);
+
+  useEffect(() => {
     setIsBottom(false);
+    if (Array.isArray(dataToRender) && (cumulatedData?.[0]?._id !== dataToRender?.[0]?._id)) {
+      if (component.loadMore) {
+        setCumulatedData([...cumulatedData, ...dataToRender]);
+      } else {
+        setCumulatedData([...dataToRender]);
+      }
+    }
   }, [dataToRender]);
 
   const handleLoadMore = () => {
-    if (Array.isArray(dataToRender) && cumulatedData?.[0]?._id !== dataToRender?.[0]?._id) {
-      setCumulatedData([...cumulatedData, ...dataToRender]);
-    }
     setPageYOffset(window.scrollY);
-    onLoadMore({ page: page + 1, limit });
-    setPage(page + 1);
+    onLoadMore({ page: page.current + 1, limit });
+    page.current = page.current + 1;
   };
 
   useEffect(() => {
-    // if (component.loadMore) {
-    //   window.addEventListener("scroll", throttle(handleScroll, 500));
-    //   return () => {
-    //     window.removeEventListener("scroll", handleScroll);
-    //   };
-    // }
+    if (component.loadMore) {
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
   }, []);
 
   return (
@@ -103,7 +110,7 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
           </>
         );
       })}
-      {dataToRender?.map((element) => {
+      {/* {dataToRender?.map((element) => {
         return (
           <>
             {ComponentType === HOME_CARD && (
@@ -126,7 +133,7 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
             )}
           </>
         );
-      })}
+      })} */}
       {component.loadMore && dataToRender && (
         <div className="load_more_btn_container">
           <MuiButton variant="contained" className="dcc_load_more_btn" onClick={handleLoadMore}>{component.loadMore}</MuiButton>
@@ -137,9 +144,9 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
           paginationClass={component.paginationClass}
           handlePageChange={(e, newPage) => {
             handleValueChange({ label: "page", value: (newPage - 1) });
-            setPage(newPage);
+            page.current = newPage;
           }}
-          currentPage={page || defaultPage}
+          currentPage={page.current || defaultPage}
           totalPages={
             typeof dataSelector === "object"
               ? dataSelector?.totalPages
