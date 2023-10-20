@@ -1,5 +1,5 @@
 import React from 'react';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import { AiFillHome } from "react-icons/ai";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function ContactForm() {
@@ -19,7 +19,7 @@ function ContactForm() {
                 <div className='contact_sec_bottom'>
                     <div className='contact_details'>
                         <h4 className='address_title'>
-                            <HomeRoundedIcon />
+                            <AiFillHome className='contact_home_icon' />
                             <span>Builder Floor</span>
                         </h4>
                         <div className='contact_address addr_item'>C1069, SUSHANT LOK-1, GURGAON ( HARAYANA)</div>

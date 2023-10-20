@@ -1,5 +1,5 @@
 import React from "react";
-import { FaClipboardList, FaUsers, FaCog, FaUserShield } from "react-icons/fa";
+import { FaClipboardList, FaUsers, FaCog, FaUserFriends, FaUserTie, FaBuilding } from "react-icons/fa";
 import { AiFillHome, AiOutlineLogout } from "react-icons/ai";
 import {
   ADMIN_DASHBOARD,
@@ -45,7 +45,7 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
                 onClick={() => handlePageClick(USER_MANAGEMENT)}
                 className="panel-link"
               >
-                <FaUsers className="admin-panel-icons" />
+                <FaUserTie className="admin-panel-icons" />
                 <h6 className="panel_link_label">User</h6>
               </Button>
 
@@ -63,14 +63,15 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
           onClick={() => handlePageClick(PROPERTY_MANAGEMENT)}
           className="panel-link"
         >
-          <FaCog className="admin-panel-icons" />
+          <FaBuilding className="admin-panel-icons" />
           <h6 className="panel_link_label">Property</h6>
         </Button>
         <Button
           onClick={() => handlePageClick(CUSTOMER_MANAGEMENT)}
           className="panel-link"
         >
-          <FaCog className="admin-panel-icons" />
+          <FaUsers className="admin-panel-icons" />
+          {/* <PeopleAltRoundedIcon className="admin-panel-icons" /> */}
           <h6 className="panel_link_label">Customer</h6>
         </Button>
         <Button

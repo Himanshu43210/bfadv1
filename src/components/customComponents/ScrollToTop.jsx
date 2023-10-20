@@ -7,7 +7,7 @@ export const ScrollToTop = () => {
 
   const handleScroll = () => {
     // Show the "Scroll To Top" button when the user scrolls down 100px from the top
-    const isTop = window.scrollY > 100;
+    const isTop = window.scrollY > 500;
     setIsVisible(isTop);
   };
 
