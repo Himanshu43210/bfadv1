@@ -26,7 +26,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
       if (field.isRequired && isValueEmpty(value) && !doNotValidateFields.includes(field.name)) {
         errors[field.name] =
           field.requiredErrorMessage || "This field is required.";
-      } else if (field.regex && !field.regex.test(value)) {
+      } else if (field.isRequired && field.regex && !field.regex.test(value)) {
         errors[field.name] = field.regexErrorMessage || "Invalid input.";
       }
     });
