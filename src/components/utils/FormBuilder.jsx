@@ -1,6 +1,7 @@
 import React, { forwardRef, useState } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
+import Creatable from 'react-select/creatable';
 import { EMAIL, GET_MASTER_DATA_ON_HOME, TEXT } from "./Const";
 import { useSelector } from "react-redux";
 import { selectMasterData } from "../../redux/utils/selectors";
@@ -94,7 +95,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
       <div className="formcontainer">
         {fields.map((field) => (
           <div key={field.name} className={`subform ${field.parentclassName}`}>
-            <div className={`label_and_input_wrapper ${field.type === "textarea" ? 'textarea_wrapper' : ''}`}>
+            <div className={`label_and_input_wrapper ${field.className} ${field.type === "textarea" ? 'textarea_wrapper' : ''}`}>
               <div className="lablediv">
                 <label className="lbel" htmlFor={field.name}>
                   {field.label}:
@@ -200,6 +201,45 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                     className="inputtag input_elem"
                     id={field.name}
                     name={field.name}
+                    value={
+                      (formData[field.name] &&
+                        (typeof formData[field.name] === "string"
+                          ? {
+                            label: formData[field.name],
+                            value: formData[field.name],
+                          }
+                          : formData[field.name])) ||
+                      field.defaultOption
+                    }
+                    options={field.options || masterData[field.name]}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        width: "auto",
+                        display: "flex",
+                        alignItems: "center",
+                        border: state.isFocused ? baseStyles.border : "gray",
+                        borderBottom: "1px solid #ccc",
+                        borderRadius: state.isFocused
+                          ? baseStyles.borderRadius
+                          : "",
+                        textAlign: "left",
+                      }),
+                    }}
+                    onChange={(selectedOption) => {
+                      handleChange(field, selectedOption || null);
+                    }}
+                    closeMenuOnSelect={!field.isMulti}
+                    required={field.isRequired}
+                    isMulti={field.isMulti}
+                  />
+                )}
+                {field.type === "creatable_select" && (
+                  <Creatable
+                    className="inputtag input_elem"
+                    id={field.name}
+                    name={field.name}
+                    isClearable
                     value={
                       (formData[field.name] &&
                         (typeof formData[field.name] === "string"

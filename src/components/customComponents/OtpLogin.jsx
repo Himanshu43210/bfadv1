@@ -179,31 +179,31 @@ function OtpLogin() {
                     <span className='acc_contact'>{userProfile.phoneNumber}</span>
                 </div>
                 <div className='menu_sec menu_sec_middle'>
-                    <Link to="/account/tab?t=recent_searches" className='acc_menu_item'>
+                    <Link to="/account/tabs?tab=recent_searches" className='acc_menu_item'>
                         <div className='menu_item'>
                             <YoutubeSearchedForSharpIcon className='menu_item_icon' />
                             <span>Recent Searches</span>
                         </div>
                     </Link>
-                    <Link to="/account/tab?t=viewed" className='acc_menu_item'>
+                    <Link to="/account/tabs?tab=viewed" className='acc_menu_item'>
                         <div className='menu_item'>
                             <VisibilityIcon className='menu_item_icon' />
                             <span>Viewed</span>
                         </div>
                     </Link>
-                    <Link to="/account/tab?t=contacted" className='acc_menu_item'>
+                    <Link to="/account/tabs?tab=contacted" className='acc_menu_item'>
                         <div className='menu_item'>
                             <CallIcon className='menu_item_icon' />
                             <span>Contacted</span>
                         </div>
                     </Link>
-                    <Link to="/account/tab?t=shortlisted" className='acc_menu_item'>
+                    <Link to="/account/tabs?tab=shortlisted" className='acc_menu_item'>
                         <div className='menu_item'>
                             <FilterListOutlinedIcon className='menu_item_icon' />
                             <span>Shortlisted</span>
                         </div>
                     </Link>
-                    <Link to="/account/tab?t=recommendations" className='acc_menu_item'>
+                    <Link to="/account/tabs?tab=recommendations" className='acc_menu_item'>
                         <div className='menu_item'>
                             <RecommendIcon className='menu_item_icon' />
                             <span>Recommendations</span>
