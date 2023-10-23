@@ -26,7 +26,7 @@ export default function HomeCard({
   const cardDetailUrl = `/${element.title?.replaceAll(
     " ",
     "-"
-  )}-${element._id}`;
+  )}-${element.sectorNumber?.replaceAll(" ", "_")}-${element.size}SQYD-${element.floor?.replaceAll(" ", "_")}-${element.accommodation?.replaceAll(" ", "_")}-${element.facing}-${element.parkFacing ? "park-" : ""}${element.corner ? "corner-" : ""}${element._id}`;
   const handleShareClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -57,10 +57,7 @@ export default function HomeCard({
           className="thumbnail"
           onClick={() => {
             if (!disableOnClickNavigate) {
-              window.open(`/${element.title?.replaceAll(
-                " ",
-                "-"
-              )}-${element._id}`, "_blank");
+              window.open(cardDetailUrl, "_blank");
               // navigateTo(
               //   `${onClickNavigate}?title=${element.title?.replaceAll(
               //     " ",

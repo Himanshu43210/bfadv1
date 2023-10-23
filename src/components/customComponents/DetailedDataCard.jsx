@@ -57,9 +57,7 @@ export default function DetailDataCard({
   const { search } = useLocation();
 
   useEffect(() => {
-    console.log('************* useEffect : DetailedDataCard **************', singledata);
     if (!singledata) {
-      console.log('+++++++ useEffect : single data is undefined ++++++');
       dispatch(
         callApi({
           url: apiEndpoint,
@@ -69,19 +67,6 @@ export default function DetailDataCard({
       );
     }
   }, []);
-
-  // useEffect(() => {
-  //   const parsedParams = search.split("&").map(param => param.split("="));
-  //   const newId = parsedParams?.[1]?.[1];
-  //   dispatch(
-  //     callApi({
-  //       url: API_ENDPOINTS[getApiEndpoint] + `?id=${newId}`,
-  //       method: GET,
-  //       headers: { "Content-Type": "application/json" },
-  //     })
-  //   );
-  //   window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
-  // }, [search]);
 
   const apiData = useSelector(
     (state) => selectApiData(state, getApiEndpoint)?.data
