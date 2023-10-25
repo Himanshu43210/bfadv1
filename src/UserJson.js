@@ -1,9 +1,9 @@
-import { USER_ROLE } from "./ScreenJson";
-import { newPropertyConst } from "./components/fieldConsts/PropertiesFieldConst";
+import { USER_ROLE } from "./ScreenJson.js";
+import { newPropertyConst } from "./components/fieldConsts/PropertiesFieldConst.js";
 import {
   editUserConst,
   newUserConst,
-} from "./components/fieldConsts/UserFieldConst";
+} from "./components/fieldConsts/UserFieldConst.js";
 import {
   ALTER_PROPERTY_DATA,
   ALTER_USER_DATA,
@@ -29,8 +29,8 @@ import {
   REJECT_PROPERTY,
   ROUTE_BUTTON,
   TITLE,
-} from "./components/utils/Const";
-import { API_ENDPOINTS } from "./redux/utils/api";
+} from "./components/utils/Const.js";
+import { API_ENDPOINTS } from "./redux/utils/api.js";
 
 // export const AD_USER_DASHBOARD = {
 //   name: "User Dashboard Screen",

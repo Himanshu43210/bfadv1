@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from "react-bootstrap";
-import RenderComponent from "../customComponents/ComponentRenderer";
-import { ACCOUNT_TABS_SCREEN } from '../../ScreenJson';
+import RenderComponent from "../customComponents/ComponentRenderer.jsx";
+import { ACCOUNT_TABS_SCREEN } from '../../ScreenJson.js';
 
 function AccountTabs() {
     return (

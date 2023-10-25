@@ -1,16 +1,16 @@
 import React from "react";
-import { FaClipboardList, FaUsers, FaCog, FaUserFriends, FaUserTie, FaBuilding } from "react-icons/fa";
-import { AiFillHome, AiOutlineLogout } from "react-icons/ai";
+import { FaClipboardList, FaUsers, FaCog, FaUserFriends, FaUserTie, FaBuilding } from "react-icons/fa/index.js";
+import { AiFillHome, AiOutlineLogout } from "react-icons/ai/index.js";
 import {
   ADMIN_DASHBOARD,
   CUSTOMER_MANAGEMENT,
   MASTER_MANAGEMENT,
   PROPERTY_MANAGEMENT,
   USER_MANAGEMENT,
-} from "./Const";
+} from "./Const.js";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { resetApiStatus } from "../../redux/slice/apiSlice";
+import { resetApiStatus } from "../../redux/slice/apiSlice.js";
 
 function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
   const dispatch = useDispatch();

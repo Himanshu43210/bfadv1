@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
 import { Table, Button, Container } from "react-bootstrap";
 import { Button as MuiButton } from "@mui/material";
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import ReusablePopup from "./ReusablePopup";
-import FormBuilder from "./FormBuilder";
-import { FaCaretUp, FaCaretDown, FaSearch } from "react-icons/fa";
-import { FaUserEdit, FaRegTrashAlt, FaRegEye } from "react-icons/fa";
-import { API_ENDPOINTS } from "../../redux/utils/api";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { AiOutlineDoubleRight } from "react-icons/ai";
+import FilterAltIcon from '@mui/icons-material/FilterAlt.js';
+import ReusablePopup from "./ReusablePopup.jsx";
+import FormBuilder from "./FormBuilder.jsx";
+import { FaCaretUp, FaCaretDown, FaSearch } from "react-icons/fa/index.js";
+import { FaUserEdit, FaRegTrashAlt, FaRegEye } from "react-icons/fa/index.js";
+import { API_ENDPOINTS } from "../../redux/utils/api.js";
+import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress.js";
+import { AiOutlineDoubleRight } from "react-icons/ai/index.js";
 import {
   APPROVED,
   BF_ADMIN,
@@ -18,22 +18,22 @@ import {
   NEED_APPROVAL_BY,
   POST,
   PROFILE,
-} from "./Const";
+} from "./Const.js";
 import { useDispatch, useSelector } from "react-redux";
-import { callApi } from "../../redux/utils/apiActions";
-import BasicTablePagination from "../customComponents/TablePagination";
-import { selectApiData } from "../../redux/utils/selectors";
+import { callApi } from "../../redux/utils/apiActions.js";
+import BasicTablePagination from "../customComponents/TablePagination.jsx";
+import { selectApiData } from "../../redux/utils/selectors.js";
 import { useEffect } from "react";
-import { FcApproval, FcRemoveImage } from "react-icons/fc";
+import { FcApproval, FcRemoveImage } from "react-icons/fc/index.js";
 import _, { find, replace } from "lodash";
-import HomeCard from "../customComponents/HomeCard";
-import SearchCard from "../customComponents/SearchCard";
-import DetailDataCard from "../customComponents/DetailedDataCard";
-import { selectApiStatus } from "./../../redux/utils/selectors";
+import HomeCard from "../customComponents/HomeCard.jsx";
+import SearchCard from "../customComponents/SearchCard.jsx";
+import DetailDataCard from "../customComponents/DetailedDataCard.jsx";
+import { selectApiStatus } from "./../../redux/utils/selectors.js";
 import { useNavigate } from "react-router-dom";
-import { sanitizeFormData } from "./reusableMethods";
-import { USER_ROLE } from "../../ScreenJson";
-import SnackBar from "../customComponents/SnackBar";
+import { sanitizeFormData } from "./reusableMethods.js";
+import { USER_ROLE } from "../../ScreenJson.js";
+import SnackBar from "../customComponents/SnackBar.jsx";
 
 const ListingTable = ({
   headersDesktop = [],

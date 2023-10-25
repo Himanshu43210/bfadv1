@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Card } from "react-bootstrap";
-import RenderComponent from "../customComponents/ComponentRenderer";
-import { CARD_DETAILS_SCREEN } from "../../ScreenJson";
+import RenderComponent from "../customComponents/ComponentRenderer.jsx";
+import { CARD_DETAILS_SCREEN } from "../../ScreenJson.js";
 
 export default function DetailedView() {
   return (

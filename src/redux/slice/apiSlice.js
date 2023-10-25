@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { callApi } from "../utils/apiActions";
-import { FAILED, LOADING, SUCCESS } from "../../components/utils/Const";
-import { getApiName } from "../utils/api";
+import { callApi } from "../utils/apiActions.js";
+import { FAILED, LOADING, SUCCESS } from "../../components/utils/Const.js";
+import { getApiName } from "../utils/api.js";
 
 const apiSlice = createSlice({
   name: "api/callApi",

@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Card } from "react-bootstrap";
-import { HOME_SCREEN } from "../../ScreenJson";
-import RenderComponent from "../customComponents/ComponentRenderer";
+import { HOME_SCREEN } from "../../ScreenJson.js";
+import RenderComponent from "../customComponents/ComponentRenderer.jsx";
 
 export default function Home() {
   return (

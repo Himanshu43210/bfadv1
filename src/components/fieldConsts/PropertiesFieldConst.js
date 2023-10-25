@@ -1,4 +1,4 @@
-import { TEXT } from "../utils/Const";
+import { TEXT } from "../utils/Const.js";
 
 export const newPropertyConst = [
   {

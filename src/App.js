@@ -1,21 +1,21 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AdminHome from "./components/Pages/adminPages/AdminHome";
-import Login from "./components/Pages/Login";
-import UserManagement from "./components/Pages/adminPages/SuperUserManagement";
-import MasterManagement from "./components/Pages/adminPages/MasterManagement";
-import SuperMasterTable from "./components/Pages/adminPages/SuperMasterTable";
-import PropertyManagement from "./components/Pages/adminPages/PropertyManagement";
-import StatsList from "./components/Pages/adminPages/StatsList";
-import Home from "./components/Pages/Home";
-import DetailedView from "./components/Pages/DetailedView";
-import SearchResult from "./components/Pages/SearchResult";
-import FormPage from "./components/customComponents/FormPage";
-import ViewListing from "./components/Pages/adminPages/ViewListing";
-import ApproveListing from "./components/Pages/adminPages/ApproveListings";
-import AccountTabs from './components/Pages/AccountTabs';
-import AboutUs from "./components/Pages/AboutUs";
-import Blog from "./components/Pages/Blog";
+import AdminHome from "./components/Pages/adminPages/AdminHome.js";
+import Login from "./components/Pages/Login.js";
+import UserManagement from "./components/Pages/adminPages/SuperUserManagement.js";
+import MasterManagement from "./components/Pages/adminPages/MasterManagement.js";
+import SuperMasterTable from "./components/Pages/adminPages/SuperMasterTable.js";
+import PropertyManagement from "./components/Pages/adminPages/PropertyManagement.js";
+import StatsList from "./components/Pages/adminPages/StatsList.js";
+import Home from "./components/Pages/Home.js";
+import DetailedView from "./components/Pages/DetailedView.js";
+import SearchResult from "./components/Pages/SearchResult.js";
+import FormPage from "./components/customComponents/FormPage.jsx";
+import ViewListing from "./components/Pages/adminPages/ViewListing.js";
+import ApproveListing from "./components/Pages/adminPages/ApproveListings.js";
+import AccountTabs from './components/Pages/AccountTabs.js';
+import AboutUs from "./components/Pages/AboutUs.js";
+import Blog from "./components/Pages/Blog.js";
 
 function App() {
   return (
