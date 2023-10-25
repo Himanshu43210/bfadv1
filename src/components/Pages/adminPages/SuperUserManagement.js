@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React from "react";
-import RenderComponent from "../../customComponents/ComponentRenderer";
-import { MANAGE_USER } from "../../../UserJson";
+import RenderComponent from "../../customComponents/ComponentRenderer.jsx";
+import { MANAGE_USER } from "../../../UserJson.js";
 
 export default function UserManagement() {
   return (

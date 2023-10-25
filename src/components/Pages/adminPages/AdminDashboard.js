@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
-import RenderComponent from "../../customComponents/ComponentRenderer";
+import RenderComponent from "../../customComponents/ComponentRenderer.jsx";
 import {
   AD_USER_DASHBOARD,
   CP_USER_DASHBOARD,
   SU_USER_DASHBOARD,
-} from "../../../UserJson";
-import { USER_ROLE } from "../../../ScreenJson";
-import { BF_ADMIN, GET, GET_MASTER_DATA_ON_HOME } from "../../utils/Const";
+} from "../../../UserJson.js";
+import { USER_ROLE } from "../../../ScreenJson.js";
+import { BF_ADMIN, GET, GET_MASTER_DATA_ON_HOME } from "../../utils/Const.js";
 import { useDispatch, useSelector } from "react-redux";
-import { API_ENDPOINTS } from "../../../redux/utils/api";
-import { callApi } from "../../../redux/utils/apiActions";
-import { selectMasterData } from "../../../redux/utils/selectors";
+import { API_ENDPOINTS } from "../../../redux/utils/api.js";
+import { callApi } from "../../../redux/utils/apiActions.js";
+// import { selectMasterData } from "../../../redux/utils/selectors";
 
 export default function AdminDashboard({ role }) {
   const dispatch = useDispatch();

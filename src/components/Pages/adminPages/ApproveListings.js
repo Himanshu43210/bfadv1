@@ -1,6 +1,6 @@
 import React from "react";
-import RenderComponent from "../../customComponents/ComponentRenderer";
-import { APPROVAL_PROPERTIES } from "../../../UserJson";
+import RenderComponent from "../../customComponents/ComponentRenderer.jsx";
+import { APPROVAL_PROPERTIES } from "../../../UserJson.js";
 
 export default function ApproveListing() {
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
-import RenderComponent from "../../customComponents/ComponentRenderer";
-import { STATS_LIST } from "../../../UserJson";
+import RenderComponent from "../../customComponents/ComponentRenderer.jsx";
+import { STATS_LIST } from "../../../UserJson.js";
 
 export default function StatsListing() {
   return (

@@ -11,6 +11,7 @@ import { FaShareAlt, FaRegHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { GET } from "../utils/Const";
 import Tooltip from '@mui/material/Tooltip';
+import { generatePropertyUrl } from "../utils/propertyUtils.js";
 
 export default function SearchCard({
   element = {},
@@ -21,10 +22,7 @@ export default function SearchCard({
   disableOnClickNavigate = false,
   showOptions = false,
 }) {
-  const cardDetailUrl = `/${element.title?.replaceAll(
-    " ",
-    "-"
-  )}-${element.sectorNumber?.replaceAll(" ", "_")}-${element.size}SQYD-${element.floor?.replaceAll(" ", "_")}-${element.accommodation?.replaceAll(" ", "_")}-${element.facing}_FACING-${element.parkFacing === "YES" ? "park-" : ""}${element.corner === "YES" ? "corner-" : ""}${element.possession === "READY" ? "READY_POSSESSION" : "UNDER_CONSTRUCTION"}-${element._id}`;
+  const cardDetailUrl = generatePropertyUrl(element);
   const handleShareClick = (e) => {
     e.preventDefault();
     e.stopPropagation();

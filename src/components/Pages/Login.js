@@ -2,18 +2,18 @@ import { CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { API_ENDPOINTS } from "../../redux/utils/api";
+import { API_ENDPOINTS } from "../../redux/utils/api.js";
 import {
   ADMIN_DASHBOARD_LOGIN,
   EMAIL,
   LOADING,
   POST,
   SUCCESS,
-} from "../utils/Const";
-import { callApi } from "../../redux/utils/apiActions";
-import { selectApiData, selectApiStatus } from "../../redux/utils/selectors";
-import { storeUserData } from "../../redux/slice/userSlice";
-import { storeParentData } from "../../redux/slice/parentSlice";
+} from "../utils/Const.js";
+import { callApi } from "../../redux/utils/apiActions.js";
+import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
+import { storeUserData } from "../../redux/slice/userSlice.js";
+import { storeParentData } from "../../redux/slice/parentSlice.js";
 
 const Login = () => {
   const navigate = useNavigate();

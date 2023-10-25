@@ -2,9 +2,9 @@ import _ from "lodash";
 import React from "react";
 import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import ListingTable from "../../utils/ListingTable";
-import TableButtonHeader from "../../utils/TableButtonHeader";
-import Navbar from "../../utils/Navbar";
+import ListingTable from "../../utils/ListingTable.js";
+import TableButtonHeader from "../../utils/TableButtonHeader.js";
+// import Navbar from "../../utils/Navbar";
 import {
   ALTER_MASTER_DATA,
   DELETE_MASTER_DATA,
@@ -12,13 +12,13 @@ import {
   GET_MASTER_DATA,
   LOADING,
   ROUTE_BUTTON,
-} from "../../utils/Const";
-import AutoFetchApi from "../../customComponents/AutoFetchApi";
-import { API_ENDPOINTS } from "../../../redux/utils/api";
-import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors";
+} from "../../utils/Const.js";
+import AutoFetchApi from "../../customComponents/AutoFetchApi.jsx";
+import { API_ENDPOINTS } from "../../../redux/utils/api.js";
+import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors.js";
 import { CircularProgress } from "@mui/material";
-import { newMasterConst } from "../../fieldConsts/MasterFieldConst";
-import CustomRouteButton from "../../customComponents/RouteButton";
+import { newMasterConst } from "../../fieldConsts/MasterFieldConst.js";
+import CustomRouteButton from "../../customComponents/RouteButton.jsx";
 
 export default function UserManagement() {
   const desktopHeaders = {

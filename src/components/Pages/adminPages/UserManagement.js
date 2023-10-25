@@ -2,10 +2,10 @@ import _ from "lodash";
 import React from "react";
 import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import ListingTable from "../../utils/ListingTable";
-import { newUserConst } from "../../fieldConsts/UserFieldConst";
-import TableButtonHeader from "../../utils/TableButtonHeader";
-import Navbar from "../../utils/Navbar";
+import ListingTable from "../../utils/ListingTable.js";
+import { newUserConst } from "../../fieldConsts/UserFieldConst.js";
+import TableButtonHeader from "../../utils/TableButtonHeader.js";
+// import Navbar from "../../utils/Navbar";
 import {
   ALTER_USER_DATA,
   DELETE_USER_DATA,
@@ -13,10 +13,10 @@ import {
   GET_ADMIN_USER_DATA,
   GET_USER_DATA,
   LOADING,
-} from "../../utils/Const";
-import AutoFetchApi from "../../customComponents/AutoFetchApi";
-import { API_ENDPOINTS } from "../../../redux/utils/api";
-import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors";
+} from "../../utils/Const.js";
+import AutoFetchApi from "../../customComponents/AutoFetchApi.jsx";
+import { API_ENDPOINTS } from "../../../redux/utils/api.js";
+import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors.js";
 import { CircularProgress } from "@mui/material";
 
 export default function UserManagement() {

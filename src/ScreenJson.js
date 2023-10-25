@@ -35,8 +35,8 @@ import {
   SLIDER,
   TABS,
   TOGGLE_BUTTON,
-} from "./components/utils/Const";
-import { API_ENDPOINTS } from "./redux/utils/api";
+} from "./components/utils/Const.js";
+import { API_ENDPOINTS } from "./redux/utils/api.js";
 
 const MENU_ITEMS = [
   {

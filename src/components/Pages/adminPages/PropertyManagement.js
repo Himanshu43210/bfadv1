@@ -1,13 +1,13 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import ListingTable from "../../utils/ListingTable";
-import Navbar from "../../utils/Navbar";
-import TableButtonHeader from "../../utils/TableButtonHeader";
-import { newPropertyConst } from "../../fieldConsts/PropertiesFieldConst";
-import AutoFetchApi from "../../customComponents/AutoFetchApi";
-import { API_ENDPOINTS } from "../../../redux/utils/api";
-import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors";
+import ListingTable from "../../utils/ListingTable.js";
+// import Navbar from "../../utils/Navbar";
+import TableButtonHeader from "../../utils/TableButtonHeader.js";
+import { newPropertyConst } from "../../fieldConsts/PropertiesFieldConst.js";
+import AutoFetchApi from "../../customComponents/AutoFetchApi.jsx";
+import { API_ENDPOINTS } from "../../../redux/utils/api.js";
+import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors.js";
 import _ from "lodash";
 import {
   ALTER_PROPERTY_DATA,
@@ -18,7 +18,7 @@ import {
   GET_PROPERTY_DATA,
   LOADING,
   POST,
-} from "../../utils/Const";
+} from "../../utils/Const.js";
 import { CircularProgress } from "@mui/material";
 
 export default function PropertyManagement() {

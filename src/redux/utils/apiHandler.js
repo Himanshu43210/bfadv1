@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { callApi } from "./apiActions";
+import { callApi } from "./apiActions.js";
 
 const ApiHandler = ({ method, url, data, params, headers, children }) => {
   const dispatch = useDispatch();

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import RenderComponent from "../../customComponents/ComponentRenderer";
-import { VIEW_LISTING } from "../../../UserJson";
-import { API_ENDPOINTS } from "../../../redux/utils/api";
-import { GET, GET_PROPERTY_LIST_BY_USER_ID } from "../../utils/Const";
-import { callApi } from "../../../redux/utils/apiActions";
+import RenderComponent from "../../customComponents/ComponentRenderer.jsx";
+import { VIEW_LISTING } from "../../../UserJson.js";
+import { API_ENDPOINTS } from "../../../redux/utils/api.js";
+import { GET, GET_PROPERTY_LIST_BY_USER_ID } from "../../utils/Const.js";
+import { callApi } from "../../../redux/utils/apiActions.js";
 import { useDispatch } from "react-redux";
 
 export default function ViewListing() {

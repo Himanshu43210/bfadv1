@@ -1,7 +1,7 @@
 import React from "react";
 import { Card } from "react-bootstrap";
-import RenderComponent from "../customComponents/ComponentRenderer";
-import { SEARCH_RESULT } from "../../ScreenJson";
+import RenderComponent from "../customComponents/ComponentRenderer.jsx";
+import { SEARCH_RESULT } from "../../ScreenJson.js";
 
 export default function SearchResult() {
   return (

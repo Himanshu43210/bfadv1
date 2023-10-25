@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
-import { AD_MASTER_TABLE } from "../../../UserJson";
-import RenderComponent from "../../customComponents/ComponentRenderer";
+import { AD_MASTER_TABLE } from "../../../UserJson.js";
+import RenderComponent from "../../customComponents/ComponentRenderer.jsx";
 
 export default function PropertyManagement() {
   return (

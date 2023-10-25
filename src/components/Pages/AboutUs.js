@@ -1,6 +1,6 @@
 import React from 'react';
-import RenderComponent from '../customComponents/ComponentRenderer';
-import { ABOUTUS_SCREEN } from '../../ScreenJson';
+import RenderComponent from '../customComponents/ComponentRenderer.jsx';
+import { ABOUTUS_SCREEN } from '../../ScreenJson.js';
 
 function AboutUs() {
     return (

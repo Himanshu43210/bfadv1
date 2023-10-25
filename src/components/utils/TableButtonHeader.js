@@ -7,25 +7,24 @@ import {
   FaUserPlus,
   FaCloudUploadAlt,
   FaCloudDownloadAlt,
-} from "react-icons/fa";
-import { FiRefreshCcw } from "react-icons/fi";
-import FormBuilder from "./FormBuilder";
-import ReusablePopup from "./ReusablePopup";
+} from "react-icons/fa/index.js";
+import { FiRefreshCcw } from "react-icons/fi/index.js";
+import FormBuilder from "./FormBuilder.jsx";
+import ReusablePopup from "./ReusablePopup.jsx";
 import {
   BF_ADMIN,
   NEED_APPROVAL_BY,
   POST,
   PROFILE,
   PROPERTY_DEALER,
-} from "./Const";
-import { API_ENDPOINTS } from "../../redux/utils/api";
-import { callApi } from "../../redux/utils/apiActions";
-import ExcelTable from "../customComponents/BulkUpload";
-import CSVUpload from "../customComponents/BulkUpload";
-import { USER_ROLE } from "../../ScreenJson";
-import SnackBar from "../customComponents/SnackBar";
+} from "./Const.js";
+import { API_ENDPOINTS } from "../../redux/utils/api.js";
+import { callApi } from "../../redux/utils/apiActions.js";
+import CSVUpload from "../customComponents/BulkUpload.jsx";
+import { USER_ROLE } from "../../ScreenJson.js";
+import SnackBar from "../customComponents/SnackBar.jsx";
 import { Toaster } from "react-hot-toast";
-import { sanitizeFormData } from "./reusableMethods";
+import { sanitizeFormData } from "./reusableMethods.js";
 import { CircularProgress } from "@mui/material";
 
 const TableButtonHeader = ({

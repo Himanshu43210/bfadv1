@@ -1,8 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import apiReducer from "./slice/apiSlice";
-import filterSlice from "./slice/filterSlice";
-import userSlice from "./slice/userSlice";
-import parentSlice from "./slice/parentSlice";
+import apiReducer from "./slice/apiSlice.js";
+import filterSlice from "./slice/filterSlice.js";
+import userSlice from "./slice/userSlice.js";
+import parentSlice from "./slice/parentSlice.js";
 
 const rootReducer = combineReducers({
   api: apiReducer,
