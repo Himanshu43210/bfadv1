@@ -13,7 +13,6 @@ import SearchResult from "./components/Pages/SearchResult";
 import FormPage from "./components/customComponents/FormPage";
 import ViewListing from "./components/Pages/adminPages/ViewListing";
 import ApproveListing from "./components/Pages/adminPages/ApproveListings";
-import TableFormPage from "./components/customComponents/TableFormData";
 import AccountTabs from './components/Pages/AccountTabs';
 import AboutUs from "./components/Pages/AboutUs";
 import Blog from "./components/Pages/Blog";
@@ -30,21 +29,15 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/:pid" element={<DetailedView />} />
           <Route path="/account/tabs" element={<AccountTabs />} />
-          <Route path="/admin/property" element={<PropertyManagement />} />
           <Route path="/admin/form" element={<FormPage />} />
-          <Route path="/admin/TableForm" element={<TableFormPage />} />
+          <Route path="/admin/property" element={<PropertyManagement />} />
           <Route path="/admin/user" element={<UserManagement />} />
           <Route path="/admin/approveListing" element={<ApproveListing />} />
           <Route path="/admin/master" element={<MasterManagement />} />
           <Route path="/admin/masterTable" element={<SuperMasterTable />} />
           <Route path="/admin/statistics" element={<StatsList />} />
-          <Route
-            path="/admin/statistics/listingData"
-            element={<ViewListing />}
-          />
-          <Route
-            path="/admin"
-            element={<AdminHome />}
+          <Route path="/admin/statistics/listingData" element={<ViewListing />} />
+          <Route path="/admin" element={<AdminHome />}
           />
         </Routes>
       </div>
