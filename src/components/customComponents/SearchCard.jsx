@@ -24,7 +24,7 @@ export default function SearchCard({
   const cardDetailUrl = `/${element.title?.replaceAll(
     " ",
     "-"
-  )}-${element.sectorNumber?.replaceAll(" ", "_")}-${element.size}SQYD-${element.floor?.replaceAll(" ", "_")}-${element.accommodation?.replaceAll(" ", "_")}-${element.facing}-${element.parkFacing ? "park-" : ""}${element.corner ? "corner-" : ""}${element._id}`;
+  )}-${element.sectorNumber?.replaceAll(" ", "_")}-${element.size}SQYD-${element.floor?.replaceAll(" ", "_")}-${element.accommodation?.replaceAll(" ", "_")}-${element.facing}_FACING-${element.parkFacing === "YES" ? "park-" : ""}${element.corner === "YES" ? "corner-" : ""}${element.possession === "READY" ? "READY_POSSESSION" : "UNDER_CONSTRUCTION"}-${element._id}`;
   const handleShareClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
