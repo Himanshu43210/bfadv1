@@ -124,6 +124,7 @@ const SCROLLTOP = {
 
 export const HOME_SCREEN = {
   name: "Home Screen",
+  pageClass: "home-screen",
   children: [
     HEADER,
     {
@@ -214,6 +215,7 @@ export const HOME_SCREEN = {
 
 export const ACCOUNT_TABS_SCREEN = {
   name: "Account Tabs",
+  pageClass: "account-tabs-screen",
   children: [
     HEADER,
     {
@@ -227,7 +229,6 @@ export const ACCOUNT_TABS_SCREEN = {
         { label: "Recent Searches", key: "recentSearches" },
         { label: "Viewed", key: "viewed" },
         { label: "Contacted", key: "contacted" },
-        { label: "Shortlisted", key: "shortlisted" },
         { label: "Recommendations", key: "recommendations" },
       ],
       className: "tabs_wrapper"
@@ -258,6 +259,7 @@ export const ACCOUNT_TABS_SCREEN = {
 
 export const CARD_DETAILS_SCREEN = {
   name: "Card Detail Screen",
+  pageClass: "property_page detail-screen",
   children: [
     HEADER,
     {
@@ -309,6 +311,7 @@ export const CARD_DETAILS_SCREEN = {
 
 export const SEARCH_RESULT = {
   name: "Search Result",
+  pageClass: "search-result-screen",
   className: "klk",
   children: [
     HEADER,
@@ -584,6 +587,7 @@ export const SEARCH_RESULT = {
 
 export const ABOUTUS_SCREEN = {
   name: "About Us",
+  pageClass: "aboutus-screen",
   className: "about_us",
   children: [
     HEADER,
@@ -683,6 +687,7 @@ export const ABOUTUS_SCREEN = {
 
 export const BLOG_SCREEN = {
   name: "Out Blog",
+  pageClass: "blog-screen",
   className: "our_blog",
   children: [
     HEADER,

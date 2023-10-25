@@ -43,27 +43,23 @@ export default function SearchCard({
         <ul className="options_list">
           <li className="option_item">
             <input type="radio" id={`${element._id}-1`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-1`} className="radio_label">Didn't liked this property</label>
+            <label htmlFor={`${element._id}-1`} className="radio_label">Yes, I have finalized</label>
           </li>
           <li className="option_item">
             <input type="radio" id={`${element._id}-2`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-2`} className="radio_label">Liked this property</label>
+            <label htmlFor={`${element._id}-2`} className="radio_label">Not visited yet</label>
           </li>
           <li className="option_item">
             <input type="radio" id={`${element._id}-3`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-3`} className="radio_label">Save for later</label>
+            <label htmlFor={`${element._id}-3`} className="radio_label">Property sold out</label>
           </li>
           <li className="option_item">
             <input type="radio" id={`${element._id}-4`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-4`} className="radio_label">Option 4</label>
+            <label htmlFor={`${element._id}-4`} className="radio_label">Asked brokerage</label>
           </li>
           <li className="option_item">
             <input type="radio" id={`${element._id}-5`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-5`} className="radio_label">Option 5</label>
-          </li>
-          <li className="option_item">
-            <input type="radio" id={`${element._id}-6`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-6`} className="radio_label">Option 6</label>
+            <label htmlFor={`${element._id}-5`} className="radio_label">Rejected/Didn't like</label>
           </li>
         </ul>
       </div>

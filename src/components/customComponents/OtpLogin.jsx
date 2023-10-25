@@ -197,12 +197,6 @@ function OtpLogin() {
                             <span>Contacted</span>
                         </div>
                     </Link>
-                    <Link to="/account/tabs?tab=shortlisted" className='acc_menu_item'>
-                        <div className='menu_item'>
-                            <FilterListOutlinedIcon className='menu_item_icon' />
-                            <span>Shortlisted</span>
-                        </div>
-                    </Link>
                     <Link to="/account/tabs?tab=recommendations" className='acc_menu_item'>
                         <div className='menu_item'>
                             <RecommendIcon className='menu_item_icon' />

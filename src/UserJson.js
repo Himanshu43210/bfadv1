@@ -322,6 +322,7 @@ export const SU_USER_DASHBOARD = {
 
 export const AD_MASTER_TABLE = {
   name: "Master table",
+  pageClass: "standalone_page master_table_page",
   className: "klk",
   children: [
     {
@@ -497,6 +498,7 @@ export const AD_MASTER_TABLE = {
 
 export const MANAGE_USER = {
   name: "Master table",
+  pageClass: "standalone_page user_management_page",
   className: "klk",
   children: [
     {
@@ -591,6 +593,7 @@ export const MANAGE_USER = {
 
 export const STATS_LIST = {
   name: "Master table",
+  pageClass: "standalone_page stats_page",
   className: "klk",
   children: [
     {
@@ -689,6 +692,7 @@ export const STATS_LIST = {
 
 export const VIEW_LISTING = {
   name: "Master table",
+  pageClass: "standalone_page",
   className: "klk",
   children: [
     {
@@ -778,6 +782,7 @@ export const VIEW_LISTING = {
 
 export const APPROVAL_PROPERTIES = {
   name: "Master table",
+  pageClass: "standalone_page approve_listing_page",
   className: "klk",
   children: [
     {
