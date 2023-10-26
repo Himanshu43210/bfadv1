@@ -1,7 +1,7 @@
 import React from "react";
-import ListingTable from "../utils/ListingTable";
+import ListingTable from "../utils/ListingTable.js";
 import { useSelector } from "react-redux";
-import { selectApiStatus } from "../../redux/utils/selectors";
+import { selectApiStatus } from "../../redux/utils/selectors.js";
 
 const DashboardListing = ({ component }) => {
   const userProfile = useSelector((state) => state.profile);

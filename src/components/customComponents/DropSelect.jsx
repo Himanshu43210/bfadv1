@@ -1,12 +1,12 @@
 // import { Button } from '@mui/material';
-import MuiButton from "@mui/material/Button";
+import MuiButton from "@mui/material/Button/Button.js";
 import React, { useEffect, useState } from 'react';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CheckIcon from '@mui/icons-material/Check';
-import SearchIcon from '@mui/icons-material/Search';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore.js';
+import CheckIcon from '@mui/icons-material/Check.js';
+import SearchIcon from '@mui/icons-material/Search.js';
 import { useDispatch } from "react-redux";
-import { callApi } from "../../redux/utils/apiActions";
-import { GET } from "../utils/Const";
+import { callApi } from "../../redux/utils/apiActions.js";
+import { GET } from "../utils/Const.js";
 
 const DropSelect = ({
     component,

@@ -1,7 +1,7 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box/Box.js';
+import Tabs from '@mui/material/Tabs/Tabs.js';
+import Tab from '@mui/material/Tab/Tab.js';
 
 function Tabbar({
     component

@@ -6,11 +6,11 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import ApiButton from "./ApiButton";
-import { FaShareAlt, FaRegHeart } from "react-icons/fa";
+import ApiButton from "./ApiButton.jsx";
+import { FaShareAlt, FaRegHeart } from "react-icons/fa/index.js";
 import { useNavigate } from "react-router-dom";
-import { GET } from "../utils/Const";
-import Tooltip from '@mui/material/Tooltip';
+import { GET } from "../utils/Const.js";
+import Tooltip from '@mui/material/Tooltip/Tooltip.js';
 import { generatePropertyUrl } from "../utils/propertyUtils.js";
 
 export default function SearchCard({

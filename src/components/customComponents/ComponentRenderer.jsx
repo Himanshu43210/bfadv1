@@ -1,5 +1,5 @@
 import React from "react";
-import ComponentSelector from "./ComponentSelector";
+import ComponentSelector from "./ComponentSelector.jsx";
 
 export default function RenderComponent({ jsonToRender }) {
   const renderComponent = (componentList) => {

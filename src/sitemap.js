@@ -35,7 +35,6 @@ const sitemapGenerator = async () => {
             });
         }
     }
-    console.log('====== STATIC URLS & DYNAMIC URLS LISTS ======', staticUrls[0], dynamicUrls[0], staticUrls.length, dynamicUrls.length);
     let urlsInXML = '';
     staticUrls.forEach((entry) => {
         urlsInXML += `
@@ -60,7 +59,7 @@ const sitemapGenerator = async () => {
         </urlset>
     `;
 
-    fs.writeFile(path.join("..", "public", "sitemap.xml"), sitemapXML)
+    fs.writeFile(path.join("public", "sitemap.xml"), sitemapXML)
         .then((res) => {
             console.log('*** SUCCESS : sitemap.xml generation ***');
         })

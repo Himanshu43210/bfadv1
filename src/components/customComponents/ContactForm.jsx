@@ -1,6 +1,6 @@
 import React from 'react';
-import { AiFillHome } from "react-icons/ai";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { AiFillHome } from "react-icons/ai/index.js";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward.js';
 
 function ContactForm() {
     const handleFormSubmit = (e) => {

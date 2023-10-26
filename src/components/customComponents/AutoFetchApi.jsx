@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { callApi } from "../../redux/utils/apiActions"; // Adjust path as needed
+import { callApi } from "../../redux/utils/apiActions.js"; // Adjust path as needed
 
 export default function ApiHandler({
   method,

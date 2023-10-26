@@ -2,12 +2,12 @@ import React, { forwardRef, useState } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import Creatable from 'react-select/creatable';
-import { EMAIL, GET_MASTER_DATA_ON_HOME, TEXT } from "./Const";
+import { EMAIL, GET_MASTER_DATA_ON_HOME, TEXT } from "./Const.js";
 import { useSelector } from "react-redux";
-import { selectMasterData } from "../../redux/utils/selectors";
+import { selectMasterData } from "../../redux/utils/selectors.js";
 import _, { capitalize } from "lodash";
 import { useImperativeHandle } from "react";
-import { isValueEmpty } from "./reusableMethods";
+import { isValueEmpty } from "./reusableMethods.js";
 
 const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
   const [formData, setFormData] = useState(propsFormData || {});

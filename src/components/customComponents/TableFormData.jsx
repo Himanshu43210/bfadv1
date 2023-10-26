@@ -1,6 +1,6 @@
 import React from "react";
-import FormPage from "./FormPage";
-import DashboardListing from "./DashboardListingTable";
+import FormPage from "./FormPage.jsx";
+import DashboardListing from "./DashboardListingTable.jsx";
 
 const TableFormPage = () => {
   return (

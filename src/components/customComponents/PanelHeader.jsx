@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Container } from '@mui/material/index.js';
 import React from 'react';
 import { useSelector } from 'react-redux';
 

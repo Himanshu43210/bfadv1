@@ -1,9 +1,9 @@
 import React from "react";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton/ToggleButton.js";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup/ToggleButtonGroup.js";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { storeUserData } from "../../redux/slice/userSlice";
+import { storeUserData } from "../../redux/slice/userSlice.js";
 
 export default function CustomRouteButton({
   value,

@@ -1,11 +1,11 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectApiData } from "../../redux/utils/selectors";
-import HomeCard from "./HomeCard";
-import SearchCard from "./SearchCard";
-import { HOME_CARD, SEARCH_CARD } from "../utils/Const";
-import BasicPagination from "./Pagination";
-import MuiButton from "@mui/material/Button";
+import { selectApiData } from "../../redux/utils/selectors.js";
+import HomeCard from "./HomeCard.jsx";
+import SearchCard from "./SearchCard.jsx";
+import { HOME_CARD, SEARCH_CARD } from "../utils/Const.js";
+import BasicPagination from "./Pagination.jsx";
+import MuiButton from "@mui/material/Button/Button.js";
 
 export default function DynamicCardContainer({ component, handleValueChange, onLoadMore }) {
   const showOptions = component.showOptions;

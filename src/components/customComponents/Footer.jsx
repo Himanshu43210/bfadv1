@@ -1,7 +1,7 @@
 import React from "react";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import { LINKEDIN_ICON } from "../utils/Const";
+import InstagramIcon from "@mui/icons-material/Instagram.js";
+import LinkedInIcon from "@mui/icons-material/LinkedIn.js";
+import { LINKEDIN_ICON } from "../utils/Const.js";
 
 export default function Footer({ component }) {
   return (

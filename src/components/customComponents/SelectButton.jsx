@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore.js';
 
 export default function SelectButton({
   name,

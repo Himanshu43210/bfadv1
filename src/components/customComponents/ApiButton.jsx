@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import ApiHandler from "../../redux/utils/apiHandler";
-import { DELETE, GET, POST, PUT } from "../utils/Const";
+import ApiHandler from "../../redux/utils/apiHandler.js";
+import { DELETE, GET, POST, PUT } from "../utils/Const.js";
 
 export default function ApiButton({
   apiType,

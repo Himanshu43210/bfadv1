@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { ExpetedHeader } from '../../ScreenJson';
+import { ExpetedHeader } from '../../ScreenJson.js';
 
 function CSVUpload() {
 
