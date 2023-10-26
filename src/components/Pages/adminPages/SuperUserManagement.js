@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React from "react";
 import RenderComponent from "../../customComponents/ComponentRenderer.jsx";
-import { MANAGE_USER } from "../../../UserJson.js";
+import { MANAGE_USER } from "../../../ScreenJson.js";
 
 export default function UserManagement() {
   return (

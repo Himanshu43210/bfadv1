@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { exec } from 'child_process';
-import { APP_ROUTES } from "../src/RouteJson.js";
+import { APP_ROUTES } from "./src/RouteJson.js";
 
 const generateFile = async (destPath, payload) => {
     console.log('----- GENERATE FILE -----', destPath, payload);
@@ -61,8 +61,7 @@ export const routeGenerator = () => {
     const staticImports = `
         import React from "react";\n
         import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-        import { ABOUTUS_SCREEN, ACCOUNT_TABS_SCREEN, BLOG_SCREEN, CARD_DETAILS_SCREEN, HOME_SCREEN, SEARCH_RESULT } from "./ScreenJson.js";
-        import { AD_MASTER_TABLE, APPROVAL_PROPERTIES, MANAGE_USER, STATS_LIST, VIEW_LISTING } from "./UserJson.js";
+        import { ABOUTUS_SCREEN, ACCOUNT_TABS_SCREEN, BLOG_SCREEN, CARD_DETAILS_SCREEN, HOME_SCREEN, SEARCH_RESULT, AD_MASTER_TABLE, APPROVAL_PROPERTIES, MANAGE_USER, STATS_LIST, VIEW_LISTING } from "./ScreenJson.js";
     `;
     const appFunc = `
         function App() {
@@ -87,14 +86,13 @@ export const routeGenerator = () => {
         // append to importSecData
         importSecData += `import ${appRoutes[routeKey].key} from "./components/pages/${appRoutes[routeKey].key}.js"\n`;
         // append to routeSecData
-        routeSecData += `<Route path=${routeKey} element={<${appRoutes[routeKey].key} jsonToRender={${appRoutes[routeKey].pageData}} />} />\n`;
+        routeSecData += `<Route path="${routeKey}" element={<${appRoutes[routeKey].key} jsonToRender={${appRoutes[routeKey].pagePayload.key}} />} />\n`;
         // call to generate the page file
         screenGenerator(path.join(args[2], "src", "components", "pages", `${appRoutes[routeKey].key}.js`), appRoutes[routeKey].key);
     }
 
     // generate the App.js file
     const appPayload = staticImports + importSecData + appFunc.replace("{ROUTES}", routeSecData);
-    console.log('+++++ ROUTE PAYLOAD +++++', appPayload);
     generateFile(path.join(args[2], "src", "App.js"), appPayload);
 };
 
