@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import { Button as MuiButton } from "@mui/material/index.js";
-import FilterAltIcon from '@mui/icons-material/FilterAlt.js';
 import ReusablePopup from "./ReusablePopup.jsx";
 import FormBuilder from "./FormBuilder.jsx";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa/index.js";
 import { FaUserEdit, FaRegTrashAlt, FaRegEye } from "react-icons/fa/index.js";
 import { API_ENDPOINTS } from "../../redux/utils/api.js";
-import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress.js";
+import { CircularProgress } from "@mui/material/index.js";
 import { AiOutlineDoubleRight } from "react-icons/ai/index.js";
+import { RiFilter2Fill } from "react-icons/ri/index.js"
 import {
   APPROVED,
   BF_ADMIN,
@@ -86,7 +86,6 @@ const ListingTable = ({
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
   const dispatch = useDispatch();
   const getApiDataFromRedux = useSelector((state) => {
-    console.log('--------- getApiDataFromRedux : state ------', state, getDataApi);
     return selectApiData(state, getDataApi);
   });
   const userProfile = useSelector((state) => state[PROFILE]);
@@ -112,8 +111,6 @@ const ListingTable = ({
   };
 
   useEffect(() => {
-    console.log('>>>>>>>>>>>>>>> GET API DATA FROM REDUX : outside >>>>>>>>>>>>>>>>>', getApiDataFromRedux);
-
     if (!_.isEmpty(getApiDataFromRedux)) {
       if (getApiDataFromRedux.pageNumber !== activePage)
         setActivePage(getApiDataFromRedux.pageNumber);
@@ -122,7 +119,6 @@ const ListingTable = ({
       }
       if (getApiDataFromRedux.totalItems !== totalItems)
         setTotalItems(getApiDataFromRedux.totalItems);
-      console.log('>>>>>>>>>>>>>>> GET API DATA FROM REDUX >>>>>>>>>>>>>>>>>', getApiDataFromRedux);
       setTableData(getApiDataFromRedux.data);
       allowedTableColumns = roleSpecificDesktopHeaders
         ? roleSpecificDesktopHeaders[userProfile.role]
@@ -774,12 +770,12 @@ const ListingTable = ({
             className="filter_input"
           />
           <Button onClick={() => applyFilters()} className="filter_submit filter_btn">
-            <FilterAltIcon className="filter_icon" />
+            <RiFilter2Fill className="filter_icon" />
             Filter&nbsp;Data
           </Button>
           {showColumnFilter && (
             <Button onClick={() => setShowFilters(!showFilters)} className="filter_btn">
-              <FilterAltIcon className="filter_icon" />
+              <RiFilter2Fill className="filter_icon" />
               Filter
             </Button>
           )}
@@ -818,9 +814,8 @@ const ListingTable = ({
               )}
             </tr>
           </thead>
-          {console.log('----- table data : listing table -----', tableData)}
           <tbody className="tablebody text">
-            {tableData.map((element) => (
+            {tableData?.map((element) => (
               <tr
                 className="tableborder text"
                 key={element.id}
@@ -934,7 +929,7 @@ const ListingTable = ({
       {(apiStatus === "loading" || showLoader) ? (
         <CircularProgress className="loader-class" />
       ) : (
-        tableData.length > 0 && (
+        tableData.length > 0 ? (
           <BasicTablePagination
             dataLength={totalItems}
             currentPage={activePage}
@@ -942,7 +937,7 @@ const ListingTable = ({
             rowPerPage={itemsCountPerPage}
             handleRowPerPagChange={handleRecordPerPage}
           />
-        )
+        ) : null
       )}
 
       <SnackBar
