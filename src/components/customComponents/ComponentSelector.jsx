@@ -36,6 +36,8 @@ import {
   OTP_LOGIN,
   TABS,
   LIST,
+  ABOUT_HERO,
+  CONTACT_US,
 } from "../utils/Const.js";
 import Banner from "./Banner.jsx";
 import Footer from "./Footer.jsx";
@@ -52,7 +54,7 @@ import RenderComponent from "./ComponentRenderer.jsx";
 import DynamicCardContainer from "./DynamicCardContainer.jsx";
 import { resetFilterData, storeFilterData } from "../../redux/slice/filterSlice.js";
 import { callApi } from "../../redux/utils/apiActions.js";
-import { ScrollToTop } from "./ScrollToTop.jsx";
+import ScrollToTop from "./ScrollToTop.jsx";
 import DetailDataCard from "./DetailedDataCard.jsx";
 import Header from "./Header.jsx";
 import CustomToogleButton from "./ToggleButton.jsx";
@@ -76,6 +78,7 @@ import OtpLogin from "./OtpLogin.jsx";
 import List from "./List.jsx";
 import AboutHero from "./AboutHero.jsx";
 import ContactForm from "./ContactForm.jsx";
+import Line from "./Line.jsx";
 
 const ComponentSelector = ({ component }) => {
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
@@ -309,7 +312,7 @@ const ComponentSelector = ({ component }) => {
       {component.type === PAGE_HEADER && <Header component={component} isMobile={isMobile} />}
       {component.type === OTP_LOGIN && <OtpLogin />}
       {component.type === HAMBURGER_MENU && (
-        <MenuState MenuItems={component.items} />
+        <MenuState component={component} />
       )}
       {component.type === TABS && (
         <Tabbar component={component} />
@@ -329,7 +332,10 @@ const ComponentSelector = ({ component }) => {
         />
       )}
       {component.type === BUTTON && (
-        <Button className={component.className} label={component.label} handleOnClick={handleValueChange} />
+        <Button
+          component={component}
+          handleOnClick={handleValueChange}
+        />
       )}
       {component.type === SCROLL_TO_TOP && (
         <ScrollToTop component={component} />
@@ -344,13 +350,13 @@ const ComponentSelector = ({ component }) => {
         <CustomRouteButton component={component} />
       )}
       {component.type === LABEL_MAP && <LabelMap component={component} />}
-      {component.type === HORIZONTAL_LINE && <hr />}
+      {component.type === HORIZONTAL_LINE && <Line />}
       {component.type === TABLE_HEADER && <TableHeader component={component} />}
       {component.type === LOGIN_REFRESH && (
         <LoginRefresh component={component} />
       )}
-      {component.type === "ABOUT_HERO" && <AboutHero />}
-      {component.type === "CONTACT_US" && <ContactForm />}
+      {component.type === ABOUT_HERO && <AboutHero />}
+      {component.type === CONTACT_US && <ContactForm />}
     </>
   );
 };

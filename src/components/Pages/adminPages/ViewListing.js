@@ -13,7 +13,7 @@ export default function ViewListing() {
   useEffect(() => {
     try {
       const options = {
-        url: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID] + "?id=" + id,
+        url: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID] + "?userId=" + id,
         method: GET,
         headers: { "Content-Type": "application/json" },
       };

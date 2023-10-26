@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineArrowUp } from "react-icons/ai/index.js";
-import { useLocation } from "react-router-dom";
-export const ScrollToTop = () => {
+import { useLocation } from "react-router-dom";const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { pathname } = useLocation();
 
@@ -40,3 +39,4 @@ export const ScrollToTop = () => {
   );
 };
 
+export default ScrollToTop;

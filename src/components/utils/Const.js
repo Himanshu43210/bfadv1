@@ -54,6 +54,8 @@ export const SPAN_TEXT = "SPAN_TEXT";
 export const PANEL_HEADER = "PANEL_HEADER";
 export const FILTERS = "FILTERS";
 export const FILTER_RESET = "FILTER_RESET";
+export const ABOUT_HERO = "ABOUT_HERO";
+export const CONTACT_US = "CONTACT_US";
 
 //
 export const LOADING = "loading";

@@ -8,7 +8,7 @@ import LoginIcon from '@mui/icons-material/Login.js';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded.js';
 import HomeIcon from '@mui/icons-material/Home.js';
 
-const MenupState = (MenuItems) => {
+const MenupState = ({ component }) => {
   const [open, setOpen] = React.useState(false);
   const [visited, setVisited] = React.useState(false);
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const MenupState = (MenuItems) => {
       </Button>
       {open && (
         <div className='main_menu_popup' onMouseEnter={() => setVisited(true)}>
-          {MenuItems.MenuItems.map((item) => {
+          {component.items.map((item) => {
             return <div onClick={() => { navigate(`${item.path}`) }} className="menu_item">
               {getIcons(item.icon)}
               <span className='menu_item_label'>{item.name}</span>
