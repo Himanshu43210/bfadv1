@@ -1,16 +1,16 @@
 import MuiButton from "@mui/material/Button/Button.js";
 
-export default function Button({ name, label, className, handleOnClick, children }) {
+export default function Button({ component, handleOnClick, children }) {
   return (
     <MuiButton
-      key={name}
-      className={className}
+      key={component.name}
+      className={component.className}
       onClick={() => {
         handleOnClick(true);
       }}
       variant="contained"
     >
-      {label}
+      {component.label}
       {children}
     </MuiButton>
   );

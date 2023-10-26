@@ -165,7 +165,7 @@ const ListingTable = ({
     return newFormData;
   };
 
-  const isPropertyEdit = API_ENDPOINTS?.[editApi].includes("editProperty");
+  const isPropertyEdit = API_ENDPOINTS[editApi]?.includes("editProperty");
 
   const handleSave = (edit = false) => {
     const alreadyHaveThumbanils = currentRowData?.thumbnails?.filter(link => link !== "") || [];

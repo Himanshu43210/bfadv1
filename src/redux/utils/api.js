@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-const API_DOMAIN = "https://builder-floor-backend-n2ib.onrender.com/api/";
+const API_DOMAIN = "https://bfservices.onrender.com/api/";
 // const API_DOMAIN = "http://localhost:5000/api/";
 
 export const getApiName = (api) => {

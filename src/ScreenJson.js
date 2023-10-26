@@ -104,7 +104,7 @@ const FOOTER = {
     {
       name: INSTAGRAM_ICON,
       url: "https://www.instagram.com/",
-    }, //for instagram
+    },
     {
       name: LINKEDIN_ICON,
       url: "https://www.linkedin.com/",
@@ -1328,14 +1328,14 @@ export const VIEW_LISTING = {
           text: "All Listing",
           className: "formheadingcontainer",
         },
-        {
-          type: API_BUTTON,
-          name: "refresh",
-          buttonLabel: "Refresh",
-          apiType: GET,
-          api: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID],
-          btnClass: "btn refresh_btn standalone_btn"
-        },
+        // {
+        //   type: API_BUTTON,
+        //   name: "refresh",
+        //   buttonLabel: "Refresh",
+        //   apiType: GET,
+        //   api: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID],
+        //   btnClass: "btn refresh_btn standalone_btn"
+        // },
         {
           type: DASHBOARD_LISTING,
           desktopHeaders: {
@@ -1352,14 +1352,14 @@ export const VIEW_LISTING = {
             Possession: "possession",
             "Builder Name": "builderName",
             "Builder Contact Name": "builderContact",
-            "Created By": "parentId.name",
-            "Mobile Number": "parentId.phoneNumber",
-            "Company Name": "parentId.companyName",
+            // "Created By": "parentId.name",
+            // "Mobile Number": "parentId.phoneNumber",
+            // "Company Name": "parentId.companyName",
             City: "city",
             State: "state",
             "Dated of Posting": "updatedAt",
-            Status: "status",
-            "Link Share": "",
+            // Status: "status",
+            // "Link Share": "",
           },
           mobileHeaders: {
             Title: "title",
@@ -1370,7 +1370,11 @@ export const VIEW_LISTING = {
           getDataApi: GET_PROPERTY_LIST_BY_USER_ID,
           endpoint: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID],
           dataPoint: GET_PROPERTY_LIST_BY_USER_ID,
-          hideActions: true,
+          hideAlterActions: true,
+          disableRowModal: true,
+          showPreviewButton: true,
+          showEditAction: false,
+          showDeleteAction: false
         },
         {
           type: ROUTE_BUTTON,
