@@ -7,7 +7,7 @@ import {
 } from "../../../UserJson.js";
 import { USER_ROLE } from "../../../ScreenJson.js";
 import { BF_ADMIN, GET, GET_MASTER_DATA_ON_HOME } from "../../utils/Const.js";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { API_ENDPOINTS } from "../../../redux/utils/api.js";
 import { callApi } from "../../../redux/utils/apiActions.js";
 // import { selectMasterData } from "../../../redux/utils/selectors";

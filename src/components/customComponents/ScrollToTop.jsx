@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineArrowUp } from "react-icons/ai";
+import { AiOutlineArrowUp } from "react-icons/ai/index.js";
 import { useLocation } from "react-router-dom";
 export const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -39,3 +39,4 @@ export const ScrollToTop = () => {
     </div>
   );
 };
+

@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
-import { callApi } from "../../redux/utils/apiActions";
+import { callApi } from "../../redux/utils/apiActions.js";
 import { useDispatch } from "react-redux";
-import { DETAILED_VIEW, GET, HORIZONTAL_LINE } from "../utils/Const";
-import { selectApiData } from "../../redux/utils/selectors";
-import { API_ENDPOINTS } from "../../redux/utils/api";
-import { convertToCr } from "../utils/HelperMethods";
-import IframeBuilder from "./IframeBuilder";
-import { FaShareAlt, FaRegHeart } from "react-icons/fa";
-import { CARD_DETAILS_SCREEN } from "../../ScreenJson";
+import { DETAILED_VIEW, GET, HORIZONTAL_LINE } from "../utils/Const.js";
+import { selectApiData } from "../../redux/utils/selectors.js";
+import { API_ENDPOINTS } from "../../redux/utils/api.js";
+import { convertToCr } from "../utils/HelperMethods.js";
+import IframeBuilder from "./IframeBuilder.jsx";
+import { FaShareAlt, FaRegHeart } from "react-icons/fa/index.js";
+import { CARD_DETAILS_SCREEN } from "../../ScreenJson.js";
 import { useLocation } from "react-router-dom";
 import * as _ from "lodash";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import Tooltip from '@mui/material/Tooltip';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import CloseIcon from '@mui/icons-material/Close';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos.js';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos.js';
+import Tooltip from '@mui/material/Tooltip/Tooltip.js';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone.js';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp.js';
+import CloseIcon from '@mui/icons-material/Close.js';
+import FullscreenIcon from '@mui/icons-material/Fullscreen.js';
 
 export default function DetailDataCard({
   component,

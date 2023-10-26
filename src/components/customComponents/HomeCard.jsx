@@ -7,13 +7,13 @@ import {
   Typography,
   Button
 } from "@mui/material";
-import ApiButton from "./ApiButton";
-import { FaShareAlt } from "react-icons/fa";
-import { convertToCr } from "../utils/HelperMethods";
+import ApiButton from "./ApiButton.jsx";
+import { FaShareAlt } from "react-icons/fa/index.js";
+import { convertToCr } from "../utils/HelperMethods.js";
 import { useNavigate } from "react-router-dom";
-import { GET } from "../utils/Const";
-import Tooltip from '@mui/material/Tooltip';
-import { generatePropertyUrl } from "../utils/propertyUtils";
+import { GET } from "../utils/Const.js";
+import Tooltip from '@mui/material/Tooltip/Tooltip.js';
+import { generatePropertyUrl } from "../utils/propertyUtils.js";
 
 export default function HomeCard({
   element,

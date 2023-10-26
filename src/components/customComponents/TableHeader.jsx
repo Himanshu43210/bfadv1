@@ -1,5 +1,5 @@
 import React from "react";
-import TableButtonHeader from "../utils/TableButtonHeader";
+import TableButtonHeader from "../utils/TableButtonHeader.js";
 import { useSelector } from "react-redux";
 
 const TableHeader = ({ component }) => {

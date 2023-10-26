@@ -1,12 +1,9 @@
-import { Button, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material/index.js';
 import React, { useState } from 'react';
-import SmartToyRoundedIcon from '@mui/icons-material/SmartToyRounded';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import SendRoundedIcon from '@mui/icons-material/SendRounded';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-
-import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
-import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import SmartToyRoundedIcon from '@mui/icons-material/SmartToyRounded.js';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle.js';
+import SendRoundedIcon from '@mui/icons-material/SendRounded.js';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined.js';
 
 function Chatbot() {
     const [showChatbot, setShowChatbot] = useState(false);

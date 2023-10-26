@@ -1,5 +1,5 @@
 import React from "react";
-import { FaClipboardList, FaUsers, FaCog, FaUserFriends, FaUserTie, FaBuilding } from "react-icons/fa/index.js";
+import { FaClipboardList, FaUsers, FaUserTie, FaBuilding } from "react-icons/fa/index.js";
 import { AiFillHome, AiOutlineLogout } from "react-icons/ai/index.js";
 import {
   ADMIN_DASHBOARD,

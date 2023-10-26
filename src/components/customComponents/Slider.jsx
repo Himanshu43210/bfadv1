@@ -1,6 +1,6 @@
 import React from "react";
-import { Slider, Typography } from "@mui/material";
-import { convertToCr } from "../utils/HelperMethods";
+import { Slider, Typography } from "@mui/material/index.js";
+import { convertToCr } from "../utils/HelperMethods.js";
 
 export default function SliderComponent({
   component,

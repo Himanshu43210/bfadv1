@@ -1,5 +1,5 @@
-import { TablePagination } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import TablePagination from "@mui/material/TablePagination/TablePagination.js";
+import Stack from "@mui/material/Stack/Stack.js";
 
 export default function BasicTablePagination({
   dataLength,

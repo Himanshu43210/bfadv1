@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { selectApiData } from "../../redux/utils/selectors";
+import { selectApiData } from "../../redux/utils/selectors.js";
 
 export default function ApiHeading({ component }) {
   const name = component.name;

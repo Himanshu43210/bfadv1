@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ADMIN_DASHBOARD_LOGIN, GET } from "../utils/Const";
-import { callApi } from "../../redux/utils/apiActions";
-import { selectApiStatus } from "../../redux/utils/selectors";
+import { GET } from "../utils/Const.js";
+import { callApi } from "../../redux/utils/apiActions.js";
 
 const LabelMap = ({ component }) => {
   const data = useSelector((state) => state.profile);

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ADMIN_DASHBOARD_LOGIN, POST, SUCCESS } from "../utils/Const";
-import { selectApiData, selectApiStatus } from "../../redux/utils/selectors";
-import { API_ENDPOINTS } from "../../redux/utils/api";
-import { callApi } from "../../redux/utils/apiActions";
-import { storeUserData } from "../../redux/slice/userSlice";
-import { storeParentData } from "../../redux/slice/parentSlice";
-import RenderComponent from "./ComponentRenderer";
+import { ADMIN_DASHBOARD_LOGIN, POST, SUCCESS } from "../utils/Const.js";
+import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
+import { API_ENDPOINTS } from "../../redux/utils/api.js";
+import { callApi } from "../../redux/utils/apiActions.js";
+import { storeUserData } from "../../redux/slice/userSlice.js";
+import { storeParentData } from "../../redux/slice/parentSlice.js";
+import RenderComponent from "./ComponentRenderer.jsx";
 
 const LoginRefresh = ({ component }) => {
   const navigate = useNavigate();

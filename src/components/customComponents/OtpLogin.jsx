@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Typography } from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import SnackBar from './SnackBar';
+import React, { useState } from 'react';
+import { Button, Typography } from '@mui/material/index.js';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle.js';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined.js';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack.js';
+import SnackBar from './SnackBar.jsx';
 import { Link } from 'react-router-dom';
-import LogoutIcon from '@mui/icons-material/Logout';
-import YoutubeSearchedForSharpIcon from '@mui/icons-material/YoutubeSearchedForSharp';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
-import CallIcon from '@mui/icons-material/Call';
-import RecommendIcon from '@mui/icons-material/Recommend';
+import LogoutIcon from '@mui/icons-material/Logout.js';
+import YoutubeSearchedForSharpIcon from '@mui/icons-material/YoutubeSearchedForSharp.js';
+import VisibilityIcon from '@mui/icons-material/Visibility.js';
+import CallIcon from '@mui/icons-material/Call.js';
+import RecommendIcon from '@mui/icons-material/Recommend.js';
 
 function OtpLogin() {
     const [open, setOpen] = useState(false);

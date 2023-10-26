@@ -1,5 +1,5 @@
 import React from 'react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward.js';
 
 function AboutHero() {
     return (

@@ -1,6 +1,6 @@
-import { Slider, TextField } from "@mui/material";
-import MuiButton from "@mui/material/Button";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Slider, TextField } from "@mui/material/index.js";
+import MuiButton from "@mui/material/Button/Button.js";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore.js';
 import React, { useState } from "react";
 
 export const SelectSlider = ({

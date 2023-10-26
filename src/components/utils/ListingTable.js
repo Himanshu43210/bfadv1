@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
-import { Table, Button, Container } from "react-bootstrap";
-import { Button as MuiButton } from "@mui/material";
+import { Table, Button } from "react-bootstrap";
+import { Button as MuiButton } from "@mui/material/index.js";
 import FilterAltIcon from '@mui/icons-material/FilterAlt.js';
 import ReusablePopup from "./ReusablePopup.jsx";
 import FormBuilder from "./FormBuilder.jsx";
-import { FaCaretUp, FaCaretDown, FaSearch } from "react-icons/fa/index.js";
+import { FaCaretUp, FaCaretDown } from "react-icons/fa/index.js";
 import { FaUserEdit, FaRegTrashAlt, FaRegEye } from "react-icons/fa/index.js";
 import { API_ENDPOINTS } from "../../redux/utils/api.js";
 import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress.js";
@@ -25,7 +25,7 @@ import BasicTablePagination from "../customComponents/TablePagination.jsx";
 import { selectApiData } from "../../redux/utils/selectors.js";
 import { useEffect } from "react";
 import { FcApproval, FcRemoveImage } from "react-icons/fc/index.js";
-import _, { find, replace } from "lodash";
+import _ from "lodash";
 import HomeCard from "../customComponents/HomeCard.jsx";
 import SearchCard from "../customComponents/SearchCard.jsx";
 import DetailDataCard from "../customComponents/DetailedDataCard.jsx";
@@ -85,11 +85,12 @@ const ListingTable = ({
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
   const dispatch = useDispatch();
-  const getApiDataFromRedux = useSelector((state) =>
-    selectApiData(state, getDataApi)
-  );
+  const getApiDataFromRedux = useSelector((state) => {
+    console.log('--------- getApiDataFromRedux : state ------', state, getDataApi);
+    return selectApiData(state, getDataApi);
+  });
   const userProfile = useSelector((state) => state[PROFILE]);
-  console.log('>>>>>>>>>>>>>>>> USER PROFILE <<<<<<<<<<<<<<<<<<<<', userProfile);
+  console.log('>>>>>>>>>>>>>>>> USER PROFILE <<<<<<<<<<<<<<<<<<<<', userProfile, apiStatus, getApiDataFromRedux);
   const navigateTo = useNavigate();
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
@@ -111,6 +112,8 @@ const ListingTable = ({
   };
 
   useEffect(() => {
+    console.log('>>>>>>>>>>>>>>> GET API DATA FROM REDUX : outside >>>>>>>>>>>>>>>>>', getApiDataFromRedux);
+
     if (!_.isEmpty(getApiDataFromRedux)) {
       if (getApiDataFromRedux.pageNumber !== activePage)
         setActivePage(getApiDataFromRedux.pageNumber);
@@ -119,6 +122,7 @@ const ListingTable = ({
       }
       if (getApiDataFromRedux.totalItems !== totalItems)
         setTotalItems(getApiDataFromRedux.totalItems);
+      console.log('>>>>>>>>>>>>>>> GET API DATA FROM REDUX >>>>>>>>>>>>>>>>>', getApiDataFromRedux);
       setTableData(getApiDataFromRedux.data);
       allowedTableColumns = roleSpecificDesktopHeaders
         ? roleSpecificDesktopHeaders[userProfile.role]
@@ -677,6 +681,7 @@ const ListingTable = ({
           <DetailDataCard singledata={currentRowData}></DetailDataCard>
         </ReusablePopup>
       )}
+
       {showImgEditModal && (
         <ReusablePopup onHide={toggleImgEditor} onClose={toggleImgEditor}>
           <div className="formheadingcontainer popup_title">Edit Property {getImageLabel(imgEditor?.selectedImgType)}</div>
@@ -702,6 +707,7 @@ const ListingTable = ({
           <p className="lbel warning_text">(Note: Selected images/videos will be deleted on save.)</p>
         </ReusablePopup>
       )}
+
       {!disableRowModal && showRowModal && (
         <ReusablePopup onHide={toogleRowClick} onClose={toogleRowClick}>
           <FormBuilder
@@ -711,6 +717,7 @@ const ListingTable = ({
           />
         </ReusablePopup>
       )}
+
       {showApprovalModal && (
         <ReusablePopup
           onYes={() => {
@@ -723,6 +730,7 @@ const ListingTable = ({
           <p className="lbel">Are you sure want to Approve?</p>
         </ReusablePopup>
       )}
+
       {showRemoveModal && (
         <ReusablePopup
           onYes={() => {
@@ -752,6 +760,7 @@ const ListingTable = ({
           />
         </ReusablePopup>
       )}
+
       <div className="tablediv">
         <div className="table_controls_wrapper">
           <input
@@ -921,6 +930,7 @@ const ListingTable = ({
           </tbody>
         </Table>
       </div>
+
       {(apiStatus === "loading" || showLoader) ? (
         <CircularProgress className="loader-class" />
       ) : (
@@ -934,6 +944,7 @@ const ListingTable = ({
           />
         )
       )}
+
       <SnackBar
         open={snackbar?.open}
         message={snackbar?.message}
