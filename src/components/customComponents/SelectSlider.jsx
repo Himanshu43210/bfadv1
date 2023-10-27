@@ -3,7 +3,7 @@ import MuiButton from "@mui/material/Button/Button.js";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore.js';
 import React, { useState } from "react";
 
-export const SelectSlider = ({
+const SelectSlider = ({
   component,
   handleValueChange,
   stateValue = component.defaultValue,
@@ -98,3 +98,5 @@ export const SelectSlider = ({
     </>
   );
 };
+
+export default SelectSlider;

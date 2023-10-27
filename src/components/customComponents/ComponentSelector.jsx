@@ -44,12 +44,12 @@ import Footer from "./Footer.jsx";
 import Slider from "./Slider.jsx";
 import Heading from "./Heading.jsx";
 import ApiButton from "./ApiButton.jsx";
-import MenuState from "./MenupState.jsx";
-import DynamicHeading from "./ApiHeading.jsx";
+import MenuState from "./MenuState.jsx";
+import DynamicHeading from "./DynamicHeading.jsx";
 import SelectButton from "./SelectButton.jsx";
 import AutoFetchApi from "./AutoFetchApi.jsx";
 import NavigateButton from "./NavigateButton.jsx";
-import { SelectSlider } from "./SelectSlider.jsx";
+import SelectSlider from "./SelectSlider.jsx";
 import RenderComponent from "./ComponentRenderer.jsx";
 import DynamicCardContainer from "./DynamicCardContainer.jsx";
 import { resetFilterData, storeFilterData } from "../../redux/slice/filterSlice.js";
@@ -57,11 +57,11 @@ import { callApi } from "../../redux/utils/apiActions.js";
 import ScrollToTop from "./ScrollToTop.jsx";
 import DetailDataCard from "./DetailedDataCard.jsx";
 import Header from "./Header.jsx";
-import CustomToogleButton from "./ToggleButton.jsx";
+import CustomToogleButton from "./CustomToogleButton.jsx";
 import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress.js";
 import { selectApiStatus } from "../../redux/utils/selectors.js";
-import DashboardListing from "./DashboardListingTable.jsx";
-import CustomRouteButton from "./RouteButton.jsx";
+import DashboardListing from "./DashboardListing.jsx";
+import RouteButton from "./RouteButton.jsx";
 import LabelMap from "./LabelMap.jsx";
 import TableHeader from "./TableHeader.jsx";
 import ApiHandler from "./AutoFetchApiPost.jsx";
@@ -347,7 +347,7 @@ const ComponentSelector = ({ component }) => {
         <DashboardListing component={component} />
       )}
       {component.type === ROUTE_BUTTON && (
-        <CustomRouteButton component={component} />
+        <RouteButton component={component} />
       )}
       {component.type === LABEL_MAP && <LabelMap component={component} />}
       {component.type === HORIZONTAL_LINE && <Line />}

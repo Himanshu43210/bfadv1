@@ -10,7 +10,7 @@ import StatsList from "./components/Pages/adminPages/StatsList.js";
 import Home from "./components/Pages/Home.js";
 import DetailedView from "./components/Pages/DetailedView.js";
 import SearchResult from "./components/Pages/SearchResult.js";
-import FormPage from "./components/customComponents/FormPage.jsx";
+import FormPage from "./components/Pages/adminPages/FormPage.js";
 import ViewListing from "./components/Pages/adminPages/ViewListing.js";
 import ApproveListing from "./components/Pages/adminPages/ApproveListings.js";
 import AccountTabs from './components/Pages/AccountTabs.js';

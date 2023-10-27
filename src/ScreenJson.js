@@ -1370,6 +1370,7 @@ export const VIEW_LISTING = {
           getDataApi: GET_PROPERTY_LIST_BY_USER_ID,
           endpoint: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID],
           dataPoint: GET_PROPERTY_LIST_BY_USER_ID,
+          useParamsFromUrl: [{ id: "userId" }],
           hideAlterActions: true,
           disableRowModal: true,
           showPreviewButton: true,

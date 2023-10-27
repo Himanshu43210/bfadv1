@@ -1,10 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { exec } from 'child_process';
-import { APP_ROUTES, COMPONENTS } from "./src/RouteJson.js";
+import { APP_ROUTES, COMPONENTS, SCREEN_MAPPINGS } from "./src/RouteJson.js";
+import { CONTAINER } from './src/components/utils/Const.js';
 
 const generateFile = async (destPath, payload) => {
-    console.log('----- GENERATE FILE -----', destPath, payload);
+    console.log('----- GENERATE FILE -----', destPath);
     fs.writeFile(destPath, payload)
         .then(() => {
             console.log('+++ SUCCESS generateFile : destPath +++', destPath);
@@ -30,51 +31,72 @@ const generateOtherFiles = () => {
 };
 
 
-const getComponentsList = (componentsData) => {
-    // loop on the json
-    // recursively loop if nested
-    // return the component imports list & 
-    const componentsList = [];
-    const importTemplate = `import COMPONENT_NAME FROM "../customComponents/COMPONENT_NAME.js";`;
-    const addTemplate = `<COMPONENT_NAME component={} />`;
-    const componentDetail = COMPONENTS[componentsData[0].type];
+const generateComponents = (componentsData) => {
+    const result = {
+        imports: '',
+        components: '',
+    };
 
-    // push into the components list
-    // also push the list returned from recursion
+    componentsData.forEach((component) => {
+        if (component.type !== CONTAINER) {
+            if (!result.imports.includes(COMPONENTS[component.type].name)) {
+                result.imports = result.imports + (
+                    COMPONENTS[component.type].import
+                        ? `${COMPONENTS[component.type].import}\n`
+                        : `import ${COMPONENTS[component.type].name} from "../customComponents/${COMPONENTS[component.type].name}.jsx";\n`
+                );
+            }
+            result.components = result.components + `
+                <div className="component_wrapper ${component.className}" key="${component.name}" id="${component.id}">
+                    <${COMPONENTS[component.type].name} component={${JSON.stringify(component)}} />
+                </div>
+            `;
+        } else {
+            const recRes = generateComponents(component.children);
+            result.imports = result.imports + recRes.imports;
+            result.components = result.components + `
+                <div className="component_wrapper ${component.className}" key="${component.name}" id="${component.id}">
+                    ${recRes.components}
+                </div>
+            `;
+        }
+    });
 
-    return componentsList;
+    return result;
 };
 
 
-const screenGenerator = (page, data) => {
-    // generate page component files
-    const importSecData = `
-        import React from "react";
-        import {Card} from "react-bootstrap";
-        import RenderComponent from "../customComponents/ComponentRenderer.jsx";
-    `;
-    const screenFunc = `
-        export default function ${data.key}({jsonToRender}) {
-            return (
-                <Card className={jsonToRender.pageClass}>
-                    {PAGE_CONTENT}
-                </Card>
-            );
-        }
-    `;
-    const pageContents = getComponentsList();
-    const screenPayload = importSecData + screenFunc;
-    console.log('+++++ SCREEN PAYLOAD +++++', screenPayload);
-    generateFile(page, screenPayload);
+// generate page component files
+const screenGenerator = async (page, data) => {
+    console.log('------ SCREEN GENERATOR : page ------', page);
+    if (data.page) {    // copy the page data from file
+        const pageData = await fs.readFile(data.page);
+        generateFile(page, pageData);
+    } else {    // generate page data from json
+        const staticImportsData = `
+            import React from "react";
+            import {Card} from "react-bootstrap";
+        `;
+        const screenFunc = `
+            export default function ${data.key}() {
+                return (
+                    <Card className="${SCREEN_MAPPINGS[data.screen].pageClass}">
+                        {PAGE_CONTENT}
+                    </Card>
+                );
+            }
+        `;
+        const { imports, components } = generateComponents(SCREEN_MAPPINGS[data.screen].children);
+        const screenPayload = staticImportsData + imports + screenFunc.replace("{PAGE_CONTENT}", components);
+        // console.log('+++++ SCREEN PAYLOAD +++++', screenPayload);
+        generateFile(page, screenPayload);
+    }
 };
 
 
 export const routeGenerator = () => {
     const args = process.argv;
-    console.log("****** args ******", args[2]);
-    // read appRoutes from ScreenJson.js
     const appRoutes = APP_ROUTES;
-
     const staticImports = `
         import React from "react";
         import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -107,7 +129,6 @@ export const routeGenerator = () => {
 
         export default App;
     `;
-
     let importSecData = "";
     let routeSecData = "";
 
@@ -115,12 +136,10 @@ export const routeGenerator = () => {
         // append to importSecData
         importSecData += `import ${appRoutes[routeKey].key} from "./components/pages/${appRoutes[routeKey].key}.js"\n`;
         // append to routeSecData
-        routeSecData += `<Route path="${routeKey}" element={<${appRoutes[routeKey].key} jsonToRender={${appRoutes[routeKey].pagePayload.key}} />} />\n`;
+        routeSecData += `<Route path="${routeKey}" element={<${appRoutes[routeKey].key} jsonToRender={${appRoutes[routeKey].screen}} />} />\n`;
         // call to generate the page file
         screenGenerator(path.join(args[2], "src", "components", "pages", `${appRoutes[routeKey].key}.js`), appRoutes[routeKey]);
     }
-
-    // generate the App.js file
     const appPayload = staticImports + importSecData + appFunc.replace("{ROUTES}", routeSecData);
     generateFile(path.join(args[2], "src", "App.js"), appPayload);
 };

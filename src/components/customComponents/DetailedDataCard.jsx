@@ -239,7 +239,7 @@ export default function DetailDataCard({
     <>
       <div className="detailcomponent">
         <div className="detailed-title-component">
-          <p className="card_title">{cardData?.title}</p>
+          <h1 className="card_title">{cardData?.title}</h1>
           <div className="detailicondiv">
             <Tooltip title="Share" arrow classes="tooltip">
               <Button variant="outlined" onClick={handleShareClick} className="btn sc_btn sc_share_btn">
