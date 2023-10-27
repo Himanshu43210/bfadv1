@@ -95,17 +95,6 @@ const ListingTable = ({
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
     : tableHeaders;
-  const url = window.location.href;
-  let qps;
-  if (url.split("?").length > 1) {
-    qps = url.split("?").pop().split("&");
-  }
-  const queries = {};
-  qps?.forEach((qp) => {
-    const kv = qp.split("=");
-    queries[kv[0]] = kv[1];
-  });
-  console.log('---------------- URL -----------------', url, qps, queries);
 
   const applyFilters = (sortingFilter = "") => {
     const filterQuery =
