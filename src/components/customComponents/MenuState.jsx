@@ -8,7 +8,7 @@ import LoginIcon from '@mui/icons-material/Login.js';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded.js';
 import HomeIcon from '@mui/icons-material/Home.js';
 
-const MenupState = ({ component }) => {
+const MenuState = ({ component }) => {
   const [open, setOpen] = React.useState(false);
   const [visited, setVisited] = React.useState(false);
   const navigate = useNavigate();
@@ -59,4 +59,4 @@ const MenupState = ({ component }) => {
   );
 }
 
-export default MenupState;
+export default MenuState;

@@ -43,6 +43,7 @@ const DashboardListing = ({ component }) => {
       disableRowModal={component.disableRowModal}
       showColumnFilter={component.showColumnFilter}
       refreshDataApi={dataApi}
+      useParamsFromUrl={component.useParamsFromUrl}
     />
   );
 };
