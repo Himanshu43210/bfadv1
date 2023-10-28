@@ -2,17 +2,13 @@ import React, { useEffect, useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore.js';
 
 export default function SelectButton({
-  name,
-  options,
+  component,
   handleValueChange,
-  defaultValue,
-  label, //from json
   value, //from screen
-  zIndex
 }) {
   const [clicked, setClicked] = useState(false);
   const [hover, setHover] = useState(false);
-  const [curr, setCurr] = useState(defaultValue?.value || name);
+  const [curr, setCurr] = useState(component.defaultValue?.value || component.name);
   useEffect(() => {
     const onPointerDown = () => {
       if (!hover) {
@@ -24,28 +20,13 @@ export default function SelectButton({
       document.removeEventListener("pointerdown", onPointerDown);
     };
   });
-  if (defaultValue) {
-    handleValueChange(defaultValue);
+  if (component.defaultValue) {
+    handleValueChange(component.defaultValue);
   }
   return (
-    // <Select
-    //   key={name}
-    //   name={name}
-    //   options={options}
-    //   onChange={(selectedOption) => {
-    //     handleValueChange(selectedOption);
-    //   }}
-    //   value={
-    //     (value &&
-    //       (typeof value === "string"
-    //         ? { label: value, value: value }
-    //         : value)) ||
-    //     defaultValue || { label: label, value: "" }
-    //   }
-    // />
     <div
       className={`custom_select_container`}
-      style={{zIndex: zIndex}}
+      style={{zIndex: component.zIndex}}
     >
       <div
         onClick={() => {
@@ -66,7 +47,7 @@ export default function SelectButton({
           }}
           className="custom_select_popup"
         >
-          {options.map((item, i) => {
+          {component.options?.map((item, i) => {
             const val = typeof value === "object" ? value?.value : value;
             const check = val === item.value;
             // (val, check);

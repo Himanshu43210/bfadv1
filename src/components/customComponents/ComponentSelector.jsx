@@ -64,8 +64,7 @@ import DashboardListing from "./DashboardListing.jsx";
 import RouteButton from "./RouteButton.jsx";
 import LabelMap from "./LabelMap.jsx";
 import TableHeader from "./TableHeader.jsx";
-import ApiHandler from "./AutoFetchApiPost.jsx";
-import { USER_ROLE } from "../../ScreenJson.js";
+import AutoFetchApiPost from "./AutoFetchApiPost.jsx";
 import PanelHeader from "./PanelHeader.jsx";
 import LoginRefresh from "./LoginRefresh.jsx";
 import { useEffect, useState } from "react";
@@ -79,6 +78,7 @@ import List from "./List.jsx";
 import AboutHero from "./AboutHero.jsx";
 import ContactForm from "./ContactForm.jsx";
 import Line from "./Line.jsx";
+import Title from "./Title.jsx";
 
 const ComponentSelector = ({ component }) => {
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
@@ -192,24 +192,6 @@ const ComponentSelector = ({ component }) => {
     }
   };
 
-  const getTitle = () => {
-    let idx = component.common
-      ? 0
-      : userProfile.role === USER_ROLE.bfAdmin
-        ? 0
-        : userProfile.role === USER_ROLE.channelPartner
-          ? 1
-          : 2;
-    return (
-      <Heading
-        component={{
-          text: component?.titles[idx],
-          className: "formheadingcontainer",
-        }}
-      />
-    );
-  };
-
   useEffect(() => {
     // just read the querystring & update the filters accordingly and also update the querystring on filters change
 
@@ -231,21 +213,15 @@ const ComponentSelector = ({ component }) => {
         <CircularProgress className="loader-class" />
       )}
       {component.type === AUTO_FETCH_API && (
-        <AutoFetchApi url={component.api} method={GET} params={component.params} />
+        <AutoFetchApi component={component} url={component.api} method={GET} params={component.params} />
       )}
       {component.type === AUTO_FETCH_API_POST && (
-        <AutoFetchApi url={component.api} method={POST} data={component.data} />
+        <AutoFetchApi component={component} />
       )}
       {component.type === AUTO_FETCH_API_USER && (
-        <ApiHandler
-          url={component.api}
-          method={component.method}
-          data={component.data}
-          userId={component.userId}
-          user={component.user}
-        />
+        <AutoFetchApiPost component={component} />
       )}
-      {component.type === TITLE && getTitle()}
+      {component.type === TITLE && <Title component={component} />}
       {component.type === CONTAINER && (
         <RenderComponent jsonToRender={component} />
       )}
@@ -255,13 +231,9 @@ const ComponentSelector = ({ component }) => {
       {component.type === IMAGE_BANNER && <Banner component={component} />}
       {component.type === SELECT && (
         <SelectButton
-          name={component.name}
-          options={component.options}
-          defaultValue={component.defaultValue}
+          component={component}
           handleValueChange={handleValueChange}
-          label={component.label}
           value={sliceData[component.name]}
-          zIndex={component.zIndex}
         />
       )}
       {component.type === SELECT2 && (
@@ -281,12 +253,8 @@ const ComponentSelector = ({ component }) => {
       )}
       {component.type === API_BUTTON && (
         <ApiButton
-          apiType={component.apiType}
-          api={component.api}
-          buttonLabel={component.buttonLabel}
-          navigate={component.navigate}
+          component={component}
           data={sliceData}
-          btnClass={component.btnClass}
         />
       )}
       {component.type === HEADING && <Heading component={component} />}
@@ -302,11 +270,10 @@ const ComponentSelector = ({ component }) => {
         />
       )}
       {component.type === DETAILED_VIEW && (
-        // <DetailCard apiName={component.apiName} />
         <DetailDataCard component={component} />
       )}
       {component.type === NAVIGATE_BUTTON && (
-        <NavigateButton to={component.navigate} label={component.buttonLabel} btnClass={component.btnClass} />
+        <NavigateButton component={component} />
       )}
       {component.type === PAGE_FOOTER && <Footer component={component} />}
       {component.type === PAGE_HEADER && <Header component={component} isMobile={isMobile} />}

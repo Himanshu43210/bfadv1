@@ -789,7 +789,7 @@ const ListingTable = ({
                   <div
                     onClick={() => handleSort(allowedTableColumns[headerLabel])}
                   >
-                    {headerLabel}
+                    {showFilters ? '' : headerLabel}
                   </div>
                   {sortColumn === allowedTableColumns[headerLabel] &&
                     (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
@@ -805,6 +805,7 @@ const ListingTable = ({
                       value={
                         tableFilter[allowedTableColumns[headerLabel]] || ""
                       }
+                      placeholder={headerLabel}
                     />
                   )}
                 </th>

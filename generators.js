@@ -1,8 +1,10 @@
 import fs from 'fs/promises';
 import path from 'path';
+import readline from 'readline';
 import { exec } from 'child_process';
 import { APP_ROUTES, COMPONENTS, SCREEN_MAPPINGS } from "./src/RouteJson.js";
 import { CONTAINER } from './src/components/utils/Const.js';
+import { createReadStream } from 'fs';
 
 const generateFile = async (destPath, payload) => {
     console.log('----- GENERATE FILE -----', destPath);
@@ -17,6 +19,9 @@ const generateFile = async (destPath, payload) => {
 
 
 const generateOtherFiles = () => {
+    // create project
+    // copy package.json & package-lock.json
+    // install dependencies
     // copy/replace public foldergenerateOtherFiles
     // other files from root & src folder
     // redux, utils, components(except Pages)
@@ -66,6 +71,24 @@ const generateComponents = (componentsData) => {
 };
 
 
+const getCodeFromFile = async (filePath) => {
+    let result = '', append = false;
+    const data = await fs.readFile(filePath, "utf8");
+    data.toString().split("\n").map(line => {
+        if (line.includes("ComponentSelector")) {
+            append = true;
+        } else if (line.includes("return (")) {
+            append = false;
+            // close
+        } else if (append === true) {
+            result += line + '\n';
+        }
+    });
+    console.log('=========== RESULT ===========', result);
+    return result;
+};
+
+
 // generate page component files
 const screenGenerator = async (page, data) => {
     console.log('------ SCREEN GENERATOR : page ------', page);
@@ -79,6 +102,7 @@ const screenGenerator = async (page, data) => {
         `;
         const screenFunc = `
             export default function ${data.key}() {
+                {PAGE_DATA_FUNC}
                 return (
                     <Card className="${SCREEN_MAPPINGS[data.screen].pageClass}">
                         {PAGE_CONTENT}
@@ -86,8 +110,9 @@ const screenGenerator = async (page, data) => {
                 );
             }
         `;
+        const pageDataFunc = await getCodeFromFile('./src/components/customComponents/ComponentSelector.jsx');
         const { imports, components } = generateComponents(SCREEN_MAPPINGS[data.screen].children);
-        const screenPayload = staticImportsData + imports + screenFunc.replace("{PAGE_CONTENT}", components);
+        const screenPayload = staticImportsData + imports + screenFunc.replace("{PAGE_CONTENT}", components).replace("{PAGE_DATA_FUNC}", pageDataFunc);
         // console.log('+++++ SCREEN PAYLOAD +++++', screenPayload);
         generateFile(page, screenPayload);
     }

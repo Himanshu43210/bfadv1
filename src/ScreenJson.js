@@ -241,6 +241,7 @@ export const ACCOUNT_TABS_SCREEN = {
     HEADER,
     {
       type: AUTO_FETCH_API_POST,
+      method: POST,
       api: API_ENDPOINTS[GET_SEARCH_RESULT],
       className: "header",
     },
@@ -1280,7 +1281,8 @@ export const AD_MASTER_TABLE = {
           dataPoint: GET_ADMIN_PROPERTY_DATA,
           onRefreshApiType: POST,
           disableRowModal: true,
-          showPreviewButton: true
+          showPreviewButton: true,
+          // showColumnFilter: true
         },
         {
           type: ROUTE_BUTTON,

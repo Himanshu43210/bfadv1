@@ -336,7 +336,9 @@ export default function DetailDataCard({
         <div className="lowercontainer">
           <div className="detail-info-div">
             <h3 className="detail_title">{cardData?.detailTitle}</h3>
-            {cardData?.description}
+            <pre className="detail_desc">
+              {cardData?.description}
+            </pre>
             <Button variant="contained" className="detail-button detail_price_btn">
               {"₹ " + price + " Cr."}
             </Button>
