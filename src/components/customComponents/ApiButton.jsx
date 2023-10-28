@@ -4,12 +4,8 @@ import ApiHandler from "../../redux/utils/apiHandler.js";
 import { DELETE, GET, POST, PUT } from "../utils/Const.js";
 
 export default function ApiButton({
-  apiType,
-  api,
+  component,
   data,
-  buttonLabel,
-  navigate,
-  btnClass,
   newTab = false
 }) {
   const apiHeader = { "Content-Type": "application/json" };
@@ -17,53 +13,53 @@ export default function ApiButton({
 
   const handleApiCall = async (doFetch) => {
     await doFetch(); // Wait for API call
-    if (navigate) {
+    if (component.navigate) {
       if (newTab) {
-        window.open(navigate, "_blank");
+        window.open(component.navigate, "_blank");
       }
       // If navigate prop is provided
-      navigateTo(navigate); // Navigate to the given page
+      navigateTo(component.navigate); // Navigate to the given page
     }
   };
 
   return (
     <>
       {/* For GET request */}
-      {apiType === GET && (
-        <ApiHandler method={GET} url={api} params={data}>
+      {component.apiType === GET && (
+        <ApiHandler method={GET} url={component.api} params={data}>
           {(doFetch) => (
-            <button className={`api_btn ${btnClass}`} onClick={() => handleApiCall(doFetch)}>
-              {buttonLabel}
+            <button className={`api_btn ${component.btnClass}`} onClick={() => handleApiCall(doFetch)}>
+              {component.buttonLabel}
             </button>
           )}
         </ApiHandler>
       )}
       {/* For POST request */}
-      {apiType === POST && (
-        <ApiHandler method={POST} url={api} data={data} headers={apiHeader}>
+      {component.apiType === POST && (
+        <ApiHandler method={POST} url={component.api} data={data} headers={apiHeader}>
           {(doFetch) => (
-            <button className={`api_btn ${btnClass}`} onClick={() => handleApiCall(doFetch)}>
-              {buttonLabel}
+            <button className={`api_btn ${component.btnClass}`} onClick={() => handleApiCall(doFetch)}>
+              {component.buttonLabel}
             </button>
           )}
         </ApiHandler>
       )}
       {/* For PUT request */}
-      {apiType === PUT && (
-        <ApiHandler method={PUT} url={api} data={data} headers={apiHeader}>
+      {component.apiType === PUT && (
+        <ApiHandler method={PUT} url={component.api} data={data} headers={apiHeader}>
           {(doFetch) => (
-            <button className={`api_btn ${btnClass}`} onClick={() => handleApiCall(doFetch)}>
-              {buttonLabel}
+            <button className={`api_btn ${component.btnClass}`} onClick={() => handleApiCall(doFetch)}>
+              {component.buttonLabel}
             </button>
           )}
         </ApiHandler>
       )}
       {/* For DELETE request */}
-      {apiType === DELETE && (
-        <ApiHandler method={DELETE} url={api}>
+      {component.apiType === DELETE && (
+        <ApiHandler method={DELETE} url={component.api}>
           {(doFetch) => (
-            <button className={`api_btn ${btnClass}`} onClick={() => handleApiCall(doFetch)}>
-              {buttonLabel}
+            <button className={`api_btn ${component.btnClass}`} onClick={() => handleApiCall(doFetch)}>
+              {component.buttonLabel}
             </button>
           )}
         </ApiHandler>

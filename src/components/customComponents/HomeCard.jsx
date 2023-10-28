@@ -132,15 +132,17 @@ export default function HomeCard({
             readOnly
           />
           <ApiButton
-            apiType={apiType}
-            api={onClickApi}
-            buttonLabel={`₹ ${convertToCr(element?.price)} Cr.`}
+            component={{
+              apiType: apiType,
+              api: onClickApi,
+              buttonLabel: `₹ ${convertToCr(element?.price)} Cr.`,
+              btnClass: `btn price_btn`,
+              // navigate: (!disableOnClickNavigate && `/${element?.title?.replaceAll(
+              //   " ",
+              //   "-"
+              // )}/${element._id}`),
+            }}
             queryParams={{ id: element?._id }}
-            // navigate={!disableOnClickNavigate && `/${element?.title?.replaceAll(
-            //   " ",
-            //   "-"
-            // )}/${element._id}`}
-            btnClass="btn price_btn"
           />
         </div>
       </CardActionArea>

@@ -53,8 +53,8 @@ export const COMPONENTS = {
     [AUTO_FETCH_API]: { name: "AutoFetchApi", path: "", import: "" },
     [AUTO_FETCH_API_POST]: { name: "AutoFetchApi", path: "", import: "" },
     [AUTO_FETCH_API_USER]: { name: "ApiHandler", path: "", import: "" },
-    [TITLE]: { name: "", path: "", import: "" },      // create component
-    [CONTAINER]: { name: "RenderComponent", path: "", import: "" },    // call self
+    [TITLE]: { name: "Title", path: "", import: "" },
+    [CONTAINER]: { name: "RenderComponent", path: "", import: "" },
     [PANEL_HEADER]: { name: "PanelHeader", path: "", import: "" },
     [IMAGE_BANNER]: { name: "Banner", path: "", import: "" },
     [SELECT]: { name: "SelectButton", path: "", import: "" },

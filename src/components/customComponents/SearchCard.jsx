@@ -162,12 +162,14 @@ export default function SearchCard({
             </div>
             <div className="searchpagebuttondiv">
               <ApiButton
-                apiType={apiType}
-                api={onClickApi}
-                buttonLabel={`₹ ${element.price / 10000000} Cr.`}
+                component={{
+                  apiType: apiType,
+                  api: onClickApi,
+                  buttonLabel: `₹ ${element.price / 10000000} Cr.`,
+                  btnClass: `btn price_btn`,
+                  // navigate: (!disableOnClickNavigate ? cardDetailUrl : null),
+                }}
                 queryParams={{ id: element._id }}
-                // navigate={!disableOnClickNavigate ? cardDetailUrl : null}
-                btnClass={`btn price_btn`}
                 newTab={true}
               />
               <Typography className="view_details" fontWeight="lg" onClick={() => {

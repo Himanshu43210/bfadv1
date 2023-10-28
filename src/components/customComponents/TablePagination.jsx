@@ -8,7 +8,7 @@ export default function BasicTablePagination({
   rowPerPage,
   handleRowPerPagChange,
 }) {
-    return (
+  return (dataLength === currentPage * rowPerPage || !dataLength) ? null : (
     <Stack spacing={2}>
       <TablePagination
         component="div"

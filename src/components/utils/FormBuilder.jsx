@@ -93,7 +93,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
   return (
     <form className="addbtn">
       <div className="formcontainer">
-        {fields.map((field) => (
+        {fields?.map((field) => (
           <div key={field.name} className={`subform ${field.parentclassName}`}>
             <div className={`label_and_input_wrapper ${field.className} ${field.type === "textarea" ? 'textarea_wrapper' : ''}`}>
               <div className="lablediv">

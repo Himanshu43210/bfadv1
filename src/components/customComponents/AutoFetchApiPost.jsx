@@ -2,23 +2,20 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "../../redux/utils/apiActions.js"; // Adjust path as needed
 
-export default function ApiHandler({
-  method,
-  url,
-  data = null,
+export default function AutoFetchApiPost({
+  component,
   headers = null,
   children,
-  user,
-  userId,
 }) {
+  const data = component.data || null;
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.profile);
 
-  let uurl = url;
-  if (user) {
+  let uurl = component.api;
+  if (component.user) {
     uurl =
-      url +
-      (userId ? "?userId=" : "?id=") +
+      component.api +
+      (component.userId ? "?userId=" : "?id=") +
       userProfile._id +
       (userProfile.role ? "&role=" + userProfile.role : "");
   }
@@ -26,12 +23,12 @@ export default function ApiHandler({
   const doFetch = useCallback(() => {
     const options = {
       url: uurl,
-      method: method,
+      method: component.method,
       headers: headers,
       data: data,
     };
     dispatch(callApi(options));
-  }, [dispatch, uurl, method, headers, data]);
+  }, [dispatch, uurl, component.method, headers, data]);
 
   // If there are no children, call the API immediately
   if (!children) {

@@ -3,23 +3,21 @@ import { useDispatch } from "react-redux";
 import { callApi } from "../../redux/utils/apiActions.js"; // Adjust path as needed
 
 export default function ApiHandler({
-  method,
-  url,
-  data = null,
-  headers = null,
+  component,
   children,
 }) {
   const dispatch = useDispatch();
 
   const doFetch = useCallback(() => {
     const options = {
-      url: url,
-      method: method,
-      headers: headers,
-      data: data,
+      url: component.api,
+      method: component.method,
+      headers: component.headers,
+      data: component.data,
+      params: component.params
     };
     dispatch(callApi(options));
-  }, [dispatch, url, method, headers, data]);
+  }, [dispatch, component]);
 
   // If there are no children, call the API immediately
   if (!children) {
