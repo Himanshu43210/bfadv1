@@ -19,6 +19,7 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone.js';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp.js';
 import CloseIcon from '@mui/icons-material/Close.js';
 import FullscreenIcon from '@mui/icons-material/Fullscreen.js';
+import { Helmet } from "react-helmet";
 
 export default function DetailDataCard({
   component,
@@ -237,6 +238,10 @@ export default function DetailDataCard({
 
   return (
     <>
+      <Helmet>
+        <title>{cardData?.title}</title>
+        <meta name="description" content={cardData?.description} />
+      </Helmet>
       <div className="detailcomponent">
         <div className="detailed-title-component">
           <h1 className="card_title">{cardData?.title}</h1>
