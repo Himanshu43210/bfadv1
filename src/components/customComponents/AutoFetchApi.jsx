@@ -9,7 +9,6 @@ export default function ApiHandler({
   const dispatch = useDispatch();
 
   const doFetch = useCallback(() => {
-    console.log('------------------ API HANDLER ----------------', component);
     const options = {
       url: component.api,
       method: component.method,
@@ -22,7 +21,6 @@ export default function ApiHandler({
 
   // If there are no children, call the API immediately
   if (!children) {
-    console.log('++++++++++++++++ CALLING DO FETCH +++++++++++++++++++');
     doFetch();
     return null;
   }

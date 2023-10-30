@@ -3,6 +3,7 @@ import { Slider, Typography } from "@mui/material/index.js";
 import { convertToCr } from "../utils/HelperMethods.js";
 import { useDispatch, useSelector } from "react-redux";
 import { storeFilterData } from "../../redux/slice/filterSlice.js";
+import { useLocation } from "react-router-dom";
 
 export default function SliderComponent({
   component,
@@ -11,6 +12,7 @@ export default function SliderComponent({
   sliderClass,
   setSliceData
 }) {
+  const location = useLocation();
   const name = component.text;
   const minVal = component.minValue;
   const maxVal = component.maxValue;
@@ -53,7 +55,7 @@ export default function SliderComponent({
         })
       );
     }
-  }, []);
+  }, [location]);
 
   // (value,2141)
   return (

@@ -38,7 +38,7 @@ export default function DetailDataCard({
     });
   }
   const apiStatus = useSelector((state) =>
-    selectApiStatus(state, component.loadingApi || "")
+    selectApiStatus(state, component?.loadingApi || "")
   );
 
   useEffect(() => {
@@ -419,7 +419,7 @@ export default function DetailDataCard({
         {component ? component.moreOptionText : singledata.moreOptionText}
       </div>
       <HORIZONTAL_LINE />
-      {component.loadingApi && apiStatus === LOADING && (
+      {component?.loadingApi && apiStatus === LOADING && (
         <CircularProgress className="loader-class" />
       )}
     </>
