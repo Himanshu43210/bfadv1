@@ -985,7 +985,15 @@ export const STATS_LIST = {
                   },
                   removeApi: REJECT_PROPERTY,
                   user: true,
-                  mobileHeaders: { Name: "name", Role: "role" },
+                  mobileHeaders: {
+                    "Company Name": "name",
+                    "Mobile Number": "phoneNumber",
+                    City: "city",
+                    "Total Listings": "total_count",
+                    Approved: "approved_count",
+                    Pending: "pending_count",
+                    Rejected: "rejected_count",
+                  },
                   fieldConst: newUserConst,
                   editApi: ALTER_USER_DATA,
                   deleteApi: DELETE_USER_DATA,
@@ -1330,14 +1338,6 @@ export const VIEW_LISTING = {
           text: "All Listing",
           className: "formheadingcontainer",
         },
-        // {
-        //   type: API_BUTTON,
-        //   name: "refresh",
-        //   buttonLabel: "Refresh",
-        //   apiType: GET,
-        //   api: API_ENDPOINTS[GET_PROPERTY_LIST_BY_USER_ID],
-        //   btnClass: "btn refresh_btn standalone_btn"
-        // },
         {
           type: DASHBOARD_LISTING,
           desktopHeaders: {
