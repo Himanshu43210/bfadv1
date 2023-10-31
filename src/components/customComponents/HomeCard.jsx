@@ -75,7 +75,7 @@ export default function HomeCard({
           alt={"360-image-icon"}
         /> */}
         <CardContent className="home_card_content">
-          <a href={cardDetailUrl} className="property_link" target="_blank">
+          <a href={!disableOnClickNavigate ? cardDetailUrl : null} className="property_link" target="_blank">
             <Typography gutterBottom variant="h6" component="div" className="title">
               {element?.title}
             </Typography>

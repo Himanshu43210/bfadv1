@@ -16,8 +16,9 @@ const generateFile = async (destPath, payload) => {
 };
 
 
-const generateOtherFiles = async (skip = []) => {
+const generateOtherFiles = async (dest, skip = []) => {
     const filterDir = (src, dest) => {
+        console.log('--------- FILTER DIR --------', src);
         const found = skip?.filter(skipItem => src.includes(skipItem));
         if (found && found.length > 0) {
             return false;
@@ -25,7 +26,7 @@ const generateOtherFiles = async (skip = []) => {
             return true;
         }
     };
-    await fs.cp('./', '../test', { recursive: true, filter: filterDir });
+    await fs.cp('./', dest, { recursive: true, filter: filterDir });
 };
 
 
@@ -162,22 +163,8 @@ export const routeGenerator = () => {
     `;
     let importSecData = "";
     let routeSecData = "";
-
-    for (const routeKey of Object.keys(APP_ROUTES)) {
-        // append to importSecData
-        importSecData += `import ${APP_ROUTES[routeKey].key} from "./components/pages/${APP_ROUTES[routeKey].key}.js"\n`;
-        // append to routeSecData
-        routeSecData += `<Route path="${routeKey}" element={<${APP_ROUTES[routeKey].key} jsonToRender={${APP_ROUTES[routeKey].screen}} />} />\n`;
-        // call to generate the page file
-        screenGenerator(path.join(args[2], "src", "components", "pages", `${APP_ROUTES[routeKey].key}.js`), APP_ROUTES[routeKey]);
-    }
-    for (const pageKey of Object.keys(OTHER_PAGES)) {
-        screenGenerator(path.join(args[2], "src", "components", "pages", `${OTHER_PAGES[pageKey].key}.js`), OTHER_PAGES[pageKey]);
-    }
-    const appPayload = staticImports + importSecData + appFunc.replace("{ROUTES}", routeSecData);
-    generateFile(path.join(args[2], "src", "App.js"), appPayload);
     // generate other files but skip the proved files or folders
-    generateOtherFiles(["node_modules", "/pages/", "generators.js", "sitemap.js"])
+    generateOtherFiles(process.argv[2], ["node_modules", "/pages/", "generators.js", "sitemap.js", ".git/"])
         .then(() => {
             console.log('========== OTHER FILES GENERATED ==========');
             // install dependencies at the specified location
@@ -192,6 +179,19 @@ export const routeGenerator = () => {
                 }
                 console.log(`>>> STDOUT : ${stdout} <<<`);
             });
+            for (const routeKey of Object.keys(APP_ROUTES)) {
+                // append to importSecData
+                importSecData += `import ${APP_ROUTES[routeKey].key} from "./components/pages/${APP_ROUTES[routeKey].key}.js"\n`;
+                // append to routeSecData
+                routeSecData += `<Route path="${routeKey}" element={<${APP_ROUTES[routeKey].key} jsonToRender={${APP_ROUTES[routeKey].screen}} />} />\n`;
+                // call to generate the page file
+                screenGenerator(path.join(args[2], "src", "components", "pages", `${APP_ROUTES[routeKey].key}.js`), APP_ROUTES[routeKey]);
+            }
+            for (const pageKey of Object.keys(OTHER_PAGES)) {
+                screenGenerator(path.join(args[2], "src", "components", "pages", `${OTHER_PAGES[pageKey].key}.js`), OTHER_PAGES[pageKey]);
+            }
+            const appPayload = staticImports + importSecData + appFunc.replace("{ROUTES}", routeSecData);
+            generateFile(path.join(args[2], "src", "App.js"), appPayload);
         });
 };
 

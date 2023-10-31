@@ -85,7 +85,7 @@ export default function SearchCard({
         />
         <CardContent className="card_details">
           <div className="detailcardheadingdiv">
-            <a href={cardDetailUrl} className="property_link" target="_blank">
+            <a href={!disableOnClickNavigate ? cardDetailUrl : null} className="property_link" target="_blank">
               <Typography variant="h5" gutterBottom className="detailcardheading">
                 {element.title}
               </Typography>
