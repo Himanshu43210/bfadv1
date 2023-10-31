@@ -56,8 +56,10 @@ export default function PropertyManagement() {
   return (
     <>
       {!tableData && (
-        <AutoFetchApi url={dataApi} method={POST}
-          data={{ sortColumn: "updatedAt", sortType: "desc" }}
+        <AutoFetchApi component={{
+            api: dataApi, method: POST,
+            data: { sortColumn: "updatedAt", sortType: "desc" }
+          }}
         />
       )}
       {apiStatus === LOADING ? (
