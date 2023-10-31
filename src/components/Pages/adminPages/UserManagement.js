@@ -38,7 +38,7 @@ export default function UserManagement() {
   );
   return (
     <>
-      {!tableData && <AutoFetchApi url={dataApi} method={GET} />}
+      {!tableData && <AutoFetchApi component={{ api: dataApi, method: GET }} />}
       {apiStatus === LOADING ? (
         <CircularProgress className="loader-class" />
       ) : (
