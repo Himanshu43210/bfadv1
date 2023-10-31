@@ -37,8 +37,14 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
 
   const finalizeData = (doNotValidateFields = []) => {
     const errors = validateAllFields(doNotValidateFields);
-    if (isValueEmpty(errors)) {
+    const isChanged = checkForChange();
+    if (isValueEmpty(errors) && isChanged) {
       return formData;
+    } else if (!isChanged) {
+      console.error(
+        "No field is changed."
+      );
+      return null;
     } else {
       console.error(
         "There are errors in the form. Please correct them before saving."
@@ -58,23 +64,30 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
     const errors = { ...fieldErrors };
     console.log(field, value);
     if (field.isRequired && isValueEmpty(value)) {
-      console.log("inside 3 this ");
       errors[field.name] =
         field.requiredErrorMessage || "This field is required.";
     } else if (field.regex && !field.regex.test(value)) {
-      console.log("inside 2 this");
       errors[field.name] =
         field.regexErrorMessage || "Regex is not correct in this field";
     } else {
-      console.log("inside 1 this");
       delete errors[field.name];
     }
     setFormData((prevFormData) => ({
       ...prevFormData,
       [field.name]: value,
     }));
+    // formData[field.name] !== value && propsFormData[field.name] !== value
     setFieldErrors(errors);
     console.log(formData, errors);
+  };
+
+  const checkForChange = () => {
+    for (const field of Object.keys(formData)) {
+      if (formData[field] !== propsFormData[field]) {
+        return true;
+      }
+    }
+    return false;
   };
 
   const handleCurrencyChange = (field, existingTotal) => (e, unitType) => {

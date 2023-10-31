@@ -3,17 +3,20 @@ import { FaClipboardList, FaUsers, FaUserTie, FaBuilding } from "react-icons/fa/
 import { AiFillHome, AiOutlineLogout } from "react-icons/ai/index.js";
 import {
   ADMIN_DASHBOARD,
+  CHANNEL_PARTNER,
   CUSTOMER_MANAGEMENT,
   MASTER_MANAGEMENT,
   PROPERTY_MANAGEMENT,
   USER_MANAGEMENT,
 } from "./Const.js";
 import { Button } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { resetApiStatus } from "../../redux/slice/apiSlice.js";
 
 function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
   const dispatch = useDispatch();
+  const userProfile = useSelector((state) => state.profile);
+
   return (
     <div className="sidebarcontainer">
       <div className="panel-nav-link" id="sidebar">
@@ -48,14 +51,6 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
                 <FaUserTie className="admin-panel-icons" />
                 <h6 className="panel_link_label">User</h6>
               </Button>
-
-              {/* <Button
-                  onClick={() => handlePageClick(MASTER_MANAGEMENT)}
-                  className="panel-link"
-                >
-                  <FaUserShield className="admin-panel-icons" />
-                  <h6>Master</h6>
-                </Button> */}
             </>
           )}
         </>
@@ -66,14 +61,16 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
           <FaBuilding className="admin-panel-icons" />
           <h6 className="panel_link_label">Property</h6>
         </Button>
-        <Button
-          onClick={() => handlePageClick(CUSTOMER_MANAGEMENT)}
-          className="panel-link"
-        >
-          <FaUsers className="admin-panel-icons" />
-          {/* <PeopleAltRoundedIcon className="admin-panel-icons" /> */}
-          <h6 className="panel_link_label">Customer</h6>
-        </Button>
+        {userProfile.role === CHANNEL_PARTNER && (
+          <Button
+            onClick={() => handlePageClick(CUSTOMER_MANAGEMENT)}
+            className="panel-link"
+          >
+            <FaUsers className="admin-panel-icons" />
+            {/* <PeopleAltRoundedIcon className="admin-panel-icons" /> */}
+            <h6 className="panel_link_label">Customer</h6>
+          </Button>
+        )}
         <Button
           onClick={() => {
             dispatch(resetApiStatus(onLogoutClick));

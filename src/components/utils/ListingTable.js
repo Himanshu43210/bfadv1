@@ -330,7 +330,7 @@ const ListingTable = ({
         });
       }
     } else {
-      setSnackbar({ open: true, message: `Empty required field(s).`, status: -1 });
+      setSnackbar({ open: true, message: `Empty required field(s) or no change.`, status: -1 });
     }
   };
 

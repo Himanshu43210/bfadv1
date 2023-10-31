@@ -42,7 +42,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sitemap": "node ./src/sitemap.js",
-    "generate": "node generators.js ../builder_floor/"
+    "generate": "node generators.js ../bf_gen"
   },
   "eslintConfig": {
     "extends": [
