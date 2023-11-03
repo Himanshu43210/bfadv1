@@ -230,7 +230,7 @@ export const HOME_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
-    // { type: CHATBOT }
+    { type: CHATBOT }
   ],
 };
 
@@ -327,7 +327,7 @@ export const CARD_DETAILS_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
-    // { type: CHATBOT }
+    { type: CHATBOT }
   ],
 };
 
@@ -600,7 +600,7 @@ export const SEARCH_RESULT = {
         },
         FOOTER,
         SCROLLTOP,
-        // { type: CHATBOT }
+        { type: CHATBOT }
       ],
     },
 
@@ -703,7 +703,7 @@ export const ABOUTUS_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
-    // { type: CHATBOT }
+    { type: CHATBOT }
   ]
 };
 
@@ -814,7 +814,7 @@ export const BLOG_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
-    // { type: CHATBOT }
+    { type: CHATBOT }
   ]
 };
 
