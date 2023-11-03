@@ -29,14 +29,6 @@ function Chatbot() {
         //         text: "recommend me a property under 3 crore"
         //     }
         // },
-        // {
-        //     timestamp: new Date(),
-        //     type: "res",
-        //     payload: {
-        //         text: "Here's a recommended property under 3 crore.",
-        //         link: "https://builderfloor.com/builderFloorDetails?title=Ultra-Luxury-Builder-Floor-in-Gurgaon&id=651eb08e2b36cb3df90f2a1f",
-        //     }
-        // },
     ]);
     const [query, setQuery] = useState("");
 
@@ -54,32 +46,54 @@ function Chatbot() {
         const ques = query.trim();
         if (ques !== "") {
             setReceiving(true);
+            const queryChat = {
+                timestamp: new Date(),
+                type: "query",
+                payload: {
+                    text: ques
+                }
+            };
+            setChats((currChats) => [...currChats, queryChat]);
+            setQuery("");
             const options = {
                 api: API_ENDPOINTS["chat"],
                 method: POST,
                 headers: { "Content-Type": "application/json" },
                 data: {
-                    userQuestion: ques,
-                    history: "",
-                    openai_key: "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"
+                    "userQuestion": ques,
+                    "history": chats[chats.length - 1]?.payload?.text,
+                    "openai_key": "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"
                 }
             };
-            dispatch(callApi(options))
-                .then((res) => {
-                    console.log('++++++ CHAT RES +++++', res);
-                    const newChat = {
-                        timestamp: new Date(),
-                        type: "query",
-                        payload: {
-                            text: query
-                        }
-                    };
-                    setChats([...chats, newChat]);
-                    setQuery("");
-                    setReceiving(false);
-                }).catch((error) => {
-                    console.log('----- Chat error -----', error);
-                });
+            fetch('https://itsolutionshub.com/chat', {
+                method: "POST",
+                headers: options.headers,
+                body: JSON.stringify(options.data)
+            }).then((res) => {
+                return res.json();
+            }).then((data) => {
+                console.log('++++++ CHATBOT RESPONSE ++++++', data);
+                setReceiving(false);
+                const resChat = {
+                    timestamp: new Date(),
+                    type: "res",
+                    payload: {
+                        text: data?.data
+                    }
+                };
+                setChats((currChats) => [...currChats, resChat]);
+            }).catch((error) => {
+                console.log('====== CHATBOT ERROR ======', error);
+            });
+            // dispatch(callApi(options))
+            //     .then((res) => {
+            //         console.log('++++++ CHAT RES +++++', res, res.payload?.data);
+            //         if (res.payload?.data) {
+
+            //         }
+            //     }).catch((error) => {
+            //         console.log('----- Chat error -----', error);
+            //     });
         }
     };
 
