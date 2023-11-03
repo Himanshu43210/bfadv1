@@ -7,6 +7,7 @@ import CallIcon from '@mui/icons-material/Call.js';
 import LoginIcon from '@mui/icons-material/Login.js';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded.js';
 import HomeIcon from '@mui/icons-material/Home.js';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded.js';
 
 const MenuState = ({ component }) => {
   const [open, setOpen] = React.useState(false);
@@ -33,6 +34,8 @@ const MenuState = ({ component }) => {
         return <ArticleIcon className='menu_item_icon' />;
       case "ORG":
         return <PeopleAltRoundedIcon className='menu_item_icon' />;
+      case "DASHBOARD":
+        return <DashboardRoundedIcon className='menu_item_icon' />
       default:
         return null;
     }

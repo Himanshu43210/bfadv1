@@ -16,6 +16,7 @@ import ApproveListing from "./components/Pages/adminPages/ApproveListings.js";
 import AccountTabs from './components/Pages/AccountTabs.js';
 import AboutUs from "./components/Pages/AboutUs.js";
 import Blog from "./components/Pages/Blog.js";
+import GeneralFormPage from "./components/pages/GeneralFormPage.js";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/searchResult" element={<SearchResult />} />
           <Route path="/about_us" element={<AboutUs />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/agent/form" element={<GeneralFormPage />} />
           <Route path="/:pid" element={<DetailedView />} />
           <Route path="/account/tabs" element={<AccountTabs />} />
           <Route path="/admin/form" element={<FormPage />} />
