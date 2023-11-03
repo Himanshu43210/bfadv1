@@ -4,10 +4,15 @@ import SmartToyRoundedIcon from '@mui/icons-material/SmartToyRounded.js';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle.js';
 import SendRoundedIcon from '@mui/icons-material/SendRounded.js';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined.js';
+import { useDispatch } from 'react-redux';
+import { API_ENDPOINTS } from '../../redux/utils/api';
+import { POST } from '../utils/Const';
+import { callApi } from '../../redux/utils/apiActions';
 
 function Chatbot() {
     const [showChatbot, setShowChatbot] = useState(false);
     const [receiving, setReceiving] = useState(false);
+    const dispatch = useDispatch();
     const [chats, setChats] = useState([
         {
             timestamp: new Date(),
@@ -35,10 +40,6 @@ function Chatbot() {
     ]);
     const [query, setQuery] = useState("");
 
-    const formatDate = (timestamp) => {
-
-    };
-
     const handleBotBtnClick = () => {
         setShowChatbot(!showChatbot);
     };
@@ -49,21 +50,36 @@ function Chatbot() {
     };
 
     const handleChatSubmit = (e) => {
-        if (receiving) setReceiving(false);
         e.preventDefault();
-        if (query.trim() !== "") {
-            const newChat = {
-                timestamp: new Date(),
-                type: "query",
-                payload: {
-                    text: query
+        const ques = query.trim();
+        if (ques !== "") {
+            setReceiving(true);
+            const options = {
+                api: API_ENDPOINTS["chat"],
+                method: POST,
+                headers: { "Content-Type": "application/json" },
+                data: {
+                    userQuestion: ques,
+                    history: "",
+                    openai_key: "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"
                 }
             };
-            setChats([...chats, newChat]);
-            setQuery("");
-            setTimeout(() => {
-                setReceiving(true);
-            }, 300);
+            dispatch(callApi(options))
+                .then((res) => {
+                    console.log('++++++ CHAT RES +++++', res);
+                    const newChat = {
+                        timestamp: new Date(),
+                        type: "query",
+                        payload: {
+                            text: query
+                        }
+                    };
+                    setChats([...chats, newChat]);
+                    setQuery("");
+                    setReceiving(false);
+                }).catch((error) => {
+                    console.log('----- Chat error -----', error);
+                });
         }
     };
 

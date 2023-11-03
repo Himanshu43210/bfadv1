@@ -13,9 +13,9 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
   const [formData, setFormData] = useState(propsFormData || {});
   const [fieldErrors, setFieldErrors] = useState({});
 
-  const masterData = useSelector((state) =>
-    selectMasterData(state, GET_MASTER_DATA_ON_HOME || "")
-  );
+  const masterData = useSelector((state) => {
+    return selectMasterData(state, GET_MASTER_DATA_ON_HOME || "")
+  });
 
   const validateAllFields = (doNotValidateFields) => {
     let errors = {};
@@ -224,7 +224,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                           : formData[field.name])) ||
                       field.defaultOption
                     }
-                    options={field.options || masterData[field.name]}
+                    options={field.options || masterData?.[field.name]}
                     styles={{
                       control: (baseStyles, state) => ({
                         ...baseStyles,
@@ -263,7 +263,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                           : formData[field.name])) ||
                       field.defaultOption
                     }
-                    options={field.options || masterData[field.name]}
+                    options={field.options || masterData?.[field.name]}
                     styles={{
                       control: (baseStyles, state) => ({
                         ...baseStyles,
@@ -403,7 +403,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                           textAlign: "left",
                         }),
                       }}
-                      options={field.options || masterData[field.name]}
+                      options={field.options || masterData?.[field.name]}
                       onChange={(selectedOption) =>
                         handleChange(
                           { ...field, name: field.nameType },

@@ -66,9 +66,9 @@ const MENU_ITEMS = [
     icon: "HOME",
   },
   {
-    name: "Login",
-    path: "/login",
-    icon: "LOGIN",
+    name: "Dashboard",
+    path: "/admin",
+    icon: "DASHBOARD",
   },
   {
     name: "About Us",
@@ -131,10 +131,10 @@ const HEADER = {
       titleMobile: "BuilderFloor",
       className: "page_header_comp",
     },
-    // {
-    //   type: OTP_LOGIN,
-    //   className: "ol_comp_wrapper",
-    // }
+    {
+      type: OTP_LOGIN,
+      className: "ol_comp_wrapper",
+    }
   ],
 };
 
@@ -275,7 +275,7 @@ export const ACCOUNT_TABS_SCREEN = {
     },
     FOOTER,
     SCROLLTOP,
-    // { type: CHATBOT }
+    { type: CHATBOT }
   ]
 };
 

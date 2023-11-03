@@ -9,6 +9,7 @@ export default function CustomRouteButton({
   value,
   component,
   handleValueChange,
+  children
 }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ export default function CustomRouteButton({
         }}
         value={value && component.name}
       >
-        <ToggleButton value={false}>{component.label}</ToggleButton>
+        <ToggleButton value={false}>{component.label}{children}</ToggleButton>
       </ToggleButtonGroup>
     </>
   );

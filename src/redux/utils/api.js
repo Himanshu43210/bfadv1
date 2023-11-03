@@ -1,6 +1,7 @@
 import _ from "lodash";
 
 const API_DOMAIN = "https://bfservices.onrender.com/api/";
+const CHAT_API_DOMAIN = "https://itsolutionshub.com/chat";
 // const API_DOMAIN = "http://localhost:5000/api/";
 
 export const getApiName = (api) => {
@@ -45,4 +46,6 @@ export const API_ENDPOINTS = {
     API_DOMAIN + "properties/getPropertiesListByUserId",
   getApprovalProperties: API_DOMAIN + "properties/getApprovalProperties",
   getMasterDataOnHome: API_DOMAIN + "masters/getMasterDataOnHome",
+  addCustomer: API_DOMAIN + "customers/addCustomer",
+  chat: CHAT_API_DOMAIN,
 };
