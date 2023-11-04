@@ -4,36 +4,32 @@ import SmartToyRoundedIcon from '@mui/icons-material/SmartToyRounded.js';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle.js';
 import SendRoundedIcon from '@mui/icons-material/SendRounded.js';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined.js';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { API_ENDPOINTS } from '../../redux/utils/api';
 import { POST } from '../utils/Const';
 import { callApi } from '../../redux/utils/apiActions';
+import { storeChat } from '../../redux/slice/chatSlice';
 
 function Chatbot() {
     const [showChatbot, setShowChatbot] = useState(false);
     const [receiving, setReceiving] = useState(false);
+    const [query, setQuery] = useState("");
     const keyPart1 = "sk-uBu8GkhK";
     const keyPart2 = "tVfDpElI5x8FT3BlbkFJVd";
     const keyPart3 = "MlIrP4zq4j9658nbtv";
     const dispatch = useDispatch();
-    const [chats, setChats] = useState([
-        {
-            timestamp: new Date(),
-            type: "res",
-            payload: {
-                text: "Hi! How can I help you?",
-                link: "",
-            }
-        },
-        // {
-        //     timestamp: new Date(),
-        //     type: "query",
-        //     payload: {
-        //         text: "recommend me a property under 3 crore"
-        //     }
-        // },
-    ]);
-    const [query, setQuery] = useState("");
+    const chats = useSelector((state) => state.chat);
+
+    // const [chats, setChats] = useState([
+    //     {
+    //         timestamp: new Date(),
+    //         type: "res",
+    //         payload: {
+    //             text: "Hi! How can I help you?",
+    //             link: "",
+    //         }
+    //     },
+    // ]);
 
     const handleBotBtnClick = () => {
         setShowChatbot(!showChatbot);
@@ -56,7 +52,8 @@ function Chatbot() {
                     text: ques
                 }
             };
-            setChats((currChats) => [...currChats, queryChat]);
+            dispatch(storeChat(queryChat));
+            // setChats((currChats) => [...currChats, queryChat]);
             setQuery("");
             const options = {
                 api: API_ENDPOINTS["chat"],
@@ -84,7 +81,8 @@ function Chatbot() {
                         text: data?.data
                     }
                 };
-                setChats((currChats) => [...currChats, resChat]);
+                dispatch(storeChat(queryChat));
+                // setChats((currChats) => [...currChats, resChat]);
             }).catch((error) => {
                 console.log('====== CHATBOT ERROR ======', error);
             });
