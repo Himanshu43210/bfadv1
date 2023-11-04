@@ -1,5 +1,5 @@
 import { Button, Typography } from '@mui/material/index.js';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SmartToyRoundedIcon from '@mui/icons-material/SmartToyRounded.js';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle.js';
 import SendRoundedIcon from '@mui/icons-material/SendRounded.js';
@@ -14,22 +14,18 @@ function Chatbot() {
     const [showChatbot, setShowChatbot] = useState(false);
     const [receiving, setReceiving] = useState(false);
     const [query, setQuery] = useState("");
-    const keyPart1 = "sk-uBu8GkhK";
-    const keyPart2 = "tVfDpElI5x8FT3BlbkFJVd";
-    const keyPart3 = "MlIrP4zq4j9658nbtv";
+    const lastChatRef = useRef();
     const dispatch = useDispatch();
     const chats = useSelector((state) => state.chat);
 
-    // const [chats, setChats] = useState([
-    //     {
-    //         timestamp: new Date(),
-    //         type: "res",
-    //         payload: {
-    //             text: "Hi! How can I help you?",
-    //             link: "",
-    //         }
-    //     },
-    // ]);
+    useEffect(() => {
+        if (chats.length) {
+            lastChatRef.current?.scrollIntoView({
+                bahavior: "smooth",
+                block: "start"
+            });
+        }
+    }, [chats.length]);
 
     const handleBotBtnClick = () => {
         setShowChatbot(!showChatbot);
@@ -53,7 +49,6 @@ function Chatbot() {
                 }
             };
             dispatch(storeChat(queryChat));
-            // setChats((currChats) => [...currChats, queryChat]);
             setQuery("");
             const options = {
                 api: API_ENDPOINTS["chat"],
@@ -62,7 +57,7 @@ function Chatbot() {
                 data: {
                     "userQuestion": ques,
                     "history": chats[chats.length - 1]?.payload?.text,
-                    "openai_key": keyPart1 + keyPart2 + keyPart3
+                    // "openai_key": keyPart1 + keyPart2 + keyPart3
                 }
             };
             fetch('https://itsolutionshub.com/chat', {
@@ -81,7 +76,7 @@ function Chatbot() {
                         text: data?.data
                     }
                 };
-                dispatch(storeChat(queryChat));
+                dispatch(storeChat(resChat));
                 // setChats((currChats) => [...currChats, resChat]);
             }).catch((error) => {
                 console.log('====== CHATBOT ERROR ======', error);
@@ -108,13 +103,13 @@ function Chatbot() {
         return formattedDate;
     };
 
-    const renderChatUnit = (payload) => {
+    const renderChatUnit = (payload, index) => {
         const type = payload?.type;
         switch (type) {
             case "res":
             case "query":
                 return (
-                    <div className={`chat_item_wrapper ${type === "res" ? "res_item" : "query_item"}`}>
+                    <div className={`chat_item_wrapper ${type === "res" ? "res_item" : "query_item"}`} ref={index === (chats.length - 1) ? lastChatRef : null}>
                         <div className='chat_item_left'>
                             {
                                 type === "res" ? (
@@ -141,7 +136,7 @@ function Chatbot() {
                 );
             case "recv":
                 return (
-                    <div className={`chat_item_wrapper receiving_wrapper`}>
+                    <div className={`chat_item_wrapper receiving_wrapper`} ref={index === (chats.length - 1) ? lastChatRef : null}>
                         <div className='chat_item_left'>
                             <SmartToyRoundedIcon className='sender_img' />
                         </div>
@@ -194,8 +189,8 @@ function Chatbot() {
                     </div>
                     <div className='chats_wrapper'>
                         {
-                            chats?.map((chat) => {
-                                return renderChatUnit(chat);
+                            chats?.map((chat, index) => {
+                                return renderChatUnit(chat, index);
                             })
                         }
                         {receiving && renderChatUnit({ type: "recv" })}
