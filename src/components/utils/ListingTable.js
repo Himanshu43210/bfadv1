@@ -166,6 +166,15 @@ const ListingTable = ({
     return newFormData;
   };
 
+  const checkForChange = (prevData, newData) => {
+    for (const field of Object.keys(newData)) {
+      if (newData[field] !== prevData[field]) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const isPropertyEdit = API_ENDPOINTS[editApi]?.includes("editProperty");
 
   const handleSave = (edit = false) => {
@@ -175,6 +184,20 @@ const ListingTable = ({
     if (formData) {
       if (Object.keys(formData).length !== 0) {
         try {
+          // check for change or delete array is not empty
+          const isChanged = checkForChange(currentRowData, formData);
+          let isImgsTobeDeleted = false;
+          for (const mediaKey of Object.keys(imgsToBeDeleted)) {
+            if (imgsToBeDeleted[mediaKey].length !== 0) {
+              isImgsTobeDeleted = true;
+            }
+          }
+          const shouldEdit = isChanged || isImgsTobeDeleted;
+          console.log('================= CHANGED ==================', isChanged, isImgsTobeDeleted, shouldEdit);
+          if (!shouldEdit) {
+            setSnackbar({ open: true, message: 'No field changed.', status: -1 });
+            return;
+          }
           const newFormData = new FormData();
           const mediaLinkTypes = [
             "thumbnails",
