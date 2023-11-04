@@ -2,22 +2,26 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Typography } from '@mui/material/index.js';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined.js';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack.js';
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt.js';
 import SnackBar from './SnackBar.jsx';
 import { auth } from '../../firebase.js';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
-import { ADD_CUSTOMER, ALTER_PROPERTY_DATA, POST, ROUTE_BUTTON } from '../utils/Const.js';
-import { newPropertyConst } from '../fieldConsts/PropertiesFieldConst.js';
+import { ADD_CUSTOMER, ALTER_USER_DATA, POST, ROUTE_BUTTON } from '../utils/Const.js';
 import RouteButton from './RouteButton.jsx';
 import AccountMenu from './AccountMenu.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { callApi } from '../../redux/utils/apiActions.js';
 import { API_ENDPOINTS } from '../../redux/utils/api.js';
 import { storeCustomerData, clearCustomerData } from '../../redux/slice/customerSlice.js'
+import { newUserConst } from '../fieldConsts/UserFieldConst.js';
+import { useNavigate } from 'react-router-dom';
+import { storeUserData } from '../../redux/slice/userSlice.js';
 
 function OtpLogin() {
     const [open, setOpen] = useState(false);
+    const [openForm, setOpenForm] = useState(false);
     const [formStage, setFormStage] = useState(0);
+    const [popupStage, setPopupStage] = useState(0);
+    const [mode, setMode] = useState();
     const [formData, setFormData] = useState({
         fullName: "",
         phoneNumber: "",
@@ -30,8 +34,10 @@ function OtpLogin() {
     const isMobile = window.innerWidth < 768;
     const recaptchaWrapperRef = useRef();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const customerProfile = useSelector((state) => state.customer);
+    const user = useSelector((state) => state.profile);
 
     useEffect(() => {
         if (!customerProfile || Object.keys(customerProfile).length === 0) {
@@ -43,34 +49,64 @@ function OtpLogin() {
         }
     }, []);
 
-    const registerProperty = {
+    const registerAgent = {
         type: ROUTE_BUTTON,
         className: "form-route-btn",
-        label: "Register Property",
-        name: "Register Property",
-        form: newPropertyConst,
-        onSaveApi: ALTER_PROPERTY_DATA,
+        label: "Agent",
+        name: "Agent",
+        form: newUserConst,
+        onSaveApi: ALTER_USER_DATA,
         route: "/agent/form",
-        autofill: ["city", "state", "location"],
     };
 
     const handleCancelSignin = () => {
         setOpen(false);
+        setOpenForm(false);
         setVisited(false);
         setFormData({});
         setFormStage(0);
+        setPopupStage(0);
         setCaptchaGenerated(false);
     };
 
     const handleSignOut = () => {
         localStorage.removeItem("customer");
         setFormStage(0);
-        setOpen(true);
+        setOpenForm(true);
         dispatch(clearCustomerData());
     };
 
     const handleInput = (key, value) => {
         setFormData({ ...formData, [key]: value });
+    };
+
+    const routeEntry = (key) => {
+        if (key === 'CUSTOMER') {
+            if (mode === 'SIGNIN') {
+                // show signin form
+                setOpenForm(true);
+                setOpen(false);
+            } else if (mode === 'SIGNUP') {
+                // show signup form
+                setOpenForm(true);
+                setOpen(false);
+            }
+        } else if (key === 'AGENT') {
+            if (mode === 'SIGNIN') {
+                navigate('/login');
+            } else if (mode === 'SIGNUP') {
+                dispatch(
+                    storeUserData({
+                        ...user,
+                        formType: registerAgent.form,
+                        formSaveApi: registerAgent.onSaveApi,
+                        formName: registerAgent.label,
+                        autofill: registerAgent.autofill,
+                    })
+                );
+                navigate(registerAgent.route);
+            }
+        }
     };
 
     const handleResendOtp = () => {
@@ -177,16 +213,6 @@ function OtpLogin() {
         setVisited(false);
     };
 
-    const renderLinks = () => {
-        return (
-            <div className='form_links_wrapper'>
-                <RouteButton component={registerProperty}>
-                    <ArrowRightAltIcon />
-                </RouteButton>
-            </div>
-        );
-    };
-
     const renderDetailsForm = () => {
         return (
             <form className='otp_login_form'>
@@ -207,7 +233,6 @@ function OtpLogin() {
                     </Button>
                     <Button type='reset' variant='outlined' className='form_btn ol_cancel_btn' onClick={handleCancelSignin}>Cancel</Button>
                 </div>
-                {renderLinks()}
             </form>
         );
     };
@@ -236,12 +261,7 @@ function OtpLogin() {
         return (
             <div className='section_header ol_header'>
                 <div className='header_left'>
-                    {/* {formStage > 0 && (
-                        <Button className='form_back_btn' onClick={() => setFormStage(1)}>
-                            <ArrowBackIcon className='back_icon' />
-                        </Button>
-                    )} */}
-                    <Typography variant="h3" className="detailcardheading header_title">Sign In</Typography>
+                    <Typography variant="h3" className="detailcardheading header_title">{mode === 'SIGNIN' ? 'Sign In' : 'Sign Up'}</Typography>
                 </div>
                 <div className='header_right'>
                     <Button className='bot_btn' onClick={handleCancelSignin}>
@@ -263,6 +283,56 @@ function OtpLogin() {
         }
     };
 
+    const renderFormPopup = () => {
+        return (
+            <>
+                <div className='ol_overlay' onClick={handleCancelSignin}></div>
+                <div className='ol_popup'>
+                    {renderHeader()}
+                    {renderForm()}
+                    <div ref={recaptchaWrapperRef}>
+                        <div id="sign-in-recaptcha"></div>
+                    </div>
+                </div>
+            </>
+        );
+    }
+
+    const renderPopup = () => {
+        return (
+            <div className='menu_popup' onMouseEnter={() => setVisited(true)}>
+                {popupStage === 0 ? (
+                    <div className='btns_group'>
+                        {/* sign in btn */}
+                        <button className='popup_btn' onClick={() => {
+                            setPopupStage(1);
+                            setMode('SIGNIN');
+                        }}>Sign In</button>
+                        {/* sign up btn */}
+                        <button className='popup_btn' onClick={() => {
+                            setPopupStage(1);
+                            setMode('SIGNUP');
+                        }}>Sign Up</button>
+                    </div>
+                ) : (
+                    <div className='btns_group'>
+                        <div className='popup_head'>
+                            <button className='popup_icon_btn' onClick={() => {
+                                setPopupStage(0);
+                                setMode();
+                            }}>
+                                <ArrowBackIcon className='back_icon' />Back
+                            </button>
+                        </div>
+                        {/* Customer */}
+                        <button className='popup_btn' onClick={() => routeEntry('CUSTOMER')}> {mode === 'SIGNIN' ? 'Sign In' : 'Sign Up'} As Customer</button>
+                        <button className='popup_btn' onClick={() => routeEntry('AGENT')}>{mode === 'SIGNIN' ? 'Sign In' : 'Sign Up'} As Agent</button>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
     return (
         <>
             {(customerProfile && Object.keys(customerProfile).length !== 0) ? (
@@ -276,18 +346,8 @@ function OtpLogin() {
                     <Button className={`ol_open_btn signin_btn`} onClick={() => setOpen(!open)}>
                         <Typography className='ol_open_btn_label'>Sign In</Typography>
                     </Button>
-                    {open && (
-                        <>
-                            <div className='ol_overlay' onClick={handleCancelSignin}></div>
-                            <div className='ol_popup'>
-                                {renderHeader()}
-                                {renderForm()}
-                                <div ref={recaptchaWrapperRef}>
-                                    <div id="sign-in-recaptcha"></div>
-                                </div>
-                            </div>
-                        </>
-                    )}
+                    {open && renderPopup()}
+                    {openForm && renderFormPopup()}
                 </div>
             )}
             <SnackBar
