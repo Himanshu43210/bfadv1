@@ -134,7 +134,7 @@ const GeneralFormPage = () => {
                         ? newFormData
                         : sanitizeFormData({
                             ...formData,
-                            parentId: "6543375a83ea9de3bacc5fe2",
+                            parentId: "64e867d86a2061a0973a9a6c",
                             role: USER_ROLE["channelPartner"],
                         });
 
@@ -151,7 +151,7 @@ const GeneralFormPage = () => {
                         setTimeout(() => {
                             router("/");
                         }, 1200);
-                        setSnackbar({ open: true, message: "Property Registered." });
+                        setSnackbar({ open: true, message: "Registered as an agent." });
                     });
                 } catch (error) {
                     setSubmitting(false);
