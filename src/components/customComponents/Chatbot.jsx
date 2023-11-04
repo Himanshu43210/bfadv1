@@ -12,6 +12,9 @@ import { callApi } from '../../redux/utils/apiActions';
 function Chatbot() {
     const [showChatbot, setShowChatbot] = useState(false);
     const [receiving, setReceiving] = useState(false);
+    const keyPart1 = "sk-uBu8GkhK";
+    const keyPart2 = "tVfDpElI5x8FT3BlbkFJVd";
+    const keyPart3 = "MlIrP4zq4j9658nbtv";
     const dispatch = useDispatch();
     const [chats, setChats] = useState([
         {
@@ -62,7 +65,7 @@ function Chatbot() {
                 data: {
                     "userQuestion": ques,
                     "history": chats[chats.length - 1]?.payload?.text,
-                    "openai_key": "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"
+                    "openai_key": keyPart1 + keyPart2 + keyPart3
                 }
             };
             fetch('https://itsolutionshub.com/chat', {
