@@ -37,14 +37,8 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
 
   const finalizeData = (doNotValidateFields = []) => {
     const errors = validateAllFields(doNotValidateFields);
-    const isChanged = checkForChange();
-    if (isValueEmpty(errors) && isChanged) {
+    if (isValueEmpty(errors)) {
       return formData;
-    } else if (!isChanged) {
-      console.error(
-        "No field is changed."
-      );
-      return null;
     } else {
       console.error(
         "There are errors in the form. Please correct them before saving."
@@ -79,15 +73,6 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
     // formData[field.name] !== value && propsFormData[field.name] !== value
     setFieldErrors(errors);
     console.log(formData, errors);
-  };
-
-  const checkForChange = () => {
-    for (const field of Object.keys(formData)) {
-      if (formData[field] !== propsFormData[field]) {
-        return true;
-      }
-    }
-    return false;
   };
 
   const handleCurrencyChange = (field, existingTotal) => (e, unitType) => {
