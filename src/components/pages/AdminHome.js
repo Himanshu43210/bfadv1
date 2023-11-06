@@ -2,16 +2,16 @@ import React from "react";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import { GiHamburgerMenu } from "react-icons/gi/index.js";
-import Panel from "../../utils/Panel.js";
+import Panel from "../utils/Panel.js";
 // import Navbar from "../../utils/Navbar";
 import { useSelector } from "react-redux";
 import {
   ADMIN_DASHBOARD,
   ADMIN_DASHBOARD_LOGIN,
   PROPERTY_DEALER,
-} from "../../utils/Const.js";
-import { USER_ROLE } from "../../../ScreenJson.js";
-import PageSelector from "../../customComponents/PageSelector.jsx";
+} from "../utils/Const.js";
+import { USER_ROLE } from "../../ScreenJson.js";
+import PageSelector from "../customComponents/PageSelector.jsx";
 
 export default function AdminHome() {
   const userProfile = useSelector((state) => state.profile);

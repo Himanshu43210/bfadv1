@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import FormBuilder from "../../utils/FormBuilder.jsx";
+import FormBuilder from "../utils/FormBuilder.jsx";
 import { Button, CircularProgress } from "@mui/material/index.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,22 +9,23 @@ import {
   POST,
   PROPERTY_DEALER,
   ROUTE_BUTTON,
-} from "../../utils/Const.js";
-import { API_ENDPOINTS } from "../../../redux/utils/api.js";
-import { callApi } from "../../../redux/utils/apiActions.js";
-import { filterAutofillData, sanitizeFormData } from "../../utils/reusableMethods.js";
-import CustomRouteButton from "../../customComponents/RouteButton.jsx";
-import { USER_ROLE } from "../../../ScreenJson.js";
+} from "../utils/Const.js";
+import { API_ENDPOINTS } from "../../redux/utils/api.js";
+import { callApi } from "../../redux/utils/apiActions.js";
+import { filterAutofillData, sanitizeFormData } from "../utils/reusableMethods.js";
+import CustomRouteButton from "../customComponents/RouteButton.jsx";
+import { USER_ROLE } from "../../ScreenJson.js";
 import _ from "lodash";
-import SnackBar from "../../customComponents/SnackBar.jsx";
-import { useNavigate } from "react-router-dom";
-import { selectApiStatus } from "../../../redux/utils/selectors.js";
+import SnackBar from "../customComponents/SnackBar.jsx";
+import { useLocation, useNavigate } from "react-router-dom";
+import { selectApiStatus } from "../../redux/utils/selectors.js";
 
 const FormPage = () => {
   const finalizeRef = useRef(null);
   const [message, setMessage] = useState("");
   const [snackbar, setSnackbar] = useState({});
   const dispatch = useDispatch();
+  const location = useLocation();
   const userProfile = useSelector((state) => state.profile);
 
   console.log('+++++ form page : user profile +++++', useSelector((state) => state));
@@ -157,7 +158,7 @@ const FormPage = () => {
         }
       } else {
         setSubmitting(false);
-        setSnackbar({ open: true, message: `Empty required field(s).` });
+        setSnackbar({ open: true, message: `Empty required field(s) or no change.` });
       }
     } else {
       setSnackbar({ open: true, message: `Submitting.` });
@@ -187,7 +188,7 @@ const FormPage = () => {
 
   const [check, setCheck] = useState(false);
   useEffect(() => {
-    if (!loginStatus) {
+    if (!loginStatus && location.pathname.includes("admin")) {
       const email = localStorage.getItem("email");
       const password = localStorage.getItem("password");
       if (email && password) {

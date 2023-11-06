@@ -1,12 +1,12 @@
 import React from 'react';
-import AutoFetchApi from "../../customComponents/AutoFetchApi.jsx";
-import { ALTER_USER_DATA, GET, LOADING } from '../../utils/Const.js';
+import AutoFetchApi from "../customComponents/AutoFetchApi.jsx";
+import { ALTER_USER_DATA, GET, LOADING } from '../utils/Const.js';
 import { useSelector } from 'react-redux';
-import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors.js";
+import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
 import { CircularProgress } from "@mui/material";
 import { Card } from "react-bootstrap";
-import TableButtonHeader from '../../utils/TableButtonHeader.js';
-import ListingTable from '../../utils/ListingTable.js';
+import TableButtonHeader from '../utils/TableButtonHeader.js';
+import ListingTable from '../utils/ListingTable.js';
 
 function CustomerManagement() {
     const desktopHeaders = {

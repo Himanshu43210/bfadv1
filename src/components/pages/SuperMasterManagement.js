@@ -1,6 +1,6 @@
 import React from "react";
-import RenderComponent from "../../customComponents/ComponentRenderer.jsx";
-import { AD_MASTER_TABLE} from "../../../ScreenJson.js";
+import RenderComponent from "../customComponents/ComponentRenderer.jsx";
+import { AD_MASTER_TABLE} from "../../ScreenJson.js";
 
 export default function AdminDashboard() {
 

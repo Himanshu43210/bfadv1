@@ -2,9 +2,9 @@ import _ from "lodash";
 import React from "react";
 import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import ListingTable from "../../utils/ListingTable.js";
-import { newUserConst } from "../../fieldConsts/UserFieldConst.js";
-import TableButtonHeader from "../../utils/TableButtonHeader.js";
+import ListingTable from "../utils/ListingTable.js";
+import { newUserConst } from "../fieldConsts/UserFieldConst.js";
+import TableButtonHeader from "../utils/TableButtonHeader.js";
 // import Navbar from "../../utils/Navbar";
 import {
   ALTER_USER_DATA,
@@ -13,10 +13,10 @@ import {
   GET_ADMIN_USER_DATA,
   GET_USER_DATA,
   LOADING,
-} from "../../utils/Const.js";
-import AutoFetchApi from "../../customComponents/AutoFetchApi.jsx";
-import { API_ENDPOINTS } from "../../../redux/utils/api.js";
-import { selectApiData, selectApiStatus } from "../../../redux/utils/selectors.js";
+} from "../utils/Const.js";
+import AutoFetchApi from "../customComponents/AutoFetchApi.jsx";
+import { API_ENDPOINTS } from "../../redux/utils/api.js";
+import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
 import { CircularProgress } from "@mui/material";
 
 export default function UserManagement() {
@@ -38,7 +38,7 @@ export default function UserManagement() {
   );
   return (
     <>
-      {!tableData && <AutoFetchApi url={dataApi} method={GET} />}
+      {!tableData && <AutoFetchApi component={{ api: dataApi, method: GET }} />}
       {apiStatus === LOADING ? (
         <CircularProgress className="loader-class" />
       ) : (
