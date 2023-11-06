@@ -16,6 +16,8 @@ import CustomRouteButton from "../customComponents/RouteButton.jsx";
 import SnackBar from "../customComponents/SnackBar.jsx";
 import { useNavigate } from "react-router-dom";
 import { USER_ROLE } from "../../ScreenJson.js";
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { auth } from '../../firebase.js';
 
 const GeneralFormPage = () => {
     const finalizeRef = useRef(null);
@@ -23,6 +25,13 @@ const GeneralFormPage = () => {
     const dispatch = useDispatch();
     const userProfile = useSelector((state) => state.profile);
     const [loading, setLoading] = useState(true);
+    const [otp, setOtp] = useState("");
+    const [showPopup, setShowPopup] = useState(false);
+    const [captchaGenerated, setCaptchaGenerated] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [hasImages, setHasImages] = useState(false);
+    const [submitData, setSubmitData] = useState();
+    const [verifing, setVerifing] = useState(false);
 
     useEffect(() => {
         try {
@@ -69,11 +78,84 @@ const GeneralFormPage = () => {
     const [saving, setSaving] = useState(false);
     const router = useNavigate();
 
+    const generateRecaptcha = () => {
+        if (captchaGenerated) return;
+        setCaptchaGenerated(true);
+        console.log('=== GENERAE RECAPTCHA ===');
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-recaptcha', {
+            'size': 'invisible',
+            'callback': (response) => {
+                console.log('=== RECAPTCHA VERIFIER ===', response);
+            }
+        });
+        console.log('++++++ generateCaptcha ++++++', captchaGenerated);
+    };
+
+    const handleResendOtp = () => {
+        handleDataSubmit(phoneNumber);
+    };
+
+    const handleDataSubmit = (phoneNumber) => {
+        console.log('++++++ dataSubmit ++++++', phoneNumber);
+        if (phoneNumber) {
+            generateRecaptcha();
+            let appVerifier = window.recaptchaVerifier;
+            console.log('=== appVerifier ===', appVerifier);
+            signInWithPhoneNumber(auth, `+91${phoneNumber}`, appVerifier)
+                .then((confirmationResult) => {
+                    setSnackbar({ open: true, message: `An OTP has been sent to ${phoneNumber}.`, status: 1 });
+                    window.confirmationResult = confirmationResult;
+                }).catch((error) => {
+                    console.log('=== OTP LOGIN ERROR ===', phoneNumber, error);
+                    setSnackbar({ open: true, message: `Sorry! Too many requests. Try later.`, status: 1 });
+                });
+        } else {
+            setSnackbar({ open: true, message: `Error: Required field(s) empty.`, status: 1 });
+        }
+    };
+
+    const handleOtpSubmit = (e) => {
+        e.preventDefault();
+        console.log('++++++ otpSubmit ++++++', otp);
+        if (otp?.length === 6) {
+            setVerifing(true);
+            let confirmationResult = window.confirmationResult;
+            confirmationResult.confirm(otp).then((result) => {
+                console.log('+++++ OTP VERIFICATION SUCCESSFUL +++++', result);
+                // send the result to the server to save the user
+                let headers = hasImages
+                    ? { "Content-Type": "multipart/form-data" }
+                    : { "Content-Type": "application/json" };
+                const options = {
+                    url: API_ENDPOINTS[userProfile.formSaveApi],
+                    method: POST,
+                    headers: headers,
+                    data: submitData,
+                };
+                dispatch(callApi(options)).then(() => {
+                    setVerifing(false);
+                    setTimeout(() => {
+                        router("/");
+                    }, 1200);
+                    setSnackbar({ open: true, message: "Registered as an agent." });
+                }).catch((error) => {
+                    setSnackbar({ open: true, message: `Registration failed.`, status: 1 });
+                });
+            }).catch((error) => {
+                console.log('-------- otp verification error -------', error);
+                setVerifing(false);
+                setSnackbar({ open: true, message: `Please enter correct OTP.`, status: 1 });
+            });
+        } else {
+            setSnackbar({ open: true, message: `Invalid OTP.`, status: 1 });
+        }
+    };
+
     const handleSubmit = async () => {
         if (!submitting) {
             const formData = finalizeRef.current.finalizeData();
             if (formData) {
-                console.log("Received validated data:", formData);
+                console.log("***** Received validated data: *****", formData, userProfile.formType);
                 try {
                     let newFormData = new FormData();
                     const fileFields = [
@@ -125,10 +207,7 @@ const GeneralFormPage = () => {
                     });
 
                     const imagesCheck = fileFields.some((field) => formData[field]);
-
-                    let headers = imagesCheck
-                        ? { "Content-Type": "multipart/form-data" }
-                        : { "Content-Type": "application/json" };
+                    setHasImages(imagesCheck);
 
                     let data = imagesCheck
                         ? newFormData
@@ -137,22 +216,16 @@ const GeneralFormPage = () => {
                             parentId: "64e867d86a2061a0973a9a6c",
                             role: USER_ROLE["channelPartner"],
                         });
+                    setSubmitData(data);
 
-                    const options = {
-                        url: API_ENDPOINTS[userProfile.formSaveApi],
-                        method: POST,
-                        headers: headers,
-                        data: data,
-                    };
-
-                    setSubmitting(true);
-                    dispatch(callApi(options)).then(() => {
-                        setSubmitting(false);
-                        setTimeout(() => {
-                            router("/");
-                        }, 1200);
-                        setSnackbar({ open: true, message: "Registered as an agent." });
-                    });
+                    // check if mobile number is present
+                    if (formData.phoneNumber && formData.phoneNumber !== "") {
+                        console.log('------ formData.phoneNumber ------', formData.phoneNumber);
+                        setPhoneNumber(formData.phoneNumber);
+                        setShowPopup(true);
+                        handleDataSubmit(formData.phoneNumber);
+                        // setSubmitting(true);
+                    }
                 } catch (error) {
                     setSubmitting(false);
                     setSnackbar({ open: true, message: `Submit Failed.` });
@@ -160,7 +233,7 @@ const GeneralFormPage = () => {
                 }
             } else {
                 setSubmitting(false);
-                setSnackbar({ open: true, message: `Empty required field(s) or no change.` });
+                setSnackbar({ open: true, message: `Empty required field(s).` });
             }
         } else {
             setSnackbar({ open: true, message: `Submitting.` });
@@ -178,7 +251,36 @@ const GeneralFormPage = () => {
     const handleReset = () => {
         finalizeRef.current.resetForm();
         setSnackbar({ open: true, message: `Form resetted.` });
+    };
 
+    const handleCancelPopup = () => {
+        setShowPopup(false);
+        setOtp("");
+    };
+
+    const renderOtpForm = () => {
+        return (
+            <>
+                <div className="ol_overlay" onClick={handleCancelPopup}></div>
+                <div className='ol_popup'>
+                    <form className='otp_login_form'>
+                        <div className='ol_form_fields_container'>
+                            <label className='field_label'>Enter OTP*</label>
+                            <input type="number" value={otp} className='ol_input_field otp_input' name='otp' id='otp' required={true} onInput={(e) => setOtp(e.target.value)} />
+                            <div className='resend_otp_wrapper'>
+                                <Button type='button' className='ol_resend_btn' onClick={handleResendOtp}>Didn't received OTP? Resend.</Button>
+                            </div>
+                        </div>
+                        <div className='form_btns_wrapper'>
+                            <Button type='submit' className='form_btn ol_submit_btn' onClick={handleOtpSubmit} disabled={verifing}>
+                                <span>{verifing ? "Sending.." : "Submit"}</span>
+                            </Button>
+                            <Button type='reset' variant='outlined' className='form_btn ol_cancel_btn' onClick={handleCancelPopup}>Cancel</Button>
+                        </div>
+                    </form>
+                </div>
+            </>
+        );
     };
 
     return (
@@ -226,6 +328,8 @@ const GeneralFormPage = () => {
                         onClose={snackbarClose}
                     />
                     {submitting === true ? <CircularProgress className="loader-class" /> : null}
+                    <div id="sign-in-recaptcha"></div>
+                    {showPopup && renderOtpForm()}
                 </>
             )}
         </>

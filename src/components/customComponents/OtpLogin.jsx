@@ -6,13 +6,12 @@ import SnackBar from './SnackBar.jsx';
 import { auth } from '../../firebase.js';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { ADD_CUSTOMER, ALTER_USER_DATA, POST, ROUTE_BUTTON } from '../utils/Const.js';
-import RouteButton from './RouteButton.jsx';
 import AccountMenu from './AccountMenu.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { callApi } from '../../redux/utils/apiActions.js';
 import { API_ENDPOINTS } from '../../redux/utils/api.js';
 import { storeCustomerData, clearCustomerData } from '../../redux/slice/customerSlice.js'
-import { newUserConst } from '../fieldConsts/UserFieldConst.js';
+import { newAgentConst } from '../fieldConsts/UserFieldConst.js';
 import { useNavigate } from 'react-router-dom';
 import { storeUserData } from '../../redux/slice/userSlice.js';
 
@@ -32,7 +31,6 @@ function OtpLogin() {
     const [visited, setVisited] = useState(false);
     const [captchaGenerated, setCaptchaGenerated] = useState(false);
     const isMobile = window.innerWidth < 768;
-    const recaptchaWrapperRef = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -54,7 +52,7 @@ function OtpLogin() {
         className: "form-route-btn",
         label: "Agent",
         name: "Agent",
-        form: newUserConst,
+        form: newAgentConst,
         onSaveApi: ALTER_USER_DATA,
         route: "/agent/form",
     };
@@ -290,9 +288,7 @@ function OtpLogin() {
                 <div className='ol_popup'>
                     {renderHeader()}
                     {renderForm()}
-                    <div ref={recaptchaWrapperRef}>
-                        <div id="sign-in-recaptcha"></div>
-                    </div>
+                    <div id="sign-in-recaptcha"></div>
                 </div>
             </>
         );
