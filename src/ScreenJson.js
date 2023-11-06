@@ -256,23 +256,35 @@ export const ACCOUNT_TABS_SCREEN = {
       className: "tabs_wrapper"
     },
     {
-      type: DYNAMIC_CARD_CONTAINER,
-      loadingApi: GET_SEARCH_RESULT,
-      sliceName: "filter",
-      className: "result-searchdiv tab_data",
-      apiName: GET_SEARCH_RESULT,
-      onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
-      onClickApiMethod: POST,
-      paginationClass: "search_pagination",
-      renderComponentsInLoop: {
-        type: SEARCH_CARD,
-        className: "homeCards",
-      },
-      cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
-      cardClickNavigate: "/builderFloorDetails",
-      cardClickApiType: GET,
-      showOptions: true,
+      type: CONTAINER,
+      className: 'coming_soon_container',
+      children: [
+        {
+          type: HEADING,
+          tag: 'h3',
+          text: 'Coming Soon...',
+          className: 'coming_soon'
+        }
+      ]
     },
+    // {
+    //   type: DYNAMIC_CARD_CONTAINER,
+    //   loadingApi: GET_SEARCH_RESULT,
+    //   sliceName: "filter",
+    //   className: "result-searchdiv tab_data",
+    //   apiName: GET_SEARCH_RESULT,
+    //   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
+    //   onClickApiMethod: POST,
+    //   paginationClass: "search_pagination",
+    //   renderComponentsInLoop: {
+    //     type: SEARCH_CARD,
+    //     className: "homeCards",
+    //   },
+    //   cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
+    //   cardClickNavigate: "/builderFloorDetails",
+    //   cardClickApiType: GET,
+    //   showOptions: true,
+    // },
     FOOTER,
     SCROLLTOP,
     { type: CHATBOT }
