@@ -15,74 +15,100 @@ import { ABOUT_HERO, API_BUTTON, API_HEADING, AUTO_FETCH_API, AUTO_FETCH_API_POS
 
 export const APP_ROUTES = {
     "/": { key: 'HomeScreen', screen: "HOME_SCREEN" },
-    "/login": { key: 'LoginScreen', page: "./src/components/Pages/Login.js" },
+    "/login": { key: 'Login', page: "./src/components/pages/Login.js" },
     "/searchResult": { key: 'SearchResultScreen', screen: "SEARCH_RESULT" },
-    "/aboutUs": { key: 'AboutUsScreen', screen: "ABOUTUS_SCREEN" },
+    "/about_us": { key: 'AboutUsScreen', screen: "ABOUTUS_SCREEN" },
     "/blog": { key: 'BlogScreen', screen: "BLOG_SCREEN" },
     "/:pid": { key: 'PropertyDetailScreen', screen: "CARD_DETAILS_SCREEN" },
     "/account/tabs": { key: 'AccountTabsScreen', screen: "ACCOUNT_TABS_SCREEN" },
-    "/admin/form": { key: 'FormScreen', page: "./src/components/Pages/adminPages/FormPage.js" },
-    "/admin/property": { key: 'PropertyManagementScreen', page: "./src/components/Pages/adminPages/PropertyManagement.js" },
-    "/admin/user": { key: 'UserManagementScreen', screen: "MANAGE_USER" },
+    "/admin/form": { key: 'FormScreen', page: "./src/components/pages/FormPage.js" },
+    "/admin/property": { key: 'PropertyManagement', page: "./src/components/pages/PropertyManagement.js" },
+    "/admin/user": { key: 'SuperUserManagement', screen: "MANAGE_USER" },
     "/admin/approveListing": { key: 'ApproveListingScreen', screen: "APPROVAL_PROPERTIES" },
-    "/admin/master": { key: 'MasterManagementScreen', page: "./src/components/Pages/adminPages/MasterManagement.js" },
-    "/admin/masterTable": { key: 'MasterTableScreen', screen: "AD_MASTER_TABLE" },
+    "/admin/master": { key: 'MasterManagement', page: "./src/components/pages/MasterManagement.js" },
+    "/admin/masterTable": { key: 'SuperMasterTable', screen: "AD_MASTER_TABLE" },
     "/admin/statistics": { key: 'StatsScreen', screen: "STATS_LIST" },
     "/admin/statistics/listingData": { key: 'ViewListingScreen', screen: "VIEW_LISTING" },
-    "/admin": { key: 'AdminHomeScreen', screen: "HOME_SCREEN" },
+    "/admin": { key: 'AdminHome', page: "./src/components/pages/AdminHome.js" },
+};
+
+
+export const OTHER_PAGES = {
+    ADMIN_DASHBOARD: { key: 'AdminDashboard', page: "./src/components/pages/AdminDashboard.js" },
+    USER_MANAGEMENT: { key: 'UserManagement', page: "./src/components/pages/UserManagement.js" },
+    CUSTOMER_MANAGEMENT: { key: 'CustomerManagement', page: "./src/components/pages/CustomerManagement.js" },
 };
 
 
 export const SCREEN_MAPPINGS = {
-    HOME_SCREEN: HOME_SCREEN,
-    SEARCH_RESULT: SEARCH_RESULT,
-    ABOUTUS_SCREEN: ABOUTUS_SCREEN,
-    BLOG_SCREEN: BLOG_SCREEN,
-    CARD_DETAILS_SCREEN: CARD_DETAILS_SCREEN,
-    ACCOUNT_TABS_SCREEN: ACCOUNT_TABS_SCREEN,
-    MANAGE_USER: MANAGE_USER,
-    APPROVAL_PROPERTIES: APPROVAL_PROPERTIES,
-    AD_MASTER_TABLE: AD_MASTER_TABLE,
-    STATS_LIST: STATS_LIST,
-    VIEW_LISTING: VIEW_LISTING
+    HOME_SCREEN: { data: HOME_SCREEN },
+    SEARCH_RESULT: { data: SEARCH_RESULT },
+    ABOUTUS_SCREEN: { data: ABOUTUS_SCREEN },
+    BLOG_SCREEN: { data: BLOG_SCREEN },
+    CARD_DETAILS_SCREEN: { data: CARD_DETAILS_SCREEN },
+    ACCOUNT_TABS_SCREEN: { data: ACCOUNT_TABS_SCREEN },
+    MANAGE_USER: { data: MANAGE_USER },
+    APPROVAL_PROPERTIES: { data: APPROVAL_PROPERTIES },
+    AD_MASTER_TABLE: { data: AD_MASTER_TABLE },
+    STATS_LIST: { data: STATS_LIST },
+    VIEW_LISTING: { data: VIEW_LISTING, code: "./src/components/pages/ViewListing.js", startBoundary: "ViewListing", endBoundary: "return (" },
+    ADMIN_HOME_SCREEN: { code: "./src/components/pages/AdminHome.js", all: true },
 };
 
 
 export const COMPONENTS = {
     [LOADING]: { name: "CircularProgress", path: "", import: `import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress.js";` },
-    [AUTO_FETCH_API]: { name: "AutoFetchApi", path: "", import: "" },
-    [AUTO_FETCH_API_POST]: { name: "AutoFetchApi", path: "", import: "" },
-    [AUTO_FETCH_API_USER]: { name: "ApiHandler", path: "", import: "" },
-    [TITLE]: { name: "Title", path: "", import: "" },
-    [CONTAINER]: { name: "RenderComponent", path: "", import: "" },
-    [PANEL_HEADER]: { name: "PanelHeader", path: "", import: "" },
-    [IMAGE_BANNER]: { name: "Banner", path: "", import: "" },
-    [SELECT]: { name: "SelectButton", path: "", import: "" },
-    [SELECT2]: { name: "DropSelect", path: "", import: "" },
-    [SLIDER]: { name: "Slider", path: "", import: "" },
-    [API_BUTTON]: { name: "ApiButton", path: "", import: "" },
-    [HEADING]: { name: "Heading", path: "", import: "" },
-    [API_HEADING]: { name: "DynamicHeading", path: "", import: "" },
-    [LIST]: { name: "List", path: "", import: "" },
-    [DYNAMIC_CARD_CONTAINER]: { name: "DynamicCardContainer", path: "", import: "" },
-    [DETAILED_VIEW]: { name: "DetailDataCard", path: "", import: "" },
-    [NAVIGATE_BUTTON]: { name: "NavigateButton", path: "", import: "" },
-    [PAGE_FOOTER]: { name: "Footer", path: "", import: "" },
-    [PAGE_HEADER]: { name: "Header", path: "", import: "" },
-    [OTP_LOGIN]: { name: "OtpLogin", path: "", import: "" },
-    [HAMBURGER_MENU]: { name: "MenuState", path: "", import: "" },
-    [TABS]: { name: "Tabbar", path: "", import: "" },
-    [SELECT_SLIDER]: { name: "SelectSlider", path: "", import: "" },
-    [TOGGLE_BUTTON]: { name: "CustomToogleButton", path: "", import: "" },
-    [BUTTON]: { name: "Button", path: "", import: "" },
-    [SCROLL_TO_TOP]: { name: "ScrollToTop", path: "", import: "" },
-    [CHATBOT]: { name: "Chatbot", path: "", import: "" },
-    [DASHBOARD_LISTING]: { name: "DashboardListing", path: "", import: "" },
-    [ROUTE_BUTTON]: { name: "RouteButton", path: "", import: "" },
-    [LABEL_MAP]: { name: "LabelMap", path: "", import: "" },
-    [HORIZONTAL_LINE]: { name: "Line", path: "", import: "" },     // create component
-    [TABLE_HEADER]: { name: "TableHeader", path: "", import: "" },
-    [LOGIN_REFRESH]: { name: "LoginRefresh", path: "", import: "" },
-    [ABOUT_HERO]: { name: "AboutHero", path: "", import: "" },
-    [CONTACT_US]: { name: "ContactForm", path: "", import: "" },
+    [AUTO_FETCH_API]: { name: "AutoFetchApi" },
+    [AUTO_FETCH_API_POST]: { name: "AutoFetchApi" },
+    [AUTO_FETCH_API_USER]: { name: "ApiHandler" },
+    [TITLE]: { name: "Title" },
+    [CONTAINER]: { name: "RenderComponent" },
+    [PANEL_HEADER]: { name: "PanelHeader" },
+    [IMAGE_BANNER]: { name: "Banner" },
+    [SELECT]: { name: "SelectButton", props: { handleValueChange: "handleValueChange", setSliceData: "setSliceData" } },
+    [SELECT2]: { name: "DropSelect", props: { handleValueChange: "handleValueChange", setSliceData: "setSliceData" } },
+    [SLIDER]: { name: "Slider", props: { handleValueChange: "handleValueChange", setSliceData: "setSliceData" } },
+    [API_BUTTON]: { name: "ApiButton", props: { setSliceData: "setSliceData" } },
+    [HEADING]: { name: "Heading" },
+    [API_HEADING]: { name: "DynamicHeading" },
+    [LIST]: { name: "List" },
+    [DYNAMIC_CARD_CONTAINER]: { name: "DynamicCardContainer", props: { handleValueChange: "handleValueChange", setSliceData: "setSliceData", onLoadMore: "handleLoadMore" } },
+    [DETAILED_VIEW]: { name: "DetailedDataCard" },
+    [NAVIGATE_BUTTON]: { name: "NavigateButton" },
+    [PAGE_FOOTER]: { name: "Footer" },
+    [PAGE_HEADER]: { name: "Header" },
+    [OTP_LOGIN]: { name: "OtpLogin" },
+    [HAMBURGER_MENU]: { name: "MenuState" },
+    [TABS]: { name: "Tabbar" },
+    [SELECT_SLIDER]: { name: "SelectSlider", props: { handleValueChange: "handleValueChange", setSliceData: "setSliceData" } },
+    [TOGGLE_BUTTON]: { name: "CustomToogleButton", props: { handleValueChange: "handleValueChange", setSliceData: "setSliceData" } },
+    [BUTTON]: { name: "Button", props: { handleOnClick: "handleValueChange", setSliceData: "setSliceData" } },
+    [SCROLL_TO_TOP]: { name: "ScrollToTop" },
+    [CHATBOT]: { name: "Chatbot" },
+    [DASHBOARD_LISTING]: { name: "DashboardListing" },
+    [ROUTE_BUTTON]: { name: "RouteButton" },
+    [LABEL_MAP]: { name: "LabelMap" },
+    [HORIZONTAL_LINE]: { name: "Line" },     // create component
+    [TABLE_HEADER]: { name: "TableHeader" },
+    [LOGIN_REFRESH]: { name: "LoginRefresh" },
+    [ABOUT_HERO]: { name: "AboutHero" },
+    [CONTACT_US]: { name: "ContactForm" },
 };
+
+
+export const PAGE_IMPORTS = {
+    common: `
+    import React from "react";
+    import {Card} from "react-bootstrap";
+    import { useState } from "react";
+    import { useDispatch } from "react-redux";
+    import { resetFilterData, storeFilterData } from "../../redux/slice/filterSlice.js";
+    import { callApi } from "../../redux/utils/apiActions.js";
+    `,
+    VIEW_LISTING: `
+    import { useEffect } from "react";
+    import { API_ENDPOINTS } from "../../redux/utils/api.js";
+    import { GET, GET_PROPERTY_LIST_BY_USER_ID } from "../utils/Const.js";
+    `,
+};
+
