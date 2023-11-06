@@ -41,7 +41,7 @@ const AccountMenu = ({ userProfile, onSignOut }) => {
                     <Typography className='profile_name'>{userProfile.fullName}</Typography>
                     <span className='acc_contact'>{hidePartially(userProfile.phoneNumber)}</span>
                 </div>
-                {/* <div className='menu_sec menu_sec_middle'>
+                <div className='menu_sec menu_sec_middle'>
                     <Link to="/account/tabs?tab=recent_searches" className='acc_menu_item'>
                         <div className='menu_item'>
                             <YoutubeSearchedForSharpIcon className='menu_item_icon' />
@@ -66,7 +66,7 @@ const AccountMenu = ({ userProfile, onSignOut }) => {
                             <span>Recommendations</span>
                         </div>
                     </Link>
-                </div> */}
+                </div>
                 <div className='menu_sec menu_sec_bottom'>
                     <Button className='menu_item signout_btn' onClick={handleSignOut}>
                         <LogoutIcon className='menu_item_icon' />
