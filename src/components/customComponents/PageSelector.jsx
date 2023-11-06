@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import AdminDashboard from "../Pages/adminPages/AdminDashboard.js";
-import MasterManagement from "../Pages/adminPages/MasterManagement.js";
-import PropertyManagement from "../Pages/adminPages/PropertyManagement.js";
-import UserManagement from "../Pages/adminPages/UserManagement.js";
+import AdminDashboard from "../pages/AdminDashboard.js";
+import MasterManagement from "../pages/MasterManagement.js";
+import PropertyManagement from "../pages/PropertyManagement.js";
+import UserManagement from "../pages/UserManagement.js";
 import {
   ADMIN_DASHBOARD,
   ADMIN_DASHBOARD_LOGIN,
@@ -14,13 +14,13 @@ import {
   USER_MANAGEMENT,
 } from "../utils/Const.js";
 import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
-import Login from "../Pages/Login.js";
+import Login from "../pages/Login.js";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../../redux/utils/api.js";
 import { callApi } from "../../redux/utils/apiActions.js";
 import { storeUserData } from "../../redux/slice/userSlice.js";
-import CustomerManagement from "../Pages/adminPages/CustomerManagement.js";
+import CustomerManagement from "../pages/CustomerManagement.js";
 
 export default function PageSelector({ pageName }) {
   const navigate = useNavigate();
