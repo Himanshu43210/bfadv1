@@ -1,27 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AutoFetchApi from "../customComponents/AutoFetchApi.jsx";
-import { ALTER_USER_DATA, GET, GET_CUSTOMER_CONTACTED, LOADING } from '../utils/Const.js';
+import { GET, GET_CUSTOMER_CONTACTED, LOADING, PROFILE } from '../utils/Const.js';
 import { useSelector } from 'react-redux';
 import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
 import { CircularProgress } from "@mui/material";
 import { Card } from "react-bootstrap";
-import TableButtonHeader from '../utils/TableButtonHeader.js';
 import ListingTable from '../utils/ListingTable.js';
+import { API_ENDPOINTS } from '../../redux/utils/api.js';
 
 function CustomerManagement() {
+    const [tableState, setTableState] = useState(0);
     const desktopHeaders = {
-        "Name": "name",
-        "Phone Number": "phoneNumber",
-        "Plot No.": "plotNumber",
-        "Location": "location",
-        "Title": "title",
-        "Price": "price"
+        "Name": "userId.fullName",
+        "Phone Number": "userId.phoneNumber",
+        "Plot No.": "propertyId.plotNumber",
+        "Location": "propertyId.sectorNumber",
+        "Title": "propertyId.title",
+        "Price(₹)": "propertyId.price"
     };
-    const tableData = {};
-    const dataApi = "";
+    // 2 actions --- preview, remove/add
+    const recommendationsHeader = {
+        "Location": "propertyId.sectorNumber",
+        "Plot": "propertyId.plotNumber",
+        "Size": "propertyId.size",
+        "Floor": "propertyId.floor",
+        "Price(₹)": "propertyId.price",
+        "Accommodation": "propertyId.accommodation",
+        "Facing": "propertyId.facing",
+        "Park Facing": "propertyId.parkFacing",
+        "Corner": "propertyId.corner"
+    };
+    let tableData = useSelector((state) => selectApiData(state, GET_CUSTOMER_CONTACTED));
+    console.log('============== TABLE DATA : CUSTOMER MANAGEMENT ==============', tableData);
+    const userProfile = useSelector((state) => state.profile);
+    const dataApi = `${API_ENDPOINTS[GET_CUSTOMER_CONTACTED]}?cpId=${userProfile._id}&page=0&limit=10`;
     const apiStatus = useSelector((state) =>
         selectApiStatus(state, GET_CUSTOMER_CONTACTED || "")
     );
+    console.log('++++++++++++++ api status ++++++++++++++++', apiStatus);
 
     // add recommendation(search & select property) --- 
     // plot no, location, title, accommodation, possession, facing, updated at
@@ -33,7 +49,7 @@ function CustomerManagement() {
 
     return (
         <>
-            {!tableData && <AutoFetchApi url={dataApi} method={GET} />}
+            {!tableData && <AutoFetchApi component={{ api: dataApi, method: GET }} />}
             {apiStatus === LOADING ? (
                 <CircularProgress className="loader-class" />
             ) : (
@@ -44,13 +60,14 @@ function CustomerManagement() {
                             <ListingTable
                                 headersDesktop={desktopHeaders}
                                 headersMobile={desktopHeaders}
-                                editApi={{}}
-                                deleteApi={{}}
-                                getDataApi={{}}
-                                filterDataUrl={{}}
-                                itemCount={{}}
-                                refreshDataApi={{}}
+                                getDataApi={GET_CUSTOMER_CONTACTED}
+                                filterDataUrl={{ dataApi }}
+                                itemCount={tableData?.itemCount}
+                                refreshDataApi={{ dataApi }}
                                 showRecommendationActions={true}
+                                hideAlterActions={true}
+                                showRecommendations={API_ENDPOINTS["getPropertyRecommended"]}
+                                recommendationsHeader={recommendationsHeader}
                             />
                         </Card.Body>
                     </Card>
