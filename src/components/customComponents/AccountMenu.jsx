@@ -42,12 +42,12 @@ const AccountMenu = ({ userProfile, onSignOut }) => {
                     <span className='acc_contact'>{hidePartially(userProfile.phoneNumber)}</span>
                 </div>
                 <div className='menu_sec menu_sec_middle'>
-                    <Link to="/account/tabs?tab=recent_searches" className='acc_menu_item'>
+                    {/* <Link to="/account/tabs?tab=recent_searches" className='acc_menu_item'>
                         <div className='menu_item'>
                             <YoutubeSearchedForSharpIcon className='menu_item_icon' />
                             <span>Recent Searches</span>
                         </div>
-                    </Link>
+                    </Link> */}
                     <Link to="/account/tabs?tab=viewed" className='acc_menu_item'>
                         <div className='menu_item'>
                             <VisibilityIcon className='menu_item_icon' />

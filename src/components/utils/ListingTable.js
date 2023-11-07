@@ -51,6 +51,7 @@ const ListingTable = ({
   onRefreshApiType,
   hideActions,
   showViewAllListing,
+  showRecommendationActions,
   hideAlterActions,
   refreshDataApi,
   refreshMethod,
@@ -69,6 +70,7 @@ const ListingTable = ({
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [showRowModal, setShowRowModal] = useState(false);
+  const [showTablePopup, setShowTablePopup] = useState(false);
   const [currentRowData, setCurrentRowData] = useState({});
   const [activePage, setActivePage] = useState(0);
   const [itemsCountPerPage, setItemsCountPerPage] = useState(10);
@@ -531,6 +533,9 @@ const ListingTable = ({
   const toogleApproval = () => {
     setShowApprovalModal(!showApprovalModal);
   };
+  const toggleTablePopup = () => {
+    setShowTablePopup(!showTablePopup);
+  };
 
   const toggleRemove = () => {
     setShowRemoveModal(!showRemoveModal);
@@ -666,6 +671,15 @@ const ListingTable = ({
           onCancel={toogleDelete}
         >
           <p className="lbel">Are you sure want to Delete?</p>
+        </ReusablePopup>
+      )}
+
+      {showTablePopup && (
+        <ReusablePopup
+          onSave={() => { }}
+          onCancel={toggleTablePopup}
+        >
+
         </ReusablePopup>
       )}
 
@@ -938,12 +952,40 @@ const ListingTable = ({
                     <Button
                       className="row_action_btn"
                       onClick={(e) => {
+                        setCurrentRowData(element);
                         navigateTo(showViewAllListing + "?id=" + element._id);
                       }}
                     >
                       <AiOutlineDoubleRight size={12} />
                     </Button>
                   </td>
+                )}
+                {showRecommendationActions && (
+                  <>
+                    <td>
+                      <Button
+                        className="row_action_btn"
+                        onClick={(e) => {
+                          setCurrentRowData(element);
+                          navigateTo(``);
+                        }}
+                      >
+                        Add Recommendation
+                        <AiOutlineDoubleRight size={12} />
+                      </Button>
+                    </td>
+                    <td>
+                      <Button
+                        className="row_action_btn"
+                        onClick={(e) => {
+                          navigateTo(``);
+                        }}
+                      >
+                        Show Recommendations
+                        <AiOutlineDoubleRight size={12} />
+                      </Button>
+                    </td>
+                  </>
                 )}
               </tr>
             ))}

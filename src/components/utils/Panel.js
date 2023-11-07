@@ -3,9 +3,7 @@ import { FaClipboardList, FaUsers, FaUserTie, FaBuilding } from "react-icons/fa/
 import { AiFillHome, AiOutlineLogout } from "react-icons/ai/index.js";
 import {
   ADMIN_DASHBOARD,
-  CHANNEL_PARTNER,
   CUSTOMER_MANAGEMENT,
-  MASTER_MANAGEMENT,
   PROPERTY_MANAGEMENT,
   USER_MANAGEMENT,
 } from "./Const.js";
@@ -61,7 +59,7 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
           <FaBuilding className="admin-panel-icons" />
           <h6 className="panel_link_label">Property</h6>
         </Button>
-        {userProfile.role === CHANNEL_PARTNER && (
+        {userProfile.role === "ChannelPartner" && (
           <Button
             onClick={() => handlePageClick(CUSTOMER_MANAGEMENT)}
             className="panel-link"

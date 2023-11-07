@@ -48,4 +48,12 @@ export const API_ENDPOINTS = {
   getMasterDataOnHome: API_DOMAIN + "masters/getMasterDataOnHome",
   addCustomer: API_DOMAIN + "customers/addCustomer",
   chat: CHAT_API_DOMAIN,
+  addPropertySearched: API_DOMAIN + "properties/createUserHistory/searches",
+  addPropertyViewed: API_DOMAIN + "properties/createUserHistory/visited",
+  addPropertyContacted: API_DOMAIN + "properties/createUserHistory/contacted",
+  addPropertyRecommended: API_DOMAIN + "properties/createUserHistory/recommendation",
+  getPropertySearched: API_DOMAIN + "properties/getUserHistory/searches",
+  getPropertyViewed: API_DOMAIN + "properties/getUserHistory/visited",
+  getPropertyContacted: API_DOMAIN + "properties/getUserHistory/contacted",
+  getPropertyRecommended: API_DOMAIN + "properties/getUserHistory/recommendation",
 };

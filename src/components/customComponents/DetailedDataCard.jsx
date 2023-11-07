@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 import { callApi } from "../../redux/utils/apiActions.js";
 import { useDispatch } from "react-redux";
-import { DETAILED_VIEW, GET, HORIZONTAL_LINE } from "../utils/Const.js";
+import { DETAILED_VIEW, GET, HORIZONTAL_LINE, POST } from "../utils/Const.js";
 import { selectApiData } from "../../redux/utils/selectors.js";
 import { API_ENDPOINTS } from "../../redux/utils/api.js";
 import { convertToCr } from "../utils/HelperMethods.js";
@@ -68,9 +68,8 @@ export default function DetailDataCard({
     }
   }, []);
 
-  const apiData = useSelector(
-    (state) => selectApiData(state, getApiEndpoint)?.data
-  );
+  const apiData = useSelector((state) => selectApiData(state, getApiEndpoint)?.data);
+  const customerProfile = useSelector((state) => state.customer);
   const [mediaPrepared, setMediaPrepared] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const cardData = singledata || apiData || {};
@@ -116,6 +115,20 @@ export default function DetailDataCard({
     }
   }, [mediaPrepared]);
 
+  useEffect(() => {
+    // id & customer signedin
+    if (id && Object.keys(customerProfile).length !== 0) {
+      // saved to visited property list
+      const options = {
+        url: API_ENDPOINTS["addPropertyViewed"],
+        method: POST,
+        headers: { "Content-Type": "application/json" },
+        data: { userId: customerProfile._id, propertyId: id },
+      };
+      dispatch(callApi(options));
+    }
+  }, [cardData]);
+
   const handleImageChange = (index, payload, dir) => {
     let newIndex;
     if (index) {
@@ -148,6 +161,24 @@ export default function DetailDataCard({
       payload,
       "_blank"
     );
+  };
+
+  const handlePropertyContacted = () => {
+    // if id & customer logged in, save to contacted property list
+    if (id && Object.keys(customerProfile).length !== 0) {
+      const options = {
+        url: API_ENDPOINTS["addPropertyContacted"],
+        method: POST,
+        headers: { "Content-Type": "application/json" },
+        data: { userId: customerProfile._id, propertyId: cardData._id },
+      };
+      dispatch(callApi(options))
+        .then((res) => {
+          console.log('=============== add property contacted res ============', res);
+        }).catch((error) => {
+          console.log('=============== add property contacted error ============', error);
+        });
+    }
   };
 
   const getTotalImgsExcept = (type = null) => {
@@ -389,6 +420,7 @@ export default function DetailDataCard({
                 className="detail-button"
                 variant="contained"
                 onClick={() => {
+                  handlePropertyContacted();
                   setShowNumber(!ShowNumber);
                 }}
               >
@@ -399,7 +431,10 @@ export default function DetailDataCard({
               <Button
                 className="detail-button"
                 variant="contained"
-                onClick={handleWhatsappContact}
+                onClick={() => {
+                  handlePropertyContacted();
+                  handleWhatsappContact();
+                }}
               >
                 {/* <img src={component?.icons?.whatsapp} alt="" /> */}
                 <WhatsAppIcon className="detail_btn_icon" />
