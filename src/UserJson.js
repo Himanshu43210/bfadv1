@@ -58,6 +58,13 @@ export const AD_USER_DASHBOARD = {
             {
               type: ROUTE_BUTTON,
               className: "admin_route_button",
+              label: "Approve Agents",
+              name: "Approve Agents",
+              route: "/admin/approveAgents",
+            },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin_route_button",
               label: "Approve Channel Partner Listngs",
               name: "Approve Channel Partner Listngs",
               route: "/admin/approveListing",
