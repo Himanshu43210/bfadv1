@@ -604,7 +604,11 @@ const ListingTable = ({
       dispatch(callApi(options))
         .then((res) => {
           console.log('++++++++++ FETCH all cp properties RES +++++++++', res);
-          
+          setRecommendationActionState({
+            ...recommendationActionState,
+            type: key,
+            list: res.payload?.data,
+          });
         }).catch((error) => {
           console.log('========== FETCH All cp properties ERROR =========', error);
         });
@@ -662,26 +666,28 @@ const ListingTable = ({
     }
   };
 
-  const formatTableCell = (element, headerLabel) => {
+  const formatTableCell = (element, headerLabel, rtc = false) => {
+    const allowedTableColumnsFinal = rtc ? recommendationsHeader : allowedTableColumns;
+    console.log('>>>>>>>>>>>>>> ELEMENT & HEADERLABEL <<<<<<<<<<<<<<<', element, headerLabel, allowedTableColumnsFinal);
     let cellData;
-    const splittedKeys = allowedTableColumns[headerLabel].split(".");
-    if (splittedKeys.length === 1) {
+    const splittedKeys = allowedTableColumnsFinal[headerLabel]?.split(".");
+    if (splittedKeys?.length === 1) {
       if (userProfile.role === USER_ROLE[BF_ADMIN]) {
         if (splittedKeys[0] === "createdByName") {
           cellData = element["cpName"] || element["createdByName"];
         } else if (splittedKeys[0] === "createdByPhoneNumber") {
           cellData = element["cpPhoneNumber"] || element["createdByPhoneNumber"];
         } else {
-          cellData = element?.[allowedTableColumns?.[headerLabel]];
+          cellData = element?.[allowedTableColumnsFinal?.[headerLabel]];
         }
       } else {
-        cellData = element?.[allowedTableColumns?.[headerLabel]];
+        cellData = element?.[allowedTableColumnsFinal?.[headerLabel]];
       }
-    } else if (splittedKeys.length > 1) {
+    } else if (splittedKeys?.length > 1) {
       cellData = element?.[splittedKeys?.[0]]?.[splittedKeys?.[1]];
     }
     // check for date
-    if (!isNaN(Date.parse(cellData)) && cellData.length > 20) {
+    if (!isNaN(Date.parse(cellData)) && cellData?.length > 20) {
       return new Date(cellData).toLocaleString('default', { day: 'numeric', month: 'short', year: 'numeric' });
     }
     // check for true
@@ -692,6 +698,7 @@ const ListingTable = ({
     if (cellData === false || cellData === "false") {
       return "No";
     }
+    console.log('--------------- CELL DATA ---------------', cellData);
     return cellData;
   };
 
@@ -765,10 +772,10 @@ const ListingTable = ({
                 <tr className="tableborder text" id={item._id}>
                   {Object.keys(recommendationsHeader).map((headerLabel, index) => (
                     <td className="bodytext" key={index}>
-                      {formatTableCell(item, headerLabel)}
+                      {formatTableCell(item, headerLabel, true)}
                     </td>
                   ))}
-                  <td>
+                  <td className="tablebody tableborder text actionColumn">
                     <Button
                       className="row_action_btn preview_btn ListingPreviewbtn"
                       onClick={(e) => {
@@ -780,7 +787,7 @@ const ListingTable = ({
                       <FaRegEye size={20} />
                     </Button>
                     <Button
-                      className="row_action_btn delete_btn ListingDeletebtn"
+                      className="row_action_btn approve_btn ListingDeletebtn text_btn"
                       variant="danger"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -819,14 +826,14 @@ const ListingTable = ({
         >
           <div className="formheadingcontainer popup_title">Property Preview</div>
           <HomeCard
-            element={currentRowData}
+            element={Object.keys(popupCurrRowData).length !== 0 ? popupCurrRowData : currentRowData}
             disableOnClickNavigate={true}
           ></HomeCard>
           <SearchCard
-            element={currentRowData}
+            element={Object.keys(popupCurrRowData).length !== 0 ? popupCurrRowData : currentRowData}
             disableOnClickNavigate={true}
           ></SearchCard>
-          <DetailDataCard singledata={currentRowData}></DetailDataCard>
+          <DetailDataCard singledata={Object.keys(popupCurrRowData).length !== 0 ? popupCurrRowData : currentRowData}></DetailDataCard>
         </ReusablePopup>
       )}
 

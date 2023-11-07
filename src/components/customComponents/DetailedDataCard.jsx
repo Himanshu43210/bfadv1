@@ -165,7 +165,7 @@ export default function DetailDataCard({
 
   const handlePropertyContacted = () => {
     // if id & customer logged in, save to contacted property list
-    if (id && Object.keys(customerProfile).length !== 0) {
+    if (id && customerProfile && Object.keys(customerProfile).length !== 0) {
       const options = {
         url: API_ENDPOINTS["addPropertyContacted"],
         method: POST,
