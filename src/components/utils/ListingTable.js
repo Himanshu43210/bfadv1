@@ -15,6 +15,7 @@ import {
   CHANNEL_PARTNER,
   DELETE,
   GET,
+  GET_ADMIN_PROPERTY_DATA,
   NEED_APPROVAL_BY,
   POST,
   PROFILE,
@@ -60,7 +61,10 @@ const ListingTable = ({
   showDeleteAction,
   showColumnFilter,
   data,
-  useParamsFromUrl
+  useParamsFromUrl,
+  rowClick,
+  showRecommendations,
+  recommendationsHeader
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -72,6 +76,7 @@ const ListingTable = ({
   const [showRowModal, setShowRowModal] = useState(false);
   const [showTablePopup, setShowTablePopup] = useState(false);
   const [currentRowData, setCurrentRowData] = useState({});
+  const [popupCurrRowData, setPopupCurrRowData] = useState({});
   const [activePage, setActivePage] = useState(0);
   const [itemsCountPerPage, setItemsCountPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(10);
@@ -84,6 +89,10 @@ const ListingTable = ({
   const [showImgEditModal, setShowImgEditModal] = useState(false);
   const [imgEditor, setImgEditor] = useState({});
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
+  const [recommendationActionState, setRecommendationActionState] = useState({
+    type: "",
+    list: []
+  });
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -92,7 +101,7 @@ const ListingTable = ({
     return selectApiData(state, getDataApi);
   });
   const userProfile = useSelector((state) => state[PROFILE]);
-  console.log('>>>>>>>>>>>>>>>> USER PROFILE <<<<<<<<<<<<<<<<<<<<', userProfile, apiStatus, getApiDataFromRedux);
+  console.log('>>>>>>>>>>>>>>>> USER PROFILE & apiStatus & getApiDataFromRedux <<<<<<<<<<<<<<<<<<<<', userProfile, apiStatus, getApiDataFromRedux);
   const navigateTo = useNavigate();
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
@@ -544,6 +553,64 @@ const ListingTable = ({
     setShowImgEditModal(!showImgEditModal);
   };
 
+  const updateRecommendation = () => {
+    if (recommendationActionState.type === "SHOW") {
+      // call the remove recommendation api
+    } else {
+      // call the add recommendation api
+    }
+  };
+
+  const handleRecommendationActions = (key) => {
+    console.log('========= handleRecommendationActions ==========', key);
+    setShowTablePopup(!showTablePopup);
+    setRecommendationActionState({
+      ...recommendationActionState,
+      type: key,
+    });
+    // using currentRowData
+    if (key === "SHOW") {
+      const userId = currentRowData?.userId?._id;
+      const page = 0, limit = 100;
+      const options = {
+        url: showRecommendations,
+        method: GET,
+        headers: { "Content-Type": "application/json" },
+        params: {
+          userId: currentRowData?.userId?._id,
+          page,
+          limit
+        }
+      };
+      dispatch(callApi(options))
+        .then((res) => {
+          console.log('++++++++++ FETCH RECOMMENDED RES +++++++++', res);
+          setRecommendationActionState({
+            ...recommendationActionState,
+            type: key,
+            recommended: res.payload?.data,
+          });
+        }).catch((error) => {
+          console.log('========== FETCH RECOMMENDED ERROR =========', error);
+        });
+    } else if (key === "ADD") {
+      // api 2 --- properties list of the cp same as master data
+      // api 2 --- properties/createUserHistory/recommendation POST {propertyId, userId, options}
+      const options = {
+        url: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
+        method: POST,
+        params: { id: userProfile._id, role: userProfile.role }
+      };
+      dispatch(callApi(options))
+        .then((res) => {
+          console.log('++++++++++ FETCH all cp properties RES +++++++++', res);
+          
+        }).catch((error) => {
+          console.log('========== FETCH All cp properties ERROR =========', error);
+        });
+    }
+  };
+
   const handleSort = (column) => {
     const newSortType = sortType !== "asc" ? "desc" : "asc";
     setSortType(newSortType);
@@ -676,10 +743,57 @@ const ListingTable = ({
 
       {showTablePopup && (
         <ReusablePopup
-          onSave={() => { }}
-          onCancel={toggleTablePopup}
+          onClose={toggleTablePopup}
+          onHide={toggleTablePopup}
         >
-
+          <div className="formheadingcontainer">{recommendationActionState.type === "SHOW" ? "All" : "Add"} Recommendation for {currentRowData?.userId?.fullName}({currentRowData?.userId?.phoneNumber})</div>
+          <Table striped bordered hover responsive size="sm">
+            <thead>
+              <tr>
+                {Object.keys(recommendationsHeader).map((headerLabel, index) => (
+                  <th key={index} className="tablehead text">
+                    <div>{headerLabel}</div>
+                  </th>
+                ))}
+                <th key="action_header" className="tablehead text">
+                  <div>Actions</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="tablebody text">
+              {recommendationActionState?.list?.map((item) => (
+                <tr className="tableborder text" id={item._id}>
+                  {Object.keys(recommendationsHeader).map((headerLabel, index) => (
+                    <td className="bodytext" key={index}>
+                      {formatTableCell(item, headerLabel)}
+                    </td>
+                  ))}
+                  <td>
+                    <Button
+                      className="row_action_btn preview_btn ListingPreviewbtn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPopupCurrRowData(item);
+                        tooglePreview(); // Add a function to handle the preview logic
+                      }}
+                    >
+                      <FaRegEye size={20} />
+                    </Button>
+                    <Button
+                      className="row_action_btn delete_btn ListingDeletebtn"
+                      variant="danger"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPopupCurrRowData(item);
+                      }}
+                    >
+                      {recommendationActionState === "SHOW" ? "Remove" : "Add"}
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </ReusablePopup>
       )}
 
@@ -859,7 +973,7 @@ const ListingTable = ({
                 className="tableborder text"
                 key={element.id}
                 onClick={() => {
-                  if (!showViewAllListing) {
+                  if (rowClick) {
                     setCurrentRowData(element);
                     toogleRowClick();
                   }
@@ -875,50 +989,56 @@ const ListingTable = ({
                     <>
                       {
                         (!hideAlterActions || showEditAction) && (
-                          <Button
-                            className="row_action_btn edit_btn ListingEditbtn"
-                            variant="success"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentRowData(element);
-                              toogleEdit();
-                            }}
-                          >
-                            <FaUserEdit size={20} />
-                          </Button>
+                          <>
+                            <Button
+                              className="row_action_btn edit_btn ListingEditbtn"
+                              variant="success"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentRowData(element);
+                                toogleEdit();
+                              }}
+                            >
+                              <FaUserEdit size={20} />
+                            </Button>
+                            &nbsp;
+                          </>
                         )
                       }
-                      &nbsp;
                       {
                         (!hideAlterActions || showDeleteAction) && (
-                          <Button
-                            className="row_action_btn delete_btn ListingDeletebtn"
-                            variant="danger"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentRowData(element);
-                              toogleDelete();
-                            }}
-                          >
-                            <FaRegTrashAlt size={20} />
-                          </Button>
+                          <>
+                            <Button
+                              className="row_action_btn delete_btn ListingDeletebtn"
+                              variant="danger"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentRowData(element);
+                                toogleDelete();
+                              }}
+                            >
+                              <FaRegTrashAlt size={20} />
+                            </Button>
+                            &nbsp;
+                          </>
                         )
                       }
-                      &nbsp;
                     </>
                     {isproperty && ( // Conditionally render the Preview button
-                      <Button
-                        className="row_action_btn preview_btn ListingPreviewbtn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrentRowData(element);
-                          tooglePreview(); // Add a function to handle the preview logic
-                        }}
-                      >
-                        <FaRegEye size={20} />
-                      </Button>
+                      <>
+                        <Button
+                          className="row_action_btn preview_btn ListingPreviewbtn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentRowData(element);
+                            tooglePreview(); // Add a function to handle the preview logic
+                          }}
+                        >
+                          <FaRegEye size={20} />
+                        </Button>
+                        &nbsp;
+                      </>
                     )}
-                    &nbsp;
                     {approveApi &&
                       element[NEED_APPROVAL_BY] &&
                       userProfile._id === element[NEED_APPROVAL_BY] && (
@@ -945,6 +1065,31 @@ const ListingTable = ({
                           </Button>
                         </>
                       )}
+                    {showRecommendationActions && (
+                      <>
+                        <Button
+                          className="row_action_btn text_btn"
+                          onClick={(e) => {
+                            setCurrentRowData(element);
+                            handleRecommendationActions("ADD");
+                            // navigateTo(``);
+                          }}
+                        >
+                          +&nbsp;Add&nbsp;Recommendation
+                        </Button>
+                        <Button
+                          className="row_action_btn text_btn"
+                          onClick={(e) => {
+                            setCurrentRowData(element);
+                            handleRecommendationActions("SHOW");
+                            // navigateTo(``);
+                          }}
+                        >
+                          Show&nbsp;Recommendations
+                          <AiOutlineDoubleRight size={12} />
+                        </Button>
+                      </>
+                    )}
                   </td>
                 )}
                 {showViewAllListing && (
@@ -959,33 +1104,6 @@ const ListingTable = ({
                       <AiOutlineDoubleRight size={12} />
                     </Button>
                   </td>
-                )}
-                {showRecommendationActions && (
-                  <>
-                    <td>
-                      <Button
-                        className="row_action_btn"
-                        onClick={(e) => {
-                          setCurrentRowData(element);
-                          navigateTo(``);
-                        }}
-                      >
-                        Add Recommendation
-                        <AiOutlineDoubleRight size={12} />
-                      </Button>
-                    </td>
-                    <td>
-                      <Button
-                        className="row_action_btn"
-                        onClick={(e) => {
-                          navigateTo(``);
-                        }}
-                      >
-                        Show Recommendations
-                        <AiOutlineDoubleRight size={12} />
-                      </Button>
-                    </td>
-                  </>
                 )}
               </tr>
             ))}

@@ -21,7 +21,8 @@ export default function SearchCard({
   classname,
   disableOnClickNavigate = false,
   showOptions = false,
-  handleValueChange
+  handleValueChange,
+  optVal
 }) {
   const cardDetailUrl = generatePropertyUrl(element);
   const handleShareClick = (e) => {
@@ -54,7 +55,7 @@ export default function SearchCard({
         <ul className="options_list">
           {options?.map((option, index) => (
             <li className="option_item">
-              <input type="radio" id={`${element._id}-${index}`} className="radio_input" name={element._id} onInput={() => handleOptionSelect(index)} />
+              <input type="radio" id={`${element._id}-${index}`} className="radio_input" name={element._id} onInput={() => handleOptionSelect(index)} checked={optVal === option.key} />
               <label htmlFor={`${element._id}-${index}`} className="radio_label">{option.key}</label>
             </li>
           ))}

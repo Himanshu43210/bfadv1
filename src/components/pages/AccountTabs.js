@@ -148,6 +148,7 @@ function AccountTabs() {
                                 classes="homeCards"
                                 showOptions={queryParams.get("tab") === "recommendations" ? true : false}
                                 handleValueChange={handleOptionChange}
+                                optVal={tabItem?.options?.[0]}
                             />
                         ))}
                     </div>
