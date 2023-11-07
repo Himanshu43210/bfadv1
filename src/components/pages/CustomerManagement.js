@@ -1,6 +1,6 @@
 import React from 'react';
 import AutoFetchApi from "../customComponents/AutoFetchApi.jsx";
-import { ALTER_USER_DATA, GET, LOADING } from '../utils/Const.js';
+import { ALTER_USER_DATA, GET, GET_CUSTOMER_CONTACTED, LOADING } from '../utils/Const.js';
 import { useSelector } from 'react-redux';
 import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
 import { CircularProgress } from "@mui/material";
@@ -20,17 +20,14 @@ function CustomerManagement() {
     const tableData = {};
     const dataApi = "";
     const apiStatus = useSelector((state) =>
-        selectApiStatus(state, ALTER_USER_DATA || "")
+        selectApiStatus(state, GET_CUSTOMER_CONTACTED || "")
     );
 
-    // customer name, contact, plot no, location, title, price
-    // actions --- add recommendation(Recommend), 
-
-    // recommend(search & select property) --- 
+    // add recommendation(search & select property) --- 
     // plot no, location, title, accommodation, possession, facing, updated at
     // actions : recommend
 
-    // recommended ---
+    // show recommendations ---
     // plot no, location, title, accommodation, possession, facing, updatedAt, customer response, customer remark
     // actions : unrecommend
 

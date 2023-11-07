@@ -117,7 +117,7 @@ export default function DetailDataCard({
 
   useEffect(() => {
     // id & customer signedin
-    if (id && Object.keys(customerProfile).length !== 0) {
+    if (id && customerProfile && Object.keys(customerProfile).length !== 0) {
       // saved to visited property list
       const options = {
         url: API_ENDPOINTS["addPropertyViewed"],

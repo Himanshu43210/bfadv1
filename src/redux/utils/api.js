@@ -56,4 +56,5 @@ export const API_ENDPOINTS = {
   getPropertyViewed: API_DOMAIN + "properties/getUserHistory/visited",
   getPropertyContacted: API_DOMAIN + "properties/getUserHistory/contacted",
   getPropertyRecommended: API_DOMAIN + "properties/getUserHistory/recommendation",
+  getCustomerContacted: API_DOMAIN + "properties/getCpUserHistory/recommendation",
 };
