@@ -240,15 +240,9 @@ export const ACCOUNT_TABS_SCREEN = {
   children: [
     HEADER,
     {
-      type: AUTO_FETCH_API_POST,
-      method: POST,
-      api: API_ENDPOINTS[GET_SEARCH_RESULT],
-      className: "header",
-    },
-    {
       type: TABS,
       tabs: [
-        { label: "Recent Searches", key: "recentSearches" },
+        // { label: "Recent Searches", key: "recentSearches" },
         { label: "Viewed", key: "viewed" },
         { label: "Contacted", key: "contacted" },
         { label: "Recommendations", key: "recommendations" },
@@ -267,24 +261,24 @@ export const ACCOUNT_TABS_SCREEN = {
         }
       ]
     },
-    // {
-    //   type: DYNAMIC_CARD_CONTAINER,
-    //   loadingApi: GET_SEARCH_RESULT,
-    //   sliceName: "filter",
-    //   className: "result-searchdiv tab_data",
-    //   apiName: GET_SEARCH_RESULT,
-    //   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
-    //   onClickApiMethod: POST,
-    //   paginationClass: "search_pagination",
-    //   renderComponentsInLoop: {
-    //     type: SEARCH_CARD,
-    //     className: "homeCards",
-    //   },
-    //   cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
-    //   cardClickNavigate: "/builderFloorDetails",
-    //   cardClickApiType: GET,
-    //   showOptions: true,
-    // },
+    {
+      type: DYNAMIC_CARD_CONTAINER,
+      loadingApi: GET_SEARCH_RESULT,
+      sliceName: "filter",
+      className: "result-searchdiv tab_data",
+      apiName: GET_SEARCH_RESULT,
+      onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
+      onClickApiMethod: POST,
+      paginationClass: "search_pagination",
+      renderComponentsInLoop: {
+        type: SEARCH_CARD,
+        className: "homeCards",
+      },
+      cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
+      cardClickNavigate: "/builderFloorDetails",
+      cardClickApiType: GET,
+      showOptions: true,
+    },
     FOOTER,
     SCROLLTOP,
     { type: CHATBOT }

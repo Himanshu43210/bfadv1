@@ -30,10 +30,10 @@ function CustomerManagement() {
     // plot no, location, title, accommodation, possession, facing, updated at
     // actions : recommend
 
-    // recommendations ---
+    // recommended ---
     // plot no, location, title, accommodation, possession, facing, updatedAt, customer response, customer remark
     // actions : unrecommend
-    
+
     return (
         <>
             {!tableData && <AutoFetchApi url={dataApi} method={GET} />}
@@ -47,13 +47,13 @@ function CustomerManagement() {
                             <ListingTable
                                 headersDesktop={desktopHeaders}
                                 headersMobile={desktopHeaders}
-                                fieldConst={{}}
                                 editApi={{}}
                                 deleteApi={{}}
                                 getDataApi={{}}
                                 filterDataUrl={{}}
                                 itemCount={{}}
                                 refreshDataApi={{}}
+                                showRecommendationActions={true}
                             />
                         </Card.Body>
                     </Card>

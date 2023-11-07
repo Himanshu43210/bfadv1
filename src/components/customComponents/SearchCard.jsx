@@ -21,6 +21,7 @@ export default function SearchCard({
   classname,
   disableOnClickNavigate = false,
   showOptions = false,
+  handleValueChange
 }) {
   const cardDetailUrl = generatePropertyUrl(element);
   const handleShareClick = (e) => {
@@ -33,32 +34,30 @@ export default function SearchCard({
       });
     }
   };
-  const navigateTo = useNavigate();
+  const options = [
+    { key: "Yes, I have finalized", },
+    { key: "Not visited yet", },
+    { key: "Property sold out", },
+    { key: "Asked brokerage", },
+    { key: "Rejected/Didn't like", },
+  ];
+
+  const handleOptionSelect = (optIdx) => {
+    if (handleValueChange) {
+      handleValueChange(options?.[optIdx]?.key);
+    }
+  };
 
   const renderOptions = () => {
     return (
       <div className="sc_options_wrapper">
         <ul className="options_list">
-          <li className="option_item">
-            <input type="radio" id={`${element._id}-1`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-1`} className="radio_label">Yes, I have finalized</label>
-          </li>
-          <li className="option_item">
-            <input type="radio" id={`${element._id}-2`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-2`} className="radio_label">Not visited yet</label>
-          </li>
-          <li className="option_item">
-            <input type="radio" id={`${element._id}-3`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-3`} className="radio_label">Property sold out</label>
-          </li>
-          <li className="option_item">
-            <input type="radio" id={`${element._id}-4`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-4`} className="radio_label">Asked brokerage</label>
-          </li>
-          <li className="option_item">
-            <input type="radio" id={`${element._id}-5`} className="radio_input" name={element._id} />
-            <label htmlFor={`${element._id}-5`} className="radio_label">Rejected/Didn't like</label>
-          </li>
+          {options?.map((option, index) => (
+            <li className="option_item">
+              <input type="radio" id={`${element._id}-${index}`} className="radio_input" name={element._id} onInput={() => handleOptionSelect(index)} />
+              <label htmlFor={`${element._id}-${index}`} className="radio_label">{option.key}</label>
+            </li>
+          ))}
         </ul>
       </div>
     );

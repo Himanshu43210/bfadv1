@@ -15,10 +15,11 @@ const serverRenderer = (req, res, next) => {
             console.error(err);
             return res.status(500).send('An error occurred while reading index.html');
         }
+        const html = ReactDOMServer.renderToString(<App />);
         return res.send(
             data.replace(
                 '<div id="root"></div>',
-                `<div id="root">${ReactDOMServer.renderToString(<App />)}</div>`
+                `<div id="root">${html}</div>`
             )
         );
     });
