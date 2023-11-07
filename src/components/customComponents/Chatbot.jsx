@@ -69,15 +69,17 @@ function Chatbot() {
             }).then((data) => {
                 console.log('++++++ CHATBOT RESPONSE ++++++', data);
                 setReceiving(false);
-                const resChat = {
-                    timestamp: new Date(),
-                    type: "res",
-                    payload: {
-                        text: data?.data
-                    }
-                };
-                dispatch(storeChat(resChat));
-                // setChats((currChats) => [...currChats, resChat]);
+                if (data?.data?.isFilter) {
+                    const resChat = {
+                        timestamp: new Date(),
+                        type: "res",
+                        payload: {
+                            text: data?.data?.data,
+                            links: data?.data?.isFilter ? data?.data?.propertyLinks : null
+                        }
+                    };
+                    dispatch(storeChat(resChat));
+                }
             }).catch((error) => {
                 console.log('====== CHATBOT ERROR ======', error);
             });
@@ -127,8 +129,10 @@ function Chatbot() {
                                 {payload.payload.text && (
                                     <span>{payload.payload.text}</span>
                                 )}
-                                {payload.payload.link && (
-                                    <a href={payload.payload.link} target='_blank' className='unreadable_data'>{payload.payload.link}</a>
+                                {payload.payload.links && (
+                                    payload.payload.links?.map((link) => (
+                                        <a href={link} target='_blank' className='unreadable_data'>{link}</a>
+                                    ))
                                 )}
                             </div>
                         </div>

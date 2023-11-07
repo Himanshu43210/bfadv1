@@ -90,6 +90,7 @@ export const GET_PROPERTY_LIST_BY_USER_ID = "getPropertiesListByUserId";
 export const GET_APPROVAL_PROPERTIES = "getApprovalProperties";
 export const GET_MASTER_DATA_ON_HOME = "getMasterDataOnHome";
 export const ADD_CUSTOMER = "addCustomer";
+export const GET_CUSTOMER_CONTACTED = "getCustomerContacted";
 
 export const LINKEDIN_ICON = "LINKEDIN_ICON";
 export const INSTAGRAM_ICON = "INSTAGRAM_ICON";
