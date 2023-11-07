@@ -8,9 +8,9 @@ import { API_ENDPOINTS } from '../../redux/utils/api.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { callApi } from '../../redux/utils/apiActions.js';
 import { GET, POST } from '../utils/Const.js';
-import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress.js";
 import SearchCard from '../customComponents/SearchCard.jsx';
 import BasicPagination from "../customComponents/Pagination.jsx";
+import { CircularProgress } from '@mui/material/index.js';
 
 function AccountTabs() {
     const location = useLocation();
@@ -148,7 +148,7 @@ function AccountTabs() {
                             />
                         ))}
                     </div>
-                    {(tabMetaData?.totalPages !== 1) && (
+                    {(tabMetaData?.totalPages !== 1 && loading === false) && (
                         <BasicPagination
                             paginationClass="search_pagination"
                             handlePageChange={(e, newPage) => {
@@ -168,7 +168,7 @@ function AccountTabs() {
                 <div className={`component_wrapper ${component?.children[6]?.className}`}>
                     <ComponentSelector component={component.children[6]} />
                 </div>
-                {/* {loading === true && (<CircularProgress className="loader-class" />)} */}
+                {loading === true && (<CircularProgress className="loader-class" />)}
             </div>
         </Card>
     );
