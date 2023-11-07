@@ -47,6 +47,7 @@ export const API_ENDPOINTS = {
   getApprovalProperties: API_DOMAIN + "properties/getApprovalProperties",
   getMasterDataOnHome: API_DOMAIN + "masters/getMasterDataOnHome",
   addCustomer: API_DOMAIN + "customers/addCustomer",
+  signInCustomer: API_DOMAIN + "customers/signIn",
   chat: CHAT_API_DOMAIN,
   addPropertySearched: API_DOMAIN + "properties/createUserHistory/searches",
   addPropertyViewed: API_DOMAIN + "properties/createUserHistory/visited",
@@ -57,4 +58,6 @@ export const API_ENDPOINTS = {
   getPropertyContacted: API_DOMAIN + "properties/getUserHistory/contacted",
   getPropertyRecommended: API_DOMAIN + "properties/getUserHistory/recommendation",
   getCustomerContacted: API_DOMAIN + "properties/getCpUserHistory/recommendation",
+  getUnapprovedAgentsData: API_DOMAIN + "users/getCpApporovalUsersList",
+  approveAgent: API_DOMAIN + "users/approveCp",
 };

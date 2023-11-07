@@ -180,6 +180,7 @@ const GeneralFormPage = () => {
                     // admin id
                     newFormData.append("contactId", "64e867d86a2061a0973a9a6c");
                     newFormData.append(NEED_APPROVAL_BY, "64e867d86a2061a0973a9a6c");
+                    newFormData.append("type", "agent");
 
                     function isObjectNotString(value) {
                         return (
@@ -215,6 +216,7 @@ const GeneralFormPage = () => {
                             ...formData,
                             parentId: "64e867d86a2061a0973a9a6c",
                             role: USER_ROLE["channelPartner"],
+                            type: "agent"
                         });
                     setSubmitData(data);
 

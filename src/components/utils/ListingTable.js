@@ -45,6 +45,7 @@ const ListingTable = ({
   deleteApi,
   getDataApi,
   approveApi,
+  approveApiMethod,
   itemCount,
   isproperty,
   removeApi,
@@ -60,6 +61,7 @@ const ListingTable = ({
   showEditAction,
   showDeleteAction,
   showColumnFilter,
+  showApproveAction,
   data,
   useParamsFromUrl,
   rowClick,
@@ -387,14 +389,15 @@ const ListingTable = ({
   };
   const handleApprove = (rowId) => {
     try {
+      const data = approveApiMethod ? { id: rowId } : {
+        _id: rowId,
+        [NEED_APPROVAL_BY]: userProfile.parentId || APPROVED,
+      };
       const options = {
         url: API_ENDPOINTS[approveApi],
-        method: POST,
+        method: approveApiMethod || POST,
         headers: { "Content-Type": "application/json" },
-        data: {
-          _id: rowId,
-          [NEED_APPROVAL_BY]: userProfile.parentId || APPROVED,
-        },
+        data: data,
       };
       dispatch(callApi(options)).then(() => {
         setSnackbar({ open: true, message: `Approved.`, status: 0 });
@@ -1046,31 +1049,33 @@ const ListingTable = ({
                         &nbsp;
                       </>
                     )}
-                    {approveApi &&
+                    {((approveApi &&
                       element[NEED_APPROVAL_BY] &&
-                      userProfile._id === element[NEED_APPROVAL_BY] && (
-                        <>
-                          <Button
-                            className="row_action_btn approve_btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentRowData(element);
-                              toogleApproval();
-                            }}
-                          >
-                            <FcApproval size={12} />
-                          </Button>
-                          <Button
-                            className="row_action_btn reject_btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentRowData(element);
-                              toggleRemove();
-                            }}
-                          >
-                            <FcRemoveImage size={12} />
-                          </Button>
-                        </>
+                      userProfile._id === element[NEED_APPROVAL_BY]) || showApproveAction) && (
+                        <Button
+                          className="row_action_btn approve_btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentRowData(element);
+                            toogleApproval();
+                          }}
+                        >
+                          <FcApproval size={12} />
+                        </Button>
+                      )}
+                    {(approveApi &&
+                      element[NEED_APPROVAL_BY] &&
+                      userProfile._id === element[NEED_APPROVAL_BY]) && (
+                        <Button
+                          className="row_action_btn reject_btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentRowData(element);
+                            toggleRemove();
+                          }}
+                        >
+                          <FcRemoveImage size={12} />
+                        </Button>
                       )}
                     {showRecommendationActions && (
                       <>

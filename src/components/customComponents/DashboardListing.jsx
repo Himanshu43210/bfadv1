@@ -47,6 +47,8 @@ const DashboardListing = ({ component }) => {
       hideActions={component.hideActions}
       showEditAction={component.showEditAction}
       showDeleteAction={component.showDeleteAction}
+      showApproveAction={component.showApproveAction}
+      approveApiMethod={component.approveApiMethod}
       showViewAllListing={component.showViewAllListing}
       hideAlterActions={component.hideAlterActions}
       roleSpecificDesktopHeaders={component.roleSpecificDesktopHeaders}

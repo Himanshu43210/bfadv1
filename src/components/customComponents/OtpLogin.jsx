@@ -130,7 +130,7 @@ function OtpLogin() {
     };
 
     const handleDataSubmit = () => {
-        if (formData.phoneNumber && formData.fullName) {
+        if ((mode === "SIGNIN" && formData.phoneNumber) || (mode === "SIGNUP" && formData.phoneNumber && formData.fullName)) {
             setLoading(true);
             generateRecaptcha();
             let appVerifier = window.recaptchaVerifier;
@@ -165,7 +165,7 @@ function OtpLogin() {
                     phoneNumber: formData.phoneNumber
                 };
                 const options = {
-                    url: API_ENDPOINTS[ADD_CUSTOMER],
+                    url: mode === "SIGNUP" ? API_ENDPOINTS[ADD_CUSTOMER] : API_ENDPOINTS[""],
                     method: POST,
                     headers,
                     data,
@@ -173,11 +173,22 @@ function OtpLogin() {
                 dispatch(callApi(options))
                     .then((res) => {
                         console.log('>>>>>>> CUSTOMER REGISTERED <<<<<<<', res);
-                        dispatch(storeCustomerData(res.payload.user));
-                        localStorage.setItem("customer", JSON.stringify(res.payload.user));
-                        setFormData({ fullName: "", phoneNumber: "", otp: "" });
+                        if (mode === 'SIGNIN') {
+                            if (res.payload?.user) {
+                                dispatch(storeCustomerData(res.payload.user));
+                                localStorage.setItem("customer", JSON.stringify(res.payload.user));
+                                setFormData({ fullName: "", phoneNumber: "", otp: "" });
+                            }
+                        } else if (mode === 'SIGNUP') {
+                            if (res.payload?.data) {
+                                dispatch(storeCustomerData(res.payload.data));
+                                localStorage.setItem("customer", JSON.stringify(res.payload.data));
+                                setFormData({ fullName: "", phoneNumber: "", otp: "" });
+                            }
+                        }
                     }).catch((error) => {
                         console.log('----- customer registration error -----', error);
+                        setSnackbar({ open: true, message: error.message, status: 1 });
                     });
             }).catch((error) => {
                 console.log('-------- otp verification error -------', error);
@@ -216,8 +227,12 @@ function OtpLogin() {
         return (
             <form className='otp_login_form'>
                 <div className='ol_form_fields_container'>
-                    <label className='field_label'>Enter Full Name*</label>
-                    <input type="text" value={formData.fullName} className='ol_input_field name_input' name='name' id='name' required={true} onInput={(e) => handleInput("fullName", e.target.value)} />
+                    {mode === 'SIGNUP' && (
+                        <>
+                            <label className='field_label'>Enter Full Name*</label>
+                            <input type="text" value={formData.fullName} className='ol_input_field name_input' name='name' id='name' required={true} onInput={(e) => handleInput("fullName", e.target.value)} />
+                        </>
+                    )}
                     <label className='field_label'>Enter Phone Number*</label>
                     <input type="number" value={formData.phoneNumber} className='ol_input_field phone_input' name='phoneNumber' id='phoneNumber' required={true} onInput={(e) => handleInput("phoneNumber", e.target.value)} />
                 </div>

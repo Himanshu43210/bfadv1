@@ -5,6 +5,7 @@ import {
   ALTER_USER_DATA,
   API_BUTTON,
   API_HEADING,
+  APPROVE_AGENT,
   APPROVE_PROPERTY_DATA,
   AUTO_FETCH_API,
   AUTO_FETCH_API_POST,
@@ -29,6 +30,7 @@ import {
   GET_PROPERTY_USER,
   GET_SEARCH_RESULT,
   GET_SIMILAR_PROPERTY_DATA,
+  GET_UNAPPROVED_AGENTS_DATA,
   HAMBURGER_MENU,
   HEADING,
   HOME_CARD,
@@ -45,6 +47,7 @@ import {
   PAGE_HEADER,
   PANEL_HEADER,
   POST,
+  PUT,
   REJECT_PROPERTY,
   ROUTE_BUTTON,
   SCROLL_TO_TOP,
@@ -902,6 +905,106 @@ export const MANAGE_USER = {
                   dataPoint: GET_ADMIN_USER_DATA,
                   showPreviewButton: false,
                   disableRowModal: true,
+                },
+                {
+                  type: ROUTE_BUTTON,
+                  className: "toogle-filter",
+                  label: "Back",
+                  name: "Back",
+                  route: "/admin",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const MANAGE_AGENT = {
+  name: "Master table",
+  pageClass: "standalone_page user_management_page",
+  className: "klk",
+  children: [
+    {
+      type: LOGIN_REFRESH,
+      name: "",
+      className: "",
+      children: [
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
+        {
+          type: AUTO_FETCH_API_USER,
+          user: true,
+          method: GET,
+          api: API_ENDPOINTS[GET_UNAPPROVED_AGENTS_DATA],
+        },
+        {
+          type: TITLE,
+          titles: ["Approve Agents"],
+        },
+        {
+          type: CONTAINER,
+          name: "",
+          className: "",
+          children: [
+            {
+              type: CONTAINER,
+              name: "",
+              className: "",
+              children: [
+                {
+                  type: DASHBOARD_LISTING,
+                  data: {},
+                  roleSpecific: false,
+                  desktopHeaders: {
+                    Name: "name",
+                    "Company Name": "companyName",
+                    "Mobile Number": "phoneNumber",
+                    City: "city",
+                    State: "state",
+                    Status: "status",
+                    // "Address": "address",
+                    // "Email": "email",
+                    // "Role": "role",
+                    // "Parent Id": "parentId",
+                    // "Status": "status",
+                  },
+                  mobileHeaders: {
+                    Name: "name",
+                    Role: "role"
+                  },
+                  fieldConst: editUserConst,
+                  editApi: ALTER_USER_DATA,
+                  deleteApi: DELETE_USER_DATA,
+                  getDataApi: GET_UNAPPROVED_AGENTS_DATA,
+                  approveApi: APPROVE_AGENT,
+                  approveApiMethod: PUT,
+                  endpoint: API_ENDPOINTS[GET_UNAPPROVED_AGENTS_DATA],
+                  dataPoint: GET_UNAPPROVED_AGENTS_DATA,
+                  showPreviewButton: false,
+                  disableRowModal: true,
+                  showEditAction: true,
+                  hideAlterActions: true,
+                  showDeleteAction: true,
+                  showApproveAction: true
                 },
                 {
                   type: ROUTE_BUTTON,
