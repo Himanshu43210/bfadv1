@@ -72,6 +72,7 @@ function OtpLogin() {
         setFormStage(0);
         setOpenForm(true);
         dispatch(clearCustomerData());
+        navigate("/");
     };
 
     const handleInput = (key, value) => {

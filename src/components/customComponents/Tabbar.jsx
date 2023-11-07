@@ -12,11 +12,9 @@ function Tabbar({
     urlTemp
 }) {
     const navigate = useNavigate();
-    const [value, setValue] = React.useState(currTab);
 
     const handleChange = (event, newValue) => {
         console.log('=========== HANDLE CHANGE : TAB ==========', newValue);
-        setValue(newValue);
         if (doNavigate && urlTemp) {
             navigate(urlTemp.replace('{TAB}', component?.tabs?.[newValue]?.key));
         } else {
@@ -25,7 +23,7 @@ function Tabbar({
     };
     return (
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }} classes='tabs_box'>
-            <Tabs value={value} onChange={handleChange} classes='tabs_wrapper' variant='scrollable'>
+            <Tabs value={currTab} onChange={handleChange} classes='tabs_wrapper' variant='scrollable'>
                 {
                     component.tabs?.map((tab, index) => (
                         <Tab label={tab.label} key={index} className='tab_item' />

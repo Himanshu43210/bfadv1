@@ -123,6 +123,9 @@ function AccountTabs() {
         console.log('+++++++++++ HANDLE PAGE CHANGE ++++++++++++');
         resetData();
         fetchData();
+        const ct = revMappings[queryParams.get("tab")];
+        console.log('------------- HANDLE PAGE CHANGE CT ------------', queryParams.get("tab"), ct);
+        setCurrTab(ct);
     }, [location, customerProfile]);
 
     return (
@@ -148,7 +151,7 @@ function AccountTabs() {
                             />
                         ))}
                     </div>
-                    {(tabMetaData?.totalPages !== 1 && loading === false) && (
+                    {(tabMetaData?.totalPages > 1 && loading === false) && (
                         <BasicPagination
                             paginationClass="search_pagination"
                             handlePageChange={(e, newPage) => {
