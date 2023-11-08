@@ -38,8 +38,8 @@ const GeneralFormPage = () => {
     const registerAgent = {
         type: ROUTE_BUTTON,
         className: "form-route-btn",
-        label: "Agent",
-        name: "Agent",
+        label: "Sign Up (New Agent)",
+        name: "Sign Up (New Agent)",
         form: newAgentConst,
         onSaveApi: ALTER_USER_DATA,
         route: "/agent/form",

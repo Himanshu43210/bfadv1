@@ -275,7 +275,7 @@ function OtpLogin() {
         return (
             <div className='section_header ol_header'>
                 <div className='header_left'>
-                    <Typography variant="h3" className="detailcardheading header_title">{mode === 'SIGNIN' ? 'Sign In' : 'Sign Up'}</Typography>
+                    <Typography variant="h3" className="detailcardheading header_title">{mode === 'SIGNIN' ? 'Sign In (Already Registered)' : 'Sign Up (New User)'}</Typography>
                 </div>
                 <div className='header_right'>
                     <Button className='bot_btn' onClick={handleCancelSignin}>
