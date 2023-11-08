@@ -613,6 +613,7 @@ const ListingTable = ({
       dispatch(callApi(options))
         .then((res) => {
           console.log('++++++++++ ADD RECOMMENDATION RES +++++++++', res);
+          setSnackbar({ open: true, message: `Recommendation Successful.`, status: 0 });
         }).catch((error) => {
           console.log('--------- ADD RECOMMENDATION ERROR ----------', error);
         });
