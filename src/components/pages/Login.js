@@ -60,7 +60,7 @@ const Login = () => {
   };
   return (
     <div className="contain">
-      <h2>Login</h2>
+      <h2>Sign In (Already Registered)</h2>
       <form onSubmit={handleSubmit} className="login_form">
         <div className="form-group">
           <label className="lab-class">Email</label>
