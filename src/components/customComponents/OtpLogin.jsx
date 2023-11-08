@@ -165,7 +165,7 @@ function OtpLogin() {
                     phoneNumber: formData.phoneNumber
                 };
                 const options = {
-                    url: mode === "SIGNUP" ? API_ENDPOINTS[ADD_CUSTOMER] : API_ENDPOINTS[""],
+                    url: mode === "SIGNUP" ? API_ENDPOINTS[ADD_CUSTOMER] : API_ENDPOINTS["signInCustomer"],
                     method: POST,
                     headers,
                     data,
