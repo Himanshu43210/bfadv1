@@ -31,6 +31,7 @@ function AccountTabs() {
     });
     const dispatch = useDispatch();
     const customerProfile = useSelector((state) => state.customer);
+    console.log('>>>>>>>>>>>>>>> CUSTOMER PROFILE <<<<<<<<<<<<<<<<', customerProfile);
 
     const fetchData = (page = 0) => {
         if (customerProfile._id) {
@@ -88,7 +89,7 @@ function AccountTabs() {
             url: API_ENDPOINTS["addPropertyRecommended"],
             method: POST,
             headers: { "Content-Type": "application/json" },
-            params: {
+            data: {
                 userId: customerProfile?._id,
                 propertyId: propertyId,
                 options: [value]
@@ -97,12 +98,12 @@ function AccountTabs() {
         dispatch(callApi(options))
             .then((res) => {
                 console.log('********** recommendation feedback res **********', tabData, res);
-                setTabData(res?.payload?.data);
-                setTabMetaData({
-                    currPage: res.payload?.pageNumber,
-                    totalPages: res.payload?.totalPages,
-                    totalItems: res.payload?.totalItems
-                });
+                // setTabData(res?.payload?.data);
+                // setTabMetaData({
+                //     currPage: res.payload?.pageNumber,
+                //     totalPages: res.payload?.totalPages,
+                //     totalItems: res.payload?.totalItems
+                // });
             }).catch((error) => {
                 console.log('---------- recommendation feedback error --------', error);
             }).finally(() => {

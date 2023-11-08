@@ -56,6 +56,8 @@ const ListingTable = ({
   showRecommendationActions,
   hideAlterActions,
   refreshDataApi,
+  addActionApi,
+  removeActionApi,
   refreshMethod,
   disableRowModal,
   showEditAction,
@@ -65,8 +67,7 @@ const ListingTable = ({
   data,
   useParamsFromUrl,
   rowClick,
-  showRecommendations,
-  recommendationsHeader
+  userId
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -76,9 +77,7 @@ const ListingTable = ({
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [showRowModal, setShowRowModal] = useState(false);
-  const [showTablePopup, setShowTablePopup] = useState(false);
   const [currentRowData, setCurrentRowData] = useState({});
-  const [popupCurrRowData, setPopupCurrRowData] = useState({});
   const [activePage, setActivePage] = useState(0);
   const [itemsCountPerPage, setItemsCountPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(10);
@@ -91,10 +90,6 @@ const ListingTable = ({
   const [showImgEditModal, setShowImgEditModal] = useState(false);
   const [imgEditor, setImgEditor] = useState({});
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
-  const [recommendationActionState, setRecommendationActionState] = useState({
-    type: "",
-    list: []
-  });
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -545,77 +540,12 @@ const ListingTable = ({
   const toogleApproval = () => {
     setShowApprovalModal(!showApprovalModal);
   };
-  const toggleTablePopup = () => {
-    setShowTablePopup(!showTablePopup);
-  };
 
   const toggleRemove = () => {
     setShowRemoveModal(!showRemoveModal);
   };
   const toggleImgEditor = () => {
     setShowImgEditModal(!showImgEditModal);
-  };
-
-  const updateRecommendation = () => {
-    if (recommendationActionState.type === "SHOW") {
-      // call the remove recommendation api
-    } else {
-      // call the add recommendation api
-    }
-  };
-
-  const handleRecommendationActions = (key) => {
-    console.log('========= handleRecommendationActions ==========', key);
-    setShowTablePopup(!showTablePopup);
-    setRecommendationActionState({
-      ...recommendationActionState,
-      type: key,
-    });
-    // using currentRowData
-    if (key === "SHOW") {
-      const userId = currentRowData?.userId?._id;
-      const page = 0, limit = 100;
-      const options = {
-        url: showRecommendations,
-        method: GET,
-        headers: { "Content-Type": "application/json" },
-        params: {
-          userId: currentRowData?.userId?._id,
-          page,
-          limit
-        }
-      };
-      dispatch(callApi(options))
-        .then((res) => {
-          console.log('++++++++++ FETCH RECOMMENDED RES +++++++++', res);
-          setRecommendationActionState({
-            ...recommendationActionState,
-            type: key,
-            recommended: res.payload?.data,
-          });
-        }).catch((error) => {
-          console.log('========== FETCH RECOMMENDED ERROR =========', error);
-        });
-    } else if (key === "ADD") {
-      // api 2 --- properties list of the cp same as master data
-      // api 2 --- properties/createUserHistory/recommendation POST {propertyId, userId, options}
-      const options = {
-        url: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-        method: POST,
-        params: { id: userProfile._id, role: userProfile.role }
-      };
-      dispatch(callApi(options))
-        .then((res) => {
-          console.log('++++++++++ FETCH all cp properties RES +++++++++', res);
-          setRecommendationActionState({
-            ...recommendationActionState,
-            type: key,
-            list: res.payload?.data,
-          });
-        }).catch((error) => {
-          console.log('========== FETCH All cp properties ERROR =========', error);
-        });
-    }
   };
 
   const handleSort = (column) => {
@@ -669,8 +599,30 @@ const ListingTable = ({
     }
   };
 
-  const formatTableCell = (element, headerLabel, rtc = false) => {
-    const allowedTableColumnsFinal = rtc ? recommendationsHeader : allowedTableColumns;
+  const handleRecommendation = (key) => {
+    console.log('---------- HANDLE RECOMMENDATION ----------', key, currentRowData);
+    if (key === 'ADD' && addActionApi) {
+      const options = {
+        url: addActionApi,
+        method: POST,
+        data: {
+          propertyId: currentRowData._id,
+          userId: userId
+        }
+      };
+      dispatch(callApi(options))
+        .then((res) => {
+          console.log('++++++++++ ADD RECOMMENDATION RES +++++++++', res);
+        }).catch((error) => {
+          console.log('--------- ADD RECOMMENDATION ERROR ----------', error);
+        });
+    } else if (key === 'REMOVE' && removeActionApi) {
+
+    }
+  };
+
+  const formatTableCell = (element, headerLabel) => {
+    const allowedTableColumnsFinal = allowedTableColumns;
     console.log('>>>>>>>>>>>>>> ELEMENT & HEADERLABEL <<<<<<<<<<<<<<<', element, headerLabel, allowedTableColumnsFinal);
     let cellData;
     const splittedKeys = allowedTableColumnsFinal[headerLabel]?.split(".");
@@ -751,62 +703,6 @@ const ListingTable = ({
         </ReusablePopup>
       )}
 
-      {showTablePopup && (
-        <ReusablePopup
-          onClose={toggleTablePopup}
-          onHide={toggleTablePopup}
-        >
-          <div className="formheadingcontainer">{recommendationActionState.type === "SHOW" ? "All" : "Add"} Recommendation for {currentRowData?.userId?.fullName}({currentRowData?.userId?.phoneNumber})</div>
-          <Table striped bordered hover responsive size="sm">
-            <thead>
-              <tr>
-                {Object.keys(recommendationsHeader).map((headerLabel, index) => (
-                  <th key={index} className="tablehead text">
-                    <div>{headerLabel}</div>
-                  </th>
-                ))}
-                <th key="action_header" className="tablehead text">
-                  <div>Actions</div>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="tablebody text">
-              {recommendationActionState?.list?.map((item) => (
-                <tr className="tableborder text" id={item._id}>
-                  {Object.keys(recommendationsHeader).map((headerLabel, index) => (
-                    <td className="bodytext" key={index}>
-                      {formatTableCell(item, headerLabel, true)}
-                    </td>
-                  ))}
-                  <td className="tablebody tableborder text actionColumn">
-                    <Button
-                      className="row_action_btn preview_btn ListingPreviewbtn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setPopupCurrRowData(item);
-                        tooglePreview(); // Add a function to handle the preview logic
-                      }}
-                    >
-                      <FaRegEye size={20} />
-                    </Button>
-                    <Button
-                      className="row_action_btn approve_btn ListingDeletebtn text_btn"
-                      variant="danger"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setPopupCurrRowData(item);
-                      }}
-                    >
-                      {recommendationActionState === "SHOW" ? "Remove" : "Add"}
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </ReusablePopup>
-      )}
-
       {showPreviewModal && (
         <ReusablePopup
           onHide={tooglePreview} onClose={tooglePreview}
@@ -829,14 +725,14 @@ const ListingTable = ({
         >
           <div className="formheadingcontainer popup_title">Property Preview</div>
           <HomeCard
-            element={Object.keys(popupCurrRowData).length !== 0 ? popupCurrRowData : currentRowData}
+            element={currentRowData}
             disableOnClickNavigate={true}
           ></HomeCard>
           <SearchCard
-            element={Object.keys(popupCurrRowData).length !== 0 ? popupCurrRowData : currentRowData}
+            element={currentRowData}
             disableOnClickNavigate={true}
           ></SearchCard>
-          <DetailDataCard singledata={Object.keys(popupCurrRowData).length !== 0 ? popupCurrRowData : currentRowData}></DetailDataCard>
+          <DetailDataCard singledata={currentRowData}></DetailDataCard>
         </ReusablePopup>
       )}
 
@@ -1077,14 +973,39 @@ const ListingTable = ({
                           <FcRemoveImage size={12} />
                         </Button>
                       )}
+                    {addActionApi && (
+                      <Button
+                        className="row_action_btn approve_btn ListingDeletebtn text_btn"
+                        variant="danger"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentRowData(element);
+                          handleRecommendation('ADD');
+                        }}
+                      >
+                        Add
+                      </Button>
+                    )}
+                    {removeActionApi && (
+                      <Button
+                        className="row_action_btn approve_btn ListingDeletebtn text_btn"
+                        variant="danger"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentRowData(element);
+                          handleRecommendation('REMOVE');
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    )}
                     {showRecommendationActions && (
                       <>
                         <Button
                           className="row_action_btn text_btn"
                           onClick={(e) => {
                             setCurrentRowData(element);
-                            handleRecommendationActions("ADD");
-                            // navigateTo(``);
+                            navigateTo(`/admin/addRecommendation?uid=${element.userId?._id}`);
                           }}
                         >
                           +&nbsp;Add&nbsp;Recommendation
@@ -1093,8 +1014,7 @@ const ListingTable = ({
                           className="row_action_btn text_btn"
                           onClick={(e) => {
                             setCurrentRowData(element);
-                            handleRecommendationActions("SHOW");
-                            // navigateTo(``);
+                            navigateTo(`/admin/showRecommended?uid=${element.userId?._id}`);
                           }}
                         >
                           Show&nbsp;Recommendations

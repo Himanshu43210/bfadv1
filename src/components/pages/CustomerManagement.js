@@ -18,18 +18,6 @@ function CustomerManagement() {
         "Title": "propertyId.title",
         "Price(₹)": "propertyId.price"
     };
-    // 2 actions --- preview, remove/add
-    const recommendationsHeader = {
-        "Location": "propertyId.sectorNumber",
-        "Plot": "propertyId.plotNumber",
-        "Size": "propertyId.size",
-        "Floor": "propertyId.floor",
-        "Price(₹)": "propertyId.price",
-        "Accommodation": "propertyId.accommodation",
-        "Facing": "propertyId.facing",
-        "Park Facing": "propertyId.parkFacing",
-        "Corner": "propertyId.corner"
-    };
     let tableData = useSelector((state) => selectApiData(state, GET_CUSTOMER_CONTACTED));
     console.log('============== TABLE DATA : CUSTOMER MANAGEMENT ==============', tableData);
     const userProfile = useSelector((state) => state.profile);
@@ -66,8 +54,6 @@ function CustomerManagement() {
                                 refreshDataApi={{ dataApi }}
                                 showRecommendationActions={true}
                                 hideAlterActions={true}
-                                showRecommendations={API_ENDPOINTS["getPropertyRecommended"]}
-                                recommendationsHeader={recommendationsHeader}
                             />
                         </Card.Body>
                     </Card>
