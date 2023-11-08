@@ -4,7 +4,7 @@ import { AppBar, Toolbar, CssBaseline, Typography } from "@material-ui/core";
 function Navbar({ role }) {
   const titleMapping = {
     BuilderFloorAdmin: "Builder Floor Admin",
-    ChannelPartner: "Channel Partner",
+    ChannelPartner: "Broker",
     SalesUser: "Sales User",
   };
   return (

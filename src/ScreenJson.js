@@ -863,7 +863,7 @@ export const MANAGE_USER = {
         },
         {
           type: TITLE,
-          titles: ["Manage Channel Partner", "Manage Sub User"],
+          titles: ["Manage Broker", "Manage Sub User"],
         },
         {
           type: CONTAINER,
@@ -958,7 +958,7 @@ export const MANAGE_AGENT = {
         },
         {
           type: TITLE,
-          titles: ["Approve Agents"],
+          titles: ["Approve Brokers"],
         },
         {
           type: CONTAINER,
@@ -1058,7 +1058,7 @@ export const CP_CUSTOMERS = {
         },
         {
           type: TITLE,
-          titles: ["Approve Agents"],
+          titles: ["Approve Brokers"],
         },
         {
           type: CONTAINER,
@@ -1266,7 +1266,7 @@ export const APPROVAL_PROPERTIES = {
         {
           type: TITLE,
           titles: [
-            "Approve Channel Partner Listings",
+            "Approve Broker Listings",
             "Approve Sub User Listings",
           ],
         },
@@ -1379,7 +1379,7 @@ export const AD_MASTER_TABLE = {
           type: TITLE,
           titles: [
             "Master Data of Super Admin",
-            "Master Data of Channel Partner",
+            "Master Data of Broker",
             "Master Data of Sub User",
           ],
         },
