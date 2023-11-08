@@ -27,14 +27,6 @@ function CustomerManagement() {
     );
     console.log('++++++++++++++ api status ++++++++++++++++', apiStatus);
 
-    // add recommendation(search & select property) --- 
-    // plot no, location, title, accommodation, possession, facing, updated at
-    // actions : recommend
-
-    // show recommendations ---
-    // plot no, location, title, accommodation, possession, facing, updatedAt, customer response, customer remark
-    // actions : unrecommend
-
     return (
         <>
             {!tableData && <AutoFetchApi component={{ api: dataApi, method: GET }} />}

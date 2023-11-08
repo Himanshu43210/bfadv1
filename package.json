@@ -4,10 +4,6 @@
   "private": true,
   "type": "module",
   "proxy": "https://itsolutionshub.com",
-  "presets": [
-    "@babel/preset-env",
-    "@babel/preset-react"
-  ],
   "dependencies": {
     "@babel/core": "^7.23.2",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

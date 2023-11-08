@@ -78,7 +78,7 @@ export default function PageSelector({ pageName }) {
           {pageName === USER_MANAGEMENT && <UserManagement />}
           {pageName === PROPERTY_MANAGEMENT && <PropertyManagement />}
           {pageName === MASTER_MANAGEMENT && <MasterManagement />}
-          {pageName === CUSTOMER_MANAGEMENT && <CustomerManagement />}
+          {/* {pageName === CUSTOMER_MANAGEMENT && <CustomerManagement />} */}
         </>
       )}
     </>
