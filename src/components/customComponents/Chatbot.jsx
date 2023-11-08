@@ -131,7 +131,10 @@ function Chatbot() {
                                 )}
                                 {payload.payload.links && (
                                     payload.payload.links?.map((link) => (
-                                        <a href={link} target='_blank' className='unreadable_data'>{link}</a>
+                                        <>
+                                            <br></br>
+                                            <a href={link} target='_blank' className='unreadable_data'>{link}</a>
+                                        </>
                                     ))
                                 )}
                             </div>
