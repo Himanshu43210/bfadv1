@@ -20,7 +20,8 @@ const ShowRecommended = () => {
         "Accommodation": "propertyId.accommodation",
         "Facing": "propertyId.facing",
         "Park Facing": "propertyId.parkFacing",
-        "Corner": "propertyId.corner"
+        "Corner": "propertyId.corner",
+        "Feedback": "options"
     };
     const dispatch = useDispatch();
     const [queryParams, setQueryParams] = useSearchParams();
