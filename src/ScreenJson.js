@@ -846,7 +846,7 @@ export const MANAGE_USER = {
               mainHeading: "WELCOME TO BUILDERFLOOR.COM",
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
-                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
@@ -941,7 +941,7 @@ export const MANAGE_AGENT = {
               mainHeading: "WELCOME TO BUILDERFLOOR.COM",
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
-                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
@@ -1041,7 +1041,7 @@ export const CP_CUSTOMERS = {
               mainHeading: "WELCOME TO BUILDERFLOOR.COM",
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
-                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
@@ -1141,7 +1141,7 @@ export const STATS_LIST = {
               mainHeading: "WELCOME TO BUILDERFLOOR.COM",
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
-                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
@@ -1254,7 +1254,7 @@ export const APPROVAL_PROPERTIES = {
               mainHeading: "WELCOME TO BUILDERFLOOR.COM",
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
-                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
@@ -1366,7 +1366,7 @@ export const AD_MASTER_TABLE = {
               mainHeading: "WELCOME TO BUILDERFLOOR.COM",
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
-                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",
@@ -1532,7 +1532,7 @@ export const VIEW_LISTING = {
               mainHeading: "WELCOME TO BUILDERFLOOR.COM",
               panelTitles: {
                 [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
-                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
                 [USER_ROLE.salesUser]: "SUB USER PANEL",
               },
               classes: "formheadingcontainer",

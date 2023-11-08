@@ -121,7 +121,7 @@ export const CP_USER_DASHBOARD = {
         {
           type: PANEL_HEADER,
           mainHeading: "WELCOME TO BUILDERFLOOR.COM",
-          panelTitle: "CHANNEL PARTNER ADMIN PANEL",
+          panelTitle: "BROKER ADMIN PANEL",
           classes: "formheadingcontainer",
           mainHeaderClass: "formheadingcontainer",
           panelTitleClass: "formheadingcontainer",
