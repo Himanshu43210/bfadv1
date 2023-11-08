@@ -319,12 +319,12 @@ function OtpLogin() {
                         <button className='popup_btn' onClick={() => {
                             setPopupStage(1);
                             setMode('SIGNIN');
-                        }}>Sign In</button>
+                        }}>Sign In (Already Registered)</button>
                         {/* sign up btn */}
                         <button className='popup_btn' onClick={() => {
                             setPopupStage(1);
                             setMode('SIGNUP');
-                        }}>Sign Up</button>
+                        }}>Sign Up (New User)</button>
                     </div>
                 ) : (
                     <div className='btns_group'>
