@@ -186,6 +186,13 @@ export const CP_USER_DASHBOARD = {
             {
               type: ROUTE_BUTTON,
               className: "admin_route_button",
+              label: "Customers",
+              name: "Customers",
+              route: "/admin/customers",
+            },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin_route_button",
               label: "Master Data of Channel Partner",
               name: "Master Data of Channel Partner",
               route: "/admin/masterTable",

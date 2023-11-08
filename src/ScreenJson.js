@@ -1022,6 +1022,106 @@ export const MANAGE_AGENT = {
   ],
 };
 
+export const CP_CUSTOMERS = {
+  name: "Customers",
+  pageClass: "standalone_page cp_customers_page",
+  className: "klk",
+  children: [
+    {
+      type: LOGIN_REFRESH,
+      name: "",
+      className: "",
+      children: [
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "CHANNEL PARTNER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
+        {
+          type: AUTO_FETCH_API_USER,
+          user: true,
+          method: GET,
+          api: API_ENDPOINTS[GET_UNAPPROVED_AGENTS_DATA],
+        },
+        {
+          type: TITLE,
+          titles: ["Approve Agents"],
+        },
+        {
+          type: CONTAINER,
+          name: "",
+          className: "",
+          children: [
+            {
+              type: CONTAINER,
+              name: "",
+              className: "",
+              children: [
+                {
+                  type: DASHBOARD_LISTING,
+                  data: {},
+                  roleSpecific: false,
+                  desktopHeaders: {
+                    Name: "name",
+                    "Company Name": "companyName",
+                    "Mobile Number": "phoneNumber",
+                    City: "city",
+                    State: "state",
+                    Status: "status",
+                    // "Address": "address",
+                    // "Email": "email",
+                    // "Role": "role",
+                    // "Parent Id": "parentId",
+                    // "Status": "status",
+                  },
+                  mobileHeaders: {
+                    Name: "name",
+                    Role: "role"
+                  },
+                  fieldConst: editUserConst,
+                  editApi: ALTER_USER_DATA,
+                  deleteApi: DELETE_USER_DATA,
+                  getDataApi: GET_UNAPPROVED_AGENTS_DATA,
+                  approveApi: APPROVE_AGENT,
+                  approveApiMethod: PUT,
+                  endpoint: API_ENDPOINTS[GET_UNAPPROVED_AGENTS_DATA],
+                  dataPoint: GET_UNAPPROVED_AGENTS_DATA,
+                  showPreviewButton: false,
+                  disableRowModal: true,
+                  showEditAction: true,
+                  hideAlterActions: true,
+                  showDeleteAction: true,
+                  showApproveAction: true
+                },
+                {
+                  type: ROUTE_BUTTON,
+                  className: "toogle-filter",
+                  label: "Back",
+                  name: "Back",
+                  route: "/admin",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 export const STATS_LIST = {
   name: "Master table",
   pageClass: "standalone_page stats_page",

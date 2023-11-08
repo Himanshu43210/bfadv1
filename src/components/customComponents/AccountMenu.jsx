@@ -85,6 +85,9 @@ const AccountMenu = ({ userProfile, onSignOut }) => {
         }}>
             <Button className={`ol_open_btn acc_btn`} onClick={() => setOpen(!open)}>
                 <AccountCircleIcon className='acc_profile_icon' />
+                {!isMobile && (
+                    <Typography className='profile_name_pc'>{userProfile.fullName}</Typography>
+                )}
             </Button>
             {open && renderMenuPopup()}
         </div>

@@ -59,16 +59,15 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
           <FaBuilding className="admin-panel-icons" />
           <h6 className="panel_link_label">Property</h6>
         </Button>
-        {userProfile.role === "ChannelPartner" && (
+        {/* {userProfile.role === "ChannelPartner" && (
           <Button
             onClick={() => handlePageClick(CUSTOMER_MANAGEMENT)}
             className="panel-link"
           >
             <FaUsers className="admin-panel-icons" />
-            {/* <PeopleAltRoundedIcon className="admin-panel-icons" /> */}
             <h6 className="panel_link_label">Customer</h6>
           </Button>
-        )}
+        )} */}
         <Button
           onClick={() => {
             dispatch(resetApiStatus(onLogoutClick));

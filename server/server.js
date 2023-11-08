@@ -10,12 +10,14 @@ const app = express();
 const router = express.Router();
 
 const serverRenderer = (req, res, next) => {
-    fs.readFile(path.resolve('./build/index.html'), 'utf8', (err, data) => {
+    fs.readFile(path.resolve('../build/index.html'), 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).send('An error occurred while reading index.html');
         }
-        const html = ReactDOMServer.renderToString(<App />);
+        console.log('------------------- index.html --------------------', data);
+        const html = ReactDOMServer.renderToString(React.createElement(App));
+        console.log('------------------- html --------------------', html);
         return res.send(
             data.replace(
                 '<div id="root"></div>',

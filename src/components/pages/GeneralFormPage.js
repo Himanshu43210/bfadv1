@@ -3,6 +3,7 @@ import FormBuilder from "../utils/FormBuilder.jsx";
 import { Button, CircularProgress } from "@mui/material/index.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    ALTER_USER_DATA,
     GET,
     GET_MASTER_DATA_ON_HOME,
     NEED_APPROVAL_BY,
@@ -18,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { USER_ROLE } from "../../ScreenJson.js";
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { auth } from '../../firebase.js';
+import { newAgentConst } from "../fieldConsts/UserFieldConst.js";
+import { storeUserData } from "../../redux/slice/userSlice.js";
 
 const GeneralFormPage = () => {
     const finalizeRef = useRef(null);
@@ -32,6 +35,31 @@ const GeneralFormPage = () => {
     const [hasImages, setHasImages] = useState(false);
     const [submitData, setSubmitData] = useState();
     const [verifing, setVerifing] = useState(false);
+    const registerAgent = {
+        type: ROUTE_BUTTON,
+        className: "form-route-btn",
+        label: "Agent",
+        name: "Agent",
+        form: newAgentConst,
+        onSaveApi: ALTER_USER_DATA,
+        route: "/agent/form",
+    };
+
+    useEffect(() => {
+        console.log('================= NO USER PROFILE =================', userProfile);
+        if (!userProfile || Object.keys(userProfile).length === 0) {
+            console.log('========= CONDITION TRUE ========');
+            dispatch(
+                storeUserData({
+                    ...userProfile,
+                    formType: registerAgent.form,
+                    formSaveApi: registerAgent.onSaveApi,
+                    formName: registerAgent.label,
+                    autofill: registerAgent.autofill,
+                })
+            );
+        }
+    }, [userProfile]);
 
     useEffect(() => {
         try {
