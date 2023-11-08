@@ -50,8 +50,8 @@ function OtpLogin() {
     const registerAgent = {
         type: ROUTE_BUTTON,
         className: "form-route-btn",
-        label: "Agent",
-        name: "Agent",
+        label: "Broker",
+        name: "Broker",
         form: newAgentConst,
         onSaveApi: ALTER_USER_DATA,
         route: "/agent/form",
@@ -338,7 +338,7 @@ function OtpLogin() {
                         </div>
                         {/* Customer */}
                         <button className='popup_btn' onClick={() => routeEntry('CUSTOMER')}> {mode === 'SIGNIN' ? 'Sign In' : 'Sign Up'} As Customer</button>
-                        <button className='popup_btn' onClick={() => routeEntry('AGENT')}>{mode === 'SIGNIN' ? 'Sign In' : 'Sign Up'} As Agent</button>
+                        <button className='popup_btn' onClick={() => routeEntry('AGENT')}>{mode === 'SIGNIN' ? 'Sign In' : 'Sign Up'} As Broker</button>
                     </div>
                 )}
             </div>

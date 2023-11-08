@@ -40,8 +40,8 @@ const FormPage = () => {
   const getMessage = (type = "SUBMIT", status = "SUCCESS") => {
     let message = '';
     switch (userProfile.formName) {
-      case "Create Channel Partner":
-        message = `Channel Partner ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;
+      case "Create Broker":
+        message = `Broker ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;
         break;
       case "Create Sub User":
         message = `Sub User ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;

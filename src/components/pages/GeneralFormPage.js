@@ -38,8 +38,8 @@ const GeneralFormPage = () => {
     const registerAgent = {
         type: ROUTE_BUTTON,
         className: "form-route-btn",
-        label: "Sign Up (New Agent)",
-        name: "Sign Up (New Agent)",
+        label: "Sign Up (New Broker)",
+        name: "Sign Up (New Broker)",
         form: newAgentConst,
         onSaveApi: ALTER_USER_DATA,
         route: "/agent/form",
@@ -87,8 +87,8 @@ const GeneralFormPage = () => {
     const getMessage = (type = "SUBMIT", status = "SUCCESS") => {
         let message = '';
         switch (userProfile.formName) {
-            case "Create Channel Partner":
-                message = `Channel Partner ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;
+            case "Create Broker":
+                message = `Broker ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;
                 break;
             case "Create Sub User":
                 message = `Sub User ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;
