@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { GET } from "../utils/Const.js";
 import Tooltip from '@mui/material/Tooltip/Tooltip.js';
 import { generatePropertyUrl } from "../utils/propertyUtils.js";
+import { useState } from "react";
 
 export default function SearchCard({
   element = {},
@@ -22,8 +23,10 @@ export default function SearchCard({
   disableOnClickNavigate = false,
   showOptions = false,
   handleValueChange,
-  optVal
+  optVal,
+
 }) {
+  const [opt, setOpt] = useState(optVal);
   const cardDetailUrl = generatePropertyUrl(element);
   const handleShareClick = (e) => {
     e.preventDefault();
@@ -44,8 +47,10 @@ export default function SearchCard({
   ];
 
   const handleOptionSelect = (optIdx) => {
+    setOpt(options?.[optIdx]?.key);
     if (handleValueChange) {
-      handleValueChange(options?.[optIdx]?.key);
+      console.log('----------- handle option select -----------', optIdx, options?.[optIdx]?.key);
+      handleValueChange(element._id, options?.[optIdx]?.key);
     }
   };
 
@@ -55,7 +60,7 @@ export default function SearchCard({
         <ul className="options_list">
           {options?.map((option, index) => (
             <li className="option_item">
-              <input type="radio" id={`${element._id}-${index}`} className="radio_input" name={element._id} onInput={() => handleOptionSelect(index)} checked={optVal === option.key} />
+              <input type="radio" id={`${element._id}-${index}`} className="radio_input" name={element._id} onChange={() => handleOptionSelect(index)} checked={opt === option.key} />
               <label htmlFor={`${element._id}-${index}`} className="radio_label">{option.key}</label>
             </li>
           ))}

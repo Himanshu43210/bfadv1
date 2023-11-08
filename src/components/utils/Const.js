@@ -93,6 +93,9 @@ export const ADD_CUSTOMER = "addCustomer";
 export const GET_CUSTOMER_CONTACTED = "getCustomerContacted";
 export const GET_UNAPPROVED_AGENTS_DATA = "getUnapprovedAgentsData";
 export const APPROVE_AGENT = "approveAgent";
+export const ADD_RECOMMENDATION = "addPropertyRecommended";
+export const GET_RECOMMENDED ="getPropertyRecommended";
+
 
 export const LINKEDIN_ICON = "LINKEDIN_ICON";
 export const INSTAGRAM_ICON = "INSTAGRAM_ICON";
