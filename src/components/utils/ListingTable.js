@@ -654,6 +654,10 @@ const ListingTable = ({
     if (cellData === false || cellData === "false") {
       return "No";
     }
+    // check for ChannelPartner
+    if(cellData === "ChannelPartner") {
+      return "Broker";
+    }
     console.log('--------------- CELL DATA ---------------', cellData);
     return cellData;
   };
