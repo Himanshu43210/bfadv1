@@ -20,6 +20,7 @@ import GeneralFormPage from "./components/pages/GeneralFormPage.js";
 import ApproveAgents from "./components/pages/ApproveAgents.js";
 import AddRecommendations from "./components/pages/AddRecommendations.js";
 import ShowRecommended from "./components/pages/ShowRecommended.js";
+import CustomerManagement from "./components/pages/CustomerManagement.js";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/admin/user" element={<UserManagement />} />
           <Route path="/admin/approveAgents" element={<ApproveAgents />} />
           <Route path="/admin/approveListing" element={<ApproveListing />} />
+          <Route path="/admin/customers" element={<CustomerManagement />} />
           <Route path="/admin/addRecommendation" element={<AddRecommendations />} />
           <Route path="/admin/showRecommended" element={<ShowRecommended />} />
           <Route path="/admin/master" element={<MasterManagement />} />
