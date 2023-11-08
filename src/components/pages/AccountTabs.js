@@ -142,16 +142,22 @@ function AccountTabs() {
                 </div>
                 <div className={`component_wrapper result-searchdiv tab_data`}>
                     <div className='searchdiv'>
-                        {tabData?.map((tabItem) => (
-                            <SearchCard
-                                key={tabItem?.propertyId?._id}
-                                element={tabItem?.propertyId}
-                                classes="homeCards"
-                                showOptions={queryParams.get("tab") === "recommendations" ? true : false}
-                                handleValueChange={handleOptionChange}
-                                optVal={tabItem?.options?.[0]}
-                            />
-                        ))}
+                        {tabData?.map((tabItem) => {
+                            if (tabItem && tabItem.propertyId && Object.keys(tabItem.propertyId).length !== 0) {
+                                return (
+                                    <SearchCard
+                                        key={tabItem?.propertyId?._id}
+                                        element={tabItem?.propertyId}
+                                        classes="homeCards"
+                                        showOptions={queryParams.get("tab") === "recommendations" ? true : false}
+                                        handleValueChange={handleOptionChange}
+                                        optVal={tabItem?.options?.[0]}
+                                    />
+                                )
+                            } else {
+                                return null;
+                            }
+                        })}
                     </div>
                     {(tabMetaData?.totalPages > 1 && loading === false) && (
                         <BasicPagination
