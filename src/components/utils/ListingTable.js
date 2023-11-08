@@ -599,14 +599,14 @@ const ListingTable = ({
     }
   };
 
-  const handleRecommendation = (key) => {
+  const handleRecommendation = (key, data) => {
     console.log('---------- HANDLE RECOMMENDATION ----------', key, currentRowData);
     if (key === 'ADD' && addActionApi) {
       const options = {
         url: addActionApi,
         method: POST,
         data: {
-          propertyId: currentRowData._id,
+          propertyId: data?._id || currentRowData._id,
           userId: userId
         }
       };
@@ -981,7 +981,7 @@ const ListingTable = ({
                         onClick={(e) => {
                           e.stopPropagation();
                           setCurrentRowData(element);
-                          handleRecommendation('ADD');
+                          handleRecommendation('ADD', element);
                         }}
                       >
                         Add
@@ -994,7 +994,7 @@ const ListingTable = ({
                         onClick={(e) => {
                           e.stopPropagation();
                           setCurrentRowData(element);
-                          handleRecommendation('REMOVE');
+                          handleRecommendation('REMOVE', element);
                         }}
                       >
                         Remove
