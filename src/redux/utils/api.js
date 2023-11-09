@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
   deleteMasterData: API_DOMAIN + "masters/deleteMaster",
   getPropertiesListingCounts:
     API_DOMAIN + "properties/getPropertiesListingCounts",
+    getUnapprovedBrokerCounts: API_DOMAIN + "users/upapprovedBrokerCounts",
   getPropertiesListByUserId:
     API_DOMAIN + "properties/getPropertiesListByUserId",
   getApprovalProperties: API_DOMAIN + "properties/getApprovalProperties",
