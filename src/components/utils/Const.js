@@ -67,6 +67,7 @@ export const REJECTED = "Rejected";
 export const GET_CARD_DATA = "getCardData";
 export const GET_SEARCH_RESULT = "getSearchResult";
 export const GET_LISTING_DATA = "getPropertiesListingCounts";
+export const GET_UNAPPROVED_BROKER_COUNTS = "getUnapprovedBrokerCounts";
 export const GET_PROPERTY_USER = "getPropertiesCountsByUserId";
 export const ADD_USER_DATA = "addUserData";
 export const ALTER_USER_DATA = "alterUserData";
