@@ -50,8 +50,8 @@ function OtpLogin() {
     const registerAgent = {
         type: ROUTE_BUTTON,
         className: "form-route-btn",
-        label: "Broker",
-        name: "Broker",
+        label: "Sign Up (New Broker)",
+        name: "Sign Up (New Broker)",
         form: newAgentConst,
         onSaveApi: ALTER_USER_DATA,
         route: "/agent/form",
@@ -319,12 +319,12 @@ function OtpLogin() {
                         <button className='popup_btn' onClick={() => {
                             setPopupStage(1);
                             setMode('SIGNIN');
-                        }}>Sign In</button>
+                        }}>Sign In (Already Registered)</button>
                         {/* sign up btn */}
                         <button className='popup_btn' onClick={() => {
                             setPopupStage(1);
                             setMode('SIGNUP');
-                        }}>Sign Up</button>
+                        }}>Sign Up (New User)</button>
                     </div>
                 ) : (
                     <div className='btns_group'>

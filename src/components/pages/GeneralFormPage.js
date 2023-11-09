@@ -30,6 +30,7 @@ const GeneralFormPage = () => {
     const [loading, setLoading] = useState(true);
     const [otp, setOtp] = useState("");
     const [showPopup, setShowPopup] = useState(false);
+    const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
     const [captchaGenerated, setCaptchaGenerated] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
     const [hasImages, setHasImages] = useState(false);
@@ -162,10 +163,11 @@ const GeneralFormPage = () => {
                 };
                 dispatch(callApi(options)).then(() => {
                     setVerifing(false);
-                    setTimeout(() => {
-                        router("/");
-                    }, 1200);
-                    setSnackbar({ open: true, message: "Registered as an agent." });
+                    setShowConfirmationPopup(true);
+                    // setTimeout(() => {
+                    //     router("/");
+                    // }, 2000);
+                    // setSnackbar({ open: true, message: "Request for broker account has been sent successfully. You will be notified on approval." });
                 }).catch((error) => {
                     setSnackbar({ open: true, message: `Registration failed.`, status: 1 });
                 });
@@ -288,6 +290,25 @@ const GeneralFormPage = () => {
         setOtp("");
     };
 
+    const handleConfirmed = () => {
+        setShowConfirmationPopup(false);
+        router("/");
+    };
+
+    const renderConfirmationPopup = () => {
+        return (
+            <>
+                <div className="ol_overlay"></div>
+                <div className='ol_popup np_confirmation'>
+                    <div className="np_title">Confirmation</div>
+                    <p className="np_message">Your request for broker account has been sent successfully.</p>
+                    <p className="np_message">You will be notified when approved.</p>
+                    <button className="np_btn" onClick={handleConfirmed}>Ok</button>
+                </div>
+            </>
+        );
+    };
+
     const renderOtpForm = () => {
         return (
             <>
@@ -360,6 +381,7 @@ const GeneralFormPage = () => {
                     {submitting === true ? <CircularProgress className="loader-class" /> : null}
                     <div id="sign-in-recaptcha"></div>
                     {showPopup && renderOtpForm()}
+                    {showConfirmationPopup && renderConfirmationPopup()}
                 </>
             )}
         </>

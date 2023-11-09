@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from "react-bootstrap";
 import { ACCOUNT_TABS_SCREEN } from '../../ScreenJson.js';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ComponentSelector from '../customComponents/ComponentSelector.jsx';
 import Tabbar from '../customComponents/Tabbar.jsx';
 import { API_ENDPOINTS } from '../../redux/utils/api.js';
@@ -14,6 +14,7 @@ import { CircularProgress } from '@mui/material/index.js';
 
 function AccountTabs() {
     const location = useLocation();
+    const navigate = useNavigate();
     const [queryParams, setQueryParams] = useSearchParams();
     const revMappings = {
         viewed: 0,
@@ -34,7 +35,7 @@ function AccountTabs() {
     console.log('>>>>>>>>>>>>>>> CUSTOMER PROFILE <<<<<<<<<<<<<<<<', customerProfile);
 
     const fetchData = (page = 0) => {
-        if (customerProfile._id) {
+        if (customerProfile && customerProfile._id) {
             setLoading(true);
             // fetch the data for the
             let urlToFetch = '';
@@ -75,6 +76,8 @@ function AccountTabs() {
                 }).finally(() => {
                     setLoading(false);
                 });
+        } else {
+            navigate("/");
         }
     };
 
