@@ -21,6 +21,7 @@ import ApproveAgents from "./components/pages/ApproveAgents.js";
 import AddRecommendations from "./components/pages/AddRecommendations.js";
 import ShowRecommended from "./components/pages/ShowRecommended.js";
 import CustomerManagement from "./components/pages/CustomerManagement.js";
+import EditAccount from "./components/pages/EditAccount.js";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/admin/customers" element={<CustomerManagement />} />
           <Route path="/admin/addRecommendation" element={<AddRecommendations />} />
           <Route path="/admin/showRecommended" element={<ShowRecommended />} />
+          <Route path="/admin/account/edit" element={<EditAccount />} />
           <Route path="/admin/master" element={<MasterManagement />} />
           <Route path="/admin/masterTable" element={<SuperMasterTable />} />
           <Route path="/admin/statistics" element={<StatsList />} />

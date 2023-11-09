@@ -60,4 +60,5 @@ export const API_ENDPOINTS = {
   getCustomerContacted: API_DOMAIN + "properties/getCpUserHistory/recommendation",
   getUnapprovedAgentsData: API_DOMAIN + "users/getCpApporovalUsersList",
   approveAgent: API_DOMAIN + "users/approveCp",
+  getAdminUserDataById: API_DOMAIN + "users/adminUserDataById"
 };
