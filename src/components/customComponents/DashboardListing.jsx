@@ -56,6 +56,8 @@ const DashboardListing = ({ component }) => {
       showColumnFilter={component.showColumnFilter}
       refreshDataApi={dataApi}
       useParamsFromUrl={component.useParamsFromUrl}
+      showTableControls={component.showTableControls}
+      showPagination={component.showPagination}
     />
   );
 };

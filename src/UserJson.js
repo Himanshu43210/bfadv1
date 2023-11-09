@@ -90,6 +90,13 @@ export const AD_USER_DASHBOARD = {
               name: "Master Data of Super Admin",
               route: "/admin/masterTable",
             },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin_route_button",
+              label: "Edit Account Data",
+              name: "Edit Account Data",
+              route: "/admin/account/edit",
+            },
           ],
         },
         {
@@ -197,6 +204,13 @@ export const CP_USER_DASHBOARD = {
               name: "Master Data of Broker",
               route: "/admin/masterTable",
             },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin_route_button",
+              label: "Edit Account Data",
+              name: "Edit Account Data",
+              route: "/admin/account/edit",
+            },
           ],
         },
         {
@@ -265,6 +279,13 @@ export const SU_USER_DASHBOARD = {
               label: "Master Data of Sub User",
               name: "Master Data of Sub User",
               route: "/admin/masterTable",
+            },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin_route_button",
+              label: "Edit Account Data",
+              name: "Edit Account Data",
+              route: "/admin/account/edit",
             },
           ],
         },

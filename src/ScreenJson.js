@@ -21,6 +21,7 @@ import {
   GET,
   GET_ADMIN_PROPERTY_DATA,
   GET_ADMIN_USER_DATA,
+  GET_ADMIN_USER_DATA_BY_ID,
   GET_APPROVAL_PROPERTIES,
   GET_CARD_DATA,
   GET_HOME_SCREEN_DATA,
@@ -1012,6 +1013,94 @@ export const MANAGE_AGENT = {
                   label: "Back",
                   name: "Back",
                   route: "/admin",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const MANAGE_ACCOUNT = {
+  name: "Master table",
+  pageClass: "standalone_page user_management_page",
+  className: "klk",
+  children: [
+    {
+      type: LOGIN_REFRESH,
+      name: "",
+      className: "",
+      children: [
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
+        {
+          type: AUTO_FETCH_API_USER,
+          user: true,
+          method: GET,
+          api: API_ENDPOINTS[GET_ADMIN_USER_DATA_BY_ID],
+        },
+        {
+          type: TITLE,
+          titles: ["Edit Account", "Edit Account", "Edit Account"],
+        },
+        {
+          type: CONTAINER,
+          name: "",
+          className: "",
+          children: [
+            {
+              type: CONTAINER,
+              name: "",
+              className: "",
+              children: [
+                {
+                  type: DASHBOARD_LISTING,
+                  data: {},
+                  roleSpecific: false,
+                  desktopHeaders: {
+                    Name: "name",
+                    "Company Name": "companyName",
+                    "Mobile Number": "phoneNumber",
+                    City: "city",
+                    State: "state",
+                    Status: "status",
+                  },
+                  mobileHeaders: {
+                    Name: "name",
+                    "Company Name": "companyName",
+                    "Mobile Number": "phoneNumber",
+                    City: "city",
+                    State: "state",
+                    Status: "status",
+                  },
+                  fieldConst: editUserConst,
+                  editApi: ALTER_USER_DATA,
+                  deleteApi: DELETE_USER_DATA,
+                  getDataApi: GET_ADMIN_USER_DATA_BY_ID,
+                  endpoint: API_ENDPOINTS[GET_ADMIN_USER_DATA_BY_ID],
+                  dataPoint: GET_ADMIN_USER_DATA_BY_ID,
+                  showPreviewButton: false,
+                  disableRowModal: true,
+                  showTableControls: false,
+                  showPagination: false
                 },
               ],
             },

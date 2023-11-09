@@ -76,6 +76,7 @@ export const DELETE_PROPERTY_DATA = "deletePropertyData";
 export const ALTER_MASTER_DATA = "alterMasterData";
 export const DELETE_MASTER_DATA = "deleteMasterData";
 export const GET_USER_DATA = "getUserData";
+export const GET_ADMIN_USER_DATA_BY_ID = "getAdminUserDataById";
 export const GET_PROPERTY_DATA = "getPropertyData";
 export const GET_MASTER_DATA = "getMasterData";
 export const ADMIN_DASHBOARD_LOGIN = "adminDashboardLogin";

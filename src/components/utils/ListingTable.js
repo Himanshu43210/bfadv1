@@ -67,7 +67,9 @@ const ListingTable = ({
   data,
   useParamsFromUrl,
   rowClick,
-  userId
+  userId,
+  showTableControls = true,
+  showPagination = true
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -655,7 +657,7 @@ const ListingTable = ({
       return "No";
     }
     // check for ChannelPartner
-    if(cellData === "ChannelPartner") {
+    if (cellData === "ChannelPartner") {
       return "Broker";
     }
     console.log('--------------- CELL DATA ---------------', cellData);
@@ -821,28 +823,30 @@ const ListingTable = ({
       )}
 
       <div className="tablediv">
-        <div className="table_controls_wrapper">
-          <input
-            type="text"
-            onChange={(e) => {
-              setTableFilter({
-                search: e.target.value,
-              });
-            }}
-            value={[tableFilter["search"]] || ""}
-            className="filter_input"
-          />
-          <Button onClick={() => applyFilters()} className="filter_submit filter_btn">
-            <RiFilter2Fill className="filter_icon" />
-            Filter&nbsp;Data
-          </Button>
-          {showColumnFilter && (
-            <Button onClick={() => setShowFilters(!showFilters)} className="filter_btn">
+        {showTableControls && (
+          <div className="table_controls_wrapper">
+            <input
+              type="text"
+              onChange={(e) => {
+                setTableFilter({
+                  search: e.target.value,
+                });
+              }}
+              value={[tableFilter["search"]] || ""}
+              className="filter_input"
+            />
+            <Button onClick={() => applyFilters()} className="filter_submit filter_btn">
               <RiFilter2Fill className="filter_icon" />
-              Filter
+              Filter&nbsp;Data
             </Button>
-          )}
-        </div>
+            {showColumnFilter && (
+              <Button onClick={() => setShowFilters(!showFilters)} className="filter_btn">
+                <RiFilter2Fill className="filter_icon" />
+                Filter
+              </Button>
+            )}
+          </div>
+        )}
         <Table striped bordered hover responsive size="sm">
           <thead>
             <tr>
@@ -1051,7 +1055,7 @@ const ListingTable = ({
       {(apiStatus === "loading" || showLoader) ? (
         <CircularProgress className="loader-class" />
       ) : (
-        tableData.length > 0 ? (
+        (tableData.length > 0 && showPagination) ? (
           <BasicTablePagination
             dataLength={totalItems}
             currentPage={activePage}
