@@ -50,8 +50,8 @@ function OtpLogin() {
     const registerAgent = {
         type: ROUTE_BUTTON,
         className: "form-route-btn",
-        label: "Broker",
-        name: "Broker",
+        label: "Sign Up (New Broker)",
+        name: "Sign Up (New Broker)",
         form: newAgentConst,
         onSaveApi: ALTER_USER_DATA,
         route: "/agent/form",

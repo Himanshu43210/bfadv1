@@ -225,4 +225,13 @@ export const editUserConst = [
     isRequired: true,
     requiredErrorMessage: "Please select a Status.",
   },
+  {
+    name: "password",
+    label: "Password",
+    dataKey: "password",
+    type: TEXT,
+    isRequired: true,
+    regex: /^[a-zA-Z0-9_@./#&-+]{6,}$/,
+    requiredErrorMessage: "Please provide a Password.",
+  }
 ];
