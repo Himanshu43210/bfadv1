@@ -32,6 +32,7 @@ import {
   GET_SEARCH_RESULT,
   GET_SIMILAR_PROPERTY_DATA,
   GET_UNAPPROVED_AGENTS_DATA,
+  GET_UNAPPROVED_BROKER_COUNTS,
   HAMBURGER_MENU,
   HEADING,
   HOME_CARD,
@@ -960,6 +961,14 @@ export const MANAGE_AGENT = {
         {
           type: TITLE,
           titles: ["Approve Brokers"],
+        },
+        {
+          type: LABEL_MAP,
+          className: "lableded-map-dashboard",
+          api: API_ENDPOINTS[GET_UNAPPROVED_BROKER_COUNTS],
+          parentClassName: "super-admin-label",
+          method: GET,
+          endpoint: GET_UNAPPROVED_BROKER_COUNTS,
         },
         {
           type: CONTAINER,
