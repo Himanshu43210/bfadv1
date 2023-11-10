@@ -126,15 +126,32 @@ const DropSelect = ({
                                 </div>
                             ))
                         ) : (
-                            options.map((option) => (
-                                <div
-                                    className='dd_item'
-                                    onClick={() => handleChange(option)}
-                                >
-                                    <span className='dd_item_label'>{option.label}</span>
-                                    {selections.includes(option.value) && <CheckIcon className='dd_item_check' />}
-                                </div>
-                            ))
+                            <>
+                                {
+                                    (options?.filter((option) => selections.includes(option.value)).map((option) => (
+                                        <div
+                                            key={option.value}
+                                            className='dd_item'
+                                            onClick={() => handleChange(option)}
+                                        >
+                                            <span className='dd_item_label'>{option.label}</span>
+                                            {selections.includes(option.value) && <CheckIcon className='dd_item_check' />}
+                                        </div>
+                                    )))
+                                }
+                                {
+                                    (options?.filter((option) => !selections.includes(option.value)).map((option) => (
+                                        <div
+                                            key={option.value}
+                                            className='dd_item'
+                                            onClick={() => handleChange(option)}
+                                        >
+                                            <span className='dd_item_label'>{option.label}</span>
+                                            {selections.includes(option.value) && <CheckIcon className='dd_item_check' />}
+                                        </div>
+                                    )))
+                                }
+                            </>
                         )
                     }
                 </div>
