@@ -8,6 +8,7 @@ import { selectApiData, selectApiStatus } from '../../redux/utils/selectors.js';
 import { CircularProgress } from "@mui/material";
 import { Card } from "react-bootstrap";
 import ListingTable from '../utils/ListingTable.js';
+import RouteButton from "../customComponents/RouteButton.jsx";
 
 const AddRecommendations = () => {
     const desktopHeaders = {
@@ -27,6 +28,12 @@ const AddRecommendations = () => {
         City: "city",
         State: "state",
         "Dated of Posting": "updatedAt",
+    };
+    const backBtnComp = {
+        className: "toogle-filter",
+        label: "Back",
+        name: "Back",
+        route: -1,
     };
     const dispatch = useDispatch();
     const [queryParams, setQueryParams] = useSearchParams();
@@ -78,6 +85,7 @@ const AddRecommendations = () => {
                                 userId={queryParams.get("uid")}
                                 isproperty={true}
                             />
+                            <RouteButton component={backBtnComp} />
                         </Card.Body>
                     </Card>
                 </div>

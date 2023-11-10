@@ -9,6 +9,7 @@ import AutoFetchApi from "../customComponents/AutoFetchApi.jsx";
 import { selectApiData, selectApiStatus } from '../../redux/utils/selectors.js';
 import { Card } from "react-bootstrap";
 import ListingTable from '../utils/ListingTable.js';
+import RouteButton from "../customComponents/RouteButton.jsx";
 
 const ShowRecommended = () => {
     const desktopHeaders = {
@@ -22,6 +23,12 @@ const ShowRecommended = () => {
         "Park Facing": "propertyId.parkFacing",
         "Corner": "propertyId.corner",
         "Feedback": "options"
+    };
+    const backBtnComp = {
+        className: "toogle-filter",
+        label: "Back",
+        name: "Back",
+        route: -1,
     };
     const dispatch = useDispatch();
     const [queryParams, setQueryParams] = useSearchParams();
@@ -73,9 +80,10 @@ const ShowRecommended = () => {
                                 itemCount={tableData?.itemCount}
                                 refreshDataApi={{ dataApi }}
                                 hideAlterActions={true}
-                                // removeActionApi={{}}
+                            // removeActionApi={{}}
                             />
                         </Card.Body>
+                        <RouteButton component={backBtnComp} />
                     </Card>
                 </div>
             )}
