@@ -1,3 +1,5 @@
+import SearchBar from "./SearchBar";
+
 export default function Banner({ component }) {
   return (
     <>
@@ -11,6 +13,7 @@ export default function Banner({ component }) {
           <br />
           {component.spanText && <span className="banner_subtext">{component.spanText}</span>}
         </h1>
+        {component.searchBar && <SearchBar />}
       </article>
     </>
   );

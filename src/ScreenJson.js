@@ -1,5 +1,5 @@
 import { newPropertyConst } from "./components/fieldConsts/PropertiesFieldConst.js";
-import { editUserConst, newUserConst } from "./components/fieldConsts/UserFieldConst.js";
+import { editCustomerConst, editUserConst, newUserConst } from "./components/fieldConsts/UserFieldConst.js";
 import {
   ALTER_PROPERTY_DATA,
   ALTER_USER_DATA,
@@ -14,16 +14,19 @@ import {
   CHATBOT,
   CONTAINER,
   DASHBOARD_LISTING,
+  DELETE_CUSTOMER,
   DELETE_PROPERTY_DATA,
   DELETE_USER_DATA,
   DETAILED_VIEW,
   DYNAMIC_CARD_CONTAINER,
+  EDIT_CUSTOMER,
   GET,
   GET_ADMIN_PROPERTY_DATA,
   GET_ADMIN_USER_DATA,
   GET_ADMIN_USER_DATA_BY_ID,
   GET_APPROVAL_PROPERTIES,
   GET_CARD_DATA,
+  GET_CUSTOMERS_LIST,
   GET_HOME_SCREEN_DATA,
   GET_LISTING_DATA,
   GET_MASTER_DATA_ON_HOME,
@@ -32,6 +35,7 @@ import {
   GET_SEARCH_RESULT,
   GET_SIMILAR_PROPERTY_DATA,
   GET_UNAPPROVED_AGENTS_DATA,
+  GET_UNAPPROVED_BROKER_COUNTS,
   HAMBURGER_MENU,
   HEADING,
   HOME_CARD,
@@ -166,6 +170,7 @@ export const HOME_SCREEN = {
       spanText: "Builder Floor now",
       bgImage:
         "https://thumbs.dreamstime.com/b/mumbai-capital-india-mumbai-india-december-mumbai-financial-commercial-entertainment-capital-india-december-112388360.jpg",
+      // searchBar: true
     },
     {
       type: CONTAINER,
@@ -923,6 +928,95 @@ export const MANAGE_USER = {
   ],
 };
 
+export const MANAGE_CUSTOMER = {
+  name: "Master table",
+  pageClass: "standalone_page customer_management_page",
+  className: "klk",
+  children: [
+    {
+      type: LOGIN_REFRESH,
+      name: "",
+      className: "",
+      children: [
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
+        {
+          type: AUTO_FETCH_API_USER,
+          // user: true,
+          method: GET,
+          api: API_ENDPOINTS[GET_CUSTOMERS_LIST],
+        },
+        {
+          type: TITLE,
+          titles: ["Manage Customers"],
+        },
+        {
+          type: CONTAINER,
+          name: "",
+          className: "",
+          children: [
+            {
+              type: CONTAINER,
+              name: "",
+              className: "",
+              children: [
+                {
+                  type: DASHBOARD_LISTING,
+                  data: {},
+                  roleSpecific: false,
+                  desktopHeaders: {
+                    Name: "fullName",
+                    "Phone Number": "phoneNumber",
+                    "Email": "email",
+                    Status: "status",
+                  },
+                  mobileHeaders: {
+                    Name: "fullName",
+                    "Phone Number": "phoneNumber",
+                    "Email": "email",
+                    Status: "status",
+                  },
+                  fieldConst: editCustomerConst,
+                  editApi: EDIT_CUSTOMER,
+                  deleteApi: DELETE_CUSTOMER,
+                  getDataApi: GET_CUSTOMERS_LIST,
+                  endpoint: API_ENDPOINTS[GET_CUSTOMERS_LIST],
+                  dataPoint: GET_CUSTOMERS_LIST,
+                  showPreviewButton: false,
+                  disableRowModal: true,
+                },
+                {
+                  type: ROUTE_BUTTON,
+                  className: "toogle-filter",
+                  label: "Back",
+                  name: "Back",
+                  route: "/admin",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 export const MANAGE_AGENT = {
   name: "Master table",
   pageClass: "standalone_page user_management_page",
@@ -960,6 +1054,14 @@ export const MANAGE_AGENT = {
         {
           type: TITLE,
           titles: ["Approve Brokers"],
+        },
+        {
+          type: LABEL_MAP,
+          className: "lableded-map-dashboard",
+          api: API_ENDPOINTS[GET_UNAPPROVED_BROKER_COUNTS],
+          parentClassName: "super-admin-label",
+          method: GET,
+          endpoint: GET_UNAPPROVED_BROKER_COUNTS,
         },
         {
           type: CONTAINER,
@@ -1588,7 +1690,7 @@ export const AD_MASTER_TABLE = {
           onRefreshApiType: POST,
           disableRowModal: true,
           showPreviewButton: true,
-          // showColumnFilter: true
+          showColumnFilter: true
         },
         {
           type: ROUTE_BUTTON,

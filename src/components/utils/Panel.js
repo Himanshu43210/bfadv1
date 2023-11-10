@@ -25,8 +25,6 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
         <a
           href="/"
           className="panel-link"
-          target="_blank"
-          rel="noopener noreferrer"
         >
           <AiFillHome className="admin-panel-icons" />
           <h6 className="panel_link_label">BuilderFloor</h6>

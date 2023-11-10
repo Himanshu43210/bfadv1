@@ -235,3 +235,42 @@ export const editUserConst = [
     requiredErrorMessage: "Please provide a Password.",
   }
 ];
+
+export const editCustomerConst = [
+  {
+    name: "fullName",
+    label: "Full Name",
+    dataKey: "fullName",
+    type: TEXT,
+    isRequired: true,
+    requiredErrorMessage: "Please enter your fullname.",
+  },
+  {
+    name: "phoneNumber",
+    label: "Mobile Number",
+    dataKey: "phoneNumber",
+    type: TEXT,
+    isRequired: true,
+    requiredErrorMessage: "Please enter your phone number.",
+    regex: /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+    regexErrorMessage: "Invalid phone number",
+  },
+  {
+    name: "email",
+    label: "Email",
+    dataKey: "email",
+    type: TEXT,
+    isRequired: true,
+    requiredErrorMessage: "Please enter your email.",
+    regex: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+    regexErrorMessage: "Invalid Email",
+  },
+  {
+    name: "status",
+    label: "Status",
+    dataKey: "status",
+    type: "select",
+    isRequired: true,
+    requiredErrorMessage: "Please select a Status.",
+  },
+];
