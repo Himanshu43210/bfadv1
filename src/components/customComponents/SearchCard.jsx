@@ -37,6 +37,9 @@ export default function SearchCard({
         url: cardDetailUrl,
       });
     }
+    if (window.AndroidShareHandler) {
+      window.AndroidShareHandler.share(cardDetailUrl);
+    }
   };
   const options = [
     { key: "Yes, I have finalized", },
