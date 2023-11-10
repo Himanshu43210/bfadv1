@@ -91,9 +91,16 @@ export const AD_USER_DASHBOARD = {
               name: "Master Data of Super Admin",
               route: "/admin/masterTable",
             },
+            {
+              type: ROUTE_BUTTON,
+              className: "admin_route_button",
+              label: "Manage Customers",
+              name: "Manage Customers",
+              route: "/admin/manageCustomers",
+            },
             // {
             //   type: ROUTE_BUTTON,
-            //   className: "admin_route_button",
+            //   className: "admin_route_button ar_edit_btn",
             //   label: "Edit Account Data",
             //   name: "Edit Account Data",
             //   route: "/admin/account/edit",
@@ -202,8 +209,8 @@ export const CP_USER_DASHBOARD = {
             {
               type: ROUTE_BUTTON,
               className: "admin_route_button",
-              label: "Customers",
-              name: "Customers",
+              label: "Customer Engagement",
+              name: "Customer Engagement",
               route: "/admin/customers",
             },
             {
@@ -215,7 +222,7 @@ export const CP_USER_DASHBOARD = {
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin_route_button",
+              className: "admin_route_button ar_edit_btn",
               label: "Edit Account Data",
               name: "Edit Account Data",
               route: "/admin/account/edit",
@@ -291,7 +298,7 @@ export const SU_USER_DASHBOARD = {
             },
             {
               type: ROUTE_BUTTON,
-              className: "admin_route_button",
+              className: "admin_route_button ar_edit_btn",
               label: "Edit Account Data",
               name: "Edit Account Data",
               route: "/admin/account/edit",

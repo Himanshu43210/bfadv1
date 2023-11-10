@@ -24,6 +24,7 @@ function OtpLogin() {
     const [formData, setFormData] = useState({
         fullName: "",
         phoneNumber: "",
+        email: "",
         otp: ""
     });
     const [loading, setLoading] = useState(false);
@@ -162,7 +163,8 @@ function OtpLogin() {
                 const headers = { "Content-Type": "application/json" };
                 const data = {
                     fullName: formData.fullName,
-                    phoneNumber: formData.phoneNumber
+                    phoneNumber: formData.phoneNumber,
+                    email: formData.email
                 };
                 const options = {
                     url: mode === "SIGNUP" ? API_ENDPOINTS[ADD_CUSTOMER] : API_ENDPOINTS["signInCustomer"],
@@ -183,7 +185,7 @@ function OtpLogin() {
                             if (res.payload?.data) {
                                 dispatch(storeCustomerData(res.payload.data));
                                 localStorage.setItem("customer", JSON.stringify(res.payload.data));
-                                setFormData({ fullName: "", phoneNumber: "", otp: "" });
+                                setFormData({ fullName: "", phoneNumber: "", email: "", otp: "" });
                             }
                         }
                     }).catch((error) => {
@@ -231,6 +233,8 @@ function OtpLogin() {
                         <>
                             <label className='field_label'>Enter Full Name*</label>
                             <input type="text" value={formData.fullName} className='ol_input_field name_input' name='name' id='name' required={true} onInput={(e) => handleInput("fullName", e.target.value)} />
+                            <label className='field_label'>Enter Email</label>
+                            <input type="text" value={formData.email} className='ol_input_field name_input' name='name' id='name' required={true} onInput={(e) => handleInput("email", e.target.value)} />
                         </>
                     )}
                     <label className='field_label'>Enter Phone Number*</label>

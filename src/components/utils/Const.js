@@ -96,7 +96,10 @@ export const GET_CUSTOMER_CONTACTED = "getCustomerContacted";
 export const GET_UNAPPROVED_AGENTS_DATA = "getUnapprovedAgentsData";
 export const APPROVE_AGENT = "approveAgent";
 export const ADD_RECOMMENDATION = "addPropertyRecommended";
-export const GET_RECOMMENDED ="getPropertyRecommended";
+export const GET_RECOMMENDED = "getPropertyRecommended";
+export const GET_CUSTOMERS_LIST = "getCustomersList";
+export const DELETE_CUSTOMER = "deleteCustomer";
+export const EDIT_CUSTOMER = "editCustomer";
 
 
 export const LINKEDIN_ICON = "LINKEDIN_ICON";

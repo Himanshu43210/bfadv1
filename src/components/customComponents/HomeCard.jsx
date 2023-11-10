@@ -34,6 +34,9 @@ export default function HomeCard({
         url: cardDetailUrl,
       });
     }
+    if (window.AndroidShareHandler) {
+      window.AndroidShareHandler.share(cardDetailUrl);
+    }
   };
   return (
     <Card
