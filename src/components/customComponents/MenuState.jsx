@@ -59,7 +59,7 @@ const MenuState = ({ component }) => {
       {open && (
         <div className='main_menu_popup' onMouseEnter={() => setVisited(true)}>
           {component.items.map((item) => {
-            if ((item?.name !== "Dashboard") || (item?.name === "Dashboard" && customerProfile?.agent)) {
+            if ((item?.name !== "Dashboard") || (item?.name === "Dashboard" && customerProfile?.agent) || !customerProfile) {
               return (
                 <div onClick={() => { navigate.push(`${item.path}`) }} className="menu_item">
                   {getIcons(item.icon)}
