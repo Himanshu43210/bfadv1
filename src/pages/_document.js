@@ -10,12 +10,12 @@ export default function Document() {
         <meta name="google-site-verification" content="3Wif_r7y_jTUFU3LdYhT-79MeHPkjjMiIbVb4sOKRUk" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-P43PLQ2NH2"></script>
         <script>
-          {/* window.dataLayer = window.dataLayer || []
+          window.dataLayer = window.dataLayer || []
           function gtag() {
             dataLayer.push(arguments)
           }
           gtag('js', new Date())
-          gtag('config', 'G-P43PLQ2NH2') */}
+          gtag('config', 'G-P43PLQ2NH2')
         </script>
       </Head>
       <body>
