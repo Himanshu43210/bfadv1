@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document'
+import Script from 'next/script'
 
 export default function Document() {
   return (
@@ -9,14 +10,15 @@ export default function Document() {
         <meta name="description" content="Start Exploring Your Dream - Builder Floor now" data-react-helmet="true" />
         <meta name="google-site-verification" content="3Wif_r7y_jTUFU3LdYhT-79MeHPkjjMiIbVb4sOKRUk" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-P43PLQ2NH2"></script>
-        <script>
+        <Script strategy='afterInteractive' dangerouslySetInnerHTML={{__html: `
           window.dataLayer = window.dataLayer || []
           function gtag() {
-            dataLayer.push(arguments)
+            dataLayer?.push(arguments)
           }
           gtag('js', new Date())
           gtag('config', 'G-P43PLQ2NH2')
-        </script>
+        `}}>
+        </Script>
       </Head>
       <body>
         <Main />
