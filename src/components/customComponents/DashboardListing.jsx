@@ -58,6 +58,7 @@ const DashboardListing = ({ component }) => {
       useParamsFromUrl={component.useParamsFromUrl}
       showTableControls={component.showTableControls}
       showPagination={component.showPagination}
+      allowSelect={component.allowSelect}
     />
   );
 };

@@ -5,7 +5,7 @@ import ReusablePopup from "./ReusablePopup.jsx";
 import FormBuilder from "./FormBuilder.jsx";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa/index.js";
 import { FaUserEdit, FaRegTrashAlt, FaRegEye } from "react-icons/fa/index.js";
-import { API_ENDPOINTS } from "../../redux/utils/api.js";
+import { API_ENDPOINTS, APP_DOMAIN } from "../../redux/utils/api.js";
 import { CircularProgress } from "@mui/material";
 import { AiOutlineDoubleRight } from "react-icons/ai/index.js";
 import { RiFilter2Fill } from "react-icons/ri/index.js"
@@ -37,6 +37,7 @@ import SnackBar from "../customComponents/SnackBar.jsx";
 import { useRouter } from "next/navigation.js";
 import { generatePropertyUrl } from "./propertyUtils.js";
 import Link from "next/link.js";
+import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 
 const ListingTable = ({
   headersDesktop = [],
@@ -71,7 +72,8 @@ const ListingTable = ({
   rowClick,
   userId,
   showTableControls = true,
-  showPagination = true
+  showPagination = true,
+  allowSelect
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -94,6 +96,7 @@ const ListingTable = ({
   const [showImgEditModal, setShowImgEditModal] = useState(false);
   const [imgEditor, setImgEditor] = useState({});
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
+  const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   let isMobile = false; // Adjust the breakpoint as per your needs
@@ -140,6 +143,7 @@ const ListingTable = ({
       if (getApiDataFromRedux.totalItems !== totalItems)
         setTotalItems(getApiDataFromRedux.totalItems);
       setTableData(getApiDataFromRedux.data);
+      setSelectAll(false);
       allowedTableColumns = roleSpecificDesktopHeaders
         ? roleSpecificDesktopHeaders[userProfile.role]
         : tableHeaders;
@@ -460,19 +464,81 @@ const ListingTable = ({
     );
   };
 
-  const handleRowSelection = (rowData, deselect = false) => {
-    if (rowData) {
-      if (deselect) {
+  const isRowSelected = (id) => {
+    let selected = false;
+    for (let i = 0; i < selectedRows.length; i++) {
+      if (selectedRows[i]._id === id) {
+        selected = true;
+        break;
+      }
+    }
+    return selected;
+  };
+
+  const handleRowSelection = (e, rowData, all = false) => {
+    const checked = e.target.checked;
+    if (all) {
+      setSelectAll(checked);
+      if (checked) {
+        // for each element in tableData --- if not present in selectedRows list, insert
+        for (let i = 0; i < tableData.length; i++) {
+          const newToPush = [];
+          if (selectedRows.find(selectedRow => selectedRow._id === tableData[i]._id) === undefined) {
+            newToPush.push(tableData[i]);
+          }
+          setSelectedRows((currSelectedRows) => {
+            return [...currSelectedRows, ...newToPush];
+          });
+        }
+      } else {
+        // for each element in tableData --- if present in selectedRows list, remove
+        let newToPush = [...selectedRows];
+        for (let i = 0; i < tableData.length; i++) {
+          newToPush = newToPush.filter(selectedRow => selectedRow._id !== tableData[i]._id);
+        }
+        setSelectedRows([...newToPush]);
+      }
+    } else {
+      if (checked) {
+        setSelectedRows((currSelectedRows) => {
+          return [...currSelectedRows, rowData];
+        });
+      } else {
         setSelectedRows((currSelectedRows) => {
           return currSelectedRows?.filter((selectedRow) => selectedRow._id !== rowData._id);
         });
-      } else {
-        setSelectedRows((currentRowData) => {
-          return [...currentRowData, rowData];
-        })
       }
-    } else {
-      setSelectedRows([...tableData]);
+    }
+  };
+
+  const handleSelectionOp = (type) => {
+    switch (type) {
+      case "SHARE":
+        let formattedShareData = ``;
+        for (let i = 0; i < selectedRows.length; i++) {
+          formattedShareData += APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + '\n';
+        }
+        console.log('>>>>>>>>>>>>> FORMATTED SHARE DATA <<<<<<<<<<<<<', formattedShareData);
+        if (navigator?.canShare()) {
+          navigator.share({
+            title: "BuilderFloor.com",
+            text: formattedShareData
+          })
+            .then(() => {
+              console.log('>>>>>> Share Successful <<<<<<');
+            })
+            .catch((error) => {
+              console.log('>>>>>> Share Failed <<<<<<', error);
+            });
+        } else {
+          console.log('>>>>> NO NAVIGATOR : sharing not possible <<<<<<', window.navigator);
+        }
+        // share the data
+        // if navigator --- use
+        // if no navigator or desktop --- copy the links in clipboard & show snackbar (links copied)
+        break;
+      default:
+        break;
     }
   };
 
@@ -650,7 +716,7 @@ const ListingTable = ({
   const formatTableCell = (element, headerLabel) => {
     const allowedTableColumnsFinal = allowedTableColumns;
     if (headerLabel === "Link Share") {
-      const propertyLink = "https://builderfloor.com/" + generatePropertyUrl(element);
+      const propertyLink = "https://builderfloor.com" + generatePropertyUrl(element);
       return <Link href={propertyLink} target="_blank">{propertyLink}</Link>;
     }
     let cellData;
@@ -872,12 +938,25 @@ const ListingTable = ({
             )}
           </div>
         )}
+        {selectedRows?.length > 0 && (
+          <div className="table_selection_controls">
+            <div className="selection_info">
+              <span>{selectedRows.length} Selected</span>
+            </div>
+            <Button onClick={(e) => handleSelectionOp("SHARE")} className="selection_ctrl_btn selection_share_btn">
+              <ShareRoundedIcon className="share_icon" />
+              Share
+            </Button>
+          </div>
+        )}
         <Table striped bordered hover responsive size="sm">
           <thead>
             <tr>
-              <th className="tablehead text">
-                <input type="checkbox" className="table_row_check table_head_row_check" />
-              </th>
+              {allowSelect && (
+                <th className="tablehead text">
+                  <input type="checkbox" className="table_row_check table_head_row_check" checked={selectAll} onChange={(e) => handleRowSelection(e, null, true)} />
+                </th>
+              )}
               {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                 <th key={index} className="tablehead text">
                   <div
@@ -922,9 +1001,11 @@ const ListingTable = ({
                   }
                 }}
               >
-                <td className="bodytext">
-                  <input type="checkbox" className="table_row_check" />
-                </td>
+                {allowSelect && (
+                  <td className="bodytext">
+                    <input type="checkbox" className="table_row_check" checked={isRowSelected(element._id)} onChange={(e) => handleRowSelection(e, element)} />
+                  </td>
+                )}
                 {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                   <td className="bodytext" key={index}>
                     {formatTableCell(element, headerLabel)}

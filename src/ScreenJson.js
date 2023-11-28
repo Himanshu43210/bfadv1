@@ -1692,7 +1692,8 @@ export const AD_MASTER_TABLE = {
           onRefreshApiType: POST,
           disableRowModal: true,
           showPreviewButton: true,
-          showColumnFilter: true
+          showColumnFilter: true,
+          allowSelect: true,
         },
         {
           type: ROUTE_BUTTON,

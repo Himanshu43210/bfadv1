@@ -1,5 +1,6 @@
 import _ from "lodash";
 
+export const APP_DOMAIN = "https://builderfloor.com";
 const API_DOMAIN = "https://bfservices.onrender.com/api/";
 const CHAT_API_DOMAIN = "https://itsolutionshub.com/chat";
 // const API_DOMAIN = "http://localhost:5000/api/";

@@ -368,6 +368,26 @@ User management page ***************
     gap: 10px;
 }
 
+.table_selection_controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.selection_info {}
+
+.selection_ctrl_btn {
+    background-color: #004e55 !important;
+    font-size: 16px;
+    gap: 6px;
+}
+
+.selection_ctrl_btn>.share_icon {
+    color: white !important;
+    font-size: 16px;
+}
+
 .filter_input {
     padding: 8px;
     border: 1px solid darkgray;
@@ -625,7 +645,16 @@ User management page ***************
 }
 
 .filter_icon {
-    font-size: 20px !important;
+    font-size: 16px !important;
+}
+
+.filter_btn {
+    gap: 6px !important;
+    font-size: 16px;
+}
+
+.filter_btn>.filter_icon {
+    font-size: 16px !important;
 }
 
 .upload_form {
@@ -899,6 +928,7 @@ User management page ***************
     padding-inline: 10px;
     margin-top: auto;
 }
+
 @import url("https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
 
@@ -3978,6 +4008,7 @@ input[type=number] {
 .contact_note {
     color: #667085;
 }
+
 .share_and_date {
     display: flex;
     align-items: center;
