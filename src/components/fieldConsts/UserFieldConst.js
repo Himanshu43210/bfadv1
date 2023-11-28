@@ -274,3 +274,28 @@ export const editCustomerConst = [
     requiredErrorMessage: "Please select a Status.",
   },
 ];
+
+export const editReachOutCustomerConst = [
+  {
+    name: "phoneNumber",
+    label: "Mobile Number",
+    dataKey: "phoneNumber",
+    type: TEXT,
+    isRequired: true,
+    requiredErrorMessage: "Please enter your phone number.",
+    regex: /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+    regexErrorMessage: "Invalid phone number",
+  },
+  {
+    name: "contacted",
+    label: "Contacted",
+    dataKey: "contacted",
+    type: "radio",
+    options: [
+      { value: "Yes", label: "Yes" },
+      { value: "No", label: "No" },
+    ],
+    isRequired: true,
+    requiredErrorMessage: "Please select a value for contacted.",
+  },
+];

@@ -1,5 +1,5 @@
 import { newPropertyConst } from "./components/fieldConsts/PropertiesFieldConst.js";
-import { editCustomerConst, editUserConst, newUserConst } from "./components/fieldConsts/UserFieldConst.js";
+import { editCustomerConst, editReachOutCustomerConst, editUserConst, newUserConst } from "./components/fieldConsts/UserFieldConst.js";
 import {
   ALTER_PROPERTY_DATA,
   ALTER_USER_DATA,
@@ -16,10 +16,12 @@ import {
   DASHBOARD_LISTING,
   DELETE_CUSTOMER,
   DELETE_PROPERTY_DATA,
+  DELETE_REACH_OUT_USER,
   DELETE_USER_DATA,
   DETAILED_VIEW,
   DYNAMIC_CARD_CONTAINER,
   EDIT_CUSTOMER,
+  EDIT_REACH_OUT_USER_STATUS,
   GET,
   GET_ADMIN_PROPERTY_DATA,
   GET_ADMIN_USER_DATA,
@@ -30,8 +32,10 @@ import {
   GET_HOME_SCREEN_DATA,
   GET_LISTING_DATA,
   GET_MASTER_DATA_ON_HOME,
+  GET_NOT_CONTACTED_USER_COUNTS,
   GET_PROPERTY_LIST_BY_USER_ID,
   GET_PROPERTY_USER,
+  GET_REACH_OUT_USERS,
   GET_SEARCH_RESULT,
   GET_SIMILAR_PROPERTY_DATA,
   GET_UNAPPROVED_AGENTS_DATA,
@@ -1000,6 +1004,102 @@ export const MANAGE_CUSTOMER = {
                   getDataApi: GET_CUSTOMERS_LIST,
                   endpoint: API_ENDPOINTS[GET_CUSTOMERS_LIST],
                   dataPoint: GET_CUSTOMERS_LIST,
+                  showPreviewButton: false,
+                  disableRowModal: true,
+                },
+                {
+                  type: ROUTE_BUTTON,
+                  className: "toogle-filter",
+                  label: "Back",
+                  name: "Back",
+                  route: "/admin",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const MANAGE_REACH_OUT_USERS = {
+  name: "Customers to Reach Out",
+  pageClass: "standalone_page customer_management_page",
+  className: "klk",
+  children: [
+    {
+      type: LOGIN_REFRESH,
+      name: "",
+      className: "",
+      children: [
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
+        {
+          type: AUTO_FETCH_API_USER,
+          method: GET,
+          api: API_ENDPOINTS[GET_REACH_OUT_USERS],
+        },
+        {
+          type: TITLE,
+          titles: ["Customers to Reach Out"],
+        },
+        {
+          type: LABEL_MAP,
+          className: "lableded-map-dashboard",
+          api: API_ENDPOINTS[GET_NOT_CONTACTED_USER_COUNTS],
+          parentClassName: "super-admin-label",
+          method: GET,
+          endpoint: GET_NOT_CONTACTED_USER_COUNTS,
+        },
+        {
+          type: CONTAINER,
+          name: "",
+          className: "",
+          children: [
+            {
+              type: CONTAINER,
+              name: "",
+              className: "",
+              children: [
+                {
+                  type: DASHBOARD_LISTING,
+                  data: {},
+                  roleSpecific: false,
+                  desktopHeaders: {
+                    "Phone Number": "phoneNumber",
+                    Contacted: "contacted",
+                    "Created At": "createdAt",
+                    "Last Updated": "updatedAt",
+                  },
+                  mobileHeaders: {
+                    "Phone Number": "phoneNumber",
+                    Contacted: "contacted",
+                    "Created At": "createdAt",
+                    "Last Updated": "updatedAt",
+                  },
+                  fieldConst: editReachOutCustomerConst,
+                  editApi: EDIT_REACH_OUT_USER_STATUS,
+                  deleteApi: DELETE_REACH_OUT_USER,
+                  getDataApi: GET_REACH_OUT_USERS,
+                  endpoint: API_ENDPOINTS[GET_REACH_OUT_USERS],
+                  dataPoint: GET_REACH_OUT_USERS,
                   showPreviewButton: false,
                   disableRowModal: true,
                 },
