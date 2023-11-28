@@ -66,4 +66,5 @@ export const API_ENDPOINTS = {
   getCustomersList: API_DOMAIN + "customers/customersList",
   deleteCustomer: API_DOMAIN + "customers/deleteCustomer",
   editCustomer: API_DOMAIN + "customers/editCustomer",
+  reachOut: API_DOMAIN + "customers/reachOut"
 };

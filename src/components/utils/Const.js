@@ -100,6 +100,7 @@ export const GET_RECOMMENDED = "getPropertyRecommended";
 export const GET_CUSTOMERS_LIST = "getCustomersList";
 export const DELETE_CUSTOMER = "deleteCustomer";
 export const EDIT_CUSTOMER = "editCustomer";
+export const REACH_OUT = "reachOut";
 
 
 export const LINKEDIN_ICON = "LINKEDIN_ICON";
