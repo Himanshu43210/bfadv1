@@ -516,7 +516,7 @@ const ListingTable = ({
       case "SHARE":
         let formattedShareData = ``;
         for (let i = 0; i < selectedRows.length; i++) {
-          formattedShareData += APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + '\n';
+          formattedShareData += APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + '\n\n';
         }
         console.log('>>>>>>>>>>>>> FORMATTED SHARE DATA <<<<<<<<<<<<<', formattedShareData);
         if (navigator.share !== undefined) {
@@ -532,6 +532,17 @@ const ListingTable = ({
             });
         } else {
           console.log('>>>>> NO NAVIGATOR : sharing not possible <<<<<<', window.navigator);
+          if (navigator.clipboard !== undefined) {
+            console.log('============= CLIPBOARD AVAILABLE ==============');
+            navigator.clipboard.writeText(formattedShareData)
+              .then(() => {
+                console.log('>>>>>> Copy Successful <<<<<<');
+                setSnackbar({ open: true, message: 'Copied to Clipboard.', status: -1 });
+              })
+              .catch((error) => {
+                console.log('>>>>>> Copy Failed <<<<<<', error);
+              });
+          }
         }
         if (window.AndroidShareHandler) {
           window.AndroidShareHandler.share(formattedShareData);
