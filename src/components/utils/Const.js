@@ -101,6 +101,10 @@ export const GET_CUSTOMERS_LIST = "getCustomersList";
 export const DELETE_CUSTOMER = "deleteCustomer";
 export const EDIT_CUSTOMER = "editCustomer";
 export const REACH_OUT = "reachOut";
+export const GET_REACH_OUT_USERS = "reachOutUser";
+export const EDIT_REACH_OUT_USER_STATUS = "editReachOutUserStatus";
+export const DELETE_REACH_OUT_USER = "deleteReachOutUser";
+export const GET_NOT_CONTACTED_USER_COUNTS = "getNotContactedUserCounts";
 
 
 export const LINKEDIN_ICON = "LINKEDIN_ICON";

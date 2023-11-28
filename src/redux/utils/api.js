@@ -66,5 +66,9 @@ export const API_ENDPOINTS = {
   getCustomersList: API_DOMAIN + "customers/customersList",
   deleteCustomer: API_DOMAIN + "customers/deleteCustomer",
   editCustomer: API_DOMAIN + "customers/editCustomer",
-  reachOut: API_DOMAIN + "customers/reachOut"
+  reachOutUser: API_DOMAIN + "customers/getReachOutUsers",
+  editReachOutUserStatus: API_DOMAIN + "customers/editReachOutUserStatus",
+  deleteReachOutUser: API_DOMAIN + "customers/deleteReachOutUser",
+  reachOut: API_DOMAIN + "customers/reachOut",
+  getNotContactedUserCounts: API_DOMAIN + "customers/getNotContactedUserCounts"
 };

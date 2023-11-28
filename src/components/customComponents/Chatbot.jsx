@@ -59,7 +59,7 @@ function Chatbot() {
                     // "openai_key": keyPart1 + keyPart2 + keyPart3
                 }
             };
-            fetch('https://itsolutionshub.com/chat', {
+            fetch(API_ENDPOINTS["chat"], {
                 method: "POST",
                 headers: options.headers,
                 body: JSON.stringify(options.data)
