@@ -5,7 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack.js';
 import SnackBar from './SnackBar.jsx';
 import { auth } from '../../firebase.js';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
-import { ADD_CUSTOMER, ALTER_USER_DATA, POST, ROUTE_BUTTON } from '../utils/Const.js';
+import { ADD_CUSTOMER, ALTER_USER_DATA, POST, REACH_OUT, ROUTE_BUTTON } from '../utils/Const.js';
 import AccountMenu from './AccountMenu.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { callApi } from '../../redux/utils/apiActions.js';
@@ -103,6 +103,9 @@ function comp() {
                 })
             );
             navigate.push(registerAgent.route);
+        } else if (mode === 'REACHME' || key === 'REACHME') {
+            setOpenForm(true);
+            setOpen(false);
         }
     };
 
@@ -128,7 +131,7 @@ function comp() {
     };
 
     const handleDataSubmit = () => {
-        if ((mode === "SIGNIN" && formData.phoneNumber) || (mode === "SIGNUP" && formData.phoneNumber && formData.fullName)) {
+        if ((mode === "SIGNIN" && formData.phoneNumber) || (mode === "SIGNUP" && formData.phoneNumber && formData.fullName) || (mode === "REACHME" && formData.phoneNumber)) {
             setLoading(true);
             generateRecaptcha();
             let appVerifier = window.recaptchaVerifier;
@@ -164,7 +167,11 @@ function comp() {
                     email: formData.email
                 };
                 const options = {
-                    url: mode === "SIGNUP" ? API_ENDPOINTS[ADD_CUSTOMER] : API_ENDPOINTS["signInCustomer"],
+                    url: mode === "SIGNUP"
+                        ? API_ENDPOINTS[ADD_CUSTOMER]
+                        : mode === "SIGNIN"
+                            ? API_ENDPOINTS["signInCustomer"]
+                            : API_ENDPOINTS[REACH_OUT],
                     method: POST,
                     headers,
                     data,
@@ -183,6 +190,13 @@ function comp() {
                                 dispatch(storeCustomerData(res.payload.data));
                                 localStorage.setItem("customer", JSON.stringify(res.payload.data));
                                 setFormData({ fullName: "", phoneNumber: "", email: "", otp: "" });
+                            }
+                        } else if (mode === 'REACHME') {
+                            console.log('+++++++++++++ REACH OUT SUCCESS ++++++++++++++', res.payload);
+                            setSnackbar({ open: true, message: `Thank you! We will reach out to you on ${formData.phoneNumber} as soon as possible.`, status: 1, autoHideDuration: 8000 });
+                            if (res.payload) {
+                                setFormData({ fullName: "", phoneNumber: "", email: "", otp: "" });
+                                setOpenForm(false);
                             }
                         }
                     }).catch((error) => {
@@ -220,6 +234,11 @@ function comp() {
     const handleMenuClose = () => {
         setOpen(false);
         setVisited(false);
+    };
+
+    const handleReachOutToMe = () => {
+        setMode("REACHME");
+        routeEntry('REACHME');
     };
 
     const renderDetailsForm = () => {
@@ -276,7 +295,15 @@ function comp() {
         return (
             <div className='section_header ol_header'>
                 <div className='header_left'>
-                    <Typography variant="h3" className="detailcardheading header_title">{mode === 'SIGNIN' ? 'Sign In (Already Registered)' : 'Sign Up (New User)'}</Typography>
+                    <Typography variant="h3" className="detailcardheading header_title">
+                        {
+                            mode === 'SIGNIN'
+                                ? 'Sign In (Already Registered)'
+                                : mode === 'SIGNUP'
+                                    ? 'Sign Up (New User)'
+                                    : 'Reach out to Me'
+                        }
+                    </Typography>
                 </div>
                 <div className='header_right'>
                     <Button className='bot_btn' onClick={handleCancelSignin}>
@@ -326,6 +353,9 @@ function comp() {
                             setPopupStage(1);
                             setMode('SIGNUP');
                         }}>Sign Up (New User)</button>
+                        <button className='popup_btn' onClick={() => {
+                            handleReachOutToMe();
+                        }}>Reach out to Me</button>
                     </div>
                 ) : (
                     <div className='btns_group'>
