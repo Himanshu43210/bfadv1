@@ -519,7 +519,7 @@ const ListingTable = ({
           formattedShareData += APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + '\n';
         }
         console.log('>>>>>>>>>>>>> FORMATTED SHARE DATA <<<<<<<<<<<<<', formattedShareData);
-        if (navigator?.canShare()) {
+        if (navigator.share !== undefined) {
           navigator.share({
             title: "BuilderFloor.com",
             text: formattedShareData
@@ -533,9 +533,9 @@ const ListingTable = ({
         } else {
           console.log('>>>>> NO NAVIGATOR : sharing not possible <<<<<<', window.navigator);
         }
-        // share the data
-        // if navigator --- use
-        // if no navigator or desktop --- copy the links in clipboard & show snackbar (links copied)
+        if (window.AndroidShareHandler) {
+          window.AndroidShareHandler.share(formattedShareData);
+        }
         break;
       default:
         break;
