@@ -10,7 +10,7 @@ import { selectApiData, selectApiStatus } from '../../redux/utils/selectors.js';
 import { Card } from "react-bootstrap";
 import ListingTable from '../utils/ListingTable.js';
 import RouteButton from "../customComponents/RouteButton.jsx";
-import { useRouter } from 'next/navigation.js';
+import { useRouter } from 'next/router.js';
 
 const ShowRecommended = () => {
     const desktopHeaders = {
@@ -32,7 +32,8 @@ const ShowRecommended = () => {
         route: -1,
     };
     const dispatch = useDispatch();
-    const {uid} = useRouter();
+    const router = useRouter();
+    const { uid } = router.query;
 
     let tableData = useSelector((state) => selectApiData(state, GET_RECOMMENDED));
     const apiStatus = useSelector((state) => selectApiStatus(state, GET_RECOMMENDED || ""));

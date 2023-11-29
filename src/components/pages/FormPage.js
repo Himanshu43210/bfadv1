@@ -197,7 +197,7 @@ const comp = () => {
           dispatch(callApi(options)).then(() => {
             setSubmitting(false);
             setTimeout(() => {
-              router("/admin");
+              router.push("/admin");
             }, 1200);
             setSnackbar({ open: true, message: getMessage() });
           });
