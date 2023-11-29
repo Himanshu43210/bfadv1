@@ -9,7 +9,7 @@ import { CircularProgress } from "@mui/material";
 import { Card } from "react-bootstrap";
 import ListingTable from '../utils/ListingTable.js';
 import RouteButton from "../customComponents/RouteButton.jsx";
-import { useRouter } from 'next/navigation.js';
+import { useRouter } from 'next/router.js';
 
 const AddRecommendations = () => {
     const desktopHeaders = {
@@ -37,7 +37,8 @@ const AddRecommendations = () => {
         route: -1,
     };
     const dispatch = useDispatch();
-    const { uid } = useRouter();
+    const router = useRouter();
+    const { uid } = router.query;
     const userProfile = useSelector((state) => state[PROFILE]);
 
     let tableData = useSelector((state) => selectApiData(state, GET_ADMIN_PROPERTY_DATA));
@@ -46,9 +47,6 @@ const AddRecommendations = () => {
 
     useEffect(() => {
         try {
-            // const uid = queryParams.get("uid");
-            console.log('------------- cid -----------', uid);
-            // get 
             const options = {
                 url: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
                 method: POST,
@@ -57,8 +55,6 @@ const AddRecommendations = () => {
             dispatch(callApi(options))
                 .then((res) => {
                     console.log('++++++++++ FETCH all cp properties RES +++++++++', res);
-                }).catch((error) => {
-                    console.log('========== FETCH All cp properties ERROR =========', error);
                 });
         } catch (error) {
             console.log('-------- ERROR : addRecommendation ------------', error);
