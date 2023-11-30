@@ -135,7 +135,7 @@ export default function HomeCard({
             precision={1}
             readOnly
           /> */}
-            <Typography variant="body2" color="text.secondary">{formatData(element?.createdAt)}</Typography>
+            <Typography variant="body2" color="text.secondary">{formatData(element?.createdAt || element?.updatedAt)}</Typography>
           </div>
           <ApiButton
             component={{

@@ -77,6 +77,8 @@ const DropSelect = ({
             setPopupState(true);
             setVisited(false);
         }
+        setShowSearchResults(false);
+        setSearchResults([]);
     };
 
     const handleSearch = (e) => {
