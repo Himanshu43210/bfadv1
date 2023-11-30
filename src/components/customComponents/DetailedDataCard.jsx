@@ -428,8 +428,10 @@ function page({
             </div>
 
             <div className="rowicon contacts-wrapper" id="rowicon-btn">
+              <a href={`tel:${getContactNumber()}`}>
+
               <Button
-                className="detail-button"
+                className="detail-button contact-btn"
                 variant="contained"
                 onClick={() => {
                   handlePropertyContacted();
@@ -440,6 +442,7 @@ function page({
                 <LocalPhoneIcon className="detail_btn_icon" />
                 <span className="detail_btn_label">{ShowNumber ? getContactNumber() : "Call"}</span>
               </Button>
+              </a>
               <Button
                 className="detail-button"
                 variant="contained"
