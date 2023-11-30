@@ -106,7 +106,7 @@ const ListingTable = ({
     return selectApiData(state, getDataApi);
   });
   const userProfile = useSelector((state) => state[PROFILE]);
-  console.log('>>>>>>>>>>>>>>>> USER PROFILE & apiStatus & getApiDataFromRedux <<<<<<<<<<<<<<<<<<<<', userProfile, apiStatus, getApiDataFromRedux);
+  console.log('>>>>>>>>>>>>>>>> USER PROFILE, API STATUS, getApiDataFromRedux : ListingTable <<<<<<<<<<<<<<<<<<<<', userProfile, apiStatus, getApiDataFromRedux);
   const navigateTo = useRouter();
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
@@ -725,6 +725,7 @@ const ListingTable = ({
   };
 
   const formatTableCell = (element, headerLabel) => {
+    // handle cell link
     const allowedTableColumnsFinal = allowedTableColumns;
     if (headerLabel === "Link Share") {
       const propertyLink = "https://builderfloor.com" + generatePropertyUrl(element);

@@ -543,7 +543,7 @@ User management page ***************
     margin-bottom: 0px;
 }
 
-.rowicon>div {
+.rowicon div {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -554,13 +554,21 @@ User management page ***************
     font-family: "Noto Sans", sans-serif;
 }
 
-.rowicon>div img {
+.rowicon div img {
     height: 40px;
     width: 40px;
     object-fit: contain;
 }
 
-.rowicon button {
+.rowicon a {
+    text-decoration: none !important;
+}
+
+.rowicon .contact-btn {
+    width: 100%;
+}
+
+.rowicon button, .rowicon a {
     flex: 1;
     font-size: x-large;
 }
@@ -2274,7 +2282,7 @@ label {
     gap: 10px !important;
 }
 
-.contacts-wrapper>button {
+.contacts-wrapper button {
     flex: 1 !important;
     background-color: #006D77 !important;
     margin-right: 0 !important;
