@@ -12,6 +12,7 @@ import {
 } from "../utils/Const.js";
 import { USER_ROLE } from "../../ScreenJson.js";
 import PageSelector from "../customComponents/PageSelector.jsx";
+import NotificationBell from "../customComponents/NotificationBell.jsx";
 
 export default function AdminHome() {
   const userProfile = useSelector((state) => state.profile);
@@ -25,14 +26,19 @@ export default function AdminHome() {
   return (
     <>
       <div className="app_header">
-        <Button
-          className="admin_menu_button"
-          onClick={() => setShowMenu(!showMenu)}
-        >
-          <GiHamburgerMenu className="menu_icon" />
-        </Button>
-        {/* <Navbar role={userProfile?.role} /> */}
-        <span className="curr_page">Dashboard</span>
+        <div className="app_header_left">
+          <Button
+            className="admin_menu_button"
+            onClick={() => setShowMenu(!showMenu)}
+          >
+            <GiHamburgerMenu className="menu_icon" />
+          </Button>
+          {/* <Navbar role={userProfile?.role} /> */}
+          <span className="curr_page">Dashboard</span>
+        </div>
+        <div className="app_header_right">
+          <NotificationBell />
+        </div>
       </div>
       <div
         className={`${"main_admin_container"} ${showMenu ? "menu-is-active" : "menu-is-not-active"

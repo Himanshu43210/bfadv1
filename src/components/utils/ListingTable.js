@@ -38,6 +38,7 @@ import { useRouter } from "next/navigation.js";
 import { generatePropertyUrl } from "./propertyUtils.js";
 import Link from "next/link.js";
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 const ListingTable = ({
   headersDesktop = [],
@@ -511,42 +512,75 @@ const ListingTable = ({
     }
   };
 
+  const handleBulkShare = () => {
+    let formattedShareData = ``;
+    for (let i = 0; i < selectedRows.length; i++) {
+      formattedShareData += APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + '\n\n';
+    }
+    console.log('>>>>>>>>>>>>> FORMATTED SHARE DATA <<<<<<<<<<<<<', formattedShareData);
+    if (navigator.share !== undefined) {
+      navigator.share({
+        title: "BuilderFloor.com",
+        text: formattedShareData
+      })
+        .then(() => {
+          console.log('>>>>>> Share Successful <<<<<<');
+        })
+        .catch((error) => {
+          console.log('>>>>>> Share Failed <<<<<<', error);
+        });
+    } else {
+      console.log('>>>>> NO NAVIGATOR : sharing not possible <<<<<<', window.navigator);
+      if (navigator.clipboard !== undefined) {
+        console.log('============= CLIPBOARD AVAILABLE ==============');
+        navigator.clipboard.writeText(formattedShareData)
+          .then(() => {
+            console.log('>>>>>> Copy Successful <<<<<<');
+            setSnackbar({ open: true, message: 'Copied to Clipboard.', status: -1 });
+          })
+          .catch((error) => {
+            console.log('>>>>>> Copy Failed <<<<<<', error);
+          });
+      }
+    }
+    if (window.AndroidShareHandler) {
+      window.AndroidShareHandler.share(formattedShareData);
+    }
+  };
+
+  const handleBulkDelete = () => {
+    const deletePromises = [];
+    for (let i = 0; i < selectedRows.length; i++) {
+      try {
+        const options = {
+          url: API_ENDPOINTS[deleteApi] + "?id=" + selectedRows[i]._id,
+          method: DELETE,
+          headers: { "Content-Type": "application/json" },
+        };
+        deletePromises.push(dispatch(callApi(options)));
+      } catch (error) {
+        console.log(error);
+        setSnackbar({ open: true, message: `Deletion Failed.`, status: -1 });
+      }
+    }
+    Promise.all(deletePromises)
+      .then((res) => {
+        console.log('================ BULK DELETE RES ===============', res);
+        setSnackbar({ open: true, message: `Deleted.`, status: 0 });
+        refreshData();
+      })
+      .catch((error) => {
+        console.log('BULK DELETE ERROR: ', error);
+      });
+  };
+
   const handleSelectionOp = (type) => {
     switch (type) {
       case "SHARE":
-        let formattedShareData = ``;
-        for (let i = 0; i < selectedRows.length; i++) {
-          formattedShareData += APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + '\n\n';
-        }
-        console.log('>>>>>>>>>>>>> FORMATTED SHARE DATA <<<<<<<<<<<<<', formattedShareData);
-        if (navigator.share !== undefined) {
-          navigator.share({
-            title: "BuilderFloor.com",
-            text: formattedShareData
-          })
-            .then(() => {
-              console.log('>>>>>> Share Successful <<<<<<');
-            })
-            .catch((error) => {
-              console.log('>>>>>> Share Failed <<<<<<', error);
-            });
-        } else {
-          console.log('>>>>> NO NAVIGATOR : sharing not possible <<<<<<', window.navigator);
-          if (navigator.clipboard !== undefined) {
-            console.log('============= CLIPBOARD AVAILABLE ==============');
-            navigator.clipboard.writeText(formattedShareData)
-              .then(() => {
-                console.log('>>>>>> Copy Successful <<<<<<');
-                setSnackbar({ open: true, message: 'Copied to Clipboard.', status: -1 });
-              })
-              .catch((error) => {
-                console.log('>>>>>> Copy Failed <<<<<<', error);
-              });
-          }
-        }
-        if (window.AndroidShareHandler) {
-          window.AndroidShareHandler.share(formattedShareData);
-        }
+        handleBulkShare();
+        break;
+      case "DELETE":
+        handleBulkDelete();
         break;
       default:
         break;
@@ -729,7 +763,7 @@ const ListingTable = ({
     const allowedTableColumnsFinal = allowedTableColumns;
     if (headerLabel === "Link Share") {
       const propertyLink = "https://builderfloor.com" + generatePropertyUrl(element);
-      return <Link href={propertyLink} target="_blank">{propertyLink}</Link>;
+      return <Link href={propertyLink} target="_blank">Share</Link>;
     }
     let cellData;
     const splittedKeys = allowedTableColumnsFinal[headerLabel]?.split(".");
@@ -942,12 +976,12 @@ const ListingTable = ({
               <RiFilter2Fill className="filter_icon" />
               Filter&nbsp;Data
             </Button>
-            {showColumnFilter && (
+            {/* {showColumnFilter && (
               <Button onClick={() => setShowFilters(!showFilters)} className="filter_btn">
                 <RiFilter2Fill className="filter_icon" />
                 Filter
               </Button>
-            )}
+            )} */}
           </div>
         )}
         {selectedRows?.length > 0 && (
@@ -955,10 +989,16 @@ const ListingTable = ({
             <div className="selection_info">
               <span>{selectedRows.length} Selected</span>
             </div>
-            <Button onClick={(e) => handleSelectionOp("SHARE")} className="selection_ctrl_btn selection_share_btn">
-              <ShareRoundedIcon className="share_icon" />
-              Share
-            </Button>
+            <div className="table_selection_control_btns">
+              <Button onClick={(e) => handleSelectionOp("SHARE")} className="selection_ctrl_btn selection_share_btn">
+                <ShareRoundedIcon className="tsc_icon share_icon" />
+                Share
+              </Button>
+              <Button onClick={(e) => handleSelectionOp("DELETE")} className="selection_ctrl_btn selection_share_btn">
+                <DeleteRoundedIcon className="tsc_icon delete_icon" />
+                Delete
+              </Button>
+            </div>
           </div>
         )}
         <Table striped bordered hover responsive size="sm">

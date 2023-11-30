@@ -34,6 +34,41 @@ body {
     background: #006D77;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+.app_header_left,
+.app_header_right {
+    display: flex;
+    align-items: center;
+}
+
+.notification_comp {
+    position: relative;
+}
+
+.badge_wrapper {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 4px;
+    left: 12px;
+    border-radius: 50%;
+    background-color: rgb(255, 60, 60);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge_value {
+    font-size: 14px;
+    color: white;
+}
+
+.notif_bell_icon {
+    color: white;
+    height: 30px !important;
+    width: 30px !important;
 }
 
 .menu_icon {
@@ -375,6 +410,17 @@ User management page ***************
     margin-top: 16px;
 }
 
+.tsc_icon {
+    font-size: 18px !important;
+}
+
+.table_selection_control_btns {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 .selection_info {}
 
 .selection_ctrl_btn {
@@ -568,7 +614,8 @@ User management page ***************
     width: 100%;
 }
 
-.rowicon button, .rowicon a {
+.rowicon button,
+.rowicon a {
     flex: 1;
     font-size: x-large;
 }
@@ -1263,10 +1310,29 @@ User management page ***************
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+.table-responsive::-webkit-scrollbar {
+    height: 14px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #176269a8;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    border: none;
+    background: #2d878f;
+}
+
 .table {
     width: 100%;
-    overflow:
-        hidden;
     border-collapse: collapse;
     border-spacing: 14px;
     background-color: rgba(1, 109, 119, 0.03);
