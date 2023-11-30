@@ -512,16 +512,14 @@ const ListingTable = ({
     }
   };
 
-  const handleBulkShare = () => {
-    let formattedShareData = ``;
-    for (let i = 0; i < selectedRows.length; i++) {
-      formattedShareData += APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + '\n\n';
+  const handleShare = (shareData, e = null) => {
+    if (e) {
+      e.preventDefault();
     }
-    console.log('>>>>>>>>>>>>> FORMATTED SHARE DATA <<<<<<<<<<<<<', formattedShareData);
     if (navigator.share !== undefined) {
       navigator.share({
         title: "BuilderFloor.com",
-        text: formattedShareData
+        text: shareData
       })
         .then(() => {
           console.log('>>>>>> Share Successful <<<<<<');
@@ -533,7 +531,7 @@ const ListingTable = ({
       console.log('>>>>> NO NAVIGATOR : sharing not possible <<<<<<', window.navigator);
       if (navigator.clipboard !== undefined) {
         console.log('============= CLIPBOARD AVAILABLE ==============');
-        navigator.clipboard.writeText(formattedShareData)
+        navigator.clipboard.writeText(shareData)
           .then(() => {
             console.log('>>>>>> Copy Successful <<<<<<');
             setSnackbar({ open: true, message: 'Copied to Clipboard.', status: -1 });
@@ -546,6 +544,15 @@ const ListingTable = ({
     if (window.AndroidShareHandler) {
       window.AndroidShareHandler.share(formattedShareData);
     }
+  };
+
+  const handleBulkShare = () => {
+    let formattedShareData = ``;
+    for (let i = 0; i < selectedRows.length; i++) {
+      formattedShareData += APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + '\n\n';
+    }
+    console.log('>>>>>>>>>>>>> FORMATTED SHARE DATA <<<<<<<<<<<<<', formattedShareData);
+    handleShare(formattedShareData);
   };
 
   const handleBulkDelete = () => {
@@ -763,7 +770,7 @@ const ListingTable = ({
     const allowedTableColumnsFinal = allowedTableColumns;
     if (headerLabel === "Link Share") {
       const propertyLink = "https://builderfloor.com" + generatePropertyUrl(element);
-      return <Link href={propertyLink} target="_blank">Share</Link>;
+      return <Link href={propertyLink} onClick={(e) => handleShare(propertyLink, e)} target="_blank">Share</Link>;
     }
     let cellData;
     const splittedKeys = allowedTableColumnsFinal[headerLabel]?.split(".");
