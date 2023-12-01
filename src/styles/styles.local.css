@@ -45,13 +45,18 @@ body {
 
 .notification_comp {
     position: relative;
+    display: flex;
+}
+
+.notif_comp_wrapper {
+    padding-inline: 20px;
 }
 
 .badge_wrapper {
     width: 18px;
     height: 18px;
     position: absolute;
-    top: 4px;
+    top: 0px;
     left: 12px;
     border-radius: 50%;
     background-color: rgb(255, 60, 60);

@@ -70,5 +70,7 @@ export const API_ENDPOINTS = {
   editReachOutUserStatus: API_DOMAIN + "customers/editReachOutUserStatus",
   deleteReachOutUser: API_DOMAIN + "customers/deleteReachOutUser",
   reachOut: API_DOMAIN + "customers/reachOut",
-  getNotContactedUserCounts: API_DOMAIN + "customers/getNotContactedUserCounts"
+  getNotContactedUserCounts: API_DOMAIN + "customers/getNotContactedUserCounts",
+  getNotificationsList: API_DOMAIN + "users/getNotificationsList",
+  deleteNotification: API_DOMAIN + "users/deleteNotification"
 };

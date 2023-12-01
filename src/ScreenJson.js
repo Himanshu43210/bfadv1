@@ -32,6 +32,7 @@ import {
   GET_HOME_SCREEN_DATA,
   GET_LISTING_DATA,
   GET_MASTER_DATA_ON_HOME,
+  GET_NOTIFICATIONS_LIST,
   GET_NOT_CONTACTED_USER_COUNTS,
   GET_PROPERTY_LIST_BY_USER_ID,
   GET_PROPERTY_USER,
@@ -1892,6 +1893,88 @@ export const VIEW_LISTING = {
       ],
     },
   ],
+};
+
+export const NOTIFICATIONS_LIST = {
+  name: "Notifications",
+  pageClass: "standalone_page notifications_page",
+  className: "klk",
+  children: [
+    {
+      type: LOGIN_REFRESH,
+      name: "",
+      className: "",
+      children: [
+        {
+          type: AUTO_FETCH_API_USER,
+          user: true,
+          method: GET,
+          // GET NOTIFICATIONS LIST
+          api: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
+        },
+        {
+          type: CONTAINER,
+          // className: "superAdminDashboard",
+          children: [
+            {
+              type: PANEL_HEADER,
+              mainHeading: "WELCOME TO BUILDERFLOOR.COM",
+              panelTitles: {
+                [USER_ROLE.bfAdmin]: "SUPER ADMIN PANEL",
+                [USER_ROLE.channelPartner]: "BROKER ADMIN PANEL",
+                [USER_ROLE.salesUser]: "SUB USER PANEL",
+              },
+              classes: "formheadingcontainer",
+              mainHeaderClass: "formheadingcontainer",
+              panelTitleClass: "formheadingcontainer",
+            },
+          ],
+        },
+        {
+          type: TITLE,
+          titles: [
+            "Admin Notifications",
+            "Broker Notifications",
+            "Sub User Notifications"
+          ],
+        },
+        {
+          type: DASHBOARD_LISTING,
+          data: {},
+          desktopHeaders: {
+            Type: "type",
+            "Sub Type": "subType",
+            Details: "details",
+            status: "status",
+            
+          },
+          mobileHeaders: {
+            Type: "type",
+            "Sub Type": "subType",
+            Details: "details",
+            status: "status",
+
+          },
+          editApi: ALTER_PROPERTY_DATA,
+          deleteApi: DELETE_PROPERTY_DATA,
+          getDataApi: GET_NOTIFICATIONS_LIST,
+          endpoint: API_ENDPOINTS[GET_NOTIFICATIONS_LIST],
+          dataPoint: GET_NOTIFICATIONS_LIST,
+          showPreviewButton: false,
+          disableRowModal: true,
+          showTableControls: false,
+          allowSelect: true
+        },
+        {
+          type: ROUTE_BUTTON,
+          className: "toogle-filter",
+          label: "Back",
+          name: "Back",
+          route: "/admin",
+        },
+      ]
+    }
+  ]
 };
 
 export const SCREENS_TO_RENDER = [HOME_SCREEN];
