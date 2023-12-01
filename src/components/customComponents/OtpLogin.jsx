@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined.js';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack.js';
@@ -32,12 +32,28 @@ function comp() {
     const [snackbar, setSnackbar] = useState({});
     const [visited, setVisited] = useState(false);
     const [captchaGenerated, setCaptchaGenerated] = useState(false);
+    const initialLoad = useRef(true);
     let isMobile = false;
     const dispatch = useDispatch();
     const navigate = useRouter();
 
     const customerProfile = useSelector((state) => state.customer);
     const user = useSelector((state) => state.profile);
+
+    const handleScrollEvent = () => {
+        if (initialLoad.current && window.scrollY > 1200) {
+            handleReachOutToMe();
+        }
+        if (!initialLoad.current) {
+            handleRemoveEL();
+        }
+    };
+
+    const handleRemoveEL = () => {
+        window.removeEventListener('scroll', () => {
+            handleScrollEvent();
+        });
+    };
 
     useEffect(() => {
         if (window !== "undefined") {
@@ -49,6 +65,10 @@ function comp() {
                 const customerData = JSON.parse(customer);
                 dispatch(storeCustomerData(customerData));
             }
+        }
+        if (window.location.pathname === "/") {
+            window.addEventListener('scroll', handleScrollEvent);
+            return handleRemoveEL;
         }
     }, []);
 
@@ -70,6 +90,9 @@ function comp() {
         setFormStage(0);
         setPopupStage(0);
         setCaptchaGenerated(false);
+        if (mode === "REACHME") {
+            initialLoad.current = false;
+        }
     };
 
     const handleSignOut = () => {

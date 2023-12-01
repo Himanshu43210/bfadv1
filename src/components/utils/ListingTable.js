@@ -997,11 +997,11 @@ const ListingTable = ({
               <span>{selectedRows.length} Selected</span>
             </div>
             <div className="table_selection_control_btns">
-              <Button onClick={(e) => handleSelectionOp("SHARE")} className="selection_ctrl_btn selection_share_btn">
+              <Button onClick={(e) => handleSelectionOp("SHARE")} className="selection_ctrl_btn edit_btn selection_share_btn">
                 <ShareRoundedIcon className="tsc_icon share_icon" />
                 Share
               </Button>
-              <Button onClick={(e) => handleSelectionOp("DELETE")} className="selection_ctrl_btn selection_share_btn">
+              <Button onClick={(e) => handleSelectionOp("DELETE")} className="selection_ctrl_btn delete_btn btn-danger">
                 <DeleteRoundedIcon className="tsc_icon delete_icon" />
                 Delete
               </Button>
