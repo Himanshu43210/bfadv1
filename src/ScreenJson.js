@@ -15,6 +15,7 @@ import {
   CONTAINER,
   DASHBOARD_LISTING,
   DELETE_CUSTOMER,
+  DELETE_NOTIFICATION,
   DELETE_PROPERTY_DATA,
   DELETE_REACH_OUT_USER,
   DELETE_USER_DATA,
@@ -1907,10 +1908,8 @@ export const NOTIFICATIONS_LIST = {
       children: [
         {
           type: AUTO_FETCH_API_USER,
-          user: true,
           method: GET,
-          // GET NOTIFICATIONS LIST
-          api: API_ENDPOINTS[GET_APPROVAL_PROPERTIES],
+          api: API_ENDPOINTS[GET_NOTIFICATIONS_LIST],
         },
         {
           type: CONTAINER,
@@ -1946,7 +1945,7 @@ export const NOTIFICATIONS_LIST = {
             "Sub Type": "subType",
             Details: "details",
             status: "status",
-            
+
           },
           mobileHeaders: {
             Type: "type",
@@ -1956,7 +1955,7 @@ export const NOTIFICATIONS_LIST = {
 
           },
           editApi: ALTER_PROPERTY_DATA,
-          deleteApi: DELETE_PROPERTY_DATA,
+          deleteApi: DELETE_NOTIFICATION,
           getDataApi: GET_NOTIFICATIONS_LIST,
           endpoint: API_ENDPOINTS[GET_NOTIFICATIONS_LIST],
           dataPoint: GET_NOTIFICATIONS_LIST,
