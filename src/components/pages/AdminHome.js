@@ -37,7 +37,7 @@ export default function AdminHome() {
           <span className="curr_page">Dashboard</span>
         </div>
         <div className="app_header_right">
-          {/* <NotificationBell /> */}
+          <NotificationBell />
         </div>
       </div>
       <div
