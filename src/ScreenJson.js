@@ -85,25 +85,6 @@ export const HOME_SCREEN = {
   pageClass: "home-screen",
   children: [
     {
-      type: HEADER_COMP,
-    },
-    {
-      type: AUTO_FETCH_API,
-      api: API_ENDPOINTS[GET_HOME_SCREEN_DATA],
-      className: "header",
-      params: { sortType: "desc" }
-    },
-    {
-      type: IMAGE_BANNER,
-      name: "homeImageBanner",
-      className: "home-page-banner",
-      text: "Start Exploring Your Dream ",
-      spanText: "Builder Floor now",
-      bgImage:
-        "https://thumbs.dreamstime.com/b/mumbai-capital-india-mumbai-india-december-mumbai-financial-commercial-entertainment-capital-india-december-112388360.jpg",
-      // searchBar: true
-    },
-    {
       type: CONTAINER,
       className: "homeselect",
       children: [
@@ -161,123 +142,6 @@ export const HOME_SCREEN = {
       addQueryParam: "{title}-{id}",
       cardClickApiType: GET,
     },
-    {
-      type: HEADING,
-      name: "homeScreenBottom",
-      tag: "h2",
-      className: "home-screen-card-section-bottom",
-      text: "We are your trusted partner in finding your dream builder floor in Gurgaon",
-    },
-    { type: PAGE_FOOTER },
-    {type: SCROLL_TO_TOP},
-    { type: CHATBOT }
-  ],
-};
-
-export const ACCOUNT_TABS_SCREEN = {
-  name: "Account Tabs",
-  pageClass: "account-tabs-screen",
-  children: [
-    {
-      type: HEADER_COMP,
-    },
-    {
-      type: TABS,
-      tabs: [
-        // { label: "Recent Searches", key: "recentSearches" },
-        { label: "Viewed", key: "viewed" },
-        { label: "Contacted", key: "contacted" },
-        { label: "Recommendations", key: "recommendations" },
-      ],
-      className: "tabs_wrapper"
-    },
-    {
-      type: CONTAINER,
-      className: 'coming_soon_container',
-      children: [
-        {
-          type: HEADING,
-          tag: 'h3',
-          text: 'Coming Soon...',
-          className: 'coming_soon'
-        }
-      ]
-    },
-    {
-      type: DYNAMIC_CARD_CONTAINER,
-      loadingApi: GET_SEARCH_RESULT,
-      sliceName: "filter",
-      className: "result-searchdiv tab_data",
-      apiName: GET_SEARCH_RESULT,
-      onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
-      onClickApiMethod: POST,
-      paginationClass: "search_pagination",
-      renderComponentsInLoop: {
-        type: SEARCH_CARD,
-        className: "homeCards",
-      },
-      cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
-      cardClickNavigate: "/builderFloorDetails",
-      cardClickApiType: GET,
-      showOptions: true,
-    },
-    { type: PAGE_FOOTER },
-    {type: SCROLL_TO_TOP},
-    { type: CHATBOT }
-  ]
-};
-
-export const CARD_DETAILS_SCREEN = {
-  name: "Card Detail Screen",
-  pageClass: "property_page detail-screen",
-  children: [
-    {
-      type: HEADER_COMP,
-    },
-    {
-      type: AUTO_FETCH_API,
-      api: API_ENDPOINTS[GET_SIMILAR_PROPERTY_DATA],
-      className: "header",
-    },
-    {
-      type: DETAILED_VIEW,
-      name: "detailedViewImage",
-      loadingApi: GET_CARD_DATA,
-      className: "property_images_container",
-      apiSliceName: GET_CARD_DATA,
-      whatsappText: `Hi! I saw a property {link} on BuilderFloor.com and I am interested in it. Is it available?`,
-      icons: {
-        sectorNumber: "/icons/location.png",
-        size: "/icons/area.png",
-        accommodation: "/icons/home.png",
-        floor: "/icons/stairs.png",
-        facing: "/icons/compass.png",
-        possession: "/icons/check.png",
-        parkFacing: "/icons/park.png",
-        corner: "/icons/right.png",
-      },
-    },
-    { type: HORIZONTAL_LINE, className: "property_details_divider" },
-    {
-      type: HEADING,
-      className: "explore_similar_options_heading",
-      text: "Explore similar options to match your choice"
-    },
-    {
-      type: DYNAMIC_CARD_CONTAINER,
-      loadingApi: GET_SIMILAR_PROPERTY_DATA,
-      className: "default-home-cards similar_options_list",
-      apiName: GET_SIMILAR_PROPERTY_DATA,
-      renderComponentsInLoop: { type: HOME_CARD, className: "homeCards" },
-      defaultLimit: 4,
-      cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
-      cardClickNavigate: "/builderFloorDetails",
-      addQueryParam: "{title}-{id}",
-      cardClickApiType: GET,
-    },
-    { type: PAGE_FOOTER },
-    {type: SCROLL_TO_TOP},
-    { type: CHATBOT }
   ],
 };
 
@@ -551,7 +415,7 @@ export const SEARCH_RESULT = {
           cardClickApiType: GET,
         },
         { type: PAGE_FOOTER },
-        {type: SCROLL_TO_TOP},
+        { type: SCROLL_TO_TOP },
         { type: CHATBOT }
       ],
     },
@@ -1694,13 +1558,6 @@ export const NOTIFICATIONS_LIST = {
       ]
     }
   ]
-};
-
-export const SCREENS_TO_RENDER = [HOME_SCREEN];
-
-export const REDIRECTION = {
-  [HOME_SCREEN]: "/",
-  [SEARCH_RESULT]: "/searchResult",
 };
 
 export const ExpetedHeader = {

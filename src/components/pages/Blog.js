@@ -61,7 +61,7 @@ function Blog() {
                                 text: "Advantages Of Purchasing A Builder Floor:"
                             }} />
                         </div>
-                        <div className={`component_wrapper ${''}`}>
+                        <div className={`component_wrapper`}>
                             <List component={{
                                 subtype: "ul",
                                 children: [
@@ -99,13 +99,13 @@ function Blog() {
                     </div>
                 </div>
             </div>
-            <div className={`component_wrapper ${''}`}>
+            <div className={`component_wrapper`}>
                 <Footer />
             </div>
-            <div className={`component_wrapper ${''}`}>
+            <div className={`component_wrapper`}>
                 <ScrollToTop />
             </div>
-            <div className={`component_wrapper ${''}`}>
+            <div className={`component_wrapper`}>
                 <Chatbot />
             </div>
         </div>
