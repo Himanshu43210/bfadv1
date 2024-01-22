@@ -49,6 +49,7 @@ export const ROUTE_BUTTON = "ROUTE_BUTTON";
 export const LABEL_MAP = "LABEL_MAP";
 export const PAGE_HEADER = "PAGE_HEADER";
 export const OTP_LOGIN = "OTP_LOGIN";
+export const HEADER_COMP = "HEADER_COMP";
 export const HORIZONTAL_LINE = "HORIZONTAL_LINE";
 export const SPAN_TEXT = "SPAN_TEXT";
 export const PANEL_HEADER = "PANEL_HEADER";

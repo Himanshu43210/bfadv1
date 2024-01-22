@@ -1,7 +1,8 @@
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { AiOutlineArrowUp } from "react-icons/ai/index.js";
-import { useLocation } from "react-router-dom";const ScrollToTop = () => {
+
+const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { pathname } = usePathname();
 
@@ -27,7 +28,7 @@ import { useLocation } from "react-router-dom";const ScrollToTop = () => {
   }, []);
 
   useEffect(() => {
-    window.scrollTo({top: 0, left: 0, behavior: "smooth"});
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [pathname]);
 
   return (

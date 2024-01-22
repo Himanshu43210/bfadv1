@@ -43,6 +43,7 @@ import {
   GET_UNAPPROVED_AGENTS_DATA,
   GET_UNAPPROVED_BROKER_COUNTS,
   HAMBURGER_MENU,
+  HEADER_COMP,
   HEADING,
   HOME_CARD,
   HORIZONTAL_LINE,
@@ -73,95 +74,19 @@ import {
 } from "./components/utils/Const.js";
 import { API_ENDPOINTS } from "./redux/utils/api.js";
 
-const MENU_ITEMS = [
-  {
-    name: "Home",
-    path: "/",
-    icon: "HOME",
-  },
-  {
-    name: "Dashboard",
-    path: "/admin",
-    icon: "DASHBOARD",
-  },
-  {
-    name: "About Us",
-    path: "/about_us",
-    icon: "ORG",
-  },
-  {
-    name: "Contact Us",
-    path: "/about_us#contact_us",
-    icon: "CONTACT",
-  },
-  {
-    name: "Our Blog",
-    path: "/blog",
-    icon: "DOC",
-  }
-];
-
 export const USER_ROLE = {
   bfAdmin: "BuilderFloorAdmin",
   channelPartner: "ChannelPartner",
   salesUser: "SalesUser",
 };
 
-const FOOTER = {
-  type: PAGE_FOOTER,
-  className: "default-home-footer-div",
-  HomeLinks: {
-    icon: "/BUILDER.png",
-    url: "/",
-  },
-  social_media: [
-    {
-      name: INSTAGRAM_ICON,
-      url: "https://www.instagram.com/",
-    },
-    {
-      name: LINKEDIN_ICON,
-      url: "https://www.linkedin.com/",
-    },
-  ],
-  copyright: "© Builder Floor Official 2022",
-};
-
-const HEADER = {
-  type: CONTAINER,
-  className: "homeHeader",
-  children: [
-    {
-      type: HAMBURGER_MENU,
-      items: MENU_ITEMS,
-      className: "menu_comp",
-      text: "Menu"
-    },
-    {
-      type: PAGE_HEADER,
-      url: "/",
-      image: "/BUILDER.png",
-      title: "BuilderFloor.com",
-      titleMobile: "BuilderFloor",
-      className: "page_header_comp",
-    },
-    {
-      type: OTP_LOGIN,
-      className: "ol_comp_wrapper",
-    }
-  ],
-};
-
-const SCROLLTOP = {
-  type: SCROLL_TO_TOP,
-  name: "ScrollToTop",
-};
-
 export const HOME_SCREEN = {
   name: "Home Screen",
   pageClass: "home-screen",
   children: [
-    HEADER,
+    {
+      type: HEADER_COMP,
+    },
     {
       type: AUTO_FETCH_API,
       api: API_ENDPOINTS[GET_HOME_SCREEN_DATA],
@@ -243,8 +168,8 @@ export const HOME_SCREEN = {
       className: "home-screen-card-section-bottom",
       text: "We are your trusted partner in finding your dream builder floor in Gurgaon",
     },
-    FOOTER,
-    SCROLLTOP,
+    { type: PAGE_FOOTER },
+    {type: SCROLL_TO_TOP},
     { type: CHATBOT }
   ],
 };
@@ -253,7 +178,9 @@ export const ACCOUNT_TABS_SCREEN = {
   name: "Account Tabs",
   pageClass: "account-tabs-screen",
   children: [
-    HEADER,
+    {
+      type: HEADER_COMP,
+    },
     {
       type: TABS,
       tabs: [
@@ -294,8 +221,8 @@ export const ACCOUNT_TABS_SCREEN = {
       cardClickApiType: GET,
       showOptions: true,
     },
-    FOOTER,
-    SCROLLTOP,
+    { type: PAGE_FOOTER },
+    {type: SCROLL_TO_TOP},
     { type: CHATBOT }
   ]
 };
@@ -304,7 +231,9 @@ export const CARD_DETAILS_SCREEN = {
   name: "Card Detail Screen",
   pageClass: "property_page detail-screen",
   children: [
-    HEADER,
+    {
+      type: HEADER_COMP,
+    },
     {
       type: AUTO_FETCH_API,
       api: API_ENDPOINTS[GET_SIMILAR_PROPERTY_DATA],
@@ -346,8 +275,8 @@ export const CARD_DETAILS_SCREEN = {
       addQueryParam: "{title}-{id}",
       cardClickApiType: GET,
     },
-    FOOTER,
-    SCROLLTOP,
+    { type: PAGE_FOOTER },
+    {type: SCROLL_TO_TOP},
     { type: CHATBOT }
   ],
 };
@@ -357,7 +286,9 @@ export const SEARCH_RESULT = {
   pageClass: "search-result-screen",
   className: "klk",
   children: [
-    HEADER,
+    {
+      type: HEADER_COMP,
+    },
     {
       type: CONTAINER,
       className: "actioncontainer",
@@ -619,224 +550,13 @@ export const SEARCH_RESULT = {
           cardClickNavigate: "/builderFloorDetails",
           cardClickApiType: GET,
         },
-        FOOTER,
-        SCROLLTOP,
+        { type: PAGE_FOOTER },
+        {type: SCROLL_TO_TOP},
         { type: CHATBOT }
       ],
     },
 
   ],
-};
-
-export const ABOUTUS_SCREEN = {
-  name: "About Us",
-  pageClass: "aboutus-screen",
-  className: "about_us",
-  children: [
-    HEADER,
-    {
-      type: CONTAINER,
-      className: "about_us_container",
-      children: [
-        { type: "ABOUT_HERO" },
-        {
-          type: CONTAINER,
-          className: "aboutus_section",
-          children: [
-            {
-              type: CONTAINER,
-              className: "about_content",
-              children: [
-                {
-                  type: HEADING,
-                  tag: "h1",
-                  className: "section_title aboutus_title",
-                  text: "About Us?"
-                },
-                {
-                  type: HEADING,
-                  tag: "p",
-                  className: "blog_para",
-                  text: "At BuilderFloor.com, we are dedicated to helping you find your dream builder floor in the vibrant city of Gurgaon. We understand that finding the perfect builder floor is an important and exciting journey, and we are here to make that process seamless and enjoyable for you."
-                },
-                {
-                  type: HEADING,
-                  tag: "p",
-                  className: "blog_para",
-                  text: "Our platform exclusively focuses on new builder floors in Gurgaon, offering a wide range of options at all price points and locations. Whether you're a first-time buyer, a growing family, or an investor looking for a lucrative opportunity, we have the right builder floor to meet your unique requirements."
-                },
-                {
-                  type: HEADING,
-                  tag: "p",
-                  className: "blog_para",
-                  text: "We know and very well understand that finding and selecting a Builder Floor for one self is really a tough job. It is our endeavour to help you find the best match for you within your budget and also according to your taste & requirement. We have brought the world of builder floors at your door steps with the help of our verified channel partners."
-                },
-                {
-                  type: HEADING,
-                  tag: "h1",
-                  className: "section_title aboutus_title",
-                  text: "Why Choose BuilderFloor.Com?"
-                },
-                {
-                  type: LIST,
-                  subtype: "ul",
-                  children: [
-                    {
-                      heading: "Extensive Selection:",
-                      text: "Our comprehensive database showcases a diverse collection of new builder floors in Gurgaon. From affordable options to luxury residences, we have something to suit every taste and budget.",
-                    },
-                    {
-                      heading: "Trusted Channel Partners:",
-                      text: "We collaborate with reputed Channel Partners who in turn contact different builders and developers in Gurgaon with a proven track record of delivering quality constructions and enlist the best builder floors on our platform which meet the highest standards of craftsmanship and design.",
-                    },
-                    {
-                      heading: "Location Expertise:",
-                      text: "Gurgaon is a dynamic city with numerous neighborhoods and localities, each with its own charm and amenities. Our channel partners are a team of real estate professionals, who have in-depth knowledge of the Gurgaon market and can guide you towards the ideal location that aligns with your lifestyle and preferences.",
-                    },
-                    {
-                      heading: "Personalized Assistance:",
-                      text: "Our channel partners will provide a personalized experience to every customer. They, as a team, are dedicatedly ready to assist you throughout your home-buying journey, offering expert advice, answering your queries, and facilitating smooth transactions.",
-                    },
-                    {
-                      heading: "Transparent Information:",
-                      text: "We understand the importance of transparency in the real estate industry. On BuilderFloor.com, you will find detailed information, including floor plans, specifications, amenities, and pricing, empowering you to make informed decisions.",
-                    },
-                  ]
-                },
-                {
-                  type: HEADING,
-                  tag: "p",
-                  className: "blog_para",
-                  text: "At BuilderFloor.com, our mission is to simplify your search for the perfect builder floor and help you embark on a new chapter of your life. We are passionate about real estate and committed to exceeding your expectations."
-                },
-                {
-                  type: HEADING,
-                  tag: "p",
-                  className: "blog_para",
-                  text: "Start exploring our listings today and let us be your trusted partner in finding your dream builder floor in Gurgaon."
-                },
-              ]
-            },
-          ],
-        },
-        { type: "CONTACT_US" }
-      ],
-    },
-    FOOTER,
-    SCROLLTOP,
-    { type: CHATBOT }
-  ]
-};
-
-export const BLOG_SCREEN = {
-  name: "Out Blog",
-  pageClass: "blog-screen",
-  className: "our_blog",
-  children: [
-    HEADER,
-    {
-      type: CONTAINER,
-      className: "our_blog_container",
-      children: [
-        {
-          type: CONTAINER,
-          className: "page_content_container",
-          children: [
-            {
-              type: HEADING,
-              className: "page_title",
-              text: "Our Blog",
-            },
-            {
-              type: CONTAINER,
-              className: "blog_container",
-              children: [
-                {
-                  type: HEADING,
-                  tag: "h1",
-                  className: "section_title",
-                  text: "The Perfect Builder Floor Is An Important And Exciting Journey"
-                },
-                {
-                  type: HEADING,
-                  tag: "p",
-                  className: "blog_para",
-                  text: "A builder floor refers to an independent residential unit or apartment that is typically constructed by a builder or developer on a single plot of land. In simple terms, it is a low-rise building that consists of multiple floors, with each floor being a separate dwelling unit."
-                },
-                {
-                  type: HEADING,
-                  tag: "p",
-                  className: "blog_para",
-                  text: "Builder Floors are commonly found in urban areas, particularly in cities and towns where land availability is limited. They are often built as a part of a larger housing project or as standalone structures. Each floor of a Builder Floor usually has its own separate entrance, and the building usually has an elevator."
-                },
-                {
-                  type: HEADING,
-                  tag: "p",
-                  className: "blog_para",
-                  text: "These residential units are designed to provide more privacy and independence compared to traditional apartment buildings or multi-story complexes. Each floor is typically owned by a different individual or family, and they may have control over the design and layout of their respective units. Builder floors can vary in size and configuration, ranging from small apartments to spacious duplexes or triplexes."
-                },
-                {
-                  type: HEADING,
-                  tag: "p",
-                  className: "blog_para",
-                  text: `It's important to note that the term "Builder Floor" may have different regional interpretations and can vary in its exact meaning and characteristics depending on the specific location.`
-                },
-                {
-                  type: HEADING,
-                  tag: "h1",
-                  className: "section_title",
-                  text: "Advantages Of Purchasing A Builder Floor:"
-                },
-                {
-                  type: LIST,
-                  subtype: "ul",
-                  children: [
-                    {
-                      heading: "Privacy:",
-                      text: "Each floor is a separate unit, providing more privacy and fewer shared common areas compared to high-rise apartment buildings.",
-                    },
-                    {
-                      heading: "Customization:",
-                      text: "Owners have more flexibility in customizing their living spaces according to their preferences and needs.",
-                    },
-                    {
-                      heading: "Lower Density:",
-                      text: "As builder floors are usually low-rise buildings, the number of units per floor is typically lower, resulting in a lower population density and potentially a quieter living environment.",
-                    },
-                    {
-                      heading: "Exclusivity:",
-                      text: "Builder floors often cater to a niche market and can be associated with a certain level of exclusivity or premium status.",
-                    },
-                    {
-                      heading: "Lower Maintenance Charges:",
-                      text: "Builder Floor has lower maintenance charges as compared to high rise Apartment. You have to pay even for those services which you never use.",
-                    },
-                    {
-                      heading: "Unbeatable Edge:",
-                      text: "Builder floor owner also gets proportionate land share rights of the plot underneath. Since the prices of land increase considerably over a passage of time, the owner of builder floor gets benefit of the same indirectly.",
-                    },
-                    {
-                      heading: "Peace Of Mind:",
-                      text: "Builder floor owner feels much safer in the event of earthquake or fire.",
-                    },
-                  ]
-                },
-                {
-                  type: NAVIGATE_BUTTON,
-                  btnClass: "home_navigate_btn",
-                  navigate: "/",
-                  buttonLabel: "Start exploring your dream builder floor now...",
-                }
-              ]
-            },
-          ],
-        },
-      ],
-    },
-    FOOTER,
-    SCROLLTOP,
-    { type: CHATBOT }
-  ]
 };
 
 export const MANAGE_USER = {

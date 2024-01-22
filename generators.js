@@ -133,9 +133,7 @@ export const routeGenerator = () => {
         import React from "react";
         import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
         import { 
-            ABOUTUS_SCREEN, 
             ACCOUNT_TABS_SCREEN, 
-            BLOG_SCREEN, 
             CARD_DETAILS_SCREEN, 
             HOME_SCREEN, 
             SEARCH_RESULT, 
