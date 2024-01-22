@@ -1,5 +1,4 @@
 import {
-    HOME_SCREEN,
     SEARCH_RESULT,
     AD_MASTER_TABLE,
     MANAGE_USER,
@@ -42,7 +41,6 @@ export const OTHER_PAGES = {
 
 
 export const SCREEN_MAPPINGS = {
-    HOME_SCREEN: { data: HOME_SCREEN },
     SEARCH_RESULT: { data: SEARCH_RESULT },
     MANAGE_USER: { data: MANAGE_USER },
     APPROVAL_PROPERTIES: { data: APPROVAL_PROPERTIES },
