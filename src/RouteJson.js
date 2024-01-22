@@ -1,5 +1,4 @@
 import {
-    SEARCH_RESULT,
     AD_MASTER_TABLE,
     MANAGE_USER,
     STATS_LIST,
@@ -41,7 +40,6 @@ export const OTHER_PAGES = {
 
 
 export const SCREEN_MAPPINGS = {
-    SEARCH_RESULT: { data: SEARCH_RESULT },
     MANAGE_USER: { data: MANAGE_USER },
     APPROVAL_PROPERTIES: { data: APPROVAL_PROPERTIES },
     AD_MASTER_TABLE: { data: AD_MASTER_TABLE },
