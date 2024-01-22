@@ -4,7 +4,7 @@ import { Card } from "react-bootstrap";
 import RenderComponent from "../customComponents/ComponentRenderer.jsx";
 import HeaderComp from "../newComponents/HeaderComp.jsx";
 import AutoFetchApi from "../customComponents/AutoFetchApi.jsx";
-import { GET, GET_HOME_SCREEN_DATA } from "../utils/Const.js";
+import { API_BUTTON, CONTAINER, DYNAMIC_CARD_CONTAINER, GET, GET_CARD_DATA, GET_HOME_SCREEN_DATA, GET_SEARCH_RESULT, HEADING, HOME_CARD, POST, SELECT, SLIDER } from "../utils/Const.js";
 import { API_ENDPOINTS } from "@/redux/utils/api.js";
 import Footer from "../customComponents/Footer.jsx";
 import ScrollToTop from "../customComponents/ScrollToTop.jsx";
