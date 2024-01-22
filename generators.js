@@ -133,7 +133,6 @@ export const routeGenerator = () => {
         import React from "react";
         import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
         import { 
-            SEARCH_RESULT, 
             AD_MASTER_TABLE, 
             APPROVAL_PROPERTIES, 
             MANAGE_USER, 
