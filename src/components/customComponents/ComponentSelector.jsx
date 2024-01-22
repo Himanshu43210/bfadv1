@@ -38,6 +38,7 @@ import {
   LIST,
   ABOUT_HERO,
   CONTACT_US,
+  HEADER_COMP,
 } from "../utils/Const.js";
 import Banner from "./Banner.jsx";
 import Footer from "./Footer.jsx";
@@ -79,6 +80,7 @@ import ContactForm from "./ContactForm.jsx";
 import Line from "./Line.jsx";
 import Title from "./Title.jsx";
 import dynamic from 'next/dynamic';
+import HeaderComp from "../newComponents/HeaderComp.jsx";
 
 
 const comp = ({ component }) => {
@@ -90,16 +92,6 @@ const comp = ({ component }) => {
   );
   const userProfile = useSelector((state) => state.profile);
   const [refresh, setRefresh] = useState(true);
-
-  function hasValueProperty(input) {
-    // Check if the input is an object
-    if (typeof input === "object" && input !== null) {
-      // Check if the object has a property named "value"
-      return "value" in input;
-    } else {
-      return false;
-    }
-  }
 
   const getData = (payload) => {
     console.log('++++++++++ payload : get data ++++++++++', payload, component.paginatioName || component.name);
@@ -277,6 +269,7 @@ const comp = ({ component }) => {
       {component.type === PAGE_FOOTER && <Footer component={component} />}
       {component.type === PAGE_HEADER && <Header component={component} isMobile={isMobile} />}
       {component.type === OTP_LOGIN && <OtpLogin />}
+      {component.type === HEADER_COMP && <HeaderComp />}
       {component.type === HAMBURGER_MENU && (
         <MenuState component={component} />
       )}
