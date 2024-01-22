@@ -141,7 +141,6 @@ const comp = ({ component }) => {
   };
 
   const handleValueChange = (value) => {
-    console.log('--------------- HANDLE VALUE CHANGE -------------', component.paginatioName || component.name, value, sliceData);
     if ((component.paginatioName || component.name) === "Reset") {
       // reset filters
       dispatch(resetFilterData({

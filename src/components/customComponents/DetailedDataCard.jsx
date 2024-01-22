@@ -9,7 +9,6 @@ import { API_ENDPOINTS } from "../../redux/utils/api.js";
 import { convertToCr, formatData } from "../utils/HelperMethods.js";
 import IframeBuilder from "./IframeBuilder.jsx";
 import { FaShareAlt, FaRegHeart } from "react-icons/fa";
-import { CARD_DETAILS_SCREEN } from "../../ScreenJson.js";
 import * as _ from "lodash";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos.js';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos.js';
@@ -21,6 +20,7 @@ import FullscreenIcon from '@mui/icons-material/Fullscreen.js';
 import { Helmet } from "react-helmet";
 import { Typography } from "@mui/material";
 import dynamic from "next/dynamic.js";
+import { CARD_DETAILS_SCREEN } from "../pages/DetailedView.js";
 
 function page({
   component,

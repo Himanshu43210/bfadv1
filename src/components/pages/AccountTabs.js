@@ -1,17 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from "react-bootstrap";
-import { ACCOUNT_TABS_SCREEN } from '../../ScreenJson.js';
 import ComponentSelector from '../customComponents/ComponentSelector.jsx';
 import Tabbar from '../customComponents/Tabbar.jsx';
 import { API_ENDPOINTS } from '../../redux/utils/api.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { callApi } from '../../redux/utils/apiActions.js';
-import { GET, POST } from '../utils/Const.js';
+import { CHATBOT, CONTAINER, DYNAMIC_CARD_CONTAINER, GET, GET_CARD_DATA, GET_SEARCH_RESULT, HEADER_COMP, HEADING, PAGE_FOOTER, POST, SCROLL_TO_TOP, SEARCH_CARD, TABS } from '../utils/Const.js';
 import SearchCard from '../customComponents/SearchCard.jsx';
 import BasicPagination from "../customComponents/Pagination.jsx";
 import { CircularProgress } from '@mui/material';
 import { usePathname } from 'next/navigation.js';
 import { useRouter } from 'next/router.js';
+import Footer from '../customComponents/Footer.jsx';
+import ScrollToTop from '../customComponents/ScrollToTop.jsx';
+import Chatbot from '../customComponents/Chatbot.jsx';
+import HeaderComp from '../newComponents/HeaderComp.jsx';
+
+// export const ACCOUNT_TABS_SCREEN = {
+//     name: "Account Tabs",
+//     pageClass: "account-tabs-screen",
+//     children: [
+//         {
+//             type: CONTAINER,
+//             className: 'coming_soon_container',
+//             children: [
+//                 {
+//                     type: HEADING,
+//                     tag: 'h3',
+//                     text: 'Coming Soon...',
+//                     className: 'coming_soon'
+//                 }
+//             ]
+//         },
+//         {
+//             type: DYNAMIC_CARD_CONTAINER,
+//             loadingApi: GET_SEARCH_RESULT,
+//             sliceName: "filter",
+//             className: "result-searchdiv tab_data",
+//             apiName: GET_SEARCH_RESULT,
+//             onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
+//             onClickApiMethod: POST,
+//             paginationClass: "search_pagination",
+//             renderComponentsInLoop: {
+//                 type: SEARCH_CARD,
+//                 className: "homeCards",
+//             },
+//             cardClickApi: API_ENDPOINTS[GET_CARD_DATA],
+//             cardClickNavigate: "/builderFloorDetails",
+//             cardClickApiType: GET,
+//             showOptions: true,
+//         },
+//     ]
+// };
 
 function AccountTabs() {
     const location = usePathname();
@@ -24,7 +64,7 @@ function AccountTabs() {
     };
     const [currTab, setCurrTab] = useState(revMappings[tab]);
     const [loading, setLoading] = useState(false);
-    const component = ACCOUNT_TABS_SCREEN;
+    const component = {};
     const [tabData, setTabData] = useState([]);
     const [tabMetaData, setTabMetaData] = useState({
         currPage: 0,
@@ -33,7 +73,6 @@ function AccountTabs() {
     });
     const dispatch = useDispatch();
     const customerProfile = useSelector((state) => state.customer);
-    console.log('>>>>>>>>>>>>>>> CUSTOMER PROFILE <<<<<<<<<<<<<<<<', customerProfile);
 
     const fetchData = (page = 0) => {
         if (customerProfile && customerProfile._id) {
@@ -53,7 +92,6 @@ function AccountTabs() {
                 default:
                     break;
             }
-            console.log('++++++++++++++++++++ urlToFetch +++++++++++++++++++++++', urlToFetch, tab);
             const options = {
                 url: urlToFetch,
                 method: GET,
@@ -66,7 +104,6 @@ function AccountTabs() {
             };
             dispatch(callApi(options))
                 .then((res) => {
-                    console.log('********** tab data api res **********', tabData, res);
                     setTabData(res?.payload?.data);
                     setTabMetaData({
                         currPage: res.payload?.pageNumber,
@@ -74,7 +111,6 @@ function AccountTabs() {
                         totalItems: res.payload?.totalItems
                     });
                 }).catch((error) => {
-                    console.log('------------- ERROR: tab data fetch ------------', error);
                 }).finally(() => {
                     setLoading(false);
                 });
@@ -84,13 +120,11 @@ function AccountTabs() {
     };
 
     const handlePageChange = (page) => {
-        console.log('++++++++++++++ handlePageChange ++++++++++++++', page);
         window.scrollTo({ behavior: "smooth", top: 0, left: 0 });
         fetchData(page);
     };
 
     const handleOptionChange = (propertyId, value) => {
-        console.log('+++++++++++++ RECOMMENDATION FEEDBACK ++++++++++++', propertyId, value);
         const options = {
             url: API_ENDPOINTS["addPropertyRecommended"],
             method: POST,
@@ -103,7 +137,6 @@ function AccountTabs() {
         };
         dispatch(callApi(options))
             .then((res) => {
-                console.log('********** recommendation feedback res **********', tabData, res);
                 // setTabData(res?.payload?.data);
                 // setTabMetaData({
                 //     currPage: res.payload?.pageNumber,
@@ -111,7 +144,6 @@ function AccountTabs() {
                 //     totalItems: res.payload?.totalItems
                 // });
             }).catch((error) => {
-                console.log('---------- recommendation feedback error --------', error);
             }).finally(() => {
                 setLoading(false);
             });
@@ -127,23 +159,27 @@ function AccountTabs() {
     };
 
     useEffect(() => {
-        console.log('+++++++++++ HANDLE PAGE CHANGE ++++++++++++');
         resetData();
         fetchData();
         const ct = revMappings[tab];
-        console.log('------------- HANDLE PAGE CHANGE CT ------------', tab, ct);
         setCurrTab(ct);
     }, [location, tab, customerProfile]);
 
     return (
         <Card className="account-tabs-screen">
-            <div className={`component_wrapper ${component?.className}`} key={component.name} id={component.id}>
-                <div className={`component_wrapper ${component?.children[0]?.className}`}>
-                    <ComponentSelector component={component.children[0]} />
-                </div>
+            <div className={`component_wrapper ${component?.className}`} key={component?.name}>
+                <HeaderComp />
                 <div className='comp_tabs_wrapper'>
-                    <div className={`component_wrapper ${component?.children[1]?.className}`}>
-                        <Tabbar component={component.children[1]} currTab={currTab} doNavigate={true} urlTemp='/account/tabs?tab={TAB}' />
+                    <div className={`component_wrapper ${'tabs_wrapper'}`}>
+                        <Tabbar component={{
+                            tabs: [
+                                // { label: "Recent Searches", key: "recentSearches" },
+                                { label: "Viewed", key: "viewed" },
+                                { label: "Contacted", key: "contacted" },
+                                { label: "Recommendations", key: "recommendations" },
+                            ],
+                            className: "tabs_wrapper"
+                        }} currTab={currTab} doNavigate={true} urlTemp='/account/tabs?tab={TAB}' />
                     </div>
                 </div>
                 <div className={`component_wrapper result-searchdiv tab_data`}>
@@ -176,14 +212,14 @@ function AccountTabs() {
                         />
                     )}
                 </div>
-                <div className={`component_wrapper ${component?.children[4]?.className}`}>
-                    <ComponentSelector component={component.children[4]} />
+                <div className={`component_wrapper`}>
+                    <Footer />
                 </div>
-                <div className={`component_wrapper ${component?.children[5]?.className}`}>
-                    <ComponentSelector component={component.children[5]} />
+                <div className={`component_wrapper`}>
+                    <ScrollToTop />
                 </div>
-                <div className={`component_wrapper ${component?.children[6]?.className}`}>
-                    <ComponentSelector component={component.children[6]} />
+                <div className={`component_wrapper`}>
+                    <Chatbot />
                 </div>
                 {loading === true && (<CircularProgress className="loader-class" />)}
             </div>

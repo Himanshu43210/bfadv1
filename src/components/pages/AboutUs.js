@@ -13,7 +13,7 @@ function AboutUs() {
         <div className='aboutus-screen'>
             <HeaderComp />
             <div className={`component_wrapper ${'about_us_container'}`}>
-                <div className={`component_wrapper ${''}`}>
+                <div className={`component_wrapper`}>
                     <AboutHero />
                 </div>
                 <div className={`component_wrapper ${'aboutus_section'}`}>
@@ -53,7 +53,7 @@ function AboutUs() {
                                 text: "Why Choose BuilderFloor.Com?"
                             }} />
                         </div>
-                        <div className={`component_wrapper ${''}`}>
+                        <div className={`component_wrapper`}>
                             <List component={{
                                 subtype: "ul",
                                 children: [
@@ -96,17 +96,17 @@ function AboutUs() {
                         </div>
                     </div>
                 </div>
-                <div className={`component_wrapper ${''}`}>
+                <div className={`component_wrapper`}>
                     <ContactForm />
                 </div>
             </div>
-            <div className={`component_wrapper ${''}`}>
+            <div className={`component_wrapper`}>
                 <Footer />
             </div>
-            <div className={`component_wrapper ${''}`}>
+            <div className={`component_wrapper`}>
                 <ScrollToTop />
             </div>
-            <div className={`component_wrapper ${''}`}>
+            <div className={`component_wrapper`}>
                 <Chatbot />
             </div>
         </div>
