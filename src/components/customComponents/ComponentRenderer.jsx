@@ -11,5 +11,5 @@ export default function RenderComponent({ jsonToRender }) {
       );
     });
   };
-  return renderComponent(jsonToRender.children);
+  return renderComponent(jsonToRender?.children);
 }

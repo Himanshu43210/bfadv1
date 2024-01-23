@@ -132,13 +132,6 @@ export const routeGenerator = () => {
     const staticImports = `
         import React from "react";
         import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-        import { 
-            AD_MASTER_TABLE, 
-            APPROVAL_PROPERTIES, 
-            MANAGE_USER, 
-            STATS_LIST, 
-            VIEW_LISTING,
-        } from "./ScreenJson.js";
     `;
     const appFunc = `
         function App() {
