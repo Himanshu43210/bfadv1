@@ -9,7 +9,7 @@ import { storeParentData } from "../../redux/slice/parentSlice.js";
 import RenderComponent from "./ComponentRenderer.jsx";
 import { useRouter } from "next/navigation.js";
 
-const LoginRefresh = ({ component }) => {
+const LoginRefresh = ({ component, children }) => {
   const navigate = useRouter();
   const loginStatus = useSelector((state) =>
     selectApiStatus(state, ADMIN_DASHBOARD_LOGIN)
@@ -54,7 +54,7 @@ const LoginRefresh = ({ component }) => {
       setCheck(true);
     }
   }, [loginStatus, userProfile]);
-  return <>{check && <RenderComponent jsonToRender={component} />}</>;
+  return <>{check && (component ? <RenderComponent jsonToRender={component} /> : children)}</>;
 };
 
 export default LoginRefresh;

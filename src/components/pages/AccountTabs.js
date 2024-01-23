@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from "react-bootstrap";
-import ComponentSelector from '../customComponents/ComponentSelector.jsx';
 import Tabbar from '../customComponents/Tabbar.jsx';
 import { API_ENDPOINTS } from '../../redux/utils/api.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { callApi } from '../../redux/utils/apiActions.js';
-import { CHATBOT, CONTAINER, DYNAMIC_CARD_CONTAINER, GET, GET_CARD_DATA, GET_SEARCH_RESULT, HEADER_COMP, HEADING, PAGE_FOOTER, POST, SCROLL_TO_TOP, SEARCH_CARD, TABS } from '../utils/Const.js';
+import { GET, POST } from '../utils/Const.js';
 import SearchCard from '../customComponents/SearchCard.jsx';
 import BasicPagination from "../customComponents/Pagination.jsx";
 import { CircularProgress } from '@mui/material';

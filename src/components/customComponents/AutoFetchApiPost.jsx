@@ -7,17 +7,17 @@ export default function AutoFetchApiPost({
   headers = null,
   children,
 }) {
-  const data = component.data || null;
+  const data = component?.data || null;
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.profile);
 
-  let uurl = component.api;
-  if (component.user) {
+  let uurl = component?.api;
+  if (component?.user) {
     uurl =
-      component.api +
-      (component.userId ? "?userId=" : "?id=") +
-      userProfile._id +
-      (userProfile.role ? "&role=" + userProfile.role : "");
+      component?.api +
+      (component?.userId ? "?userId=" : "?id=") +
+      userProfile?._id +
+      (userProfile?.role ? "&role=" + userProfile?.role : "");
   }
 
   const doFetch = useCallback(() => {
