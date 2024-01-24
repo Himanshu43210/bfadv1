@@ -39,6 +39,9 @@ import { generatePropertyUrl } from "./propertyUtils.js";
 import Link from "next/link.js";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 const ListingTable = ({
   headersDesktop = [],
@@ -91,7 +94,7 @@ const ListingTable = ({
   const [sortType, setSortType] = useState("desc");
   const [sortColumn, setSortColumn] = useState("updatedAt");
   const [tableData, setTableData] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
   const [tableFilter, setTableFilter] = useState({});
   const [showLoader, setShowLoader] = useState(false);
   const [showImgEditModal, setShowImgEditModal] = useState(false);
@@ -99,6 +102,11 @@ const ListingTable = ({
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [filterItems, setFilterItems] = useState("");
+  // const uniqueNamesSet = new Set(arrayOfObjects.map((obj) => obj.name));
+  const handleFilterChange = (e) => {
+    setFilterItems(e.target.value);
+  };
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   let isMobile = false; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -904,6 +912,10 @@ const ListingTable = ({
     }
     return cellData;
   };
+  console.log("raju", tableData);
+  const keys = tableData.map((obj) => Object.keys(obj));
+  console.log("ari", keys);
+  const uniqueNamesSet = [...new Set(tableData.map((obj) => obj.fieldLabel))];
 
   return (
     <>
@@ -1170,27 +1182,41 @@ const ListingTable = ({
               {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                 <th key={index} className="tablehead text">
                   <div
-                    onClick={() => handleSort(allowedTableColumns[headerLabel])}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                   >
-                    {showFilters ? "" : headerLabel}
+                    {" "}
+                    <div
+                      onClick={() =>
+                        handleSort(allowedTableColumns[headerLabel])
+                      }
+                    >
+                      {headerLabel}
+                    </div>
+                    {sortColumn === allowedTableColumns[headerLabel] &&
+                      (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                    {showFilters && (
+                      <Select
+                        sx={{
+                          boxShadow: "none",
+                          ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                          "& .MuiSvgIcon-root": {
+                            color: "white",
+                            border: 0,
+                          },
+                        }}
+                        onChange={handleFilterChange}
+                        IconComponent={FilterListIcon}
+                        style={{ color: "white" }}
+                      >
+                        {uniqueNamesSet.map((item) => (
+                          <MenuItem>{item}</MenuItem>
+                        ))}
+                      </Select>
+                    )}
                   </div>
-                  {sortColumn === allowedTableColumns[headerLabel] &&
-                    (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-                  {showFilters && (
-                    <input
-                      type="text"
-                      onChange={(e) =>
-                        setTableFilter({
-                          ...tableFilter,
-                          [allowedTableColumns[headerLabel]]: e.target.value,
-                        })
-                      }
-                      value={
-                        tableFilter[allowedTableColumns[headerLabel]] || ""
-                      }
-                      placeholder={headerLabel}
-                    />
-                  )}
                 </th>
               ))}
               {!hideActions && (
