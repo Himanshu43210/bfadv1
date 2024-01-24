@@ -18,7 +18,11 @@ const DashboardListing = ({ component }) => {
   const dataApi =
     component.endpoint +
     (component.user ? "?userId=" : "?id=") +
-    `${component.useParamsFromUrl?.userId ? queries[component.useParamsFromUrl.userId] : userProfile._id}` +
+    `${
+      component.useParamsFromUrl?.userId
+        ? queries[component.useParamsFromUrl.userId]
+        : userProfile._id
+    }` +
     "&role=" +
     userProfile.role;
   // const dataApi =
@@ -28,6 +32,7 @@ const DashboardListing = ({ component }) => {
   );
   const apiData = useSelector((state) => state.api.data)[component.dataPoint];
 
+  console.log(component.hideActions, "arijit");
   return (
     <ListingTable
       data={component.data}

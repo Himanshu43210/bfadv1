@@ -108,7 +108,11 @@ export const DELETE_REACH_OUT_USER = "deleteReachOutUser";
 export const GET_NOT_CONTACTED_USER_COUNTS = "getNotContactedUserCounts";
 export const GET_NOTIFICATIONS_LIST = "getNotificationsList";
 export const DELETE_NOTIFICATION = "deleteNotification";
-
+export const GET_NOTIFICATIONS_LIST_FOR_ADMIN = "getNotificationsListForAdmin";
+export const GET_NOTIFICATIONS_LIST_FOR_BROKER =
+  "getNotificationsListForBroker";
+export const GET_NOTIFICATIONS_LIST_FOR_SUBUSER =
+  "getNotificationsListForSubUser";
 
 export const LINKEDIN_ICON = "LINKEDIN_ICON";
 export const INSTAGRAM_ICON = "INSTAGRAM_ICON";

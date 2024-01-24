@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 export const APP_DOMAIN = "https://builderfloor.com";
-const API_DOMAIN = "https://bfservices.onrender.com/api/";
+export const API_DOMAIN = "https://bfservices.onrender.com/api/";
 const CHAT_API_DOMAIN = "https://itsolutionshub.com/chat";
 // const API_DOMAIN = "http://localhost:5000/api/";
 
@@ -54,12 +54,15 @@ export const API_ENDPOINTS = {
   addPropertySearched: API_DOMAIN + "properties/createUserHistory/searches",
   addPropertyViewed: API_DOMAIN + "properties/createUserHistory/visited",
   addPropertyContacted: API_DOMAIN + "properties/createUserHistory/contacted",
-  addPropertyRecommended: API_DOMAIN + "properties/createUserHistory/recommendation",
+  addPropertyRecommended:
+    API_DOMAIN + "properties/createUserHistory/recommendation",
   getPropertySearched: API_DOMAIN + "properties/getUserHistory/searches",
   getPropertyViewed: API_DOMAIN + "properties/getUserHistory/visited",
   getPropertyContacted: API_DOMAIN + "properties/getUserHistory/contacted",
-  getPropertyRecommended: API_DOMAIN + "properties/getUserHistory/recommendation",
-  getCustomerContacted: API_DOMAIN + "properties/getCpUserHistory/recommendation",
+  getPropertyRecommended:
+    API_DOMAIN + "properties/getUserHistory/recommendation",
+  getCustomerContacted:
+    API_DOMAIN + "properties/getCpUserHistory/recommendation",
   getUnapprovedAgentsData: API_DOMAIN + "users/getCpApporovalUsersList",
   approveAgent: API_DOMAIN + "users/approveCp",
   getAdminUserDataById: API_DOMAIN + "users/adminUserDataById",
@@ -72,5 +75,10 @@ export const API_ENDPOINTS = {
   reachOut: API_DOMAIN + "customers/reachOut",
   getNotContactedUserCounts: API_DOMAIN + "customers/getNotContactedUserCounts",
   getNotificationsList: API_DOMAIN + "users/getNotificationsList",
-  deleteNotification: API_DOMAIN + "users/deleteNotification"
+  deleteNotification: API_DOMAIN + "users/deleteNotification",
+  getNotificationsListForAdmin: API_DOMAIN + "notifications/adminNotifications",
+  getNotificationsListForBroker:
+    API_DOMAIN + "notifications/brokerNotifications",
+  getNotificationsListForSubUser:
+    API_DOMAIN + "notifications/subUserNotifications",
 };
