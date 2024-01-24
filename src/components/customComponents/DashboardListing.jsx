@@ -64,6 +64,7 @@ const DashboardListing = ({ component }) => {
       showTableControls={component.showTableControls}
       showPagination={component.showPagination}
       allowSelect={component.allowSelect}
+      showFilter={component.showFilter}
     />
   );
 };

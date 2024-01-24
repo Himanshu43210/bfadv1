@@ -78,6 +78,7 @@ const ListingTable = ({
   showTableControls = true,
   showPagination = true,
   allowSelect,
+  showFilter,
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -94,7 +95,6 @@ const ListingTable = ({
   const [sortType, setSortType] = useState("desc");
   const [sortColumn, setSortColumn] = useState("updatedAt");
   const [tableData, setTableData] = useState([]);
-  const [showFilters, setShowFilters] = useState(true);
   const [tableFilter, setTableFilter] = useState({});
   const [showLoader, setShowLoader] = useState(false);
   const [showImgEditModal, setShowImgEditModal] = useState(false);
@@ -102,11 +102,47 @@ const ListingTable = ({
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [filterItems, setFilterItems] = useState("");
-  // const uniqueNamesSet = new Set(arrayOfObjects.map((obj) => obj.name));
-  const handleFilterChange = (e) => {
-    setFilterItems(e.target.value);
+
+  const locationOptions = [
+    ...new Set(tableData.map((property) => property.sectorNumber)),
+  ];
+  const plotNoOptions = [
+    ...new Set(tableData.map((property) => property.plotNumber)),
+  ];
+  const siZeOptions = [...new Set(tableData.map((property) => property.size))];
+
+  const menuOptions = {
+    Location: locationOptions,
+    "Plot No.": plotNoOptions,
+    Size: siZeOptions,
+    Floor: locationOptions,
+    Title: locationOptions,
+    Price: locationOptions,
+    Accommodation: locationOptions,
+    Facing: locationOptions,
+    "Park Facing": locationOptions,
+    Corner: locationOptions,
+    Possession: locationOptions,
+    "Builder Name": locationOptions,
+    "Builder Contact Name": locationOptions,
+    "Created By": locationOptions,
+    "Mobile Number": locationOptions,
+    "Company Name": locationOptions,
+    City: locationOptions,
+    State: locationOptions,
+    "Dated of Posting": locationOptions,
   };
+
+  const [selectedHeader, setSelectedHeader] = useState(null);
+  const [filterValue, setSelectedFilterValue] = useState("");
+  const [hoveredItem, setHoveredItem] = useState(null);
+
+  const handleFilterIcon = (headerLabel) => {
+    setSelectedHeader(selectedHeader === headerLabel ? null : headerLabel);
+  };
+
+  console.log(selectedHeader, "ari2");
+  console.log(menuOptions[selectedHeader], "ari2");
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   let isMobile = false; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -125,6 +161,8 @@ const ListingTable = ({
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
     : tableHeaders;
+
+  console.log(allowedTableColumns["Accommodation"], "arijit");
 
   const applyFilters = (sortingFilter = "") => {
     const filterQuery =
@@ -912,10 +950,11 @@ const ListingTable = ({
     }
     return cellData;
   };
-  console.log("raju", tableData);
+  // console.log("ari", tableData);
   const keys = tableData.map((obj) => Object.keys(obj));
-  console.log("ari", keys);
-  const uniqueNamesSet = [...new Set(tableData.map((obj) => obj.fieldLabel))];
+  // console.log("ari", keys);
+  const uniqueNamesSet = [...new Set(tableData.map((obj) => obj.sectorNumber))];
+  console.log("ari", uniqueNamesSet);
 
   return (
     <>
@@ -1197,28 +1236,64 @@ const ListingTable = ({
                     </div>
                     {sortColumn === allowedTableColumns[headerLabel] &&
                       (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-                    {showFilters && (
-                      <Select
-                        sx={{
-                          boxShadow: "none",
-                          ".MuiOutlinedInput-notchedOutline": { border: 0 },
-                          "& .MuiSvgIcon-root": {
-                            color: "white",
-                            border: 0,
-                          },
-                        }}
-                        onChange={handleFilterChange}
-                        IconComponent={FilterListIcon}
-                        style={{ color: "white" }}
-                      >
-                        {uniqueNamesSet.map((item) => (
-                          <MenuItem>{item}</MenuItem>
-                        ))}
-                      </Select>
+                    {showFilter && (
+                      <div style={{ position: "relative" }}>
+                        <FilterListIcon
+                          sx={{ cursor: "pointer", marginLeft: "10px" }}
+                          onClick={() => handleFilterIcon(headerLabel)}
+                        />
+                        {selectedHeader === headerLabel && (
+                          <div
+                            className="dropdown"
+                            style={{
+                              position: "absolute",
+                              left: "0px",
+                              top: "16px",
+                            }}
+                          >
+                            <ul
+                              style={{
+                                backgroundColor: "white",
+                                boxShadow: "0px 0px 0px 1px rgba(0, 0, 0, 0.2)",
+                                borderRadius: "10px",
+                                padding: "10px 20px",
+                                width: "150px",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {menuOptions[selectedHeader]?.map((item) => (
+                                <li
+                                  style={{
+                                    color:
+                                      hoveredItem === item ? "#111" : "#000",
+                                    listStyle: "none",
+                                    marginBottom: "5px",
+                                    cursor: "pointer",
+                                    fontWeight: 500,
+                                    fontSize: "14px",
+                                    transition: "background-color 0.3s ease",
+                                  }}
+                                  key={item}
+                                  value={item}
+                                  onClick={() => setSelectedFilterValue(item)}
+                                  onMouseOver={() => setHoveredItem(item)}
+                                  onMouseOut={() => setHoveredItem(null)}
+                                >
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                 </th>
               ))}
+
               {!hideActions && (
                 <th className="tablehead text">
                   <div>Actions</div>

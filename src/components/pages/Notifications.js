@@ -40,6 +40,7 @@ const Notifications = () => {
                 user: true,
                 method: GET,
                 api: API_ENDPOINTS[GET_NOTIFICATIONS_LIST],
+                isNotificationApi: true,
               }}
             />
           </div>
