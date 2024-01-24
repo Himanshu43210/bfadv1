@@ -40,8 +40,6 @@ import Link from "next/link.js";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 
 const ListingTable = ({
   headersDesktop = [],
@@ -102,6 +100,21 @@ const ListingTable = ({
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [locationFilter, setLocationFilter] = useState("");
+
+  const filteredTable = tableData.filter((property) => {
+    return !locationFilter || property.sectorNumber === locationFilter;
+  });
+
+  const handleFilterChange = (label, value) => {
+    switch (label) {
+      case "sectorNumber":
+        setLocationFilter(value);
+        break;
+      default:
+        break;
+    }
+  };
 
   const locationOptions = [
     ...new Set(tableData.map((property) => property.sectorNumber)),
@@ -110,27 +123,73 @@ const ListingTable = ({
     ...new Set(tableData.map((property) => property.plotNumber)),
   ];
   const siZeOptions = [...new Set(tableData.map((property) => property.size))];
-
+  const floorOptions = [
+    ...new Set(tableData.map((property) => property.floor)),
+  ];
+  const priceOptions = [
+    ...new Set(tableData.map((property) => property.price)),
+  ];
+  const accommodationOptions = [
+    ...new Set(tableData.map((property) => property.accommodation)),
+  ];
+  const facingOptions = [
+    ...new Set(tableData.map((property) => property.facing)),
+  ];
+  const parkFacingOptions = [
+    ...new Set(tableData.map((property) => property.parkFacing)),
+  ];
+  const cornerOptions = [
+    ...new Set(tableData.map((property) => property.corner)),
+  ];
+  const possessionOptions = [
+    ...new Set(tableData.map((property) => property.possession)),
+  ];
+  const builderNameOptions = [
+    ...new Set(tableData.map((property) => property.builderName)),
+  ];
+  const builderContactOptions = [
+    ...new Set(tableData.map((property) => property.builderContact)),
+  ];
+  const cityOptions = [...new Set(tableData.map((property) => property.city))];
+  const stateOptions = [
+    ...new Set(tableData.map((property) => property.state)),
+  ];
+  const createdAtOptions = [
+    ...new Set(tableData.map((property) => property.createdAt)),
+  ];
+  const updatedAtOptions = [
+    ...new Set(tableData.map((property) => property.updatedAt)),
+  ];
+  const createdByOptions = [
+    ...new Set(tableData.map((property) => property.parentId.name)),
+  ];
+  // const mobileNumberOptions = [
+  //   ...new Set(tableData.map((property) => property.parentID.phoneNumber)),
+  // ];
+  const companyNameOptions = [
+    ...new Set(tableData.map((property) => property.parentId.companyName)),
+  ];
   const menuOptions = {
     Location: locationOptions,
     "Plot No.": plotNoOptions,
     Size: siZeOptions,
-    Floor: locationOptions,
+    Floor: floorOptions,
     Title: locationOptions,
-    Price: locationOptions,
-    Accommodation: locationOptions,
-    Facing: locationOptions,
-    "Park Facing": locationOptions,
-    Corner: locationOptions,
-    Possession: locationOptions,
-    "Builder Name": locationOptions,
-    "Builder Contact Name": locationOptions,
-    "Created By": locationOptions,
-    "Mobile Number": locationOptions,
-    "Company Name": locationOptions,
-    City: locationOptions,
-    State: locationOptions,
-    "Dated of Posting": locationOptions,
+    Price: priceOptions,
+    Accommodation: accommodationOptions,
+    Facing: facingOptions,
+    "Park Facing": parkFacingOptions,
+    Corner: cornerOptions,
+    Possession: possessionOptions,
+    "Builder Name": builderNameOptions,
+    "Builder Contact Name": builderContactOptions,
+    "Created By": createdByOptions,
+    // "Mobile Number": mobileNumberOptions,
+    "Company Name": companyNameOptions,
+    City: cityOptions,
+    State: stateOptions,
+    "Dated of Posting": createdAtOptions,
+    "Updated At": updatedAtOptions,
   };
 
   const [selectedHeader, setSelectedHeader] = useState(null);
@@ -1257,7 +1316,7 @@ const ListingTable = ({
                                 boxShadow: "0px 0px 0px 1px rgba(0, 0, 0, 0.2)",
                                 borderRadius: "10px",
                                 padding: "10px 20px",
-                                width: "150px",
+                                width: "full",
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "center",
