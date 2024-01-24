@@ -8,7 +8,7 @@ import { FaUserEdit, FaRegTrashAlt, FaRegEye } from "react-icons/fa/index.js";
 import { API_ENDPOINTS, APP_DOMAIN } from "../../redux/utils/api.js";
 import { CircularProgress } from "@mui/material";
 import { AiOutlineDoubleRight } from "react-icons/ai/index.js";
-import { RiFilter2Fill } from "react-icons/ri/index.js"
+import { RiFilter2Fill } from "react-icons/ri/index.js";
 import {
   APPROVED,
   BF_ADMIN,
@@ -37,8 +37,11 @@ import SnackBar from "../customComponents/SnackBar.jsx";
 import { useRouter } from "next/navigation.js";
 import { generatePropertyUrl } from "./propertyUtils.js";
 import Link from "next/link.js";
-import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 const ListingTable = ({
   headersDesktop = [],
@@ -74,7 +77,7 @@ const ListingTable = ({
   userId,
   showTableControls = true,
   showPagination = true,
-  allowSelect
+  allowSelect,
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -91,7 +94,7 @@ const ListingTable = ({
   const [sortType, setSortType] = useState("desc");
   const [sortColumn, setSortColumn] = useState("updatedAt");
   const [tableData, setTableData] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
   const [tableFilter, setTableFilter] = useState({});
   const [showLoader, setShowLoader] = useState(false);
   const [showImgEditModal, setShowImgEditModal] = useState(false);
@@ -99,6 +102,11 @@ const ListingTable = ({
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [filterItems, setFilterItems] = useState("");
+  // const uniqueNamesSet = new Set(arrayOfObjects.map((obj) => obj.name));
+  const handleFilterChange = (e) => {
+    setFilterItems(e.target.value);
+  };
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   let isMobile = false; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -107,7 +115,12 @@ const ListingTable = ({
     return selectApiData(state, getDataApi);
   });
   const userProfile = useSelector((state) => state[PROFILE]);
-  console.log('>>>>>>>>>>>>>>>> USER PROFILE, API STATUS, getApiDataFromRedux : ListingTable <<<<<<<<<<<<<<<<<<<<', userProfile, apiStatus, getApiDataFromRedux);
+  console.log(
+    ">>>>>>>>>>>>>>>> USER PROFILE, API STATUS, getApiDataFromRedux : ListingTable <<<<<<<<<<<<<<<<<<<<",
+    userProfile,
+    apiStatus,
+    getApiDataFromRedux
+  );
   const navigateTo = useRouter();
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
@@ -160,25 +173,39 @@ const ListingTable = ({
         headers: { "Content-Type": "application/json" },
         params: {
           page: activePage,
-          limit: itemsCountPerPage
+          limit: itemsCountPerPage,
         },
-        data: onRefreshApiType === POST
-          ? {
-            sortColumn, sortType, activePage, itemsCountPerPage
-          }
-          : {},
+        data:
+          onRefreshApiType === POST
+            ? {
+                sortColumn,
+                sortType,
+                activePage,
+                itemsCountPerPage,
+              }
+            : {},
       };
       dispatch(callApi(options));
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const generateFormData = (formData, jsonData, parentKey) => {
-    if (jsonData && typeof jsonData === 'object' && !(jsonData instanceof Date) && !(jsonData instanceof File) && !(jsonData instanceof Blob)) {
-      Object.keys(jsonData).forEach(key => {
-        generateFormData(formData, jsonData[key], parentKey ? `${parentKey}[${key}]` : key);
+    if (
+      jsonData &&
+      typeof jsonData === "object" &&
+      !(jsonData instanceof Date) &&
+      !(jsonData instanceof File) &&
+      !(jsonData instanceof Blob)
+    ) {
+      Object.keys(jsonData).forEach((key) => {
+        generateFormData(
+          formData,
+          jsonData[key],
+          parentKey ? `${parentKey}[${key}]` : key
+        );
       });
     } else {
-      const value = jsonData == null ? '' : jsonData;
+      const value = jsonData == null ? "" : jsonData;
 
       formData.append(parentKey, value);
     }
@@ -202,9 +229,17 @@ const ListingTable = ({
   const isPropertyEdit = API_ENDPOINTS[editApi]?.includes("editProperty");
 
   const handleSave = (edit = false) => {
-    const alreadyHaveThumbanils = currentRowData?.thumbnails?.filter(link => link !== "") || [];
-    const haveReqFiles = isPropertyEdit ? ((alreadyHaveThumbanils.length > 0) && ((imgsToBeDeleted?.thumbnails?.length || 0) < alreadyHaveThumbanils.length) && (alreadyHaveThumbanils[0] !== "")) : false;
-    const formData = finalizeRef.current.finalizeData(haveReqFiles ? ["thumbnailFile"] : []);
+    const alreadyHaveThumbanils =
+      currentRowData?.thumbnails?.filter((link) => link !== "") || [];
+    const haveReqFiles = isPropertyEdit
+      ? alreadyHaveThumbanils.length > 0 &&
+        (imgsToBeDeleted?.thumbnails?.length || 0) <
+          alreadyHaveThumbanils.length &&
+        alreadyHaveThumbanils[0] !== ""
+      : false;
+    const formData = finalizeRef.current.finalizeData(
+      haveReqFiles ? ["thumbnailFile"] : []
+    );
     if (formData) {
       if (Object.keys(formData).length !== 0) {
         try {
@@ -217,9 +252,18 @@ const ListingTable = ({
             }
           }
           const shouldEdit = isChanged || isImgsTobeDeleted;
-          console.log('================= CHANGED ==================', isChanged, isImgsTobeDeleted, shouldEdit);
+          console.log(
+            "================= CHANGED ==================",
+            isChanged,
+            isImgsTobeDeleted,
+            shouldEdit
+          );
           if (!shouldEdit) {
-            setSnackbar({ open: true, message: 'No field changed.', status: -1 });
+            setSnackbar({
+              open: true,
+              message: "No field changed.",
+              status: -1,
+            });
             return;
           }
           const newFormData = new FormData();
@@ -229,7 +273,7 @@ const ListingTable = ({
             "images",
             "videos",
             "layouts",
-            "virtualFiles"
+            "virtualFiles",
           ];
           const filesToBeDeleted = [];
           const replaceFiles = {};
@@ -290,7 +334,7 @@ const ListingTable = ({
             "virtualFile",
           ]);
 
-          mediaLinkTypes.forEach(mediaLinkType => {
+          mediaLinkTypes.forEach((mediaLinkType) => {
             // append individually in formData
             if (Array.isArray(formData[mediaLinkType])) {
               for (const mediaLink of formData[mediaLinkType]) {
@@ -299,7 +343,10 @@ const ListingTable = ({
                 if (!imgsToBeDeleted[mediaLinkType]?.includes(mediaLink)) {
                   newFormData.append(mediaLinkType, mediaLink);
                 } else {
-                  if (!filesToBeDeleted.includes(mediaLink) || replaceFiles[mediaLinkType] === true) {
+                  if (
+                    !filesToBeDeleted.includes(mediaLink) ||
+                    replaceFiles[mediaLinkType] === true
+                  ) {
                     filesToBeDeleted.push(mediaLink);
                   }
                 }
@@ -316,14 +363,17 @@ const ListingTable = ({
 
           Object.keys(formData).map((element) => {
             if (!isFileList(formData[element])) {
-              if (!mediaLinkTypes.includes(element) && typeof formData[element] == "object" && !Array.isArray(formData[element])) {
+              if (
+                !mediaLinkTypes.includes(element) &&
+                typeof formData[element] == "object" &&
+                !Array.isArray(formData[element])
+              ) {
                 if (element === "parentId") {
                   newFormData.append(element, formData[element]?._id);
                 } else {
                   newFormData.append(element, formData[element]?.value);
                 }
-              }
-              else if (isObjectNotString(formData[element])) {
+              } else if (isObjectNotString(formData[element])) {
                 // ignore
               } else {
                 newFormData.append(element, formData[element]);
@@ -334,8 +384,8 @@ const ListingTable = ({
           // filesToBeDeleted.forEach((link) => {
           //   newFormData.append("filesToBeDeleted", link);
           // });
-          Object.keys(replaceFiles).forEach(key => {
-            formData[key].forEach(link => {
+          Object.keys(replaceFiles).forEach((key) => {
+            formData[key].forEach((link) => {
               filesToBeDeleted.push(link);
             });
           });
@@ -354,19 +404,27 @@ const ListingTable = ({
             data: isPropertyEdit
               ? newFormData
               : sanitizeFormData({
-                ...formData,
-              }),
+                  ...formData,
+                }),
           };
           setShowLoader(true);
           dispatch(callApi(options)).then(() => {
             setShowLoader(false);
-            setSnackbar({ open: true, message: edit ? 'Edited Successfully.' : 'Saved Successfully.', status: 0 });
+            setSnackbar({
+              open: true,
+              message: edit ? "Edited Successfully." : "Saved Successfully.",
+              status: 0,
+            });
             setShowEditModal(false);
             refreshData();
           });
         } catch (error) {
           setShowLoader(false);
-          setSnackbar({ open: true, message: edit ? 'Edit Failed.' : 'Save Failed.', status: -1 });
+          setSnackbar({
+            open: true,
+            message: edit ? "Edit Failed." : "Save Failed.",
+            status: -1,
+          });
           console.log("Edit failed : listing table ", error);
         }
       } else {
@@ -377,7 +435,11 @@ const ListingTable = ({
         });
       }
     } else {
-      setSnackbar({ open: true, message: `Empty required field(s) or no change.`, status: -1 });
+      setSnackbar({
+        open: true,
+        message: `Empty required field(s) or no change.`,
+        status: -1,
+      });
     }
   };
 
@@ -400,10 +462,12 @@ const ListingTable = ({
   };
   const handleApprove = (rowId) => {
     try {
-      const data = approveApiMethod ? { id: rowId } : {
-        _id: rowId,
-        [NEED_APPROVAL_BY]: userProfile.parentId || APPROVED,
-      };
+      const data = approveApiMethod
+        ? { id: rowId }
+        : {
+            _id: rowId,
+            [NEED_APPROVAL_BY]: userProfile.parentId || APPROVED,
+          };
       const options = {
         url: API_ENDPOINTS[approveApi],
         method: approveApiMethod || POST,
@@ -484,7 +548,11 @@ const ListingTable = ({
         // for each element in tableData --- if not present in selectedRows list, insert
         for (let i = 0; i < tableData.length; i++) {
           const newToPush = [];
-          if (selectedRows.find(selectedRow => selectedRow._id === tableData[i]._id) === undefined) {
+          if (
+            selectedRows.find(
+              (selectedRow) => selectedRow._id === tableData[i]._id
+            ) === undefined
+          ) {
             newToPush.push(tableData[i]);
           }
           setSelectedRows((currSelectedRows) => {
@@ -495,7 +563,9 @@ const ListingTable = ({
         // for each element in tableData --- if present in selectedRows list, remove
         let newToPush = [...selectedRows];
         for (let i = 0; i < tableData.length; i++) {
-          newToPush = newToPush.filter(selectedRow => selectedRow._id !== tableData[i]._id);
+          newToPush = newToPush.filter(
+            (selectedRow) => selectedRow._id !== tableData[i]._id
+          );
         }
         setSelectedRows([...newToPush]);
       }
@@ -506,7 +576,9 @@ const ListingTable = ({
         });
       } else {
         setSelectedRows((currSelectedRows) => {
-          return currSelectedRows?.filter((selectedRow) => selectedRow._id !== rowData._id);
+          return currSelectedRows?.filter(
+            (selectedRow) => selectedRow._id !== rowData._id
+          );
         });
       }
     }
@@ -517,27 +589,36 @@ const ListingTable = ({
       e.preventDefault();
     }
     if (navigator.share !== undefined) {
-      navigator.share({
-        title: "BuilderFloor.com",
-        text: shareData
-      })
+      navigator
+        .share({
+          title: "BuilderFloor.com",
+          text: shareData,
+        })
         .then(() => {
-          console.log('>>>>>> Share Successful <<<<<<');
+          console.log(">>>>>> Share Successful <<<<<<");
         })
         .catch((error) => {
-          console.log('>>>>>> Share Failed <<<<<<', error);
+          console.log(">>>>>> Share Failed <<<<<<", error);
         });
     } else {
-      console.log('>>>>> NO NAVIGATOR : sharing not possible <<<<<<', window.navigator);
+      console.log(
+        ">>>>> NO NAVIGATOR : sharing not possible <<<<<<",
+        window.navigator
+      );
       if (navigator.clipboard !== undefined) {
-        console.log('============= CLIPBOARD AVAILABLE ==============');
-        navigator.clipboard.writeText(shareData)
+        console.log("============= CLIPBOARD AVAILABLE ==============");
+        navigator.clipboard
+          .writeText(shareData)
           .then(() => {
-            console.log('>>>>>> Copy Successful <<<<<<');
-            setSnackbar({ open: true, message: 'Copied to Clipboard.', status: -1 });
+            console.log(">>>>>> Copy Successful <<<<<<");
+            setSnackbar({
+              open: true,
+              message: "Copied to Clipboard.",
+              status: -1,
+            });
           })
           .catch((error) => {
-            console.log('>>>>>> Copy Failed <<<<<<', error);
+            console.log(">>>>>> Copy Failed <<<<<<", error);
           });
       }
     }
@@ -549,9 +630,13 @@ const ListingTable = ({
   const handleBulkShare = () => {
     let formattedShareData = ``;
     for (let i = 0; i < selectedRows.length; i++) {
-      formattedShareData += APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + '\n\n';
+      formattedShareData +=
+        APP_DOMAIN + generatePropertyUrl(selectedRows[i]) + "\n\n";
     }
-    console.log('>>>>>>>>>>>>> FORMATTED SHARE DATA <<<<<<<<<<<<<', formattedShareData);
+    console.log(
+      ">>>>>>>>>>>>> FORMATTED SHARE DATA <<<<<<<<<<<<<",
+      formattedShareData
+    );
     handleShare(formattedShareData);
   };
 
@@ -572,12 +657,12 @@ const ListingTable = ({
     }
     Promise.all(deletePromises)
       .then((res) => {
-        console.log('================ BULK DELETE RES ===============', res);
+        console.log("================ BULK DELETE RES ===============", res);
         setSnackbar({ open: true, message: `Deleted.`, status: 0 });
         refreshData();
       })
       .catch((error) => {
-        console.log('BULK DELETE ERROR: ', error);
+        console.log("BULK DELETE ERROR: ", error);
       });
   };
 
@@ -615,7 +700,7 @@ const ListingTable = ({
       "videos",
       "virtualFiles",
     ];
-    console.log('******* current row adta **********', currentRowData);
+    console.log("******* current row adta **********", currentRowData);
     const currAllFiles = {};
     fileFields.forEach((field) => {
       if (currentRowData[field]) {
@@ -643,14 +728,16 @@ const ListingTable = ({
       if (!newToBeDeleted[type]) {
         newToBeDeleted[type] = [];
       }
-      link.forEach(lk => {
+      link.forEach((lk) => {
         if (lk !== "") {
           newToBeDeleted[type].push(lk);
         }
       });
     } else {
       if (isSelectedForDeletion(type, link)) {
-        newToBeDeleted[type] = newToBeDeleted[type].filter((entry) => entry !== link);
+        newToBeDeleted[type] = newToBeDeleted[type].filter(
+          (entry) => entry !== link
+        );
       } else {
         if (!newToBeDeleted[type]) {
           newToBeDeleted[type] = [];
@@ -659,7 +746,7 @@ const ListingTable = ({
       }
     }
     let totalToBeDeleted = 0;
-    Object.keys(newToBeDeleted).forEach(key => {
+    Object.keys(newToBeDeleted).forEach((key) => {
       totalToBeDeleted += newToBeDeleted[key]?.length || 0;
     });
     setImgsToBeDeleted({ ...newToBeDeleted, totalToBeDeleted });
@@ -745,23 +832,27 @@ const ListingTable = ({
   };
 
   const handleRecommendation = (key, data) => {
-    if (key === 'ADD' && addActionApi) {
+    if (key === "ADD" && addActionApi) {
       const options = {
         url: addActionApi,
         method: POST,
         data: {
           propertyId: data?._id || currentRowData._id,
-          userId: userId
-        }
+          userId: userId,
+        },
       };
       dispatch(callApi(options))
         .then((res) => {
-          setSnackbar({ open: true, message: `Recommendation Successful.`, status: 0 });
-        }).catch((error) => {
-          console.log('--------- ADD RECOMMENDATION ERROR ----------', error);
+          setSnackbar({
+            open: true,
+            message: `Recommendation Successful.`,
+            status: 0,
+          });
+        })
+        .catch((error) => {
+          console.log("--------- ADD RECOMMENDATION ERROR ----------", error);
         });
-    } else if (key === 'REMOVE' && removeActionApi) {
-
+    } else if (key === "REMOVE" && removeActionApi) {
     }
   };
 
@@ -769,8 +860,17 @@ const ListingTable = ({
     // handle cell link
     const allowedTableColumnsFinal = allowedTableColumns;
     if (headerLabel === "Link Share") {
-      const propertyLink = "https://builderfloor.com" + generatePropertyUrl(element);
-      return <Link href={propertyLink} onClick={(e) => handleShare(propertyLink, e)} target="_blank">Share</Link>;
+      const propertyLink =
+        "https://builderfloor.com" + generatePropertyUrl(element);
+      return (
+        <Link
+          href={propertyLink}
+          onClick={(e) => handleShare(propertyLink, e)}
+          target="_blank"
+        >
+          Share
+        </Link>
+      );
     }
     let cellData;
     const splittedKeys = allowedTableColumnsFinal[headerLabel]?.split(".");
@@ -779,7 +879,8 @@ const ListingTable = ({
         if (splittedKeys[0] === "createdByName") {
           cellData = element["cpName"] || element["createdByName"];
         } else if (splittedKeys[0] === "createdByPhoneNumber") {
-          cellData = element["cpPhoneNumber"] || element["createdByPhoneNumber"];
+          cellData =
+            element["cpPhoneNumber"] || element["createdByPhoneNumber"];
         } else {
           cellData = element?.[allowedTableColumnsFinal?.[headerLabel]];
         }
@@ -791,7 +892,11 @@ const ListingTable = ({
     }
     // check for date
     if (!isNaN(Date.parse(cellData)) && cellData?.length > 20) {
-      return new Date(cellData).toLocaleString('default', { day: 'numeric', month: 'short', year: 'numeric' });
+      return new Date(cellData).toLocaleString("default", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
     }
     // check for true
     if (cellData === true || cellData === "true") {
@@ -807,6 +912,10 @@ const ListingTable = ({
     }
     return cellData;
   };
+  console.log("raju", tableData);
+  const keys = tableData.map((obj) => Object.keys(obj));
+  console.log("ari", keys);
+  const uniqueNamesSet = [...new Set(tableData.map((obj) => obj.fieldLabel))];
 
   return (
     <>
@@ -825,19 +934,23 @@ const ListingTable = ({
             fields={fieldConst}
           />
           <div className="images-state" style={{ display: "flex" }}>
-            {
-              Object.entries(imgEditor?.allFiles).map((entry) => {
-                return (
-                  entry[1]?.length > 0 ? (
-                    <MuiButton variant="secondary" onClick={() => handleImgEditModal(entry[0])} style={{ width: "fit-content" }}>
-                      {entry[1]?.length} {getImageLabel(entry[0])}
-                    </MuiButton>
-                  ) : null
-                )
-              })
-            }
+            {Object.entries(imgEditor?.allFiles).map((entry) => {
+              return entry[1]?.length > 0 ? (
+                <MuiButton
+                  variant="secondary"
+                  onClick={() => handleImgEditModal(entry[0])}
+                  style={{ width: "fit-content" }}
+                >
+                  {entry[1]?.length} {getImageLabel(entry[0])}
+                </MuiButton>
+              ) : null;
+            })}
           </div>
-          {imgsToBeDeleted.totalToBeDeleted > 0 && <div className="label warning_text">{imgsToBeDeleted.totalToBeDeleted} images/videos to be deleted</div>}
+          {imgsToBeDeleted.totalToBeDeleted > 0 && (
+            <div className="label warning_text">
+              {imgsToBeDeleted.totalToBeDeleted} images/videos to be deleted
+            </div>
+          )}
         </ReusablePopup>
       )}
 
@@ -856,25 +969,34 @@ const ListingTable = ({
 
       {showPreviewModal && (
         <ReusablePopup
-          onHide={tooglePreview} onClose={tooglePreview}
+          onHide={tooglePreview}
+          onClose={tooglePreview}
           onEdit={(e) => {
             e.stopPropagation();
             toogleEdit();
           }}
-          onApprove={approveApi &&
+          onApprove={
+            approveApi &&
             currentRowData[NEED_APPROVAL_BY] &&
-            userProfile._id === currentRowData[NEED_APPROVAL_BY] && ((e) => {
+            userProfile._id === currentRowData[NEED_APPROVAL_BY] &&
+            ((e) => {
               e.stopPropagation();
               toogleApproval();
-            })}
-          onRemove={approveApi &&
+            })
+          }
+          onRemove={
+            approveApi &&
             currentRowData[NEED_APPROVAL_BY] &&
-            userProfile._id === currentRowData[NEED_APPROVAL_BY] && ((e) => {
+            userProfile._id === currentRowData[NEED_APPROVAL_BY] &&
+            ((e) => {
               e.stopPropagation();
               toggleRemove();
-            })}
+            })
+          }
         >
-          <div className="formheadingcontainer popup_title">Property Preview</div>
+          <div className="formheadingcontainer popup_title">
+            Property Preview
+          </div>
           <HomeCard
             element={currentRowData}
             disableOnClickNavigate={true}
@@ -889,27 +1011,54 @@ const ListingTable = ({
 
       {showImgEditModal && (
         <ReusablePopup onHide={toggleImgEditor} onClose={toggleImgEditor}>
-          <div className="formheadingcontainer popup_title">Edit Property {getImageLabel(imgEditor?.selectedImgType)}</div>
-          <p className="label">{imgEditor?.allFiles[imgEditor?.selectedImgType]?.length} {getImageLabel(imgEditor?.selectedImgType)}</p>
+          <div className="formheadingcontainer popup_title">
+            Edit Property {getImageLabel(imgEditor?.selectedImgType)}
+          </div>
+          <p className="label">
+            {imgEditor?.allFiles[imgEditor?.selectedImgType]?.length}{" "}
+            {getImageLabel(imgEditor?.selectedImgType)}
+          </p>
           <div className="delete_media_list">
-            {
-              imgEditor?.allFiles[imgEditor?.selectedImgType].map((entry, index) => (
+            {imgEditor?.allFiles[imgEditor?.selectedImgType].map(
+              (entry, index) => (
                 <div className="img-item">
                   <label htmlFor={index}>
-                    {
-                      imgEditor?.selectedImgType !== "videos" ? (
-                        <img src={entry} alt={entry} width={100} height={100} className="delete_media" />
-                      ) : (
-                        <video src={entry} alt={entry} width={100} height={100} className="delete_media" />
-                      )
-                    }
+                    {imgEditor?.selectedImgType !== "videos" ? (
+                      <img
+                        src={entry}
+                        alt={entry}
+                        width={100}
+                        height={100}
+                        className="delete_media"
+                      />
+                    ) : (
+                      <video
+                        src={entry}
+                        alt={entry}
+                        width={100}
+                        height={100}
+                        className="delete_media"
+                      />
+                    )}
                   </label>
-                  <input id={index} type="checkbox" checked={isSelectedForDeletion(imgEditor?.selectedImgType, entry)} onChange={() => handleImgsToBeDeleted(imgEditor?.selectedImgType, entry)} />
+                  <input
+                    id={index}
+                    type="checkbox"
+                    checked={isSelectedForDeletion(
+                      imgEditor?.selectedImgType,
+                      entry
+                    )}
+                    onChange={() =>
+                      handleImgsToBeDeleted(imgEditor?.selectedImgType, entry)
+                    }
+                  />
                 </div>
-              ))
-            }
+              )
+            )}
           </div>
-          <p className="lbel warning_text">(Note: Selected images/videos will be deleted on save.)</p>
+          <p className="lbel warning_text">
+            (Note: Selected images/videos will be deleted on save.)
+          </p>
         </ReusablePopup>
       )}
 
@@ -979,7 +1128,10 @@ const ListingTable = ({
               value={[tableFilter["search"]] || ""}
               className="filter_input"
             />
-            <Button onClick={() => applyFilters()} className="filter_submit filter_btn">
+            <Button
+              onClick={() => applyFilters()}
+              className="filter_submit filter_btn"
+            >
               <RiFilter2Fill className="filter_icon" />
               Filter&nbsp;Data
             </Button>
@@ -990,18 +1142,24 @@ const ListingTable = ({
               </Button>
             )} */}
           </div>
-        )}  
+        )}
         {selectedRows?.length > 0 && (
           <div className="table_selection_controls">
             <div className="selection_info">
               <span>{selectedRows.length} Selected</span>
             </div>
             <div className="table_selection_control_btns">
-              <Button onClick={(e) => handleSelectionOp("SHARE")} className="selection_ctrl_btn edit_btn selection_share_btn">
+              <Button
+                onClick={(e) => handleSelectionOp("SHARE")}
+                className="selection_ctrl_btn edit_btn selection_share_btn"
+              >
                 <ShareRoundedIcon className="tsc_icon share_icon" />
                 Share
               </Button>
-              <Button onClick={(e) => handleSelectionOp("DELETE")} className="selection_ctrl_btn delete_btn btn-danger">
+              <Button
+                onClick={(e) => handleSelectionOp("DELETE")}
+                className="selection_ctrl_btn delete_btn btn-danger"
+              >
                 <DeleteRoundedIcon className="tsc_icon delete_icon" />
                 Delete
               </Button>
@@ -1013,36 +1171,59 @@ const ListingTable = ({
             <tr>
               {allowSelect && (
                 <th className="tablehead text">
-                  <input type="checkbox" className="table_row_check table_head_row_check" checked={selectAll} onChange={(e) => handleRowSelection(e, null, true)} />
+                  <input
+                    type="checkbox"
+                    className="table_row_check table_head_row_check"
+                    checked={selectAll}
+                    onChange={(e) => handleRowSelection(e, null, true)}
+                  />
                 </th>
               )}
               {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                 <th key={index} className="tablehead text">
                   <div
-                    onClick={() => handleSort(allowedTableColumns[headerLabel])}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                   >
-                    {showFilters ? '' : headerLabel}
+                    {" "}
+                    <div
+                      onClick={() =>
+                        handleSort(allowedTableColumns[headerLabel])
+                      }
+                    >
+                      {headerLabel}
+                    </div>
+                    {sortColumn === allowedTableColumns[headerLabel] &&
+                      (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                    {showFilters && (
+                      <Select
+                        sx={{
+                          boxShadow: "none",
+                          ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                          "& .MuiSvgIcon-root": {
+                            color: "white",
+                            border: 0,
+                          },
+                        }}
+                        onChange={handleFilterChange}
+                        IconComponent={FilterListIcon}
+                        style={{ color: "white" }}
+                      >
+                        {uniqueNamesSet.map((item) => (
+                          <MenuItem>{item}</MenuItem>
+                        ))}
+                      </Select>
+                    )}
                   </div>
-                  {sortColumn === allowedTableColumns[headerLabel] &&
-                    (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-                  {showFilters && (
-                    <input
-                      type="text"
-                      onChange={(e) =>
-                        setTableFilter({
-                          ...tableFilter,
-                          [allowedTableColumns[headerLabel]]: e.target.value,
-                        })
-                      }
-                      value={
-                        tableFilter[allowedTableColumns[headerLabel]] || ""
-                      }
-                      placeholder={headerLabel}
-                    />
-                  )}
                 </th>
               ))}
-              {!hideActions && <th className="tablehead text"><div>Actions</div></th>}
+              {!hideActions && (
+                <th className="tablehead text">
+                  <div>Actions</div>
+                </th>
+              )}
               {showViewAllListing && (
                 <th className="tablehead text">View all Listing</th>
               )}
@@ -1062,7 +1243,12 @@ const ListingTable = ({
               >
                 {allowSelect && (
                   <td className="bodytext">
-                    <input type="checkbox" className="table_row_check" checked={isRowSelected(element._id)} onChange={(e) => handleRowSelection(e, element)} />
+                    <input
+                      type="checkbox"
+                      className="table_row_check"
+                      checked={isRowSelected(element._id)}
+                      onChange={(e) => handleRowSelection(e, element)}
+                    />
                   </td>
                 )}
                 {Object.keys(allowedTableColumns).map((headerLabel, index) => (
@@ -1073,42 +1259,38 @@ const ListingTable = ({
                 {!hideActions && (
                   <td className="tablebody tableborder text actionColumn">
                     <>
-                      {
-                        (!hideAlterActions || showEditAction) && (
-                          <>
-                            <Button
-                              className="row_action_btn edit_btn ListingEditbtn"
-                              variant="success"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setCurrentRowData(element);
-                                toogleEdit();
-                              }}
-                            >
-                              <FaUserEdit size={20} />
-                            </Button>
-                            &nbsp;
-                          </>
-                        )
-                      }
-                      {
-                        (!hideAlterActions || showDeleteAction) && (
-                          <>
-                            <Button
-                              className="row_action_btn delete_btn ListingDeletebtn"
-                              variant="danger"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setCurrentRowData(element);
-                                toogleDelete();
-                              }}
-                            >
-                              <FaRegTrashAlt size={20} />
-                            </Button>
-                            &nbsp;
-                          </>
-                        )
-                      }
+                      {(!hideAlterActions || showEditAction) && (
+                        <>
+                          <Button
+                            className="row_action_btn edit_btn ListingEditbtn"
+                            variant="success"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentRowData(element);
+                              toogleEdit();
+                            }}
+                          >
+                            <FaUserEdit size={20} />
+                          </Button>
+                          &nbsp;
+                        </>
+                      )}
+                      {(!hideAlterActions || showDeleteAction) && (
+                        <>
+                          <Button
+                            className="row_action_btn delete_btn ListingDeletebtn"
+                            variant="danger"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentRowData(element);
+                              toogleDelete();
+                            }}
+                          >
+                            <FaRegTrashAlt size={20} />
+                          </Button>
+                          &nbsp;
+                        </>
+                      )}
                     </>
                     {isproperty && ( // Conditionally render the Preview button
                       <>
@@ -1127,21 +1309,22 @@ const ListingTable = ({
                     )}
                     {((approveApi &&
                       element[NEED_APPROVAL_BY] &&
-                      userProfile._id === element[NEED_APPROVAL_BY]) || showApproveAction) && (
-                        <Button
-                          className="row_action_btn approve_btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCurrentRowData(element);
-                            toogleApproval();
-                          }}
-                        >
-                          <FcApproval size={12} />
-                        </Button>
-                      )}
-                    {(approveApi &&
+                      userProfile._id === element[NEED_APPROVAL_BY]) ||
+                      showApproveAction) && (
+                      <Button
+                        className="row_action_btn approve_btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentRowData(element);
+                          toogleApproval();
+                        }}
+                      >
+                        <FcApproval size={12} />
+                      </Button>
+                    )}
+                    {approveApi &&
                       element[NEED_APPROVAL_BY] &&
-                      userProfile._id === element[NEED_APPROVAL_BY]) && (
+                      userProfile._id === element[NEED_APPROVAL_BY] && (
                         <Button
                           className="row_action_btn reject_btn"
                           onClick={(e) => {
@@ -1160,7 +1343,7 @@ const ListingTable = ({
                         onClick={(e) => {
                           e.stopPropagation();
                           setCurrentRowData(element);
-                          handleRecommendation('ADD', element);
+                          handleRecommendation("ADD", element);
                         }}
                       >
                         Add
@@ -1173,7 +1356,7 @@ const ListingTable = ({
                         onClick={(e) => {
                           e.stopPropagation();
                           setCurrentRowData(element);
-                          handleRecommendation('REMOVE', element);
+                          handleRecommendation("REMOVE", element);
                         }}
                       >
                         Remove
@@ -1185,7 +1368,9 @@ const ListingTable = ({
                           className="row_action_btn text_btn"
                           onClick={(e) => {
                             setCurrentRowData(element);
-                            navigateTo.push(`/admin/addRecommendation?uid=${element.userId?._id}`);
+                            navigateTo.push(
+                              `/admin/addRecommendation?uid=${element.userId?._id}`
+                            );
                           }}
                         >
                           +&nbsp;Add&nbsp;Recommendation
@@ -1194,7 +1379,9 @@ const ListingTable = ({
                           className="row_action_btn text_btn"
                           onClick={(e) => {
                             setCurrentRowData(element);
-                            navigateTo.push(`/admin/showRecommended?uid=${element.userId?._id}`);
+                            navigateTo.push(
+                              `/admin/showRecommended?uid=${element.userId?._id}`
+                            );
                           }}
                         >
                           Show&nbsp;Recommendations
@@ -1210,7 +1397,9 @@ const ListingTable = ({
                       className="row_action_btn"
                       onClick={(e) => {
                         setCurrentRowData(element);
-                        navigateTo.push(showViewAllListing + "?id=" + element._id);
+                        navigateTo.push(
+                          showViewAllListing + "?id=" + element._id
+                        );
                       }}
                     >
                       <AiOutlineDoubleRight size={12} />
@@ -1223,19 +1412,17 @@ const ListingTable = ({
         </Table>
       </div>
 
-      {(apiStatus === "loading" || showLoader) ? (
+      {apiStatus === "loading" || showLoader ? (
         <CircularProgress className="loader-class" />
-      ) : (
-        (tableData.length > 0 && showPagination) ? (
-          <BasicTablePagination
-            dataLength={totalItems}
-            currentPage={activePage}
-            handlePageChange={handlePageChange}
-            rowPerPage={itemsCountPerPage}
-            handleRowPerPagChange={handleRecordPerPage}
-          />
-        ) : null
-      )}
+      ) : tableData.length > 0 && showPagination ? (
+        <BasicTablePagination
+          dataLength={totalItems}
+          currentPage={activePage}
+          handlePageChange={handlePageChange}
+          rowPerPage={itemsCountPerPage}
+          handleRowPerPagChange={handleRecordPerPage}
+        />
+      ) : null}
 
       <SnackBar
         open={snackbar?.open}
