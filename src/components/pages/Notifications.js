@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 
 const Notifications = () => {
   const userProfile = useSelector((state) => state.profile);
-  console.log(userProfile.role, "arijit");
 
   const GET_NOTIFICATIONS_LIST =
     userProfile.role === USER_ROLE.bfAdmin

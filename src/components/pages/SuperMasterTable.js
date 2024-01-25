@@ -93,7 +93,7 @@ export default function PropertyManagement() {
                   },
                   mobileHeaders: {
                     Location: "sectorNumber",
-                    "Plot No.": "plotNumber",
+                    "Plot No": "plotNumber",
                     Size: "size",
                     Floor: "floor",
                     Title: "title",
@@ -116,7 +116,7 @@ export default function PropertyManagement() {
                   roleSpecificDesktopHeaders: {
                     [USER_ROLE.bfAdmin]: {
                       Location: "sectorNumber",
-                      "Plot No.": "plotNumber",
+                      "Plot No": "plotNumber",
                       Size: "size",
                       Floor: "floor",
                       Price: "price",
@@ -137,7 +137,7 @@ export default function PropertyManagement() {
                     },
                     [USER_ROLE.channelPartner]: {
                       Location: "sectorNumber",
-                      "Plot No.": "plotNumber",
+                      "Plot No": "plotNumber",
                       Size: "size",
                       Floor: "floor",
                       Price: "price",
@@ -154,7 +154,7 @@ export default function PropertyManagement() {
                     },
                     [USER_ROLE.salesUser]: {
                       Location: "sectorNumber",
-                      "Plot No.": "plotNumber",
+                      "Plot No": "plotNumber",
                       Size: "size",
                       Floor: "floor",
                       Price: "price",

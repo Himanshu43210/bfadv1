@@ -7,6 +7,7 @@ import { GET, GET_NOTIFICATIONS_COUNT } from "../utils/Const";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "@/redux/utils/apiActions";
 import { API_DOMAIN } from "@/redux/utils/api";
+import { USER_ROLE } from "@/ScreenJson";
 
 const NotificationBell = () => {
   const notifTypes = {
@@ -14,7 +15,6 @@ const NotificationBell = () => {
   };
 
   const userProfile = useSelector((state) => state.profile);
-  console.log(userProfile, "arijit");
 
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
@@ -22,9 +22,13 @@ const NotificationBell = () => {
   const fetchNotificationCount = async () => {
     setLoading(true);
     try {
+      let api = API_DOMAIN + `notifications/count`;
+      if (userProfile.role != USER_ROLE.bfAdmin) {
+        api = API_DOMAIN + `notifications/count?id=${userProfile._id}`;
+      }
       const options = {
         method: GET,
-        url: API_DOMAIN + `notifications/count?id=${userProfile._id}`,
+        url: api,
         headers: { "Content-Type": "application/json" },
       };
       const responce = await axios(options);

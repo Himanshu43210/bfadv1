@@ -31,8 +31,6 @@ const DashboardListing = ({ component }) => {
     selectApiStatus(state, component.dataPoint || "")
   );
   const apiData = useSelector((state) => state.api.data)[component.dataPoint];
-
-  console.log(component.hideActions, "arijit");
   return (
     <ListingTable
       data={component.data}
