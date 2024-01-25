@@ -5,7 +5,11 @@ import ReusablePopup from "./ReusablePopup.jsx";
 import FormBuilder from "./FormBuilder.jsx";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa/index.js";
 import { FaUserEdit, FaRegTrashAlt, FaRegEye } from "react-icons/fa/index.js";
-import { API_ENDPOINTS, APP_DOMAIN } from "../../redux/utils/api.js";
+import {
+  API_DOMAIN,
+  API_ENDPOINTS,
+  APP_DOMAIN,
+} from "../../redux/utils/api.js";
 import { CircularProgress } from "@mui/material";
 import { AiOutlineDoubleRight } from "react-icons/ai/index.js";
 import { RiFilter2Fill } from "react-icons/ri/index.js";
@@ -39,6 +43,8 @@ import { generatePropertyUrl } from "./propertyUtils.js";
 import Link from "next/link.js";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import axios from "axios";
 
 const ListingTable = ({
   headersDesktop = [],
@@ -75,6 +81,7 @@ const ListingTable = ({
   showTableControls = true,
   showPagination = true,
   allowSelect,
+  showFilter,
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -91,7 +98,6 @@ const ListingTable = ({
   const [sortType, setSortType] = useState("desc");
   const [sortColumn, setSortColumn] = useState("updatedAt");
   const [tableData, setTableData] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
   const [tableFilter, setTableFilter] = useState({});
   const [showLoader, setShowLoader] = useState(false);
   const [showImgEditModal, setShowImgEditModal] = useState(false);
@@ -99,6 +105,168 @@ const ListingTable = ({
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const filterSiZe = [...new Set(tableData.map((property) => property.size))];
+  const siZeOptions = filterSiZe.map((value) => ({
+    key: value,
+    value,
+  }));
+  const filterPrice = [...new Set(tableData.map((property) => property.price))];
+  const priceOptions = filterPrice.map((value) => ({
+    key: value,
+    value,
+  }));
+  const filterOptions = {
+    Location: [
+      { key: "DLF Phase 2", value: "DLF Phase 2" },
+      { key: "DLF Phase 3", value: "DLF Phase 3" },
+      { key: "DLF Phase 4", value: "DLF Phase 4" },
+      { key: "DLF Phase 5", value: "DLF Phase 5" },
+      { key: "DLF Almeda", value: "DLF Almeda" },
+      { key: "DLF Garden City", value: "DLF Garden City" },
+      { key: "Sushant Lok 1", value: "Sushant Lok 1" },
+      { key: "Sushant Lok 2", value: "Sushant Lok 2" },
+      { key: "Sushant Lok 3", value: "Sushant Lok 3" },
+      { key: "Esencia Sector 67A", value: "Esencia Sector 67A" },
+      { key: "Versalia Sector 67A", value: "Versalia Sector 67A" },
+      { key: "Greenwood City", value: "Greenwood City" },
+      { key: "South City 1", value: "South City 1" },
+      { key: "South City 2", value: "South City 2" },
+      { key: "Nirvana Country", value: "Nirvana Country" },
+      { key: "Rosewood City", value: "Rosewood City" },
+      { key: "Vipul World", value: "Vipul World" },
+      { key: "Suncity", value: "Suncity" },
+      { key: "Uppal Southend", value: "Uppal Southend" },
+      { key: "Malibu Town", value: "Malibu Town" },
+      { key: "BPTP Amstoria", value: "BPTP Amstoria" },
+      { key: "G99", value: "G99" },
+      { key: "Anant Raj", value: "Anant Raj" },
+      { key: "Ireo City", value: "Ireo City" },
+      { key: "Emaar Emerald Hills", value: "Emaar Emerald Hills" },
+      { key: "Sector 3", value: "Sector 3" },
+      { key: "Sector 4", value: "Sector 4" },
+      { key: "Sector 5", value: "Sector 5" },
+      { key: "Sector 9A", value: "Sector 9A" },
+      { key: "Sector 10", value: "Sector 10" },
+      { key: "Sector 10A", value: "Sector 10A" },
+      { key: "Sector 12A", value: "Sector 12A" },
+      { key: "Sector 14", value: "Sector 14" },
+      { key: "Sector 15 Part 1", value: "Sector 15 Part 1" },
+      { key: "Sector 15 Part 2", value: "Sector 15 Part 2" },
+      { key: "Sector 17", value: "Sector 17" },
+      { key: "Sector 21", value: "Sector 21" },
+      { key: "Sector 22", value: "Sector 22" },
+      { key: "Sector 23-23A", value: "Sector 23-23A" },
+      { key: "Sector 27", value: "Sector 27" },
+      { key: "Sector 7", value: "Sector 7" },
+      { key: "Sector 28", value: "Sector 28" },
+      { key: "Sector 31", value: "Sector 31" },
+      { key: "Sector 31-32A", value: "Sector 31-32A" },
+      { key: "Sector 38", value: "Sector 38" },
+      { key: "Sector 39", value: "Sector 39" },
+      { key: "Sector 40", value: "Sector 40" },
+      { key: "Sector 42", value: "Sector 42" },
+      { key: "Sector 43", value: "Sector 43" },
+      { key: "Sector 45", value: "Sector 45" },
+      { key: "Sector 46", value: "Sector 46" },
+      { key: "Sector 47", value: "Sector 47" },
+      { key: "Sector 49", value: "Sector 49" },
+      { key: "Sector 50", value: "Sector 50" },
+      { key: "Sector 51", value: "Sector 51" },
+      { key: "Sector 52", value: "Sector 52" },
+      { key: "Sector 55", value: "Sector 55" },
+      { key: "Sector 56", value: "Sector 56" },
+      { key: "Sector 57", value: "Sector 57" },
+      { key: "Old DLF Colony", value: "Old DLF Colony" },
+      { key: "New Colony", value: "New Colony" },
+      { key: "Palam Vihar", value: "Palam Vihar" },
+      { key: "Mayfield Garden", value: "Mayfield Garden" },
+      { key: "Ardee City", value: "Ardee City" },
+      { key: "Adani Samsara", value: "Adani Samsara" },
+      { key: "DLF Phase 1", value: "DLF Phase 1" },
+      { key: "Vatika India Next", value: "Vatika India Next" },
+    ],
+    // "Plot No": plotNoOptions,
+    Size: siZeOptions,
+    Floor: [
+      { key: "First Floor", value: "1ST FLOOR" },
+      { key: "Second Floor", value: "2ND FLOOR" },
+      { key: "Forth Floor", value: "4TH FLOOR" },
+      { key: "Basement + First Floor", value: "Basement + First" },
+    ],
+    // Title: locationOptions,
+    Price: priceOptions,
+    Accommodation: [
+      { key: "2 BHK", value: "2 BHK" },
+      { key: "3 BHK", value: "3 BHK" },
+      { key: "5 BHK", value: "5 BHK" },
+      { key: "6 BHK", value: "6 BHK" },
+    ],
+    Facing: [
+      { key: "North", value: "North" },
+      { key: "South", value: "South" },
+      { key: "East", value: "East" },
+      { key: "West", value: "West" },
+      { key: "North-West", value: "North-West" },
+      { key: "North-East", value: "North-East" },
+      { key: "South-West", value: "South-West" },
+      { key: "South-East", value: "South-East" },
+    ],
+    "Park Facing": [
+      { key: "Yes", value: "Yes" },
+      { key: "No", value: "No" },
+    ],
+    Corner: [
+      { key: "Yes", value: "Yes" },
+      { key: "No", value: "No" },
+    ],
+    Possession: [
+      { key: "Ready", value: "READY" },
+      { key: "1 Month", value: "1M" },
+      { key: "3 Months", value: "3M" },
+      { key: "6 Months", value: "6M" },
+      { key: "9 Months", value: "9M" },
+      { key: "12 Months", value: "12M" },
+    ],
+    // "Builder Name": builderNameOptions,
+    // "Builder Contact Name": builderContactOptions,
+    // "Created By": createdByOptions,
+    // "Mobile Number": mobileNumberOptions,
+    // "Company Name": companyNameOptions,
+    City: [{ key: "Gurgaon", value: "Gurgaon" }],
+    State: [
+      { key: "Haryana", value: "Haryana" },
+      { key: "Punjab", value: "Punjab" },
+    ],
+    // "Dated of Posting": createdAtOptions,
+    // "Updated At": updatedAtOptions,
+  };
+  const [filterValue, setSelectedFilterValue] = useState("");
+  const [selectedHeader, setSelectedHeader] = useState(null);
+
+  useEffect(() => {
+    const fetchFilteredData = async () => {
+      if (filterValue) {
+        const api =
+          API_DOMAIN +
+          `properties/adminPropertyList?id=${userProfile._id}&role=${userProfile.role}`;
+        try {
+          const response = await axios.post(api, {
+            [headersDesktop[selectedHeader]]: filterValue,
+          });
+          setTableData(response?.data?.data);
+          setSelectedHeader(null);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+    fetchFilteredData();
+  }, [filterValue]);
+
+  const handleFilterIcon = (headerLabel) => {
+    setSelectedHeader(selectedHeader === headerLabel ? null : headerLabel);
+  };
+
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   let isMobile = false; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -107,12 +275,6 @@ const ListingTable = ({
     return selectApiData(state, getDataApi);
   });
   const userProfile = useSelector((state) => state[PROFILE]);
-  console.log(
-    ">>>>>>>>>>>>>>>> USER PROFILE, API STATUS, getApiDataFromRedux : ListingTable <<<<<<<<<<<<<<<<<<<<",
-    userProfile,
-    apiStatus,
-    getApiDataFromRedux
-  );
   const navigateTo = useRouter();
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
@@ -904,6 +1066,11 @@ const ListingTable = ({
     }
     return cellData;
   };
+  // console.log("ari", tableData);
+  const keys = tableData.map((obj) => Object.keys(obj));
+  // console.log("ari", keys);
+  const uniqueNamesSet = [...new Set(tableData.map((obj) => obj.sectorNumber))];
+  console.log("ari", uniqueNamesSet);
 
   return (
     <>
@@ -1170,29 +1337,80 @@ const ListingTable = ({
               {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                 <th key={index} className="tablehead text">
                   <div
-                    onClick={() => handleSort(allowedTableColumns[headerLabel])}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                   >
-                    {showFilters ? "" : headerLabel}
+                    {" "}
+                    <div
+                      onClick={() =>
+                        handleSort(allowedTableColumns[headerLabel])
+                      }
+                    >
+                      {headerLabel}
+                    </div>
+                    {sortColumn === allowedTableColumns[headerLabel] &&
+                      (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                    {showFilter && (
+                      <div style={{ position: "relative" }}>
+                        <FilterListIcon
+                          sx={{ cursor: "pointer", marginLeft: "10px" }}
+                          onClick={() => handleFilterIcon(headerLabel)}
+                        />
+                        {selectedHeader === headerLabel && (
+                          <div
+                            className="dropdown"
+                            style={{
+                              position: "absolute",
+                              top: "20px",
+                              overflowY:
+                                headerLabel == "Location" ? "scroll" : "hidden",
+                              maxHeight: "800px",
+                            }}
+                          >
+                            <ul
+                              style={{
+                                backgroundColor: "white",
+                                boxShadow: "0px 0px 0px 1px rgba(0, 0, 0, 0.2)",
+                                borderRadius: "10px",
+                                padding: "10px 20px",
+                                width: "full",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {filterOptions[selectedHeader]?.map((item) => (
+                                <li
+                                  style={{
+                                    color: "#000",
+                                    listStyle: "none",
+                                    marginBottom: "5px",
+                                    cursor: "pointer",
+                                    fontWeight: 500,
+                                    fontSize: "14px",
+                                    transition: "background-color 0.3s ease",
+                                  }}
+                                  key={item}
+                                  value={item}
+                                  onClick={() =>
+                                    setSelectedFilterValue(item.value)
+                                  }
+                                >
+                                  {item.key}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  {sortColumn === allowedTableColumns[headerLabel] &&
-                    (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-                  {showFilters && (
-                    <input
-                      type="text"
-                      onChange={(e) =>
-                        setTableFilter({
-                          ...tableFilter,
-                          [allowedTableColumns[headerLabel]]: e.target.value,
-                        })
-                      }
-                      value={
-                        tableFilter[allowedTableColumns[headerLabel]] || ""
-                      }
-                      placeholder={headerLabel}
-                    />
-                  )}
                 </th>
               ))}
+
               {!hideActions && (
                 <th className="tablehead text">
                   <div>Actions</div>

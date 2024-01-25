@@ -18,7 +18,11 @@ const DashboardListing = ({ component }) => {
   const dataApi =
     component.endpoint +
     (component.user ? "?userId=" : "?id=") +
-    `${component.useParamsFromUrl?.userId ? queries[component.useParamsFromUrl.userId] : userProfile._id}` +
+    `${
+      component.useParamsFromUrl?.userId
+        ? queries[component.useParamsFromUrl.userId]
+        : userProfile._id
+    }` +
     "&role=" +
     userProfile.role;
   // const dataApi =
@@ -27,7 +31,6 @@ const DashboardListing = ({ component }) => {
     selectApiStatus(state, component.dataPoint || "")
   );
   const apiData = useSelector((state) => state.api.data)[component.dataPoint];
-
   return (
     <ListingTable
       data={component.data}
@@ -59,6 +62,7 @@ const DashboardListing = ({ component }) => {
       showTableControls={component.showTableControls}
       showPagination={component.showPagination}
       allowSelect={component.allowSelect}
+      showFilter={component.showFilter}
     />
   );
 };

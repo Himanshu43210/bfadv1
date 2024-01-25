@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "../../redux/utils/apiActions.js"; // Adjust path as needed
+import { USER_ROLE } from "@/ScreenJson.js";
 
 export default function AutoFetchApiPost({
   component,
@@ -12,12 +13,22 @@ export default function AutoFetchApiPost({
   const userProfile = useSelector((state) => state.profile);
 
   let uurl = component?.api;
-  if (component?.user) {
+
+  if (component?.user && !component.isNotificationApi) {
     uurl =
       component?.api +
       (component?.userId ? "?userId=" : "?id=") +
       userProfile?._id +
       (userProfile?.role ? "&role=" + userProfile?.role : "");
+  }
+
+  if (
+    component?.user &&
+    component.isNotificationApi &&
+    (userProfile.role == USER_ROLE.channelPartner ||
+      userProfile.role == USER_ROLE.salesUser)
+  ) {
+    uurl = component?.api + "?id=" + userProfile?._id;
   }
 
   const doFetch = useCallback(() => {
