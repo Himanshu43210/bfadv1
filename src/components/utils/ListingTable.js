@@ -275,12 +275,6 @@ const ListingTable = ({
     return selectApiData(state, getDataApi);
   });
   const userProfile = useSelector((state) => state[PROFILE]);
-  console.log(
-    ">>>>>>>>>>>>>>>> USER PROFILE, API STATUS, getApiDataFromRedux : ListingTable <<<<<<<<<<<<<<<<<<<<",
-    userProfile,
-    apiStatus,
-    getApiDataFromRedux
-  );
   const navigateTo = useRouter();
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
