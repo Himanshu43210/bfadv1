@@ -82,6 +82,10 @@ const ListingTable = ({
   showPagination = true,
   allowSelect,
   showFilter,
+  setFilterValue,
+  setFilterKey,
+  filterValue,
+  filterKey,
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -110,11 +114,7 @@ const ListingTable = ({
     key: value,
     value,
   }));
-  const filterPrice = [...new Set(tableData.map((property) => property.price))];
-  const priceOptions = filterPrice.map((value) => ({
-    key: value,
-    value,
-  }));
+
   const filterOptions = {
     Location: [
       { key: "DLF Phase 2", value: "DLF Phase 2" },
@@ -186,7 +186,7 @@ const ListingTable = ({
       { key: "Vatika India Next", value: "Vatika India Next" },
     ],
     // "Plot No": plotNoOptions,
-    Size: siZeOptions,
+    // Size: siZeOptions,
     Floor: [
       { key: "First Floor", value: "1ST FLOOR" },
       { key: "Second Floor", value: "2ND FLOOR" },
@@ -194,7 +194,92 @@ const ListingTable = ({
       { key: "Basement + First Floor", value: "Basement + First" },
     ],
     // Title: locationOptions,
-    Price: priceOptions,
+    Price: [
+      {
+        key: 23000000,
+        value: 23000000,
+      },
+      {
+        key: 22500000,
+        value: 22500000,
+      },
+      {
+        key: 22000000,
+        value: 22000000,
+      },
+      {
+        key: 50000000,
+        value: 50000000,
+      },
+      {
+        key: 33000000,
+        value: 33000000,
+      },
+      {
+        key: 34000000,
+        value: 34000000,
+      },
+      {
+        key: 47000000,
+        value: 47000000,
+      },
+      {
+        key: 44000000,
+        value: 44000000,
+      },
+      {
+        key: 57500000,
+        value: 57500000,
+      },
+      {
+        key: 17000000,
+        value: 17000000,
+      },
+      {
+        key: 18000000,
+        value: 18000000,
+      },
+      {
+        key: 53000000,
+        value: 53000000,
+      },
+      {
+        key: 35000000,
+        value: 35000000,
+      },
+      {
+        key: 37500000,
+        value: 37500000,
+      },
+      {
+        key: 30000000,
+        value: 30000000,
+      },
+      {
+        key: 40000000,
+        value: 40000000,
+      },
+      {
+        key: 25000000,
+        value: 25000000,
+      },
+      {
+        key: 35500000,
+        value: 35500000,
+      },
+      {
+        key: 31500000,
+        value: 31500000,
+      },
+      {
+        key: 52000000,
+        value: 52000000,
+      },
+      {
+        key: 44500000,
+        value: 44500000,
+      },
+    ],
     Accommodation: [
       { key: "2 BHK", value: "2 BHK" },
       { key: "3 BHK", value: "3 BHK" },
@@ -240,33 +325,24 @@ const ListingTable = ({
     // "Dated of Posting": createdAtOptions,
     // "Updated At": updatedAtOptions,
   };
-  const [filterValue, setSelectedFilterValue] = useState("");
   const [selectedHeader, setSelectedHeader] = useState(null);
 
   useEffect(() => {
-    const fetchFilteredData = async () => {
-      if (filterValue) {
-        const api =
-          API_DOMAIN +
-          `properties/adminPropertyList?id=${userProfile._id}&role=${userProfile.role}`;
-        try {
-          const response = await axios.post(api, {
-            [headersDesktop[selectedHeader]]: filterValue,
-          });
-          setTableData(response?.data?.data);
-          setSelectedHeader(null);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      }
-    };
-    fetchFilteredData();
-  }, [filterValue]);
+    if (selectedHeader !== null) {
+      setFilterKey(headersDesktop[selectedHeader]);
+    }
+  }, [selectedHeader]);
 
-  const handleFilterIcon = (headerLabel) => {
-    setSelectedHeader(selectedHeader === headerLabel ? null : headerLabel);
+  const handleClickDropdownItem = (value) => {
+    setFilterValue(value);
+    setSelectedHeader(null);
   };
 
+  const handleFilterIcon = (headerLabel) => {
+    setFilterValue("");
+    setFilterKey("");
+    setSelectedHeader(selectedHeader === headerLabel ? null : headerLabel);
+  };
   const apiStatus = useSelector((state) => selectApiStatus(state, getDataApi));
   let isMobile = false; // Adjust the breakpoint as per your needs
   const tableHeaders = isMobile ? headersMobile : headersDesktop;
@@ -285,12 +361,21 @@ const ListingTable = ({
       Object.entries(tableFilter)
         .map(([key, value]) => `&${key}=${value}`)
         .join("") || "";
+    let payload = {
+      sortType,
+      sortColumn,
+      activePage,
+      itemsCountPerPage,
+    };
+    if (filterKey && filterValue) {
+      payload = { ...payload, [filterKey]: filterValue };
+    }
     dispatch(
       callApi({
         url: filterDataUrl + sortingFilter + filterQuery,
         method: onRefreshApiType || GET,
         headers: { "Content-Type": "application/json" },
-        data: { sortType, sortColumn, activePage, itemsCountPerPage },
+        data: payload,
       })
     );
   };
@@ -677,9 +762,12 @@ const ListingTable = ({
     itemsCountPerPage,
     sortType,
     sortColumn,
+    [filterKey]: filterValue,
   }) => {
     applyFilters(
-      `&page=${activePage}&limit=${itemsCountPerPage}&sortType=${sortType}&sortColumn=${sortColumn}`
+      `&page=${activePage}&limit=${itemsCountPerPage}&sortType=${sortType}&sortColumn=${sortColumn}${{
+        [filterKey]: filterValue,
+      }},`
     );
   };
 
@@ -953,6 +1041,7 @@ const ListingTable = ({
       itemsCountPerPage,
       sortColumn,
       sortType,
+      [filterKey]: filterValue,
     });
   };
 
@@ -963,6 +1052,7 @@ const ListingTable = ({
       itemsCountPerPage: action.target.value,
       sortColumn,
       sortType,
+      [filterKey]: filterValue,
     });
   };
 
@@ -1066,11 +1156,6 @@ const ListingTable = ({
     }
     return cellData;
   };
-  // console.log("ari", tableData);
-  const keys = tableData.map((obj) => Object.keys(obj));
-  // console.log("ari", keys);
-  const uniqueNamesSet = [...new Set(tableData.map((obj) => obj.sectorNumber))];
-  console.log("ari", uniqueNamesSet);
 
   return (
     <>
@@ -1358,7 +1443,7 @@ const ListingTable = ({
                           sx={{ cursor: "pointer", marginLeft: "10px" }}
                           onClick={() => handleFilterIcon(headerLabel)}
                         />
-                        {selectedHeader === headerLabel && (
+                        {selectedHeader == headerLabel && (
                           <div
                             className="dropdown"
                             style={{
@@ -1396,7 +1481,7 @@ const ListingTable = ({
                                   key={item}
                                   value={item}
                                   onClick={() =>
-                                    setSelectedFilterValue(item.value)
+                                    handleClickDropdownItem(item.value)
                                   }
                                 >
                                   {item.key}
