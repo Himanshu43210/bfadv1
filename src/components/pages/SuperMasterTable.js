@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import _ from "lodash";
 import { USER_ROLE } from "../../ScreenJson.js";
 import LoginRefresh from "../customComponents/LoginRefresh.jsx";
@@ -18,6 +18,18 @@ import DashboardListing from "../customComponents/DashboardListing.jsx";
 import { newPropertyConst } from "../fieldConsts/PropertiesFieldConst.js";
 
 export default function PropertyManagement() {
+  const [filterValue, setFilterValue] = useState("");
+  const [filterKey, setFilterKey] = useState("");
+
+  let payload = {
+    sortType: "desc",
+    sortColumn: "updatedAt",
+  };
+
+  if (filterKey && filterValue) {
+    payload = { ...payload, [filterKey]: filterValue };
+  }
+
   return (
     <>
       <div className="standalone_page master_table_page">
@@ -26,10 +38,7 @@ export default function PropertyManagement() {
             <AutoFetchApiPost
               component={{
                 api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                data: {
-                  sortType: "desc",
-                  sortColumn: "updatedAt",
-                },
+                data: payload,
                 method: POST,
                 className: "header",
                 user: true,
@@ -183,6 +192,10 @@ export default function PropertyManagement() {
                   showColumnFilter: true,
                   allowSelect: true,
                   showFilter: true,
+                  setFilterValue: setFilterValue,
+                  filterValue: filterValue,
+                  setFilterKey: setFilterKey,
+                  filterKey: filterKey,
                 }}
               />
               <div className={`component_wrapper ${"toogle-filter"}`}>

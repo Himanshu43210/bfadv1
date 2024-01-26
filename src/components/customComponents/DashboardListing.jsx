@@ -63,6 +63,10 @@ const DashboardListing = ({ component }) => {
       showPagination={component.showPagination}
       allowSelect={component.allowSelect}
       showFilter={component.showFilter}
+      setFilterValue={component.setFilterValue}
+      filterValue={component.filterValue}
+      setFilterKey={component.setFilterKey}
+      filterKey={component.filterKey}
     />
   );
 };
