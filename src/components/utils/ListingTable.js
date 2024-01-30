@@ -1437,61 +1437,73 @@ const ListingTable = ({
                     </div>
                     {sortColumn === allowedTableColumns[headerLabel] &&
                       (sortType === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-                    {showFilter && (
-                      <div style={{ position: "relative" }}>
-                        <FilterListIcon
-                          sx={{ cursor: "pointer", marginLeft: "10px" }}
-                          onClick={() => handleFilterIcon(headerLabel)}
-                        />
-                        {selectedHeader == headerLabel && (
-                          <div
-                            className="dropdown"
-                            style={{
-                              position: "absolute",
-                              top: "20px",
-                              overflowY:
-                                headerLabel == "Location" ? "scroll" : "hidden",
-                              maxHeight: "800px",
-                            }}
-                          >
-                            <ul
+                    {showFilter &&
+                      headerLabel !== "Plot No" &&
+                      headerLabel !== "Size" &&
+                      headerLabel !== "Builder Name" &&
+                      headerLabel !== "Builder Contact" &&
+                      headerLabel !== "Created By" &&
+                      headerLabel !== "Mobile Number" &&
+                      headerLabel !== "Company Name" &&
+                      headerLabel !== "Updated At" &&
+                      headerLabel !== "Link Share" && (
+                        <div style={{ position: "relative" }}>
+                          <FilterListIcon
+                            sx={{ cursor: "pointer", marginLeft: "10px" }}
+                            onClick={() => handleFilterIcon(headerLabel)}
+                          />
+                          {selectedHeader == headerLabel && (
+                            <div
+                              className="dropdown"
                               style={{
-                                backgroundColor: "white",
-                                boxShadow: "0px 0px 0px 1px rgba(0, 0, 0, 0.2)",
-                                borderRadius: "10px",
-                                padding: "10px 20px",
-                                width: "full",
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                justifyContent: "center",
+                                position: "absolute",
+                                top: "20px",
+                                overflowY:
+                                  headerLabel == "Location"
+                                    ? "scroll"
+                                    : "hidden",
+                                maxHeight: "800px",
                               }}
                             >
-                              {filterOptions[selectedHeader]?.map((item) => (
-                                <li
-                                  style={{
-                                    color: "#000",
-                                    listStyle: "none",
-                                    marginBottom: "5px",
-                                    cursor: "pointer",
-                                    fontWeight: 500,
-                                    fontSize: "14px",
-                                    transition: "background-color 0.3s ease",
-                                  }}
-                                  key={item}
-                                  value={item}
-                                  onClick={() =>
-                                    handleClickDropdownItem(item.value)
-                                  }
-                                >
-                                  {item.key}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                              <ul
+                                style={{
+                                  backgroundColor: "white",
+                                  boxShadow:
+                                    "0px 0px 0px 1px rgba(0, 0, 0, 0.2)",
+                                  borderRadius: "10px",
+                                  padding: "10px 20px",
+                                  width: "full",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                {filterOptions[selectedHeader]?.map((item) => (
+                                  <li
+                                    style={{
+                                      color: "#000",
+                                      listStyle: "none",
+                                      marginBottom: "5px",
+                                      cursor: "pointer",
+                                      fontWeight: 500,
+                                      fontSize: "14px",
+                                      transition: "background-color 0.3s ease",
+                                    }}
+                                    key={item}
+                                    value={item}
+                                    onClick={() =>
+                                      handleClickDropdownItem(item.value)
+                                    }
+                                  >
+                                    {item.key}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      )}
                   </div>
                 </th>
               ))}
