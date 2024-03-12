@@ -14,6 +14,7 @@ import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
 import { storeUserData } from "../../redux/slice/userSlice.js";
 import { storeParentData } from "../../redux/slice/parentSlice.js";
 import { useRouter } from "next/navigation.js";
+import Link from "next/link.js";
 
 const Login = () => {
   const navigate = useRouter();
@@ -58,7 +59,7 @@ const Login = () => {
       localStorage.setItem("email", email);
       localStorage.setItem("password", password);
       dispatch(callApi(options));
-    } catch (error) { }
+    } catch (error) {}
   };
 
   return (
@@ -86,10 +87,22 @@ const Login = () => {
             required
           />
         </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "right",
+            color: "white",
+          }}
+        >
+          <p style={{ cursor: "pointer" }}>Forgot Password?</p>
+        </div>
         {loginStatus === LOADING ? (
           <CircularProgress className="loader-class" />
         ) : (
-          <button type="submit" className="btn" onClick={handleLogin}>Login</button>
+          <button type="submit" className="btn" onClick={handleLogin}>
+            Login
+          </button>
         )}
       </form>
     </div>
