@@ -40,6 +40,7 @@ export const SCROLL_TO_TOP = "SCROLL_TO_TOP";
 export const CHATBOT = "CHATBOT";
 export const HAMBURGER_MENU = "HAMBURGER_MENU";
 export const SELECT_SLIDER = "SELECT_SLIDER";
+export const SELECT_SLIDER2 = "SELECT_SLIDER2";
 export const TABLE_HEADER = "TABLE_HEADER";
 export const LOGIN_REFRESH = "LOGIN_REFRESH";
 export const SEARCH_CARD = "SEARCH_CARD";

@@ -14,7 +14,10 @@ import {
 } from "../utils/Const.js";
 import { API_ENDPOINTS } from "../../redux/utils/api.js";
 import { callApi } from "../../redux/utils/apiActions.js";
-import { filterAutofillData, sanitizeFormData } from "../utils/reusableMethods.js";
+import {
+  filterAutofillData,
+  sanitizeFormData,
+} from "../utils/reusableMethods.js";
 import CustomRouteButton from "../customComponents/RouteButton.jsx";
 import { USER_ROLE } from "../../ScreenJson.js";
 import _ from "lodash";
@@ -22,7 +25,7 @@ import SnackBar from "../customComponents/SnackBar.jsx";
 import { selectApiStatus } from "../../redux/utils/selectors.js";
 import { usePathname } from "next/navigation.js";
 import { useRouter } from "next/router.js";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 import { storeUserData } from "@/redux/slice/userSlice.js";
 import { newUserConst } from "../fieldConsts/UserFieldConst.js";
 import { newPropertyConst } from "../fieldConsts/PropertiesFieldConst.js";
@@ -37,10 +40,13 @@ const comp = () => {
   const { type } = router.query;
   const userProfile = useSelector((state) => state.profile);
 
-  console.log('+++++ form page : user profile +++++', useSelector((state) => state));
+  console.log(
+    "+++++ form page : user profile +++++",
+    useSelector((state) => state)
+  );
 
   useEffect(() => {
-    console.log('^^^^^^^^^^^^^^^^^^^ TYPE ^^^^^^^^^^^^^^^^^^^^', type);
+    console.log("^^^^^^^^^^^^^^^^^^^ TYPE ^^^^^^^^^^^^^^^^^^^^", type);
     let fd = {};
     switch (type) {
       case "createBroker":
@@ -75,10 +81,12 @@ const comp = () => {
       default:
         break;
     }
-    dispatch(storeUserData({
-      ...userProfile,
-      ...fd
-    }));
+    dispatch(
+      storeUserData({
+        ...userProfile,
+        ...fd,
+      })
+    );
   }, [type]);
 
   const snackbarClose = () => {
@@ -89,16 +97,18 @@ const comp = () => {
   };
 
   const getMessage = (type = "SUBMIT", status = "SUCCESS") => {
-    let message = '';
+    let message = "";
     switch (userProfile.formName) {
       case "Create Broker":
-        message = `Broker ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;
+        message = `Broker ${type === "SUBMIT" ? "Created" : "Saved"}.`;
         break;
       case "Create Sub User":
-        message = `Sub User ${type === "SUBMIT" ? 'Created' : 'Saved'}.`;
+        message = `Sub User ${type === "SUBMIT" ? "Created" : "Saved"}.`;
         break;
       case "Post Listing":
-        message = `Post ${type === "SUBMIT" ? 'Submitted' : 'Saved'} Successfully.`;
+        message = `Post ${
+          type === "SUBMIT" ? "Submitted" : "Saved"
+        } Successfully.`;
         break;
       default:
         message = "Submitted";
@@ -158,10 +168,7 @@ const comp = () => {
           Object.keys(formData).forEach((element) => {
             if (!isFileList(formData[element])) {
               if (isObjectNotString(formData[element])) {
-                newFormData.append(
-                  element,
-                  formData[element].value
-                );
+                newFormData.append(element, formData[element].value);
               } else {
                 newFormData.append(element, formData[element]);
               }
@@ -178,13 +185,13 @@ const comp = () => {
           let data = imagesCheck
             ? newFormData
             : sanitizeFormData({
-              ...formData,
-              parentId: userProfile._id,
-              role:
-                userProfile.role === USER_ROLE[BF_ADMIN]
-                  ? USER_ROLE["channelPartner"]
-                  : USER_ROLE["salesUser"],
-            });
+                ...formData,
+                parentId: userProfile._id,
+                role:
+                  userProfile.role === USER_ROLE[BF_ADMIN]
+                    ? USER_ROLE["channelPartner"]
+                    : USER_ROLE["salesUser"],
+              });
 
           const options = {
             url: API_ENDPOINTS[userProfile.formSaveApi],
@@ -208,7 +215,10 @@ const comp = () => {
         }
       } else {
         setSubmitting(false);
-        setSnackbar({ open: true, message: `Empty required field(s) or no change.` });
+        setSnackbar({
+          open: true,
+          message: `Empty required field(s) or no change.`,
+        });
       }
     } else {
       setSnackbar({ open: true, message: `Submitting.` });
@@ -224,7 +234,6 @@ const comp = () => {
   // );
   const handleSave = () => {
     if (!saving) {
-
     } else {
       setSnackbar({ open: true, message: `Saving.` });
     }
@@ -233,7 +242,6 @@ const comp = () => {
   const handleReset = () => {
     finalizeRef.current.resetForm();
     setSnackbar({ open: true, message: `Form resetted.` });
-
   };
 
   const [check, setCheck] = useState(false);
@@ -253,7 +261,7 @@ const comp = () => {
             },
           };
           dispatch(callApi(options));
-        } catch (error) { }
+        } catch (error) {}
         navigate.push("/admin");
       } else {
         navigate.push("/login");
@@ -279,17 +287,28 @@ const comp = () => {
               }
             />
             <div className="form_controls_wrapper">
-              <Button variant="contained" onClick={handleSubmit} disabled={submitting} className="save_btn">{submitting ? "Submitting..." : "Submit"}</Button>
-              {
-                userProfile?.showSaveBtn ? (
-                  <Button variant="secondary" onClick={handleSave} disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
-                ) : null
-              }
-              {
-                userProfile?.showResetBtn ? (
-                  <Button variant="secondary" onClick={handleReset}>Reset</Button>
-                ) : null
-              }
+              <Button
+                variant="contained"
+                onClick={handleSubmit}
+                disabled={submitting}
+                className="save_btn"
+              >
+                {submitting ? "Submitting..." : "Submit"}
+              </Button>
+              {userProfile?.showSaveBtn ? (
+                <Button
+                  variant="secondary"
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  {saving ? "Saving..." : "Save"}
+                </Button>
+              ) : null}
+              {userProfile?.showResetBtn ? (
+                <Button variant="secondary" onClick={handleReset}>
+                  Reset
+                </Button>
+              ) : null}
             </div>
             <CustomRouteButton
               component={{
@@ -306,13 +325,15 @@ const comp = () => {
             message={snackbar?.message}
             onClose={snackbarClose}
           />
-          {submitting === true ? <CircularProgress className="loader-class" /> : null}
+          {submitting === true ? (
+            <CircularProgress className="loader-class" />
+          ) : null}
         </>
       )}
     </>
   );
 };
 
-const FormPage = dynamic(() => Promise.resolve(comp), { ssr: false })
+const FormPage = dynamic(() => Promise.resolve(comp), { ssr: false });
 
 export default FormPage;
