@@ -14,18 +14,18 @@ const apiSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(callApi.pending, (state, action) => {
-        state.status[getApiName(action.meta.arg.url)] = LOADING;
+        state.status[getApiName(action?.meta?.arg.url)] = LOADING;
       })
       .addCase(callApi.fulfilled, (state, action) => {
-        state.status[getApiName(action.meta.arg.url)] = SUCCESS;
+        state.status[getApiName(action?.meta?.arg.url)] = SUCCESS;
         // Add all fetched data to the state
-        state.data[getApiName(action.meta.arg.url)] = action.payload;
+        state.data[getApiName(action?.meta?.arg.url)] = action.payload;
       })
       .addCase(callApi.rejected, (state, action) => {
-        const apiname = getApiName(action.meta.arg.url);
+        const apiname = getApiName(action?.meta?.arg.url);
         if (apiname !== "") {
-          state.status[getApiName(action.meta.arg.url)] = FAILED;
-          state.error[getApiName(action.meta.arg.url)] = action.error.message;
+          state.status[getApiName(action?.meta?.arg.url)] = FAILED;
+          state.error[getApiName(action?.meta?.arg.url)] = action.error.message;
         }
       });
   },

@@ -5,7 +5,25 @@ import HeaderComp from "../newComponents/HeaderComp.jsx";
 import Footer from "../customComponents/Footer.jsx";
 import ScrollToTop from "../customComponents/ScrollToTop.jsx";
 import Chatbot from "../customComponents/Chatbot.jsx";
-import { API_BUTTON, API_HEADING, BUTTON, CONTAINER, DYNAMIC_CARD_CONTAINER, GET, GET_CARD_DATA, GET_MASTER_DATA_ON_HOME, GET_SEARCH_RESULT, POST, SEARCH_CARD, SELECT, SELECT2, SELECT_SLIDER, SLIDER, TOGGLE_BUTTON } from "../utils/Const.js";
+import {
+  API_BUTTON,
+  API_HEADING,
+  BUTTON,
+  CONTAINER,
+  DYNAMIC_CARD_CONTAINER,
+  GET,
+  GET_CARD_DATA,
+  GET_MASTER_DATA_ON_HOME,
+  GET_SEARCH_RESULT,
+  POST,
+  SEARCH_CARD,
+  SELECT,
+  SELECT2,
+  SELECT_SLIDER,
+  SELECT_SLIDER2,
+  SLIDER,
+  TOGGLE_BUTTON,
+} from "../utils/Const.js";
 import { API_ENDPOINTS } from "@/redux/utils/api.js";
 
 export const SEARCH_RESULT = {
@@ -13,55 +31,55 @@ export const SEARCH_RESULT = {
   pageClass: "search-result-screen",
   className: "klk",
   children: [
-    {
-      type: CONTAINER,
-      className: "actioncontainer",
-      // location and price range filter
-      children: [
-        {
-          type: SELECT,
-          className: "select-city-button",
-          sliceName: "filter",
-          name: "city",
-          defaultValue: { label: "Gurgaon", value: "Gurgaon" },
-          options: [{ label: "Gurgaon", value: "Gurgaon" }],
-          onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
-          onClickApiMethod: POST,
-        },
-        {
-          type: SLIDER,
-          sliceName: "filter",
-          className: "select-range",
-          name: "budget",
-          minValue: 0,
-          maxValue: 200000000,
-          step: 1000000,
-          defaultValue: [20000000, 50000000],
-        },
-        {
-          type: API_BUTTON,
-          sliceName: "filter",
-          name: "search",
-          buttonLabel: "Search",
-          btnClass: "sr-search-button",
-          apiType: POST,
-          navigate: "/searchResult",
-          api: API_ENDPOINTS[GET_SEARCH_RESULT],
-        },
-      ],
-    },
+    // {
+    //   type: CONTAINER,
+    //   className: "actioncontainer",
+    //   // location and price range filter
+    //   children: [
+    //     {
+    //       type: SELECT,
+    //       className: "select-city-button",
+    //       sliceName: "filter",
+    //       name: "city",
+    //       defaultValue: { label: "Gurgaon", value: "Gurgaon" },
+    //       options: [{ label: "Gurgaon", value: "Gurgaon" }],
+    //       onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
+    //       onClickApiMethod: POST,
+    //     },
+    //     {
+    //       type: SLIDER,
+    //       sliceName: "filter",
+    //       className: "select-range",
+    //       name: "budget",
+    //       minValue: 0,
+    //       maxValue: 200000000,
+    //       step: 1000000,
+    //       defaultValue: [20000000, 50000000],
+    //     },
+    //     {
+    //       type: API_BUTTON,
+    //       sliceName: "filter",
+    //       name: "search",
+    //       buttonLabel: "Search",
+    //       btnClass: "sr-search-button",
+    //       apiType: POST,
+    //       navigate: "/searchResult",
+    //       api: API_ENDPOINTS[GET_SEARCH_RESULT],
+    //     },
+    //   ],
+    // },
     // results found heading
-    {
-      type: API_HEADING,
-      name: "matchFoundHeading",
-      tag: "h2",
-      className: "match-found-heading",
-      dynamicDetails: {
-        api: GET_SEARCH_RESULT,
-        textReplace: "_TEXT_TO_REPLACE_",
-      },
-      text: "_TEXT_TO_REPLACE_ Matches Found",
-    },
+    // {
+    //   type: API_HEADING,
+    //   name: "matchFoundHeading",
+    //   tag: "h2",
+    //   className: "match-found-heading",
+    //   dynamicDetails: {
+    //     api: GET_SEARCH_RESULT,
+    //     textReplace: "_TEXT_TO_REPLACE_",
+    //   },
+    //   text: "_TEXT_TO_REPLACE_ Matches Found",
+    // },
     {
       type: CONTAINER,
       name: "cardBodyContainer",
@@ -129,7 +147,10 @@ export const SEARCH_RESULT = {
                     { label: "Sushant Lok 1", value: "SUSHANT LOK 1" },
                     { label: "Sushant Lok 3", value: "SUSHANT LOK 3" },
                     { label: "Nirvana Country", value: "NIRVANA COUNTRY" },
-                    { label: "Emaar Emerald Hills", value: "EMAAR EMERALD HILLS" },
+                    {
+                      label: "Emaar Emerald Hills",
+                      value: "EMAAR EMERALD HILLS",
+                    },
                     { label: "New Colony", value: "NEW COLONY" },
                     { label: "Ardee City", value: "ARDEE CITY" },
                     { label: "Sun City", value: "SUNCITY" },
@@ -153,6 +174,29 @@ export const SEARCH_RESULT = {
                   onClickApiMethod: POST,
                   step: 0.1,
                   defaultValue: [180.0, 360.0],
+                  zIndex: 93,
+                },
+                // {
+                //   type: SELECT,
+                //   className: "filterbutton",
+                //   sliceName: "filter",
+                //   name: "city",
+                //   defaultValue: { label: "Gurgaon", value: "Gurgaon" },
+                //   options: [{ label: "Gurgaon", value: "Gurgaon" }],
+                //   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
+                //   onClickApiMethod: POST,
+                // },
+                {
+                  type: SELECT_SLIDER2,
+                  sliceName: "filter",
+                  name: "budget",
+                  buttonLabel: "Budget",
+                  minValue: 0,
+                  maxValue: 200000000,
+                  onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
+                  onClickApiMethod: POST,
+                  step: 1000000,
+                  defaultValue: [20000000, 50000000],
                   zIndex: 93,
                 },
                 {
@@ -257,6 +301,17 @@ export const SEARCH_RESULT = {
             },
           ],
         },
+        {
+          type: API_HEADING,
+          name: "matchFoundHeading",
+          tag: "h2",
+          className: "match-found-heading",
+          dynamicDetails: {
+            api: GET_SEARCH_RESULT,
+            textReplace: "_TEXT_TO_REPLACE_",
+          },
+          text: "_TEXT_TO_REPLACE_ Matches Found",
+        },
         // properties list
         {
           type: DYNAMIC_CARD_CONTAINER,
@@ -282,7 +337,6 @@ export const SEARCH_RESULT = {
     },
   ],
 };
-
 
 export default function SearchResult() {
   return (

@@ -62,14 +62,23 @@ export const newUserConst = [
     isRequired: true,
     requiredErrorMessage: "Please select a State.",
   },
+  // {
+  //   name: "sectorNumber",
+  //   label: "Locations Allowed",
+  //   dataKey: "location",
+  //   type: "select",
+  //   isRequired: true,
+  //   isMulti: true,
+  //   requiredErrorMessage: "Please select a Locations.",
+  // },
   {
-    name: "sectorNumber",
-    label: "Locations Allowed",
-    dataKey: "location",
-    type: "select",
+    name: "password",
+    label: "Password",
+    dataKey: "password",
+    type: TEXT,
     isRequired: true,
-    isMulti: true,
-    requiredErrorMessage: "Please select a Locations.",
+    regex: /^[a-zA-Z0-9_@./#&-+]{6,}$/,
+    requiredErrorMessage: "Please provide a Password.",
   },
 ];
 
@@ -135,14 +144,23 @@ export const newAgentConst = [
     isRequired: true,
     requiredErrorMessage: "Please select a State.",
   },
+  // {
+  //   name: "sectorNumber",
+  //   label: "Request for Locations",
+  //   dataKey: "location",
+  //   type: "select",
+  //   isRequired: true,
+  //   isMulti: true,
+  //   requiredErrorMessage: "Please select a Locations.",
+  // },
   {
-    name: "sectorNumber",
-    label: "Request for Locations",
-    dataKey: "location",
-    type: "select",
+    name: "password",
+    label: "Password",
+    dataKey: "password",
+    type: TEXT,
     isRequired: true,
-    isMulti: true,
-    requiredErrorMessage: "Please select a Locations.",
+    regex: /^[a-zA-Z0-9_@./#&-+]{6,}$/,
+    requiredErrorMessage: "Please provide a Password.",
   },
 ];
 
@@ -233,7 +251,7 @@ export const editUserConst = [
     isRequired: true,
     regex: /^[a-zA-Z0-9_@./#&-+]{6,}$/,
     requiredErrorMessage: "Please provide a Password.",
-  }
+  },
 ];
 
 export const editCustomerConst = [

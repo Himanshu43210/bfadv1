@@ -1522,6 +1522,13 @@ const ListingTable = ({
             {tableData?.map((element) => (
               <tr
                 className="tableborder text"
+                style={{
+                  backgroundColor:
+                    element?.needApprovalBy === "Rejected"
+                      ? "#fd5c63"
+                      : "white",
+                  color: "black",
+                }}
                 key={element.id}
                 onClick={() => {
                   if (rowClick) {
@@ -1566,17 +1573,19 @@ const ListingTable = ({
                       )}
                       {(!hideAlterActions || showDeleteAction) && (
                         <>
-                          <Button
-                            className="row_action_btn delete_btn ListingDeletebtn"
-                            variant="danger"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentRowData(element);
-                              toogleDelete();
-                            }}
-                          >
-                            <FaRegTrashAlt size={20} />
-                          </Button>
+                          {userProfile.role !== USER_ROLE.salesUser && (
+                            <Button
+                              className="row_action_btn delete_btn ListingDeletebtn"
+                              variant="danger"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentRowData(element);
+                                toogleDelete();
+                              }}
+                            >
+                              <FaRegTrashAlt size={20} />
+                            </Button>
+                          )}
                           &nbsp;
                         </>
                       )}

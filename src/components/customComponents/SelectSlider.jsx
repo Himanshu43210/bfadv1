@@ -1,14 +1,14 @@
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore.js';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore.js";
 import React, { useState } from "react";
 
 const SelectSlider = ({
   component,
   handleValueChange,
   stateValue = component.defaultValue,
-  className
+  className,
 }) => {
   const [modified, setModified] = useState(false);
   const [visited, setVisited] = useState(false);
@@ -25,7 +25,7 @@ const SelectSlider = ({
       if (modified && visited) {
         handleValueChange(selections);
         setModified(false);
-        setVisited(false)
+        setVisited(false);
       }
       setShowComponent(false);
     } else {
@@ -36,7 +36,8 @@ const SelectSlider = ({
 
   return (
     <>
-      <div className={`select_slider_wrapper ${className}`}
+      <div
+        className={`select_slider_wrapper ${className}`}
         onMouseLeave={() => {
           if (showComponent && visited) {
             handleSubmit();
@@ -52,10 +53,14 @@ const SelectSlider = ({
           variant="contained"
         >
           {component.buttonLabel}
-          <ExpandMoreIcon className='expand_icon' />
+          <ExpandMoreIcon className="expand_icon" />
         </Button>
         {showComponent && (
-          <div className="select_slider_popup_container" style={{ zIndex: component.zIndex }} onMouseEnter={() => setVisited(true)}>
+          <div
+            className="select_slider_popup_container"
+            style={{ zIndex: component.zIndex }}
+            onMouseEnter={() => setVisited(true)}
+          >
             <div className="select_slider_inputs">
               <TextField
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
@@ -90,8 +95,14 @@ const SelectSlider = ({
               valueLabelFormat={(value) => value.toFixed(1)}
             />
             <div className="select_slider_labels">
-              <label>Min: <span className="slider_value">{selections[0]} </span>Sq.Yd.</label>
-              <label>Max: <span className="slider_value">{selections[1]} </span>Sq.Yd.</label>
+              <label>
+                Min: <span className="slider_value">{selections[0]} </span>
+                Sq.Yd.
+              </label>
+              <label>
+                Max: <span className="slider_value">{selections[1]} </span>
+                Sq.Yd.
+              </label>
             </div>
           </div>
         )}
@@ -101,8 +112,6 @@ const SelectSlider = ({
 };
 
 export default SelectSlider;
-
-
 
 // const SelectSlider = ({
 //   component,

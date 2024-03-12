@@ -39,6 +39,7 @@ import {
   ABOUT_HERO,
   CONTACT_US,
   HEADER_COMP,
+  SELECT_SLIDER2,
 } from "../utils/Const.js";
 import Banner from "./Banner.jsx";
 import Footer from "./Footer.jsx";
@@ -51,9 +52,13 @@ import SelectButton from "./SelectButton.jsx";
 import AutoFetchApi from "./AutoFetchApi.jsx";
 import NavigateButton from "./NavigateButton.jsx";
 import SelectSlider from "./SelectSlider.jsx";
+import SelectSlider2 from "./SelectSlider2.jsx";
 import RenderComponent from "./ComponentRenderer.jsx";
 import DynamicCardContainer from "./DynamicCardContainer.jsx";
-import { resetFilterData, storeFilterData } from "../../redux/slice/filterSlice.js";
+import {
+  resetFilterData,
+  storeFilterData,
+} from "../../redux/slice/filterSlice.js";
 import { callApi } from "../../redux/utils/apiActions.js";
 import ScrollToTop from "./ScrollToTop.jsx";
 import DetailDataCard from "./DetailedDataCard.jsx";
@@ -71,7 +76,7 @@ import LoginRefresh from "./LoginRefresh.jsx";
 import { useEffect, useState } from "react";
 import Button from "./Button.jsx";
 import DropSelect from "./DropSelect.jsx";
-import Tabbar from './Tabbar.jsx';
+import Tabbar from "./Tabbar.jsx";
 import Chatbot from "./Chatbot.jsx";
 import OtpLogin from "./OtpLogin.jsx";
 import List from "./List.jsx";
@@ -79,9 +84,8 @@ import AboutHero from "./AboutHero.jsx";
 import ContactForm from "./ContactForm.jsx";
 import Line from "./Line.jsx";
 import Title from "./Title.jsx";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import HeaderComp from "../newComponents/HeaderComp.jsx";
-
 
 const comp = ({ component }) => {
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
@@ -94,8 +98,15 @@ const comp = ({ component }) => {
   const [refresh, setRefresh] = useState(true);
 
   const getData = (payload) => {
-    console.log('++++++++++ payload : get data ++++++++++', payload, component.paginatioName || component.name);
-    const page = (component.paginatioName || component.name) !== "page" ? sliceData.page : 0;
+    console.log(
+      "++++++++++ payload : get data ++++++++++",
+      payload,
+      component.paginatioName || component.name
+    );
+    const page =
+      (component.paginatioName || component.name) !== "page"
+        ? sliceData.page
+        : 0;
     let reqPayload = {};
     if (payload == null) {
       reqPayload = {
@@ -106,11 +117,12 @@ const comp = ({ component }) => {
     } else {
       reqPayload = {
         ...sliceData,
-        [component.paginatioName || component.name]: (typeof payload === "object")
-          ? Array.isArray(payload)
-            ? payload
-            : payload.value
-          : payload,
+        [component.paginatioName || component.name]:
+          typeof payload === "object"
+            ? Array.isArray(payload)
+              ? payload
+              : payload.value
+            : payload,
       };
     }
     const markForDeletion = [];
@@ -125,7 +137,7 @@ const comp = ({ component }) => {
         reqPayload[key] = "YES";
       }
     });
-    markForDeletion.forEach(key => {
+    markForDeletion.forEach((key) => {
       delete reqPayload[key];
     });
     const options = {
@@ -143,11 +155,13 @@ const comp = ({ component }) => {
   const handleValueChange = (value) => {
     if ((component.paginatioName || component.name) === "Reset") {
       // reset filters
-      dispatch(resetFilterData({
-        budget: sliceData?.budget,
-        city: sliceData?.city,
-        page: 0
-      }));
+      dispatch(
+        resetFilterData({
+          budget: sliceData?.budget,
+          city: sliceData?.city,
+          page: 0,
+        })
+      );
       if (component.onClickApi) {
         getData(null);
       }
@@ -163,7 +177,10 @@ const comp = ({ component }) => {
               : value,
         })
       );
-      console.log('============ CALLING THE GET DATA ONLY IF onClickApi ==============', component.onClickApi);
+      console.log(
+        "============ CALLING THE GET DATA ONLY IF onClickApi ==============",
+        component.onClickApi
+      );
       if (component.onClickApi) {
         getData(value);
       }
@@ -171,7 +188,7 @@ const comp = ({ component }) => {
   };
 
   const handleLoadMore = (payload) => {
-    console.log('============== HANDLE LOAD MORE ================', payload);
+    console.log("============== HANDLE LOAD MORE ================", payload);
     const options = {
       url: component.api,
       method: component.apiType,
@@ -187,7 +204,11 @@ const comp = ({ component }) => {
     // just read the querystring & update the filters accordingly and also update the querystring on filters change
 
     // if component.slicename is budget then set the slicedata budget to the components default
-    if ((component.paginatioName || component.name) === "budget" && refresh && window.location.pathname === "/") {
+    if (
+      (component.paginatioName || component.name) === "budget" &&
+      refresh &&
+      window.location.pathname === "/"
+    ) {
       setRefresh(false);
       dispatch(
         storeFilterData({
@@ -204,7 +225,12 @@ const comp = ({ component }) => {
         <CircularProgress className="loader-class" />
       )}
       {component.type === AUTO_FETCH_API && (
-        <AutoFetchApi component={component} url={component.api} method={GET} params={component.params} />
+        <AutoFetchApi
+          component={component}
+          url={component.api}
+          method={GET}
+          params={component.params}
+        />
       )}
       {component.type === AUTO_FETCH_API_POST && (
         <AutoFetchApi component={component} />
@@ -216,9 +242,7 @@ const comp = ({ component }) => {
       {component.type === CONTAINER && (
         <RenderComponent jsonToRender={component} />
       )}
-      {
-        component.type === PANEL_HEADER && <PanelHeader component={component} />
-      }
+      {component.type === PANEL_HEADER && <PanelHeader component={component} />}
       {component.type === IMAGE_BANNER && <Banner component={component} />}
       {component.type === SELECT && (
         <SelectButton
@@ -242,10 +266,7 @@ const comp = ({ component }) => {
         />
       )}
       {component.type === API_BUTTON && (
-        <ApiButton
-          component={component}
-          data={sliceData}
-        />
+        <ApiButton component={component} data={sliceData} />
       )}
       {component.type === HEADING && <Heading component={component} />}
       {component.type === API_HEADING && (
@@ -266,17 +287,22 @@ const comp = ({ component }) => {
         <NavigateButton component={component} />
       )}
       {component.type === PAGE_FOOTER && <Footer component={component} />}
-      {component.type === PAGE_HEADER && <Header component={component} isMobile={isMobile} />}
+      {component.type === PAGE_HEADER && (
+        <Header component={component} isMobile={isMobile} />
+      )}
       {component.type === OTP_LOGIN && <OtpLogin />}
       {component.type === HEADER_COMP && <HeaderComp />}
-      {component.type === HAMBURGER_MENU && (
-        <MenuState component={component} />
-      )}
-      {component.type === TABS && (
-        <Tabbar component={component} />
-      )}
+      {component.type === HAMBURGER_MENU && <MenuState component={component} />}
+      {component.type === TABS && <Tabbar component={component} />}
       {component.type === SELECT_SLIDER && (
         <SelectSlider
+          component={component}
+          handleValueChange={handleValueChange}
+          stateValue={sliceData[component.name]}
+        />
+      )}
+      {component.type === SELECT_SLIDER2 && (
+        <SelectSlider2
           component={component}
           handleValueChange={handleValueChange}
           stateValue={sliceData[component.name]}
@@ -290,23 +316,16 @@ const comp = ({ component }) => {
         />
       )}
       {component.type === BUTTON && (
-        <Button
-          component={component}
-          handleOnClick={handleValueChange}
-        />
+        <Button component={component} handleOnClick={handleValueChange} />
       )}
       {component.type === SCROLL_TO_TOP && (
         <ScrollToTop component={component} />
       )}
-      {component.type === CHATBOT && (
-        <Chatbot />
-      )}
+      {component.type === CHATBOT && <Chatbot />}
       {component.type === DASHBOARD_LISTING && (
         <DashboardListing component={component} />
       )}
-      {component.type === ROUTE_BUTTON && (
-        <RouteButton component={component} />
-      )}
+      {component.type === ROUTE_BUTTON && <RouteButton component={component} />}
       {component.type === LABEL_MAP && <LabelMap component={component} />}
       {component.type === HORIZONTAL_LINE && <Line />}
       {component.type === TABLE_HEADER && <TableHeader component={component} />}
@@ -318,7 +337,6 @@ const comp = ({ component }) => {
     </>
   );
 };
-
 
 // const comp = ({ component }) => {
 //   let isMobile = false; // Adjust the breakpoint as per your needs
@@ -549,6 +567,6 @@ const comp = ({ component }) => {
 //   );
 // };
 
-const ComponentSelector = dynamic(() => Promise.resolve(comp), { ssr: false })
+const ComponentSelector = dynamic(() => Promise.resolve(comp), { ssr: false });
 
 export default ComponentSelector;
