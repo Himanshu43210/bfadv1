@@ -14,7 +14,7 @@ import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
 import { storeUserData } from "../../redux/slice/userSlice.js";
 import { storeParentData } from "../../redux/slice/parentSlice.js";
 import { useRouter } from "next/navigation.js";
-import Link from "next/link.js";
+import Link from "next/link";
 
 const Login = () => {
   const navigate = useRouter();
@@ -95,7 +95,7 @@ const Login = () => {
             color: "white",
           }}
         >
-          <p style={{ cursor: "pointer" }}>Forgot Password?</p>
+          <Link href="/forgetPassword">Forgot Password?</Link>
         </div>
         {loginStatus === LOADING ? (
           <CircularProgress className="loader-class" />
