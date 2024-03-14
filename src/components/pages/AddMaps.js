@@ -346,7 +346,10 @@ const AddMaps = () => {
                             textAlign: "left",
                           }}
                         >
-                          <FaMapMarkerAlt onClick={handleMapOpen} />
+                          <FaMapMarkerAlt
+                            onClick={handleMapOpen}
+                            style={{ color: "#004E55", cursor: "pointer" }}
+                          />
 
                           {mapOpen === true && (
                             <MapModal
