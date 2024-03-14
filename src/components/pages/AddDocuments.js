@@ -343,7 +343,10 @@ const AddDocuments = () => {
                             textAlign: "left",
                           }}
                         >
-                          <FaMapMarkerAlt onClick={handleDocumentOpen} />
+                          <FaMapMarkerAlt
+                            onClick={handleDocumentOpen}
+                            style={{ color: "#004E55", cursor: "pointer" }}
+                          />
                           {documentOpen === true && (
                             <MapModal
                               isOpen={documentOpen}
