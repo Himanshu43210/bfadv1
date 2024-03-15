@@ -4,6 +4,7 @@ import CustomRouteButton from "../customComponents/RouteButton";
 import { ROUTE_BUTTON } from "../utils/Const";
 import Link from "next/link";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
 
 function MapModal({ isOpen, onClose, imageUrl }) {
   if (!isOpen) return null;
@@ -109,6 +110,11 @@ const MapsPage = () => {
   const handleModalOpen = () => {
     setModal(true);
   };
+
+  const handleModalClose = () => {
+    setModal(false);
+  };
+
   function formatDate(inputDate) {
     const options = { day: "numeric", month: "long", year: "numeric" };
     const formattedDate = new Date(inputDate).toLocaleDateString(
@@ -145,58 +151,82 @@ const MapsPage = () => {
           WELCOME TO BUILDERFLOOR.COM
         </h2>
         {modal === true && (
-          <div style={{ border: "solid gray 1px", padding: 20 }}>
-            <p
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backdropFilter: "blur(5px)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 999,
+            }}
+          >
+            <div
               style={{
-                fontWeight: 600,
-                fontSize: 20,
-                textAlign: "center",
-                marginBottom: 40,
+                border: "solid gray 1px",
+                padding: 20,
+                backgroundColor: "white",
               }}
             >
-              Add Maps
-            </p>
-            <div>
-              <input
-                type="text"
-                onChange={handleHeadingChange}
-                style={{ margin: "0 10px", padding: 2 }}
-                placeholder="Enter heading..."
-              />
-              {/* <input
-                type="text"
-                onChange={handleCategoryChange}
-                style={{ margin: "0px 10px", padding: 2 }}
-                placeholder="Enter category..."
-              /> */}
-              <input
-                type="file"
-                onChange={handleFileChange}
-                style={{ margin: "10px 0" }}
-              />
-              <button
-                onClick={handleUpload}
+              <MdCancel onClick={handleModalClose} />
+              <p
                 style={{
-                  padding: "10px 30px",
-                  backgroundColor: "#004E55",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                  transition: "box-shadow 0.3s ease-in-out",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.boxShadow =
-                    "0 8px 16px rgba(0, 0, 0, 0.2)";
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.boxShadow =
-                    "0 4px 8px rgba(0, 0, 0, 0.1)";
+                  fontWeight: 600,
+                  fontSize: 20,
+                  textAlign: "center",
+                  marginBottom: 40,
                 }}
               >
-                UPLOAD
-              </button>
+                Add Maps
+              </p>
+
+              <div>
+                <input
+                  type="text"
+                  onChange={handleHeadingChange}
+                  style={{ margin: "0 10px", padding: 2 }}
+                  placeholder="Enter heading..."
+                />
+                {/* <input
+          type="text"
+          onChange={handleCategoryChange}
+          style={{ margin: "0px 10px", padding: 2 }}
+          placeholder="Enter category..."
+        /> */}
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  style={{ margin: "10px 0" }}
+                />
+                <button
+                  onClick={handleUpload}
+                  style={{
+                    padding: "10px 30px",
+                    backgroundColor: "#004E55",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    transition: "box-shadow 0.3s ease-in-out",
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.boxShadow =
+                      "0 8px 16px rgba(0, 0, 0, 0.2)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.boxShadow =
+                      "0 4px 8px rgba(0, 0, 0, 0.1)";
+                  }}
+                >
+                  UPLOAD
+                </button>
+              </div>
             </div>
           </div>
         )}
