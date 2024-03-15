@@ -1,15 +1,60 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import CustomRouteButton from "../customComponents/RouteButton";
+import { ROUTE_BUTTON } from "../utils/Const";
+import { FaMapMarkerAlt } from "react-icons/fa";
+
+function DocumentModal({ isOpen, onClose, imageUrl }) {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: "#fff",
+          padding: "20px",
+          borderRadius: "4px",
+        }}
+      >
+        <img
+          src={imageUrl}
+          alt="Modal Image"
+          style={{
+            width: "600px",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 const Document = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState(false);
+  const [DocumentOpen, setDocumentOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const apiUrl =
-          "http://localhost:5000/api/content/findAll?page=0&limit=10";
+          "https://bfservices.trainright.fit/api/content/findAll?page=0&limit=10";
         const response = await axios.get(apiUrl);
         setData(response.data);
         setLoading(false);
@@ -21,6 +66,24 @@ const Document = () => {
 
     fetchData();
   }, []);
+
+  const handleDocumentOpen = () => {
+    setDocumentOpen(true);
+  };
+
+  const handleDocumentClose = () => {
+    setDocumentOpen(false);
+  };
+
+  function formatDate(inputDate) {
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    const formattedDate = new Date(inputDate).toLocaleDateString(
+      "en-US",
+      options
+    );
+    return formattedDate;
+  }
+
   return (
     <div
       style={{
@@ -53,12 +116,130 @@ const Document = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <ul>
-          {data.map((item) => (
-            <li key={item.id}>{item.name}</li>
-          ))}
-        </ul>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginTop: "20px",
+            backgroundColor: "#fff",
+            marginBottom: "40px",
+          }}
+        >
+          <thead>
+            <tr>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                  backgroundColor: "#004E55",
+                  color: "#fff",
+                }}
+              >
+                Category
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                  backgroundColor: "#004E55",
+                  color: "#fff",
+                }}
+              >
+                Heading
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                  backgroundColor: "#004E55",
+                  color: "#fff",
+                }}
+              >
+                Document
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                  backgroundColor: "#004E55",
+                  color: "#fff",
+                }}
+              >
+                Created At
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.result?.map(
+              (item) =>
+                item.category === "document" && (
+                  <tr key={item._id} style={{ backgroundColor: "white" }}>
+                    <td
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "8px",
+                        textAlign: "left",
+                      }}
+                    >
+                      {item.category}
+                    </td>
+                    <td
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "8px",
+                        textAlign: "left",
+                      }}
+                    >
+                      {item.heading}
+                    </td>
+                    <td
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "8px",
+                        textAlign: "left",
+                      }}
+                    >
+                      <FaMapMarkerAlt
+                        onClick={handleDocumentOpen}
+                        style={{ color: "#004E55", cursor: "pointer" }}
+                      />
+
+                      {DocumentOpen === true && (
+                        <DocumentModal
+                          isOpen={DocumentOpen}
+                          onClose={handleDocumentClose}
+                          imageUrl={item.file}
+                        />
+                      )}
+                    </td>
+                    <td
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "8px",
+                        textAlign: "left",
+                      }}
+                    >
+                      {formatDate(item.createdAt)}
+                    </td>
+                  </tr>
+                )
+            )}
+          </tbody>
+        </table>
       )}
+      <CustomRouteButton
+        component={{
+          type: ROUTE_BUTTON,
+          className: "admin-route-button",
+          label: "Go to Dashboard",
+          name: "Go to Dashboard",
+          route: "/admin",
+        }}
+      />
     </div>
   );
 };
