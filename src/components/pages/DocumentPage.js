@@ -4,7 +4,6 @@ import CustomRouteButton from "../customComponents/RouteButton";
 import { ROUTE_BUTTON } from "../utils/Const";
 import Link from "next/link";
 import { FaMapMarkerAlt } from "react-icons/fa";
-
 function MapModal({ isOpen, onClose, imageUrl }) {
   if (!isOpen) return null;
 
@@ -44,15 +43,14 @@ function MapModal({ isOpen, onClose, imageUrl }) {
     </div>
   );
 }
-
-const AddMaps = () => {
+const DocumentPage = () => {
   const [heading, setHeading] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   // const [category, setCategory] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
-  const [mapOpen, setMapOpen] = useState(false);
+  const [documentOpen, setDocumentOpen] = useState(false);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -75,7 +73,7 @@ const AddMaps = () => {
       const formData = new FormData();
       formData.append("heading", heading);
       formData.append("file", selectedFile);
-      formData.append("category", "map");
+      formData.append("category", "document");
       const apiUrl = "https://bfservices.trainright.fit/api/content/create";
       const response = await axios.post(apiUrl, formData, {
         headers: {
@@ -117,13 +115,12 @@ const AddMaps = () => {
     );
     return formattedDate;
   }
-  const handleMapOpen = () => {
-    setMapOpen(true);
+  const handleDocumentOpen = () => {
+    setDocumentOpen(true);
   };
-  const handleMapClose = () => {
-    setMapOpen(false);
+  const handleDocumentClose = () => {
+    setDocumentOpen(false);
   };
-  console.log(data?.result);
   return (
     <div
       style={{
@@ -154,7 +151,7 @@ const AddMaps = () => {
                 marginBottom: 40,
               }}
             >
-              Add Maps
+              Add Documents
             </p>
             <div>
               <input
@@ -218,7 +215,7 @@ const AddMaps = () => {
               marginBottom: 40,
             }}
           >
-            All Maps
+            Manage Documents
           </p>
           <button
             style={{
@@ -243,7 +240,7 @@ const AddMaps = () => {
             }}
             onClick={handleModalOpen}
           >
-            Add Map
+            Add Document
           </button>
           {loading ? (
             <p>Loading...</p>
@@ -290,7 +287,7 @@ const AddMaps = () => {
                       color: "#fff",
                     }}
                   >
-                    Map
+                    Document
                   </th>
                   <th
                     style={{
@@ -319,7 +316,7 @@ const AddMaps = () => {
               <tbody>
                 {data?.result?.map(
                   (item) =>
-                    item.category === "map" && (
+                    item.category === "document" && (
                       <tr key={item._id} style={{ backgroundColor: "white" }}>
                         <td
                           style={{
@@ -347,14 +344,13 @@ const AddMaps = () => {
                           }}
                         >
                           <FaMapMarkerAlt
-                            onClick={handleMapOpen}
+                            onClick={handleDocumentOpen}
                             style={{ color: "#004E55", cursor: "pointer" }}
                           />
-
-                          {mapOpen === true && (
+                          {documentOpen === true && (
                             <MapModal
-                              isOpen={mapOpen}
-                              onClose={handleMapClose}
+                              isOpen={documentOpen}
+                              onClose={handleDocumentClose}
                               imageUrl={item.file}
                             />
                           )}
@@ -395,4 +391,5 @@ const AddMaps = () => {
     </div>
   );
 };
-export default AddMaps;
+
+export default DocumentPage;

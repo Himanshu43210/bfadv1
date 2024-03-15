@@ -4,6 +4,7 @@ import CustomRouteButton from "../customComponents/RouteButton";
 import { ROUTE_BUTTON } from "../utils/Const";
 import Link from "next/link";
 import { FaMapMarkerAlt } from "react-icons/fa";
+
 function MapModal({ isOpen, onClose, imageUrl }) {
   if (!isOpen) return null;
 
@@ -43,14 +44,15 @@ function MapModal({ isOpen, onClose, imageUrl }) {
     </div>
   );
 }
-const AddDocuments = () => {
+
+const MapsPage = () => {
   const [heading, setHeading] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   // const [category, setCategory] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
-  const [documentOpen, setDocumentOpen] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -73,7 +75,7 @@ const AddDocuments = () => {
       const formData = new FormData();
       formData.append("heading", heading);
       formData.append("file", selectedFile);
-      formData.append("category", "document");
+      formData.append("category", "map");
       const apiUrl = "https://bfservices.trainright.fit/api/content/create";
       const response = await axios.post(apiUrl, formData, {
         headers: {
@@ -115,12 +117,13 @@ const AddDocuments = () => {
     );
     return formattedDate;
   }
-  const handleDocumentOpen = () => {
-    setDocumentOpen(true);
+  const handleMapOpen = () => {
+    setMapOpen(true);
   };
-  const handleDocumentClose = () => {
-    setDocumentOpen(false);
+  const handleMapClose = () => {
+    setMapOpen(false);
   };
+  console.log(data?.result);
   return (
     <div
       style={{
@@ -151,7 +154,7 @@ const AddDocuments = () => {
                 marginBottom: 40,
               }}
             >
-              Add Documents
+              Add Maps
             </p>
             <div>
               <input
@@ -215,7 +218,7 @@ const AddDocuments = () => {
               marginBottom: 40,
             }}
           >
-            All Documents
+            Manage Maps
           </p>
           <button
             style={{
@@ -240,7 +243,7 @@ const AddDocuments = () => {
             }}
             onClick={handleModalOpen}
           >
-            Add Document
+            Add Map
           </button>
           {loading ? (
             <p>Loading...</p>
@@ -287,7 +290,7 @@ const AddDocuments = () => {
                       color: "#fff",
                     }}
                   >
-                    Document
+                    Map
                   </th>
                   <th
                     style={{
@@ -316,7 +319,7 @@ const AddDocuments = () => {
               <tbody>
                 {data?.result?.map(
                   (item) =>
-                    item.category === "document" && (
+                    item.category === "map" && (
                       <tr key={item._id} style={{ backgroundColor: "white" }}>
                         <td
                           style={{
@@ -344,13 +347,14 @@ const AddDocuments = () => {
                           }}
                         >
                           <FaMapMarkerAlt
-                            onClick={handleDocumentOpen}
+                            onClick={handleMapOpen}
                             style={{ color: "#004E55", cursor: "pointer" }}
                           />
-                          {documentOpen === true && (
+
+                          {mapOpen === true && (
                             <MapModal
-                              isOpen={documentOpen}
-                              onClose={handleDocumentClose}
+                              isOpen={mapOpen}
+                              onClose={handleMapClose}
                               imageUrl={item.file}
                             />
                           )}
@@ -391,5 +395,4 @@ const AddDocuments = () => {
     </div>
   );
 };
-
-export default AddDocuments;
+export default MapsPage;

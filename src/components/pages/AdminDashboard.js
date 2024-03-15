@@ -132,9 +132,9 @@ const SuperAdminDashboard = () => {
             <RouteButton
               component={{
                 className: "admin_route_button",
-                label: "Add Maps",
-                name: "Add Maps",
-                route: "/admin/addMaps",
+                label: "Manage Maps",
+                name: "Manage Maps",
+                route: "/admin/manageMaps",
               }}
             />
           </div>
@@ -142,9 +142,9 @@ const SuperAdminDashboard = () => {
             <RouteButton
               component={{
                 className: "admin_route_button",
-                label: "Add Documents",
-                name: "Add Documents",
-                route: "/admin/addDocuments",
+                label: "Manage Documents",
+                name: "Manage Documents",
+                route: "/admin/manageDocuments",
               }}
             />
           </div>

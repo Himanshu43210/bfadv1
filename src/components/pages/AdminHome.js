@@ -41,12 +41,16 @@ export default function AdminHome() {
         </div>
       </div>
       <div
-        className={`${"main_admin_container"} ${showMenu ? "menu-is-active" : "menu-is-not-active"
-          } `}
+        className={`${"main_admin_container"} ${
+          showMenu ? "menu-is-active" : "menu-is-not-active"
+        } `}
       >
         {showMenu && (
           <>
-            <div className="panel_overlay" onClick={handleMenuOverlayClick}></div>
+            <div
+              className="panel_overlay"
+              onClick={handleMenuOverlayClick}
+            ></div>
             <div className="admin_dashboard_home">
               <Panel
                 nonSalesUser={userProfile?.role !== USER_ROLE[PROPERTY_DEALER]}

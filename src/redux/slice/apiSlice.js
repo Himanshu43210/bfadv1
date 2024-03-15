@@ -25,7 +25,8 @@ const apiSlice = createSlice({
         const apiname = getApiName(action?.meta?.arg.url);
         if (apiname !== "") {
           state.status[getApiName(action?.meta?.arg.url)] = FAILED;
-          state.error[getApiName(action?.meta?.arg.url)] = action.error.message;
+          state.error[getApiName(action?.meta?.arg?.url)] =
+            action?.error.message;
         }
       });
   },
