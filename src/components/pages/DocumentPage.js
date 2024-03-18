@@ -4,7 +4,11 @@ import CustomRouteButton from "../customComponents/RouteButton";
 import { ROUTE_BUTTON } from "../utils/Const";
 import Link from "next/link";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { MdCancel } from "react-icons/md";
+import { MdCancel, MdEdit, MdDelete } from "react-icons/md";
+import { IoDocument } from "react-icons/io5";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { Table, Button } from "react-bootstrap";
+import { Troubleshoot } from "@mui/icons-material";
 
 function MapModal({ isOpen, onClose, imageUrl }) {
   if (!isOpen) return null;
@@ -45,6 +49,7 @@ function MapModal({ isOpen, onClose, imageUrl }) {
     </div>
   );
 }
+
 const DocumentPage = () => {
   const [heading, setHeading] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -52,6 +57,7 @@ const DocumentPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const [documentOpen, setDocumentOpen] = useState(false);
 
   const handleFileChange = (event) => {
@@ -114,6 +120,14 @@ const DocumentPage = () => {
     setModal(false);
   };
 
+  const handleEditModalOpen = () => {
+    setEditModal(true);
+  };
+
+  const handleEditModalClose = () => {
+    setEditModal(false);
+  };
+
   function formatDate(inputDate) {
     const options = { day: "numeric", month: "long", year: "numeric" };
     const formattedDate = new Date(inputDate).toLocaleDateString(
@@ -128,9 +142,26 @@ const DocumentPage = () => {
   const handleDocumentClose = () => {
     setDocumentOpen(false);
   };
+
+  const handleEdit = (id) => {
+    axios
+      .put("https://bfservices.trainright.fit/api/content/update" + id)
+      .then(() => window.location.reload())
+      .catch((err) => console.log(err, "Can't update data!"));
+  };
+
+  const handleDelete = (id) => {
+    axios
+      .delete(
+        "https://bfservices.trainright.fit/api/content/deleteById?id=" + id
+      )
+      .then(() => window.location.reload())
+      .catch((err) => console.log(err, "Can't delete data!"));
+  };
   return (
     <div
       style={{
+        width: "100vw",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -166,12 +197,25 @@ const DocumentPage = () => {
           >
             <div
               style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
                 border: "solid gray 1px",
                 padding: 20,
                 backgroundColor: "white",
               }}
             >
-              <MdCancel onClick={handleModalClose} />
+              <div
+                style={{
+                  cursor: "pointer",
+                  display: "flex",
+                  justifyItems: "center",
+                  width: "100%",
+                }}
+              >
+                <MdCancel onClick={handleModalClose} />
+              </div>
               <p
                 style={{
                   fontWeight: 600,
@@ -180,14 +224,29 @@ const DocumentPage = () => {
                   marginBottom: 40,
                 }}
               >
-                Add Maps
+                Add Documents
               </p>
 
-              <div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyItems: "right",
+                  marginBottom: "10px",
+                }}
+              >
+                {" "}
                 <input
                   type="text"
                   onChange={handleHeadingChange}
-                  style={{ margin: "0 10px", padding: 2 }}
+                  style={{
+                    margin: "0 10px",
+                    padding: "6px",
+                    borderBottom: "2px solid black",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    borderTop: "none",
+                  }}
                   placeholder="Enter heading..."
                 />
                 {/* <input
@@ -201,30 +260,138 @@ const DocumentPage = () => {
                   onChange={handleFileChange}
                   style={{ margin: "10px 0" }}
                 />
-                <button
-                  onClick={handleUpload}
-                  style={{
-                    padding: "10px 30px",
-                    backgroundColor: "#004E55",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                    transition: "box-shadow 0.3s ease-in-out",
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.boxShadow =
-                      "0 8px 16px rgba(0, 0, 0, 0.2)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.boxShadow =
-                      "0 4px 8px rgba(0, 0, 0, 0.1)";
-                  }}
-                >
-                  UPLOAD
-                </button>
               </div>
+              <button
+                onClick={handleUpload}
+                style={{
+                  padding: "10px 30px",
+                  backgroundColor: "#004E55",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  transition: "box-shadow 0.3s ease-in-out",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.boxShadow =
+                    "0 8px 16px rgba(0, 0, 0, 0.2)";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.boxShadow =
+                    "0 4px 8px rgba(0, 0, 0, 0.1)";
+                }}
+              >
+                UPLOAD
+              </button>
+            </div>
+          </div>
+        )}
+        {editModal === true && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backdropFilter: "blur(5px)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 999,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "solid gray 1px",
+                padding: 20,
+                backgroundColor: "white",
+              }}
+            >
+              <div
+                style={{
+                  cursor: "pointer",
+                  display: "flex",
+                  justifyItems: "center",
+                  width: "100%",
+                }}
+              >
+                <MdCancel onClick={handleEditModalClose} />
+              </div>
+              <p
+                style={{
+                  fontWeight: 600,
+                  fontSize: 20,
+                  textAlign: "center",
+                  marginBottom: 40,
+                }}
+              >
+                Edit Document
+              </p>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyItems: "right",
+                  marginBottom: "10px",
+                }}
+              >
+                {" "}
+                <input
+                  type="text"
+                  onChange={handleHeadingChange}
+                  style={{
+                    margin: "0 10px",
+                    padding: "6px",
+                    borderBottom: "2px solid black",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    borderTop: "none",
+                  }}
+                  placeholder="New heading..."
+                />
+                {/* <input
+          type="text"
+          onChange={handleCategoryChange}
+          style={{ margin: "0px 10px", padding: 2 }}
+          placeholder="Enter category..."
+        /> */}
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  style={{ margin: "10px 0" }}
+                />
+              </div>
+              <button
+                onClick={handleEdit}
+                style={{
+                  padding: "10px 30px",
+                  backgroundColor: "#004E55",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  transition: "box-shadow 0.3s ease-in-out",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.boxShadow =
+                    "0 8px 16px rgba(0, 0, 0, 0.2)";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.boxShadow =
+                    "0 4px 8px rgba(0, 0, 0, 0.1)";
+                }}
+              >
+                SUBMIT
+              </button>
             </div>
           </div>
         )}
@@ -374,9 +541,14 @@ const DocumentPage = () => {
                             textAlign: "left",
                           }}
                         >
-                          <FaMapMarkerAlt
+                          <IoDocument
                             onClick={handleDocumentOpen}
-                            style={{ color: "#004E55", cursor: "pointer" }}
+                            style={{
+                              color: "#004E55",
+                              cursor: "pointer",
+                              width: "20px",
+                              height: "20px",
+                            }}
                           />
                           {documentOpen === true && (
                             <MapModal
@@ -401,22 +573,55 @@ const DocumentPage = () => {
                             padding: "8px",
                             textAlign: "left",
                           }}
-                        ></td>
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              gap: 10,
+                            }}
+                          >
+                            <Button
+                              className="row_action_btn edit_btn ListingEditbtn"
+                              onClick={handleEditModalOpen}
+                              variant="success"
+                            >
+                              <MdEdit size={20} />
+                            </Button>
+                            <Button
+                              className="row_action_btn delete_btn ListingDeletebtn"
+                              variant="danger"
+                              onClick={() => handleDelete(item._id)}
+                            >
+                              <FaRegTrashAlt size={20} />
+                            </Button>
+                          </div>
+                        </td>
                       </tr>
                     )
                 )}
               </tbody>
             </table>
           )}
-          <CustomRouteButton
-            component={{
-              type: ROUTE_BUTTON,
-              className: "admin-route-button",
-              label: "Go to Dashboard",
-              name: "Go to Dashboard",
-              route: "/admin",
+          <div
+            style={{
+              position: "fixed",
+              bottom: "60px",
+              width: "100%",
+              textAlign: "center",
             }}
-          />
+          >
+            <CustomRouteButton
+              component={{
+                type: ROUTE_BUTTON,
+                className: "admin-route-button",
+                label: "Back",
+                name: "Go to Dashboard",
+                route: "/admin",
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -1,54 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import CustomRouteButton from "../customComponents/RouteButton";
 import { ROUTE_BUTTON } from "../utils/Const";
 import { FaMapMarkerAlt } from "react-icons/fa";
-
-function MapModal({ isOpen, onClose, imageUrl }) {
-  if (!isOpen) return null;
-
-  return (
-    <div
-      className="modal-overlay"
-      onClick={onClose}
-      style={{
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          background: "#fff",
-          padding: "20px",
-          borderRadius: "4px",
-        }}
-      >
-        <img
-          src={imageUrl}
-          alt="Modal Image"
-          style={{
-            width: "600px",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
+import Footer from "../customComponents/Footer";
+import ScrollToTop from "../customComponents/ScrollToTop";
+import Chatbot from "../customComponents/Chatbot";
+import HeaderComp from "../newComponents/HeaderComp";
+import Image from "next/image";
+import { FcFile } from "react-icons/fc";
+import { useReactToPrint } from "react-to-print";
 
 const Map = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
+  const [currentMap, setCurrentMap] = useState("");
+
+  const printRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,179 +40,133 @@ const Map = () => {
     fetchData();
   }, []);
 
-  const handleMapOpen = () => {
+  const handleMapOpen = (id) => {
     setMapOpen(true);
+    setCurrentMap(id);
   };
 
   const handleMapClose = () => {
     setMapOpen(false);
+    setCurrentMap("");
   };
 
-  function formatDate(inputDate) {
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    const formattedDate = new Date(inputDate).toLocaleDateString(
-      "en-US",
-      options
-    );
-    return formattedDate;
-  }
-
+  console.log(currentMap);
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <h2
+    <div>
+      <HeaderComp />
+      <div
         style={{
-          fontWeight: 600,
-          fontSize: 24,
-          textAlign: "center",
-          marginTop: 40,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "0 100px",
         }}
       >
-        WELCOME TO BUILDERFLOOR.COM
-      </h2>
-      <p
-        style={{
-          fontWeight: 600,
-          fontSize: 20,
-          textAlign: "center",
-          marginBottom: 40,
-        }}
-      >
-        All Maps
-      </p>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <table
+        <h2
           style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            marginTop: "20px",
-            backgroundColor: "#fff",
-            marginBottom: "40px",
+            fontWeight: 600,
+            fontSize: 24,
+            textAlign: "center",
+            marginTop: 40,
           }}
         >
-          <thead>
-            <tr>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                  backgroundColor: "#004E55",
-                  color: "#fff",
-                }}
-              >
-                Category
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                  backgroundColor: "#004E55",
-                  color: "#fff",
-                }}
-              >
-                Heading
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                  backgroundColor: "#004E55",
-                  color: "#fff",
-                }}
-              >
-                Map
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                  backgroundColor: "#004E55",
-                  color: "#fff",
-                }}
-              >
-                Created At
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+          WELCOME TO BUILDERFLOOR.COM
+        </h2>
+        <p
+          style={{
+            fontWeight: 600,
+            fontSize: 20,
+            textAlign: "center",
+            marginBottom: 40,
+          }}
+        >
+          All Maps
+        </p>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <div>
+            <ul className="flex justify-start gap-4">
+              {data?.result?.map(
+                (item) =>
+                  item.category === "map" && (
+                    <div>
+                      <li
+                        className={`cursor-pointer text-xl ${
+                          currentMap === item._id ? "underline" : ""
+                        }`}
+                        onClick={() => handleMapOpen(item._id)}
+                      >
+                        {item.heading.toUpperCase()}
+                      </li>
+                    </div>
+                  )
+              )}
+            </ul>
             {data?.result?.map(
               (item) =>
-                item.category === "map" && (
-                  <tr key={item._id} style={{ backgroundColor: "white" }}>
-                    <td
-                      style={{
-                        border: "1px solid #ddd",
-                        padding: "8px",
-                        textAlign: "left",
-                      }}
-                    >
-                      {item.category}
-                    </td>
-                    <td
-                      style={{
-                        border: "1px solid #ddd",
-                        padding: "8px",
-                        textAlign: "left",
-                      }}
-                    >
-                      {item.heading}
-                    </td>
-                    <td
-                      style={{
-                        border: "1px solid #ddd",
-                        padding: "8px",
-                        textAlign: "left",
-                      }}
-                    >
-                      <FaMapMarkerAlt
-                        onClick={handleMapOpen}
-                        style={{ color: "#004E55", cursor: "pointer" }}
-                      />
+                item.category === "map" &&
+                mapOpen === true &&
+                item._id === currentMap && (
+                  <div>
+                    <img
+                      width={600}
+                      height={600}
+                      ref={printRef}
+                      src={item.file}
+                      alt=""
+                      className="my-10"
+                    />
 
-                      {mapOpen === true && (
-                        <MapModal
-                          isOpen={mapOpen}
-                          onClose={handleMapClose}
-                          imageUrl={item.file}
-                        />
-                      )}
-                    </td>
-                    <td
-                      style={{
-                        border: "1px solid #ddd",
-                        padding: "8px",
-                        textAlign: "left",
-                      }}
-                    >
-                      {formatDate(item.createdAt)}
-                    </td>
-                  </tr>
+                    <div className="flex gap-4">
+                      <button className="px-6 py-2 bg-[#006D77] text-white border-none rounded-md cursor-pointer shadow-md transition duration-300 ease-in-out hover:shadow-lg">
+                        Share
+                      </button>
+                      <a href={item.file} download>
+                        <button className="px-6 py-2 bg-[#006D77] text-white border-none rounded-md cursor-pointer shadow-md transition duration-300 ease-in-out hover:shadow-lg">
+                          Download
+                        </button>
+                      </a>
+                      <button
+                        className="px-6 py-2 bg-[#006D77] text-white border-none rounded-md cursor-pointer shadow-md transition duration-300 ease-in-out hover:shadow-lg"
+                        onClick={handlePrint}
+                      >
+                        Print
+                      </button>
+                      <button
+                        className="px-6 py-2 bg-[#006D77] text-white border-none rounded-md cursor-pointer shadow-md transition duration-300 ease-in-out hover:shadow-lg"
+                        onClick={handleMapClose}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
                 )
             )}
-          </tbody>
-        </table>
-      )}
-      <CustomRouteButton
-        component={{
-          type: ROUTE_BUTTON,
-          className: "admin-route-button",
-          label: "Go to Dashboard",
-          name: "Go to Dashboard",
-          route: "/admin",
-        }}
-      />
+          </div>
+        )}
+        <div className="mt-20">
+          <CustomRouteButton
+            component={{
+              type: ROUTE_BUTTON,
+              className: "admin-route-button",
+              label: "Back",
+              name: "Go to Dashboard",
+              route: "/",
+            }}
+          />
+        </div>
+      </div>
+      <div className={`component_wrapper`}>
+        <Footer />
+      </div>
+      <div className={`component_wrapper`}>
+        <ScrollToTop />
+      </div>
+      <div className={`component_wrapper`}>
+        <Chatbot />
+      </div>
     </div>
   );
 };
