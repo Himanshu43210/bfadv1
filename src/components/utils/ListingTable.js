@@ -20,9 +20,11 @@ import {
   DELETE,
   GET,
   GET_ADMIN_PROPERTY_DATA,
+  GET_CHANNEL_PARTNER_DATA,
   NEED_APPROVAL_BY,
   POST,
   PROFILE,
+  PROPERTY_DEALER,
 } from "./Const.js";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "../../redux/utils/apiActions.js";
@@ -350,6 +352,7 @@ const ListingTable = ({
   const getApiDataFromRedux = useSelector((state) => {
     return selectApiData(state, getDataApi);
   });
+
   const userProfile = useSelector((state) => state[PROFILE]);
   const navigateTo = useRouter();
   let allowedTableColumns = roleSpecificDesktopHeaders
@@ -1119,7 +1122,11 @@ const ListingTable = ({
     let cellData;
     const splittedKeys = allowedTableColumnsFinal[headerLabel]?.split(".");
     if (splittedKeys?.length === 1) {
-      if (userProfile.role === USER_ROLE[BF_ADMIN]) {
+      if (
+        userProfile.role === USER_ROLE[BF_ADMIN] ||
+        userProfile.role === USER_ROLE[GET_CHANNEL_PARTNER_DATA] ||
+        userProfile.role === USER_ROLE[PROPERTY_DEALER]
+      ) {
         if (splittedKeys[0] === "createdByName") {
           cellData = element["cpName"] || element["createdByName"];
         } else if (splittedKeys[0] === "createdByPhoneNumber") {
@@ -1547,11 +1554,17 @@ const ListingTable = ({
                     />
                   </td>
                 )}
-                {Object.keys(allowedTableColumns).map((headerLabel, index) => (
+                {/* {Object.keys(allowedTableColumns).map((headerLabel, index) => (
                   <td className="bodytext" key={index}>
                     {formatTableCell(element, headerLabel)}
                   </td>
-                ))}
+                ))} */}
+                <td className="bodytext">{element.type}</td>
+                <td className="bodytext">{element.subType}</td>
+                <td className="bodytext">{element.title}</td>
+                <td className="bodytext">{element.details}</td>
+                <td className="bodytext">{element.status}</td>
+                <td className="bodytext">{element?.userId?.name}</td>
                 {!hideActions && (
                   <td className="tablebody tableborder text actionColumn">
                     <>

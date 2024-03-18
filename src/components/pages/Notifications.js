@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { USER_ROLE } from "@/ScreenJson.js";
 import LoginRefresh from "../customComponents/LoginRefresh";
 import AutoFetchApiPost from "../customComponents/AutoFetchApiPost";
@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 
 const Notifications = () => {
   const userProfile = useSelector((state) => state.profile);
-
   const GET_NOTIFICATIONS_LIST =
     userProfile.role === USER_ROLE.bfAdmin
       ? GET_NOTIFICATIONS_LIST_FOR_ADMIN
@@ -82,7 +81,7 @@ const Notifications = () => {
                     Title: "title",
                     Details: "details",
                     Status: "status",
-                    "User ID": "userId",
+                    User: "user",
                   },
                   mobileHeaders: {
                     Type: "type",
