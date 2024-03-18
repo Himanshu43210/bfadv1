@@ -13,11 +13,13 @@ import { callApi } from "../../redux/utils/apiActions.js";
 import { selectApiData, selectApiStatus } from "../../redux/utils/selectors.js";
 import { storeUserData } from "../../redux/slice/userSlice.js";
 import { storeParentData } from "../../redux/slice/parentSlice.js";
-import { useRouter } from "next/navigation.js";
+// import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/router.js";
 
 const Login = () => {
-  const navigate = useRouter();
+  const router = useRouter();
+  const { redirect } = router.query;
   const dispatch = useDispatch();
   const loginStatus = useSelector((state) =>
     selectApiStatus(state, ADMIN_DASHBOARD_LOGIN)
@@ -32,7 +34,11 @@ const Login = () => {
     if (loginStatus === SUCCESS) {
       dispatch(storeUserData(userProfile?.profile));
       dispatch(storeParentData(userProfile?.parentUser));
-      navigate.push("/admin");
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        router.push("/admin");
+      }
     }
   }, [loginStatus]);
 
@@ -56,9 +62,13 @@ const Login = () => {
           password: password,
         },
       };
-      localStorage.setItem("email", email);
-      localStorage.setItem("password", password);
-      dispatch(callApi(options));
+      dispatch(callApi(options)).then((res) => {
+        localStorage.setItem("userId", res?.payload?.profile?._id);
+        localStorage.setItem("email", res?.payload?.profile?.email);
+        localStorage.setItem("_token", res?.payload?.authToken);
+        localStorage.setItem("role", res?.payload?.profile?.role);
+        localStorage.setItem("password", password);
+      });
     } catch (error) {}
   };
 

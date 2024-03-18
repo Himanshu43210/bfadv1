@@ -136,6 +136,16 @@ export const newPropertyConst = [
     regexErrorMessage: "Invalid builder contact",
   },
   {
+    name: "ownerContact",
+    label: "Owner Contact",
+    parentclassName: "property-w-2",
+    type: TEXT,
+    isRequired: false,
+    requiredErrorMessage: "Please enter a owner contact.",
+    regex: /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+    regexErrorMessage: "Invalid owner contact",
+  },
+  {
     name: "title",
     label: "Primary Title",
     parentclassName: "property-w-2 property-margin-r large_field_wrapper",

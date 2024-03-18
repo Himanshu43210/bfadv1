@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import MenuState from "../customComponents/MenuState";
 import Header from "../customComponents/Header";
 import OtpLogin from "../customComponents/OtpLogin";
+import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { USER_ROLE } from "@/ScreenJson";
+import HeaderSearchBar from "../customComponents/HeaderSearchBar";
 
 const MENU_ITEMS = [
   {
@@ -43,12 +47,28 @@ const MENU_ITEMS = [
 
 const HeaderComp = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useRouter();
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     if (window !== undefined) {
       setIsMobile(window.innerWidth <= 768);
     }
+    if (typeof localStorage !== "undefined") {
+      setUserRole(localStorage.getItem("role"));
+    }
   }, []);
+
+  const handlePostListing = () => {
+    if (
+      userRole == USER_ROLE.channelPartner ||
+      userRole == USER_ROLE.salesUser
+    ) {
+      navigate.push("/admin/form?type=postListing");
+    } else {
+      navigate.push("/login?redirect=/admin/form?type=postListing");
+    }
+  };
 
   return (
     <div className={`component_wrapper ${"homeHeader"}`}>
@@ -73,7 +93,14 @@ const HeaderComp = () => {
           }}
         />
       </div>
-      <div className={`component_wrapper ${"ol_comp_wrapper"}`}>
+      <div className={`component_wrapper ${"ol_comp_wrapper"} flex gap-2`}>
+        <HeaderSearchBar />
+        <Button
+          className={`ol_open_btn signin_btn`}
+          onClick={handlePostListing}
+        >
+          Post Listing
+        </Button>
         <OtpLogin />
       </div>
     </div>

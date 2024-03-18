@@ -262,7 +262,7 @@ const comp = () => {
           };
           dispatch(callApi(options));
         } catch (error) {}
-        navigate.push("/admin");
+        // navigate.push("/admin");
       } else {
         navigate.push("/login");
       }
@@ -270,6 +270,7 @@ const comp = () => {
       setCheck(true);
     }
   }, [loginStatus]);
+  console.log(loginStatus, "arijit");
 
   return (
     <>

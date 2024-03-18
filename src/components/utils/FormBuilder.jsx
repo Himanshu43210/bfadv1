@@ -1,7 +1,7 @@
 import React, { forwardRef, useState } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
-import Creatable from 'react-select/creatable';
+import Creatable from "react-select/creatable";
 import { EMAIL, GET_MASTER_DATA_ON_HOME, TEXT } from "./Const.js";
 import { useSelector } from "react-redux";
 import { selectMasterData } from "../../redux/utils/selectors.js";
@@ -14,7 +14,7 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
   const [fieldErrors, setFieldErrors] = useState({});
 
   const masterData = useSelector((state) => {
-    return selectMasterData(state, GET_MASTER_DATA_ON_HOME || "")
+    return selectMasterData(state, GET_MASTER_DATA_ON_HOME || "");
   });
 
   const validateAllFields = (doNotValidateFields) => {
@@ -23,14 +23,18 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
     fields.forEach((field) => {
       const value = formData[field.name];
 
-      if (field.isRequired && isValueEmpty(value) && !doNotValidateFields.includes(field.name)) {
+      if (
+        field.isRequired &&
+        isValueEmpty(value) &&
+        !doNotValidateFields.includes(field.name)
+      ) {
         errors[field.name] =
           field.requiredErrorMessage || "This field is required.";
       } else if (field.isRequired && field.regex && !field.regex.test(value)) {
         errors[field.name] = field.regexErrorMessage || "Invalid input.";
       }
     });
-    console.log('+++++ errors +++++', errors);
+    console.log("+++++ errors +++++", errors);
     setFieldErrors(errors);
     return errors;
   };
@@ -93,7 +97,11 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
       <div className="formcontainer">
         {fields?.map((field) => (
           <div key={field.name} className={`subform ${field.parentclassName}`}>
-            <div className={`label_and_input_wrapper ${field.className} ${field.type === "textarea" ? 'textarea_wrapper' : ''}`}>
+            <div
+              className={`label_and_input_wrapper ${field.className} ${
+                field.type === "textarea" ? "textarea_wrapper" : ""
+              }`}
+            >
               <div className="lablediv">
                 <label className="lbel" htmlFor={field.name}>
                   {field.label}:
@@ -179,17 +187,21 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                     type="password"
                     id={field.name}
                     name={field.name}
-                    value={formData[field.name] || formData[field.dataKey] || ""}
+                    value={
+                      formData[field.name] || formData[field.dataKey] || ""
+                    }
                     onChange={(e) => handleChange(field, e.target.value)}
                     required={field.isRequired}
                   />
                 )}
                 {field.type === "textarea" && (
                   <textarea
-                    className="inputtag input_elem textarea"
+                    className="inputtag input_elem textarea border p-3 border-gray-400 outline-none"
                     id={field.name}
                     name={field.name}
-                    value={formData[field.name] || formData[field.dataKey] || ""}
+                    value={
+                      formData[field.name] || formData[field.dataKey] || ""
+                    }
                     onChange={(e) => handleChange(field, e.target.value)}
                     required={field.isRequired}
                   />
@@ -203,9 +215,9 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                       (formData[field.name] &&
                         (typeof formData[field.name] === "string"
                           ? {
-                            label: formData[field.name],
-                            value: formData[field.name],
-                          }
+                              label: formData[field.name],
+                              value: formData[field.name],
+                            }
                           : formData[field.name])) ||
                       field.defaultOption
                     }
@@ -242,9 +254,9 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                       (formData[field.name] &&
                         (typeof formData[field.name] === "string"
                           ? {
-                            label: formData[field.name],
-                            value: formData[field.name],
-                          }
+                              label: formData[field.name],
+                              value: formData[field.name],
+                            }
                           : formData[field.name])) ||
                       field.defaultOption
                     }
@@ -282,7 +294,8 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                           value={option.value}
                           checked={
                             (formData[field.name] &&
-                              capitalize(formData[field.name]) === option.value) ||
+                              capitalize(formData[field.name]) ===
+                                option.value) ||
                             capitalize(formData[field.dataKey]) === option.value
                           }
                           onChange={() => handleChange(field, option.value)}
@@ -313,12 +326,14 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                         disabled={field.disabled}
                         id={`${field.name}-crore`}
                         name={`${field.name}-crore`}
-                        value={Math.floor((formData[field.name] || 0) / 10000000)}
+                        value={Math.floor(
+                          (formData[field.name] || 0) / 10000000
+                        )}
                         onChange={(e) =>
-                          handleCurrencyChange(field, formData[field.name] || 0)(
-                            e,
-                            "crore"
-                          )
+                          handleCurrencyChange(
+                            field,
+                            formData[field.name] || 0
+                          )(e, "crore")
                         }
                         required={field.isRequired}
                       />
@@ -331,12 +346,14 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                         disabled={field.disabled}
                         id={`${field.name}-lakh`}
                         name={`${field.name}-lakh`}
-                        value={((formData[field.name] || 0) % 10000000) / 100000}
+                        value={
+                          ((formData[field.name] || 0) % 10000000) / 100000
+                        }
                         onChange={(e) =>
-                          handleCurrencyChange(field, formData[field.name] || 0)(
-                            e,
-                            "lakh"
-                          )
+                          handleCurrencyChange(
+                            field,
+                            formData[field.name] || 0
+                          )(e, "lakh")
                         }
                         required={field.isRequired}
                       />
@@ -368,9 +385,9 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                         (formData[field.nameType] &&
                           (typeof formData[field.nameType] === "string"
                             ? {
-                              label: formData[field.nameType],
-                              value: formData[field.nameType],
-                            }
+                                label: formData[field.nameType],
+                                value: formData[field.nameType],
+                              }
                             : formData[field.nameType])) ||
                         field.defaultOption
                       }
