@@ -11,7 +11,7 @@ export default function HeaderSearchBar({ component, isMobile }) {
             type="text"
             placeholder="Search Here...."
           />
-          <FaSearch />
+          <FaSearch className="cursor-pointer" />
         </div>
       )}
     </>
