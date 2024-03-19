@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import HeaderComp from "../newComponents/HeaderComp.jsx";
 import AutoFetchApi from "../customComponents/AutoFetchApi.jsx";
 import {
+  API_BUTTON,
   BUTTON,
   CONTAINER,
   DYNAMIC_CARD_CONTAINER,
@@ -141,16 +142,6 @@ export const FILTER_DETAILS_SCREEN = {
               defaultValue: [180.0, 360.0],
               zIndex: 93,
             },
-            // {
-            //   type: SELECT,
-            //   className: "filterbutton",
-            //   sliceName: "filter",
-            //   name: "city",
-            //   defaultValue: { label: "Gurgaon", value: "Gurgaon" },
-            //   options: [{ label: "Gurgaon", value: "Gurgaon" }],
-            //   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
-            //   onClickApiMethod: POST,
-            // },
             {
               type: SELECT_SLIDER2,
               sliceName: "filter",
@@ -261,6 +252,17 @@ export const FILTER_DETAILS_SCREEN = {
               label: "Reset",
               name: "Reset",
               isReset: true,
+            },
+            {
+              type: API_BUTTON,
+              sliceName: "filter",
+              name: "search",
+              buttonLabel: "Search",
+              btnClass: "home-search-button",
+              apiType: POST,
+              navigate: "/searchResult",
+              api: API_ENDPOINTS[GET_SEARCH_RESULT],
+              searchWithQueryParams: true,
             },
           ],
         },
