@@ -2,24 +2,22 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { IoDocument } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 import { MdCancel, MdEdit, MdDelete } from "react-icons/md";
 import axios from "axios";
 import EditMapDocumentModal from "./EditMapDocumentModal";
 
-function DocumentModal({ isOpen, onClose, imageUrl }) {
-  if (!isOpen) return null;
-
+function ViewMapDocumentModal({ onClose, imageUrl }) {
   return (
     <div
       onClick={onClose}
-      className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-50"
+      className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center"
     >
-      <div
-        class="bg-white p-20 rounded-md"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <img src={imageUrl} alt="Modal Image" className="w-[600px]" />
-      </div>
+      <img
+        src={imageUrl}
+        alt="Modal Image"
+        className="rounded-xl md:w-[600px] p-4"
+      />
     </div>
   );
 }
@@ -91,17 +89,29 @@ const MapDocumentTable = ({
                   {item.heading}
                 </td>
                 <td className="border border-gray-300 p-2 text-left">
-                  <IoDocument
-                    onClick={handleDocumentOpen}
-                    className="w-[20px] h-[20px] text-teal-900 cursor-pointer"
-                  />
+                  {item.category === "map" ? (
+                    <FaLocationDot
+                      onClick={handleDocumentOpen}
+                      className="w-[20px] h-[20px] text-teal-900 cursor-pointer"
+                    />
+                  ) : (
+                    <IoDocument
+                      onClick={handleDocumentOpen}
+                      className="w-[20px] h-[20px] text-teal-900 cursor-pointer"
+                    />
+                  )}
 
                   {documentOpen === true && (
-                    <DocumentModal
-                      isOpen={documentOpen}
-                      onClose={handleDocumentClose}
-                      imageUrl={item.file}
-                    />
+                    <div
+                      onClick={handleDocumentClose}
+                      className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center"
+                    >
+                      <img
+                        src={item.file}
+                        alt="Modal Image"
+                        className="rounded-xl md:w-[600px] p-4"
+                      />
+                    </div>
                   )}
                 </td>
                 <td className="border border-gray-300 p-2 text-left">

@@ -96,7 +96,7 @@ const MapPage = () => {
             handleModalClose={handleModalClose}
             handleUpload={handleUpload}
             handleFileChange={handleFileChange}
-            title={"Edit Map"}
+            title={"Add Map"}
           />
         )}
       </div>
@@ -108,7 +108,7 @@ const MapPage = () => {
             onClick={handleModalOpen}
             variant="success"
           >
-            Submit
+            Add Map
           </Button>
           <div className="">
             {loading ? (
