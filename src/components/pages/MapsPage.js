@@ -2,54 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CustomRouteButton from "../customComponents/RouteButton";
 import { ROUTE_BUTTON } from "../utils/Const";
-import Link from "next/link";
-import { FaMapMarkerAlt } from "react-icons/fa";
-import { MdCancel, MdEdit, MdDelete } from "react-icons/md";
-import { FaRegTrashAlt } from "react-icons/fa";
 import { Button } from "react-bootstrap";
+import EditMapDocumentModal from "../customComponents/EditMapDocumentModal";
+import AddMapDocumentModal from "../customComponents/AddMapDocumentModal";
+import MapDocumentTable from "../customComponents/MapDocumentTable";
 import { API_DOMAIN } from "@/redux/utils/api";
 
-function MapModal({ isOpen, onClose, imageUrl }) {
-  if (!isOpen) return null;
-
-  return (
-    <div
-      className="modal-overlay"
-      onClick={onClose}
-      style={{
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          background: "#fff",
-          padding: "20px",
-          borderRadius: "4px",
-        }}
-      >
-        <img
-          src={imageUrl}
-          alt="Modal Image"
-          style={{
-            width: "600px",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
-const MapsPage = () => {
+const MapPage = () => {
   const [heading, setHeading] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   // const [category, setCategory] = useState("");
@@ -70,18 +29,6 @@ const MapsPage = () => {
   //   setCategory(event.target.value);
   // };
 
-  const fetchData = async () => {
-    try {
-      const apiUrl = `${API_DOMAIN}api/content/findAll?page=0&limit=10`;
-      const response = await axios.get(apiUrl);
-      setData(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setLoading(false);
-    }
-  };
-
   const handleUpload = async () => {
     try {
       if (!selectedFile) {
@@ -98,6 +45,7 @@ const MapsPage = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log("Upload successful:", response.data);
       setModal(false);
       fetchData();
     } catch (error) {
@@ -106,6 +54,18 @@ const MapsPage = () => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiUrl = `${API_DOMAIN}content/findAll?page=0&limit=10`;
+        const response = await axios.get(apiUrl);
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, []);
 
@@ -117,368 +77,53 @@ const MapsPage = () => {
     setModal(false);
   };
 
-  function formatDate(inputDate) {
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    const formattedDate = new Date(inputDate).toLocaleDateString(
-      "en-US",
-      options
-    );
-    return formattedDate;
-  }
   const handleMapOpen = () => {
     setMapOpen(true);
   };
   const handleMapClose = () => {
     setMapOpen(false);
   };
-  const handleEdit = (id) => {
-    axios
-      .put("https://bfservices.trainright.fit/api/content/update" + id)
-      .then(() => fetchData())
-      .catch((err) => console.log(err, "Can't update data!"));
-  };
 
-  const handleDelete = (id) => {
-    axios
-      .delete(
-        "https://bfservices.trainright.fit/api/content/deleteById?id=" + id
-      )
-      .then(() => fetchData())
-      .catch((err) => console.log(err, "Can't delete data!"));
-  };
   return (
     <div className="px-6">
       <div>
-        <h2
-          style={{
-            fontWeight: 600,
-            fontSize: 24,
-            textAlign: "center",
-            marginTop: 40,
-          }}
-        >
+        <h2 className="text-center font-bold text-2xl mt-4">
           WELCOME TO BUILDERFLOOR.COM
         </h2>
         {modal === true && (
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-              backdropFilter: "blur(5px)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 999,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "solid gray 1px",
-                padding: 20,
-                backgroundColor: "white",
-              }}
-            >
-              <div
-                style={{
-                  cursor: "pointer",
-                  display: "flex",
-                  justifyItems: "center",
-                  width: "100%",
-                }}
-              >
-                <MdCancel onClick={handleModalClose} />
-              </div>
-              <p
-                style={{
-                  fontWeight: 600,
-                  fontSize: 20,
-                  textAlign: "center",
-                  marginBottom: 40,
-                }}
-              >
-                Add Maps
-              </p>
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyItems: "right",
-                  marginBottom: "10px",
-                }}
-              >
-                {" "}
-                <input
-                  type="text"
-                  onChange={handleHeadingChange}
-                  style={{
-                    margin: "0 10px",
-                    padding: "6px",
-                    borderBottom: "2px solid black",
-                    borderLeft: "none",
-                    borderRight: "none",
-                    borderTop: "none",
-                  }}
-                  placeholder="Enter heading..."
-                />
-                {/* <input
-          type="text"
-          onChange={handleCategoryChange}
-          style={{ margin: "0px 10px", padding: 2 }}
-          placeholder="Enter category..."
-        /> */}
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  style={{ margin: "10px 0" }}
-                />
-              </div>
-              <button
-                onClick={handleUpload}
-                style={{
-                  padding: "10px 30px",
-                  backgroundColor: "#004E55",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                  transition: "box-shadow 0.3s ease-in-out",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.boxShadow =
-                    "0 8px 16px rgba(0, 0, 0, 0.2)";
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.boxShadow =
-                    "0 4px 8px rgba(0, 0, 0, 0.1)";
-                }}
-              >
-                UPLOAD
-              </button>
-            </div>
-          </div>
+          <AddMapDocumentModal
+            handleHeadingChange={handleHeadingChange}
+            handleModalClose={handleModalClose}
+            handleUpload={handleUpload}
+            handleFileChange={handleFileChange}
+            title={"Edit Map"}
+          />
         )}
       </div>
       <div>
         <div>
-          <p
-            style={{
-              fontWeight: 600,
-              fontSize: 20,
-              textAlign: "center",
-              marginBottom: 40,
-            }}
-          >
-            Manage Maps
-          </p>
-          <button
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "right",
-              padding: "10px 30px",
-              backgroundColor: "#004E55",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-              transition: "box-shadow 0.3s ease-in-out",
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.2)";
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
-            }}
+          <p className="text-center font-bold text-lg mb-4">Manage Maps</p>
+          <Button
+            className={`ol_open_btn signin_btn`}
             onClick={handleModalOpen}
+            variant="success"
           >
-            Add Map
-          </button>
+            Submit
+          </Button>
           <div className="">
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <table
-                style={{
-                  borderCollapse: "collapse",
-                  marginTop: "20px",
-                  backgroundColor: "#fff",
-                  width: "100%",
-                  marginBottom: "40px",
-                }}
-              >
-                <thead>
-                  <tr>
-                    <th
-                      style={{
-                        border: "1px solid #ddd",
-                        padding: "8px",
-                        textAlign: "left",
-                        backgroundColor: "#004E55",
-                        color: "#fff",
-                      }}
-                    >
-                      Category
-                    </th>
-                    <th
-                      style={{
-                        border: "1px solid #ddd",
-                        padding: "8px",
-                        textAlign: "left",
-                        backgroundColor: "#004E55",
-                        color: "#fff",
-                      }}
-                    >
-                      Heading
-                    </th>
-                    <th
-                      style={{
-                        border: "1px solid #ddd",
-                        padding: "8px",
-                        textAlign: "left",
-                        backgroundColor: "#004E55",
-                        color: "#fff",
-                      }}
-                    >
-                      Map
-                    </th>
-                    <th
-                      style={{
-                        border: "1px solid #ddd",
-                        padding: "8px",
-                        textAlign: "left",
-                        backgroundColor: "#004E55",
-                        color: "#fff",
-                      }}
-                    >
-                      Created At
-                    </th>
-                    <th
-                      style={{
-                        border: "1px solid #ddd",
-                        padding: "8px",
-                        textAlign: "left",
-                        backgroundColor: "#004E55",
-                        color: "#fff",
-                      }}
-                    >
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data?.result?.map(
-                    (item) =>
-                      item.category === "map" && (
-                        <tr key={item._id} style={{ backgroundColor: "white" }}>
-                          <td
-                            style={{
-                              border: "1px solid #ddd",
-                              padding: "8px",
-                              textAlign: "left",
-                            }}
-                          >
-                            {item.category}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #ddd",
-                              padding: "8px",
-                              textAlign: "left",
-                            }}
-                          >
-                            {item.heading}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #ddd",
-                              padding: "8px",
-                              textAlign: "left",
-                            }}
-                          >
-                            <FaMapMarkerAlt
-                              onClick={handleMapOpen}
-                              style={{
-                                width: "20px",
-                                height: "20px",
-                                color: "#004E55",
-                                cursor: "pointer",
-                              }}
-                            />
-
-                            {mapOpen === true && (
-                              <MapModal
-                                isOpen={mapOpen}
-                                onClose={handleMapClose}
-                                imageUrl={item.file}
-                              />
-                            )}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #ddd",
-                              padding: "8px",
-                              textAlign: "left",
-                            }}
-                          >
-                            {formatDate(item.createdAt)}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #ddd",
-                              padding: "8px",
-                              textAlign: "left",
-                            }}
-                          >
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 10,
-                              }}
-                            >
-                              <Button
-                                className="row_action_btn edit_btn ListingEditbtn"
-                                onClick={() => handleEdit(item._id)}
-                                variant="success"
-                              >
-                                <MdEdit size={20} />
-                              </Button>
-                              <Button
-                                className="row_action_btn delete_btn ListingDeletebtn"
-                                variant="danger"
-                                onClick={() => handleDelete(item._id)}
-                              >
-                                <FaRegTrashAlt size={20} />
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                  )}
-                </tbody>
-              </table>
+              <MapDocumentTable
+                data={data?.result}
+                handleDocumentOpen={handleMapOpen}
+                handleDocumentClose={handleMapClose}
+                documentOpen={mapOpen}
+                category={"map"}
+              />
             )}
           </div>
-          <div
-            style={{
-              position: "fixed",
-              bottom: "60px",
-              width: "100%",
-              textAlign: "center",
-            }}
-          >
+          <div className="fixed bottom-20 w-full text-center">
             <CustomRouteButton
               component={{
                 type: ROUTE_BUTTON,
@@ -494,4 +139,5 @@ const MapsPage = () => {
     </div>
   );
 };
-export default MapsPage;
+
+export default MapPage;

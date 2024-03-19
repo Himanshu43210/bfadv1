@@ -7,9 +7,8 @@ import Footer from "../customComponents/Footer";
 import ScrollToTop from "../customComponents/ScrollToTop";
 import Chatbot from "../customComponents/Chatbot";
 import HeaderComp from "../newComponents/HeaderComp";
-import Image from "next/image";
-import { FcFile } from "react-icons/fc";
 import { useReactToPrint } from "react-to-print";
+import { Button } from "react-bootstrap";
 
 const Map = () => {
   const [data, setData] = useState([]);
@@ -63,22 +62,13 @@ const Map = () => {
           margin: "0 100px",
         }}
       >
-        <h2
-          style={{
-            fontWeight: 600,
-            fontSize: 24,
-            textAlign: "center",
-            marginTop: 40,
-          }}
-        >
-          WELCOME TO BUILDERFLOOR.COM
-        </h2>
         <p
           style={{
             fontWeight: 600,
             fontSize: 20,
             textAlign: "center",
             marginBottom: 40,
+            marginTop: 40,
           }}
         >
           All Maps
@@ -118,28 +108,28 @@ const Map = () => {
                       alt=""
                       className="my-10"
                     />
-
                     <div className="flex gap-4">
-                      <button className="px-6 py-2 bg-[#006D77] text-white border-none rounded-md cursor-pointer shadow-md transition duration-300 ease-in-out hover:shadow-lg">
+                      <Button className={`ol_open_btn signin_btn`}>
                         Share
-                      </button>
+                      </Button>
+
                       <a href={item.file} download>
-                        <button className="px-6 py-2 bg-[#006D77] text-white border-none rounded-md cursor-pointer shadow-md transition duration-300 ease-in-out hover:shadow-lg">
+                        <Button className={`ol_open_btn signin_btn`}>
                           Download
-                        </button>
+                        </Button>
                       </a>
-                      <button
-                        className="px-6 py-2 bg-[#006D77] text-white border-none rounded-md cursor-pointer shadow-md transition duration-300 ease-in-out hover:shadow-lg"
+                      <Button
+                        className={`ol_open_btn signin_btn`}
                         onClick={handlePrint}
                       >
                         Print
-                      </button>
-                      <button
-                        className="px-6 py-2 bg-[#006D77] text-white border-none rounded-md cursor-pointer shadow-md transition duration-300 ease-in-out hover:shadow-lg"
+                      </Button>
+                      <Button
+                        className={`ol_open_btn signin_btn`}
                         onClick={handleMapClose}
                       >
                         Close
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 )
