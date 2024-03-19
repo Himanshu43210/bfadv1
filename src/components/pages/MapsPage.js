@@ -7,6 +7,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { MdCancel, MdEdit, MdDelete } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Button } from "react-bootstrap";
+import { API_DOMAIN } from "@/redux/utils/api";
 
 function MapModal({ isOpen, onClose, imageUrl }) {
   if (!isOpen) return null;
@@ -69,6 +70,18 @@ const MapsPage = () => {
   //   setCategory(event.target.value);
   // };
 
+  const fetchData = async () => {
+    try {
+      const apiUrl = `${API_DOMAIN}api/content/findAll?page=0&limit=10`;
+      const response = await axios.get(apiUrl);
+      setData(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
   const handleUpload = async () => {
     try {
       if (!selectedFile) {
@@ -85,27 +98,14 @@ const MapsPage = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Upload successful:", response.data);
       setModal(false);
+      fetchData();
     } catch (error) {
       console.error("Error uploading image:", error);
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl =
-          "https://bfservices.trainright.fit/api/content/findAll?page=0&limit=10";
-        const response = await axios.get(apiUrl);
-        setData(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -134,7 +134,7 @@ const MapsPage = () => {
   const handleEdit = (id) => {
     axios
       .put("https://bfservices.trainright.fit/api/content/update" + id)
-      .then(() => window.location.reload())
+      .then(() => fetchData())
       .catch((err) => console.log(err, "Can't update data!"));
   };
 
@@ -143,19 +143,11 @@ const MapsPage = () => {
       .delete(
         "https://bfservices.trainright.fit/api/content/deleteById?id=" + id
       )
-      .then(() => window.location.reload())
+      .then(() => fetchData())
       .catch((err) => console.log(err, "Can't delete data!"));
   };
   return (
-    <div
-      style={{
-        width: "100vw",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div className="px-6">
       <div>
         <h2
           style={{
@@ -277,14 +269,7 @@ const MapsPage = () => {
         )}
       </div>
       <div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <div>
           <p
             style={{
               fontWeight: 600,
@@ -320,171 +305,172 @@ const MapsPage = () => {
           >
             Add Map
           </button>
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                marginTop: "20px",
-                backgroundColor: "#fff",
-                marginBottom: "40px",
-              }}
-            >
-              <thead>
-                <tr>
-                  <th
-                    style={{
-                      border: "1px solid #ddd",
-                      padding: "8px",
-                      textAlign: "left",
-                      backgroundColor: "#004E55",
-                      color: "#fff",
-                    }}
-                  >
-                    Category
-                  </th>
-                  <th
-                    style={{
-                      border: "1px solid #ddd",
-                      padding: "8px",
-                      textAlign: "left",
-                      backgroundColor: "#004E55",
-                      color: "#fff",
-                    }}
-                  >
-                    Heading
-                  </th>
-                  <th
-                    style={{
-                      border: "1px solid #ddd",
-                      padding: "8px",
-                      textAlign: "left",
-                      backgroundColor: "#004E55",
-                      color: "#fff",
-                    }}
-                  >
-                    Map
-                  </th>
-                  <th
-                    style={{
-                      border: "1px solid #ddd",
-                      padding: "8px",
-                      textAlign: "left",
-                      backgroundColor: "#004E55",
-                      color: "#fff",
-                    }}
-                  >
-                    Created At
-                  </th>
-                  <th
-                    style={{
-                      border: "1px solid #ddd",
-                      padding: "8px",
-                      textAlign: "left",
-                      backgroundColor: "#004E55",
-                      color: "#fff",
-                    }}
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {data?.result?.map(
-                  (item) =>
-                    item.category === "map" && (
-                      <tr key={item._id} style={{ backgroundColor: "white" }}>
-                        <td
-                          style={{
-                            border: "1px solid #ddd",
-                            padding: "8px",
-                            textAlign: "left",
-                          }}
-                        >
-                          {item.category}
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid #ddd",
-                            padding: "8px",
-                            textAlign: "left",
-                          }}
-                        >
-                          {item.heading}
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid #ddd",
-                            padding: "8px",
-                            textAlign: "left",
-                          }}
-                        >
-                          <FaMapMarkerAlt
-                            onClick={handleMapOpen}
+          <div className="">
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <table
+                style={{
+                  borderCollapse: "collapse",
+                  marginTop: "20px",
+                  backgroundColor: "#fff",
+                  width: "100%",
+                  marginBottom: "40px",
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "8px",
+                        textAlign: "left",
+                        backgroundColor: "#004E55",
+                        color: "#fff",
+                      }}
+                    >
+                      Category
+                    </th>
+                    <th
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "8px",
+                        textAlign: "left",
+                        backgroundColor: "#004E55",
+                        color: "#fff",
+                      }}
+                    >
+                      Heading
+                    </th>
+                    <th
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "8px",
+                        textAlign: "left",
+                        backgroundColor: "#004E55",
+                        color: "#fff",
+                      }}
+                    >
+                      Map
+                    </th>
+                    <th
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "8px",
+                        textAlign: "left",
+                        backgroundColor: "#004E55",
+                        color: "#fff",
+                      }}
+                    >
+                      Created At
+                    </th>
+                    <th
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "8px",
+                        textAlign: "left",
+                        backgroundColor: "#004E55",
+                        color: "#fff",
+                      }}
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data?.result?.map(
+                    (item) =>
+                      item.category === "map" && (
+                        <tr key={item._id} style={{ backgroundColor: "white" }}>
+                          <td
                             style={{
-                              width: "20px",
-                              height: "20px",
-                              color: "#004E55",
-                              cursor: "pointer",
-                            }}
-                          />
-
-                          {mapOpen === true && (
-                            <MapModal
-                              isOpen={mapOpen}
-                              onClose={handleMapClose}
-                              imageUrl={item.file}
-                            />
-                          )}
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid #ddd",
-                            padding: "8px",
-                            textAlign: "left",
-                          }}
-                        >
-                          {formatDate(item.createdAt)}
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid #ddd",
-                            padding: "8px",
-                            textAlign: "left",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              gap: 10,
+                              border: "1px solid #ddd",
+                              padding: "8px",
+                              textAlign: "left",
                             }}
                           >
-                            <Button
-                              className="row_action_btn edit_btn ListingEditbtn"
-                              onClick={() => handleEdit(item._id)}
-                              variant="success"
+                            {item.category}
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #ddd",
+                              padding: "8px",
+                              textAlign: "left",
+                            }}
+                          >
+                            {item.heading}
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #ddd",
+                              padding: "8px",
+                              textAlign: "left",
+                            }}
+                          >
+                            <FaMapMarkerAlt
+                              onClick={handleMapOpen}
+                              style={{
+                                width: "20px",
+                                height: "20px",
+                                color: "#004E55",
+                                cursor: "pointer",
+                              }}
+                            />
+
+                            {mapOpen === true && (
+                              <MapModal
+                                isOpen={mapOpen}
+                                onClose={handleMapClose}
+                                imageUrl={item.file}
+                              />
+                            )}
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #ddd",
+                              padding: "8px",
+                              textAlign: "left",
+                            }}
+                          >
+                            {formatDate(item.createdAt)}
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #ddd",
+                              padding: "8px",
+                              textAlign: "left",
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 10,
+                              }}
                             >
-                              <MdEdit size={20} />
-                            </Button>
-                            <Button
-                              className="row_action_btn delete_btn ListingDeletebtn"
-                              variant="danger"
-                              onClick={() => handleDelete(item._id)}
-                            >
-                              <FaRegTrashAlt size={20} />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                )}
-              </tbody>
-            </table>
-          )}
+                              <Button
+                                className="row_action_btn edit_btn ListingEditbtn"
+                                onClick={() => handleEdit(item._id)}
+                                variant="success"
+                              >
+                                <MdEdit size={20} />
+                              </Button>
+                              <Button
+                                className="row_action_btn delete_btn ListingDeletebtn"
+                                variant="danger"
+                                onClick={() => handleDelete(item._id)}
+                              >
+                                <FaRegTrashAlt size={20} />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                  )}
+                </tbody>
+              </table>
+            )}
+          </div>
           <div
             style={{
               position: "fixed",
