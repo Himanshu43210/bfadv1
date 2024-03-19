@@ -30,6 +30,18 @@ const DocumentPage = () => {
   //   setCategory(event.target.value);
   // };
 
+  const fetchData = async () => {
+    try {
+      const apiUrl = `${API_DOMAIN}content/findAll?page=0&limit=10`;
+      const response = await axios.get(apiUrl);
+      setData(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
   const handleUpload = async () => {
     try {
       if (!selectedFile) {
@@ -48,24 +60,13 @@ const DocumentPage = () => {
       });
       console.log("Upload successful:", response.data);
       setModal(false);
+      fetchData();
     } catch (error) {
       console.error("Error uploading image:", error);
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = `${API_DOMAIN}content/findAll?page=0&limit=10`;
-        const response = await axios.get(apiUrl);
-        setData(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -120,6 +121,7 @@ const DocumentPage = () => {
                 handleDocumentClose={handleDocumentClose}
                 documentOpen={documentOpen}
                 category={"document"}
+                fetchData={fetchData}
               />
             )}
           </div>

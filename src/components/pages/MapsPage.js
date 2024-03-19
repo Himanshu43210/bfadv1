@@ -28,6 +28,17 @@ const MapPage = () => {
   // const handleCategoryChange = (event) => {
   //   setCategory(event.target.value);
   // };
+  const fetchData = async () => {
+    try {
+      const apiUrl = `${API_DOMAIN}content/findAll?page=0&limit=10`;
+      const response = await axios.get(apiUrl);
+      setData(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
 
   const handleUpload = async () => {
     try {
@@ -54,18 +65,6 @@ const MapPage = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = `${API_DOMAIN}content/findAll?page=0&limit=10`;
-        const response = await axios.get(apiUrl);
-        setData(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -103,13 +102,24 @@ const MapPage = () => {
       <div>
         <div>
           <p className="text-center font-bold text-lg mb-4">Manage Maps</p>
-          <Button
-            className={`ol_open_btn signin_btn`}
-            onClick={handleModalOpen}
-            variant="success"
-          >
-            Add Map
-          </Button>
+          <div className="flex justify-between items-center">
+            <CustomRouteButton
+              component={{
+                type: ROUTE_BUTTON,
+                className: "admin-route-button",
+                label: "Back",
+                name: "Go to Dashboard",
+                route: "/admin",
+              }}
+            />
+            <Button
+              className={`ol_open_btn signin_btn`}
+              onClick={handleModalOpen}
+              variant="success"
+            >
+              Add Map
+            </Button>
+          </div>
           <div className="">
             {loading ? (
               <p>Loading...</p>
@@ -120,19 +130,9 @@ const MapPage = () => {
                 handleDocumentClose={handleMapClose}
                 documentOpen={mapOpen}
                 category={"map"}
+                fetchData={fetchData}
               />
             )}
-          </div>
-          <div className="fixed bottom-20 w-full text-center">
-            <CustomRouteButton
-              component={{
-                type: ROUTE_BUTTON,
-                className: "admin-route-button",
-                label: "Back",
-                name: "Go to Dashboard",
-                route: "/admin",
-              }}
-            />
           </div>
         </div>
       </div>

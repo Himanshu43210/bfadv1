@@ -28,11 +28,15 @@ const MapDocumentTable = ({
   handleDocumentClose,
   documentOpen,
   category,
+  fetchData,
 }) => {
   const [editModal, setEditModal] = useState(false);
+  const [selectedID, setSeletedID] = useState("");
+  const [selectedFile, setSeletedFile] = useState("");
 
-  const handleEditModalOpen = () => {
+  const handleEditModalOpen = (id) => {
     setEditModal(true);
+    setSeletedID(id);
   };
 
   const handleEditModalClose = () => {
@@ -43,7 +47,7 @@ const MapDocumentTable = ({
       .delete(
         "https://bfservices.trainright.fit/api/content/deleteById?id=" + id
       )
-      .then(() => window.location.reload())
+      .then(() => fetchData())
       .catch((err) => console.log(err, "Can't delete data!"));
   };
 
@@ -91,12 +95,18 @@ const MapDocumentTable = ({
                 <td className="border border-gray-300 p-2 text-left">
                   {item.category === "map" ? (
                     <FaLocationDot
-                      onClick={handleDocumentOpen}
+                      onClick={() => {
+                        handleDocumentOpen();
+                        setSeletedFile(item.file);
+                      }}
                       className="w-[20px] h-[20px] text-teal-900 cursor-pointer"
                     />
                   ) : (
                     <IoDocument
-                      onClick={handleDocumentOpen}
+                      onClick={() => {
+                        handleDocumentOpen();
+                        setSeletedFile(item.file);
+                      }}
                       className="w-[20px] h-[20px] text-teal-900 cursor-pointer"
                     />
                   )}
@@ -107,7 +117,7 @@ const MapDocumentTable = ({
                       className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center"
                     >
                       <img
-                        src={item.file}
+                        src={selectedFile}
                         alt="Modal Image"
                         className="rounded-xl md:w-[600px] p-4"
                       />
@@ -121,7 +131,7 @@ const MapDocumentTable = ({
                   <div className="flex items-center gap-4">
                     <Button
                       className="row_action_btn edit_btn ListingEditbtn"
-                      onClick={handleEditModalOpen}
+                      onClick={() => handleEditModalOpen(item?._id)}
                       variant="success"
                     >
                       <MdEdit size={20} />
@@ -130,8 +140,9 @@ const MapDocumentTable = ({
                       <EditMapDocumentModal
                         handleModalClose={handleEditModalClose}
                         title={`Edit ${category}`}
-                        category={"document"}
-                        id={item._id}
+                        category={category}
+                        id={selectedID}
+                        fetchData={fetchData}
                       />
                     )}
                     <Button

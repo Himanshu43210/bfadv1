@@ -30,9 +30,7 @@ const ForgetPassword = () => {
       if (response.ok) {
         const data = await response.json();
         if (data.success) {
-          router.push("/resetPassword");
-        } else {
-          console.error("Failed to send email. Message: ", data.message);
+          alert("Check email for reset password link");
         }
       } else {
         console.error("Failed to send email");
