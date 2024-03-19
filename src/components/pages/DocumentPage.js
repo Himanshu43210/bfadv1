@@ -96,7 +96,7 @@ const DocumentPage = () => {
             handleModalClose={handleModalClose}
             handleUpload={handleUpload}
             handleFileChange={handleFileChange}
-            title={"Edit Document"}
+            title={"Add Document"}
           />
         )}
       </div>
@@ -108,7 +108,7 @@ const DocumentPage = () => {
             onClick={handleModalOpen}
             variant="success"
           >
-            Submit
+            Add Document
           </Button>
           <div className="">
             {loading ? (
