@@ -3,24 +3,12 @@ import { Button } from "react-bootstrap";
 import { IoDocument } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
-import { MdCancel, MdEdit, MdDelete } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
 import EditMapDocumentModal from "./EditMapDocumentModal";
-
-function ViewMapDocumentModal({ onClose, imageUrl }) {
-  return (
-    <div
-      onClick={onClose}
-      className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center"
-    >
-      <img
-        src={imageUrl}
-        alt="Modal Image"
-        className="rounded-xl md:w-[600px] p-4"
-      />
-    </div>
-  );
-}
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 const MapDocumentTable = ({
   data,
@@ -47,7 +35,19 @@ const MapDocumentTable = ({
       .delete(
         "https://bfservices.trainright.fit/api/content/deleteById?id=" + id
       )
-      .then(() => fetchData())
+      .then(
+        () => fetchData(),
+        toast.error("Data deleted!", {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        })
+      )
       .catch((err) => console.log(err, "Can't delete data!"));
   };
 
@@ -112,15 +112,20 @@ const MapDocumentTable = ({
                   )}
 
                   {documentOpen === true && (
-                    <div
-                      onClick={handleDocumentClose}
-                      className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center"
-                    >
-                      <img
-                        src={selectedFile}
-                        alt="Modal Image"
-                        className="rounded-xl md:w-[600px] p-4"
-                      />
+                    <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center">
+                      <div className="bg-white border border-gray-500 rounded-xl">
+                        <div className="cursor-pointer flex justify-end w-full p-2">
+                          <RxCross2
+                            onClick={handleDocumentClose}
+                            className="w-6 h-6 hover:bg-black hover:text-white rounded-full"
+                          />
+                        </div>
+                        <img
+                          src={selectedFile}
+                          alt="Modal Image"
+                          className="md:w-[600px] py-10 px-4"
+                        />
+                      </div>
                     </div>
                   )}
                 </td>
@@ -158,6 +163,18 @@ const MapDocumentTable = ({
             )
         )}
       </tbody>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </table>
   );
 };

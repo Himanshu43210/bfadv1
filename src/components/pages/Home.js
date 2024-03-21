@@ -24,6 +24,7 @@ import ScrollToTop from "../customComponents/ScrollToTop.jsx";
 import Chatbot from "../customComponents/Chatbot.jsx";
 import Heading from "../customComponents/Heading.jsx";
 import Banner from "../customComponents/Banner.jsx";
+import HeaderSearchBar from "../customComponents/HeaderSearchBar.jsx";
 
 const HOME_SCREEN = {
   name: "Home Screen",

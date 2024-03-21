@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { MdCancel } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 
 const AddMapDocumentModal = ({
   handleHeadingChange,
@@ -12,7 +12,10 @@ const AddMapDocumentModal = ({
     <div className="fixed top-0 left-0 w-full h-full bg-rgba-black-50 backdrop-blur-5 flex justify-center items-center z-999">
       <div className="border border-gray-400 p-4 bg-white md:w-[400px] w-full">
         <div className="cursor-pointer flex justify-end w-full">
-          <MdCancel onClick={handleModalClose} className="w-6 h-6" />
+          <RxCross2
+            onClick={handleModalClose}
+            className="w-6 h-6 hover:bg-black hover:text-white rounded-full"
+          />
         </div>
         <p className="font-bold text-xl text-center mt-4 mb-6">{title}</p>{" "}
         <input

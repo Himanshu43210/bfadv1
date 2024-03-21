@@ -29,6 +29,7 @@ import dynamic from "next/dynamic";
 import { storeUserData } from "@/redux/slice/userSlice.js";
 import { newUserConst } from "../fieldConsts/UserFieldConst.js";
 import { newPropertyConst } from "../fieldConsts/PropertiesFieldConst.js";
+import ListingForm from "../customComponents/ListingForm.jsx";
 
 const comp = () => {
   const finalizeRef = useRef(null);
@@ -287,6 +288,7 @@ const comp = () => {
                   : {}
               }
             />
+            {/* <ListingForm /> */}
             <div className="form_controls_wrapper">
               <Button
                 variant="contained"

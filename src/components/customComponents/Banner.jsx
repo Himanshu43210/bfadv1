@@ -1,3 +1,4 @@
+import HeaderSearchBar from "./HeaderSearchBar";
 import SearchBar from "./SearchBar";
 
 export default function Banner({ component }) {
@@ -11,9 +12,14 @@ export default function Banner({ component }) {
         <h1 className={`banner_text ${component.textClass}`}>
           {component.text}
           <br />
-          {component.spanText && <span className="banner_subtext">{component.spanText}</span>}
+          {component.spanText && (
+            <span className="banner_subtext">{component.spanText}</span>
+          )}
         </h1>
-        {component.searchBar && <SearchBar />}
+        <div className="md:hidden mt-6">
+          {" "}
+          <HeaderSearchBar />
+        </div>
       </article>
     </>
   );

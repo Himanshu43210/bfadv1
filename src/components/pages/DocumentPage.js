@@ -7,6 +7,8 @@ import EditMapDocumentModal from "../customComponents/EditMapDocumentModal";
 import AddMapDocumentModal from "../customComponents/AddMapDocumentModal";
 import MapDocumentTable from "../customComponents/MapDocumentTable";
 import { API_DOMAIN } from "@/redux/utils/api";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 const DocumentPage = () => {
   const [heading, setHeading] = useState("");
@@ -61,6 +63,16 @@ const DocumentPage = () => {
       console.log("Upload successful:", response.data);
       setModal(false);
       fetchData();
+      toast.success("Document added successfully!", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } catch (error) {
       console.error("Error uploading image:", error);
     }
@@ -88,7 +100,7 @@ const DocumentPage = () => {
   return (
     <div className="px-6">
       <div>
-        <h2 className="text-center font-bold text-2xl mt-4">
+        <h2 className="text-center font-bold text-2xl mt-20">
           WELCOME TO BUILDERFLOOR.COM
         </h2>
         {modal === true && (
@@ -100,17 +112,42 @@ const DocumentPage = () => {
             title={"Add Document"}
           />
         )}
+        <ToastContainer
+          position="bottom-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
       <div>
         <div>
-          <p className="text-center font-bold text-lg mb-4">Manage Documents</p>
-          <Button
-            className={`ol_open_btn signin_btn`}
-            onClick={handleModalOpen}
-            variant="success"
-          >
-            Add Document
-          </Button>
+          <p className="text-center font-bold text-lg mb-4 my-6">
+            Manage Documents
+          </p>
+          <div className="flex justify-between items-center">
+            <CustomRouteButton
+              component={{
+                type: ROUTE_BUTTON,
+                className: "admin-route-button",
+                label: "Back",
+                name: "Go to Dashboard",
+                route: "/admin",
+              }}
+            />
+            <Button
+              className={`ol_open_btn signin_btn`}
+              onClick={handleModalOpen}
+              variant="success"
+            >
+              Add Document
+            </Button>
+          </div>
           <div className="">
             {loading ? (
               <p>Loading...</p>
@@ -124,17 +161,6 @@ const DocumentPage = () => {
                 fetchData={fetchData}
               />
             )}
-          </div>
-          <div className="fixed bottom-20 w-full text-center">
-            <CustomRouteButton
-              component={{
-                type: ROUTE_BUTTON,
-                className: "admin-route-button",
-                label: "Back",
-                name: "Go to Dashboard",
-                route: "/admin",
-              }}
-            />
           </div>
         </div>
       </div>

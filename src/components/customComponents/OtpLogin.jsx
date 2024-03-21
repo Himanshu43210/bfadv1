@@ -566,10 +566,10 @@ function comp() {
           }}
         >
           <Button
-            className={`ol_open_btn signin_btn`}
+            className={`ol_open_btn signin_btn py-2`}
             onClick={() => setOpen(!open)}
           >
-            <Typography className="ol_open_btn_label">Sign In</Typography>
+            Sign In
           </Button>
           {open && renderPopup()}
           {openForm && renderFormPopup()}

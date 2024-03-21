@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import CustomRouteButton from "../customComponents/RouteButton";
 import { ROUTE_BUTTON } from "../utils/Const";
-import { FaMapMarkerAlt } from "react-icons/fa";
 import Footer from "../customComponents/Footer";
 import ScrollToTop from "../customComponents/ScrollToTop";
 import Chatbot from "../customComponents/Chatbot";
@@ -13,8 +12,7 @@ import { Button } from "react-bootstrap";
 const Map = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState(false);
-  const [mapOpen, setMapOpen] = useState(false);
+  const [mapOpen, setMapOpen] = useState(true);
   const [currentMap, setCurrentMap] = useState("");
 
   const printRef = useRef();
@@ -28,8 +26,14 @@ const Map = () => {
         const apiUrl =
           "https://bfservices.trainright.fit/api/content/findAll?page=0&limit=10";
         const response = await axios.get(apiUrl);
-        setData(response.data);
+        const filteredData = response?.data?.result.filter(
+          (item) => item.category === "map"
+        );
+        setData(filteredData);
         setLoading(false);
+        if (filteredData.length > 0) {
+          setCurrentMap(filteredData[0]._id);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -49,7 +53,6 @@ const Map = () => {
     setCurrentMap("");
   };
 
-  console.log(currentMap);
   return (
     <div>
       <HeaderComp />
@@ -78,25 +81,21 @@ const Map = () => {
         ) : (
           <div>
             <ul className="flex justify-start gap-4">
-              {data?.result?.map(
-                (item) =>
-                  item.category === "map" && (
-                    <div>
-                      <li
-                        className={`cursor-pointer text-xl ${
-                          currentMap === item._id ? "underline" : ""
-                        }`}
-                        onClick={() => handleMapOpen(item._id)}
-                      >
-                        {item.heading.toUpperCase()}
-                      </li>
-                    </div>
-                  )
-              )}
+              {data?.map((item) => (
+                <div>
+                  <li
+                    className={`cursor-pointer text-xl ${
+                      currentMap === item._id ? "underline" : ""
+                    }`}
+                    onClick={() => handleMapOpen(item._id)}
+                  >
+                    {item.heading.toUpperCase()}
+                  </li>
+                </div>
+              ))}
             </ul>
-            {data?.result?.map(
+            {data?.map(
               (item) =>
-                item.category === "map" &&
                 mapOpen === true &&
                 item._id === currentMap && (
                   <div>

@@ -82,7 +82,7 @@ const HeaderComp = () => {
         />
       </div>
       <div className={`component_wrapper ${"page_header_comp"}`}>
-        <Header
+        {/* <Header
           isMobile={isMobile}
           component={{
             url: "/",
@@ -91,10 +91,12 @@ const HeaderComp = () => {
             titleMobile: "BuilderFloor",
             className: "page_header_comp",
           }}
-        />
+        /> */}
       </div>
       <div className={`component_wrapper ${"ol_comp_wrapper"} flex gap-2`}>
-        <HeaderSearchBar />
+        <div className="max-md:hidden">
+          <HeaderSearchBar />
+        </div>
         <Button
           className={`ol_open_btn signin_btn`}
           onClick={handlePostListing}
