@@ -5,7 +5,7 @@ function FormLayout({ getFields, search, searchFields, disabled, ...props }) {
   const formProps = useFormikContext();
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={6}>
       {getFields({ formProps, ...props })?.map(
         (
           { span, Component, Search, searchProps, nonFormComponent, ...args },

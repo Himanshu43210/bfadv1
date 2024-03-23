@@ -207,42 +207,51 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                   />
                 )}
                 {field.type === "select" && (
-                  <Select
-                    className="inputtag input_elem"
-                    id={field.name}
-                    name={field.name}
-                    value={
-                      (formData[field.name] &&
-                        (typeof formData[field.name] === "string"
-                          ? {
-                              label: formData[field.name],
-                              value: formData[field.name],
-                            }
-                          : formData[field.name])) ||
-                      field.defaultOption
-                    }
-                    options={field.options || masterData?.[field.name]}
-                    styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        width: "auto",
-                        display: "flex",
-                        alignItems: "center",
-                        border: state.isFocused ? baseStyles.border : "gray",
-                        borderBottom: "1px solid #ccc",
-                        borderRadius: state.isFocused
-                          ? baseStyles.borderRadius
-                          : "",
-                        textAlign: "left",
-                      }),
-                    }}
-                    onChange={(selectedOption) => {
-                      handleChange(field, selectedOption || null);
-                    }}
-                    closeMenuOnSelect={!field.isMulti}
-                    required={field.isRequired}
-                    isMulti={field.isMulti}
-                  />
+                  <div>
+                    <Select
+                      className="inputtag input_elem"
+                      id={field.name}
+                      name={field.name}
+                      value={
+                        (formData[field.name] &&
+                          (typeof formData[field.name] === "string"
+                            ? {
+                                label: formData[field.name],
+                                value: formData[field.name],
+                              }
+                            : formData[field.name])) ||
+                        field.defaultOption
+                      }
+                      options={field.options || masterData?.[field.name]}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          width: "auto",
+                          display: "flex",
+                          alignItems: "center",
+                          border: state.isFocused ? baseStyles.border : "gray",
+                          borderBottom: "1px solid #ccc",
+                          borderRadius: state.isFocused
+                            ? baseStyles.borderRadius
+                            : "",
+                          textAlign: "left",
+                        }),
+                      }}
+                      onChange={(selectedOption) => {
+                        handleChange(field, selectedOption || null);
+                      }}
+                      closeMenuOnSelect={!field.isMulti}
+                      required={field.isRequired}
+                      isMulti={field.isMulti}
+                    />
+                    {console.log(
+                      masterData?.[field.name].find(
+                        (item) => item.value === "1ST FLOOR"
+                      ),
+                      "arijit"
+                    )}
+                    {field.name === "floor" && <>ho ho ho</>}
+                  </div>
                 )}
                 {field.type === "creatable_select" && (
                   <Creatable

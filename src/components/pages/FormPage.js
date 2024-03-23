@@ -128,6 +128,14 @@ const comp = () => {
         try {
           let newFormData = new FormData();
           const fileFields = [
+            "floorOnePrice",
+            "floorOnePossession",
+            "floorTwoPrice",
+            "floorTwoPossession",
+            "floorThreePrice",
+            "floorThreePossession",
+            "floorFourPrice",
+            "floorFourPossession",
             "thumbnailFile",
             "normalImageFile",
             "threeSixtyImages",
@@ -135,7 +143,6 @@ const comp = () => {
             "videoFile",
             "virtualFile",
           ];
-
           fileFields.forEach((field) => {
             if (formData[field]) {
               for (const file of formData[field]) {
@@ -271,7 +278,6 @@ const comp = () => {
       setCheck(true);
     }
   }, [loginStatus]);
-  console.log(loginStatus, "arijit");
 
   return (
     <>
@@ -279,7 +285,7 @@ const comp = () => {
         <>
           <div className="standalone_page form_page">
             <div className="formheadingcontainer">{userProfile.formName}</div>
-            <FormBuilder
+            {/* <FormBuilder
               ref={finalizeRef}
               fields={userProfile.formType}
               propsFormData={
@@ -287,17 +293,20 @@ const comp = () => {
                   ? filterAutofillData(userProfile.autofill, userProfile)
                   : {}
               }
-            />
-            {/* <ListingForm /> */}
+            /> */}
+            <div className="mb-10">
+              <ListingForm />
+            </div>
+
             <div className="form_controls_wrapper">
-              <Button
+              {/* <Button
                 variant="contained"
                 onClick={handleSubmit}
                 disabled={submitting}
                 className="save_btn"
               >
                 {submitting ? "Submitting..." : "Submit"}
-              </Button>
+              </Button> */}
               {userProfile?.showSaveBtn ? (
                 <Button
                   variant="secondary"

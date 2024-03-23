@@ -1,10 +1,10 @@
-import MuiSelect from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import { Icon } from '@mui/material';
-import { useEffect } from 'react';
+import MuiSelect from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import { Icon } from "@mui/material";
+import { useEffect } from "react";
 
 function Select({
   options,
@@ -35,23 +35,14 @@ function Select({
         value={value}
         disabled={disabled}
         sx={{
-          boxShadow: '5px',
-          backgroundColor: '#f5f5f5 !important',
-          '.MuiInputBase-input': {
+          boxShadow: "5px",
+          backgroundColor: "#f5f5f5 !important",
+          ".MuiInputBase-input": {
             padding: 1.3,
           },
-          '.MuiOutlinedInput-notchedOutline': {
-            border: 0,
-          },
-          outline: 'none',
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: 'none',
-            borderRadius: '5px',
-          },
-          border: 'none',
-          '& fieldset': { border: 'none' },
-          backgroundColor: 'white',
-          borderRadius: 2,
+          borderBottom: "solid 	#999999 1px",
+          "& fieldset": { border: "none" },
+          backgroundColor: "white",
           marginTop: 0.5,
         }}
         multiple={multiple}
