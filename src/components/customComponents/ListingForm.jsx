@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FormLayout from "./FormLayout";
+// import FormLayout from "./FormLayout";
 import Select from "./MUI/Select";
 import { TextField } from "@mui/material";
 import Switch from "./MUI/Switch";
@@ -7,6 +7,7 @@ import Autocomplete from "./MUI/Autocomplete";
 import PriceBox from "./MUI/PriceBox";
 import Image from "./MUI/Image";
 import { Button } from "react-bootstrap";
+import axios from "axios";
 export const getFields = ({ formProps, list }) => {
   return [
     {
@@ -321,7 +322,7 @@ const ListingForm = ({ ...props }) => {
   ]);
   const [showSecondFloor, setShowSecondFloor] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [formData, setData] = useState({
     sectorNumber: "",
     plotNumber: "",
     accommodation: "",
@@ -338,31 +339,19 @@ const ListingForm = ({ ...props }) => {
     size: "",
     state: "",
     title: "",
-    floor1: {
-      floor: "",
-      possession: "",
-      price: "",
-    },
-    floor2: {
-      floor: "",
-      possession: "",
-      price: "",
-    },
-    floor3: {
-      floor: "",
-      possession: "",
-      price: "",
-    },
-    floor4: {
-      floor: "",
-      possession: "",
-      price: "",
-    },
+    possessionForFloorOne: "",
+    priceForFloorOne: 0,
+    possessionForFloorTwo: "",
+    priceForFloorTwo: 0,
+    possessionForFloorThree: "",
+    priceForFloorThree: 0,
+    possessionForFloorFour: "",
+    priceForFloorFour: 0,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
+    setData({
       ...formData,
       [name]: value,
     });
@@ -371,18 +360,68 @@ const ListingForm = ({ ...props }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "https://bfservices.trainright.fit/api/properties/v2/createAndUpdateProperty",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+      let value = {
+        ...formData,
+      };
+      if (value?.possessionForFloorOne?.length > 0) {
+        value = {
+          ...value,
+          floor1: {
+            floor: "1ST FLOOR",
+            possession: value.possessionForFloorOne,
+            price: value.priceForFloorOne,
           },
-          body: JSON.stringify(formData),
-        }
+        };
+      } else if (value?.possessionForFloorTwo?.length > 0) {
+        value = {
+          ...value,
+          floor2: {
+            floor: "2ND FLOOR",
+            possession: value.possessionForFloorTwo,
+            price: value.priceForFloorTwo,
+          },
+        };
+      } else if (value?.possessionForFloorThree?.length > 0) {
+        value = {
+          ...value,
+          floor3: {
+            floor: "3RD FLOOR",
+            possession: value.possessionForFloorThree,
+            price: value.priceForFloorThree,
+          },
+        };
+      } else if (value?.possessionForFloorFour?.length > 0) {
+        value = {
+          ...value,
+          floor4: {
+            floor: "4TH FLOOR",
+            possession: value.possessionForFloorFour,
+            price: value.priceForFloorFour,
+          },
+        };
+      }
+      delete value.possessionForFloorOne;
+      delete value.priceForFloorOne;
+      delete value.possessionForFloorTwo;
+      delete value.priceForFloorTwo;
+      delete value.possessionForFloorThree;
+      delete value.priceForFloorThree;
+      delete value.possessionForFloorFour;
+      delete value.priceForFloorFour;
+
+      // const formData = new FormData();
+      //     for (const key in value) {
+      //       formData.append(key, value[key]);
+      //     }
+
+      console.log(value, "arijit");
+
+      return;
+      const response = await axios.post(
+        "https://bfservices.trainright.fit/api/properties/v2/createAndUpdateProperty",
+        value
       );
-      const data = await response.json();
-      console.log("Data submitted successfully:", data);
+      console.log("Data submitted successfully:", response);
     } catch (error) {
       console.error("Error submitting data:", error);
     }
@@ -557,66 +596,50 @@ const ListingForm = ({ ...props }) => {
           className="border border-gray-300 outline-none rounded-sm w-[100vh] h-36"
         />
       </label>
-      <label className="flex items-start gap-2">
-        Floor 1:
-        <input
-          type="text"
-          name="floor"
-          value={formData.floor2.floor}
-          onChange={handleChange}
-          className="border-b border-gray-300 outline-none"
-        />
-      </label>
-      <label className="flex items-start gap-2">
-        Possession 1:
-        <select
-          name="possession"
-          value={formData.floor2.possession}
-          onChange={handleChange}
-          className="border-b border-gray-300 outline-none"
+      <div className="flex gap-12 justify-between items-center">
+        <h3>Floor One</h3>
+        <label className="flex items-start gap-2">
+          Possession:
+          <select
+            name="possessionForFloorOne"
+            value={formData.possessionForFloorOne}
+            onChange={handleChange}
+            className="border-b border-gray-300 outline-none"
+          >
+            <option value="">Select Possession</option>
+            {possessionOptions.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex items-start gap-2">
+          Price:
+          <input
+            type="text"
+            name="priceForFloorOne"
+            value={formData.priceForFloorOne}
+            onChange={handleChange}
+            className="border-b border-gray-300 outline-none"
+          />
+        </label>
+        <button
+          type="button"
+          onClick={() => setShowSecondFloor(!showSecondFloor)}
+          className="text-blue-600 underline"
         >
-          <option value="">Select Possession</option>
-          {possessionOptions.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className="flex items-start gap-2">
-        Price 1:
-        <input
-          type="text"
-          name="price"
-          value={formData.floor1.price}
-          onChange={handleChange}
-          className="border-b border-gray-300 outline-none"
-        />
-      </label>
-      <button
-        type="button"
-        onClick={() => setShowSecondFloor(!showSecondFloor)}
-        className="text-blue-600 underline"
-      >
-        {showSecondFloor ? "Hide Second Floor" : "Add More"}
-      </button>
+          {showSecondFloor ? "Hide Second Floor" : "Add Second Floor"}
+        </button>
+      </div>
       {showSecondFloor && (
-        <div>
-          <label className="block mb-4">
-            Floor 2:
-            <input
-              type="text"
-              name="floor"
-              value={formData.floor2.floor}
-              onChange={handleChange}
-              className="border-b border-gray-300 outline-none"
-            />
-          </label>
-          <label className="block mb-4">
-            Possession 2:
+        <div className="flex gap-12 justify-between items-center">
+          <h3>Floor Two</h3>
+          <label className="">
+            Possession :
             <select
               name="possession"
-              value={formData.floor2.possession}
+              value={formData.possessionForFloorTwo}
               onChange={handleChange}
               className="border-b border-gray-300 outline-none"
             >
@@ -628,12 +651,12 @@ const ListingForm = ({ ...props }) => {
               ))}
             </select>
           </label>
-          <label className="block mb-4">
-            Price 2:
+          <label className="">
+            Price:
             <input
               type="text"
               name="price"
-              value={formData.floor2.price}
+              value={formData.priceForFloorTwo}
               onChange={handleChange}
               className="border-b border-gray-300 outline-none"
             />
