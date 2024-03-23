@@ -1,33 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 
 const ListingForm = ({ ...props }) => {
-  const [states] = useState(["Haryana"]);
-  const [cities] = useState(["Gurgaon", "Chandigarh"]);
-  const [facings] = useState([
-    "North",
-    "North-East",
-    "East",
-    "South-East",
-    "South",
-    "South-West",
-    "West",
-    "North-West",
-    "Center",
-  ]);
-  const [accommodations] = useState(["1BHK", "2BHK", "3BHK", "4BHK", "5BHK"]);
-  const [possessionOptions] = useState([
-    "Ready",
-    "1 month",
-    "3 months",
-    "6 months",
-    "12 months",
-  ]);
   const [showSecondFloor, setShowSecondFloor] = useState(false);
   const [showThirdFloor, setShowThirdFloor] = useState(false);
   const [showFourthFloor, setShowFourthFloor] = useState(false);
-
+  const [masterData, setMasterData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [formData, setData] = useState({
     sectorNumber: "",
     plotNumber: "",
@@ -139,6 +120,24 @@ const ListingForm = ({ ...props }) => {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "https://bfservices.trainright.fit/api/masters/getMasterDataOnHome"
+      );
+      setMasterData(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  console.log(masterData, "raju");
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex items-center gap-10 flex-wrap">
@@ -152,9 +151,9 @@ const ListingForm = ({ ...props }) => {
             className="border-b border-gray-300 outline-none"
           >
             <option value="">Select State</option>
-            {states.map((state, index) => (
-              <option key={index} value={state}>
-                {state}
+            {masterData?.state?.map((state, index) => (
+              <option key={index} value={state.value}>
+                {state.label}
               </option>
             ))}
           </select>
@@ -168,9 +167,9 @@ const ListingForm = ({ ...props }) => {
             className="border-b border-gray-300 outline-none"
           >
             <option value="">Select City</option>
-            {cities.map((city, index) => (
-              <option key={index} value={city}>
-                {city}
+            {masterData?.city?.map((city, index) => (
+              <option key={index} value={city.value}>
+                {city.label}
               </option>
             ))}
           </select>
@@ -184,8 +183,9 @@ const ListingForm = ({ ...props }) => {
             className="border-b border-gray-300 outline-none"
           >
             <option value="">Select Location</option>
-            <option value="Option 1">Option 1</option>
-            <option value="Option 2">Option 2</option>
+            {masterData?.sectorNumber.map((item) => (
+              <option value={item.value}>{item.label}</option>
+            ))}
           </select>
         </label>
         <label className="flex items-center gap-2">
@@ -217,9 +217,9 @@ const ListingForm = ({ ...props }) => {
             className="border-b border-gray-300 outline-none"
           >
             <option value="">Select Accommodation</option>
-            {accommodations.map((accommodation, index) => (
-              <option key={index} value={accommodation}>
-                {accommodation}
+            {masterData?.accommodation.map((accommodation, index) => (
+              <option key={index} value={accommodation.value}>
+                {accommodation.label}
               </option>
             ))}
           </select>
@@ -233,9 +233,9 @@ const ListingForm = ({ ...props }) => {
             className="border-b border-gray-300 outline-none"
           >
             <option value="">Select Facing</option>
-            {facings.map((facing, index) => (
-              <option key={index} value={facing}>
-                {facing}
+            {masterData?.facing?.map((facing, index) => (
+              <option key={index} value={facing.value}>
+                {facing.label}
               </option>
             ))}
           </select>
@@ -318,13 +318,26 @@ const ListingForm = ({ ...props }) => {
         </label>
         <label className="flex items-center gap-2">
           Title:
-          <input
+          {/* <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
             className="border-b border-gray-300 outline-none"
-          />
+          /> */}
+          <select
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            className="border-b border-gray-300 outline-none"
+          >
+            <option value="">Select Title</option>
+            {masterData?.title?.map((item, index) => (
+              <option key={index} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="flex items-center gap-2">
           Secondary Title:
@@ -358,9 +371,9 @@ const ListingForm = ({ ...props }) => {
               className="border-b border-gray-300 outline-none"
             >
               <option value="">Select Possession</option>
-              {possessionOptions.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
+              {masterData?.possession.map((option, index) => (
+                <option key={index} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>
@@ -397,9 +410,9 @@ const ListingForm = ({ ...props }) => {
                 className="border-b border-gray-300 outline-none"
               >
                 <option value="">Select Possession</option>
-                {possessionOptions.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
+                {masterData?.possession.map((option, index) => (
+                  <option key={index} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -438,9 +451,9 @@ const ListingForm = ({ ...props }) => {
                   className="border-b border-gray-300 outline-none"
                 >
                   <option value="">Select Possession</option>
-                  {possessionOptions.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
+                  {masterData?.possession.map((option, index) => (
+                    <option key={index} value={option.value}>
+                      {option.label}
                     </option>
                   ))}
                 </select>
@@ -479,9 +492,9 @@ const ListingForm = ({ ...props }) => {
                 className="border-b border-gray-300 outline-none"
               >
                 <option value="">Select Possession</option>
-                {possessionOptions.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
+                {masterData?.possession.map((option, index) => (
+                  <option key={index} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
