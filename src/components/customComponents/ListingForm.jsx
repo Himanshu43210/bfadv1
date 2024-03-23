@@ -21,7 +21,7 @@ const ListingForm = ({ ...props }) => {
     description: "",
     detailTitle: "",
     facing: "",
-    needApprovalBy: "",
+    needApprovalBy: "64e867d86a2061a0973a9a6c",
     parkFacing: "",
     size: "",
     state: "",
@@ -51,8 +51,7 @@ const ListingForm = ({ ...props }) => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       let value = {
         ...formData,
@@ -106,12 +105,12 @@ const ListingForm = ({ ...props }) => {
       delete value.possessionForFloorFour;
       delete value.priceForFloorFour;
 
-      // const formData = new FormData();
-      //     for (const key in value) {
-      //       formData.append(key, value[key]);
-      //
+      const bodyFormData = new FormData();
+      for (const key in value) {
+        bodyFormData.append(key, value[key]);
+      }
       const response = await axios.post(
-        "https://bfservices.trainright.fit/api/properties/v2/createAndUpdateProperty",
+        "https://bfservices.trainright.fit/api/properties/v2/editProperty",
         value
       );
       console.log("Data submitted successfully:", response);
@@ -538,7 +537,7 @@ const ListingForm = ({ ...props }) => {
             className="w-full m-1 px-1 my-4"
           />
         </div>
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           <label htmlFor="threeSixtyImages" className="w-96 ">
             Please Add 360 Image:
           </label>
@@ -549,7 +548,7 @@ const ListingForm = ({ ...props }) => {
             onChange={handleChange}
             className="w-full m-1 px-1 my-4"
           />
-        </div>
+        </div> */}
         <div className="flex items-center gap-4">
           <label htmlFor="layoutFile" className="w-96 ">
             Please Add Layout Image:
