@@ -7,7 +7,11 @@ import { HOME_CARD, SEARCH_CARD } from "../utils/Const.js";
 import BasicPagination from "./Pagination.jsx";
 import MuiButton from "@mui/material/Button";
 
-export default function DynamicCardContainer({ component, handleValueChange, onLoadMore }) {
+export default function DynamicCardContainer({
+  component,
+  handleValueChange,
+  onLoadMore,
+}) {
   const showOptions = component.showOptions;
   const apiName = component.apiName;
   const onClickApi = component.cardClickApi;
@@ -47,11 +51,11 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
   const throttle = (fn, wait) => {
     let time = Date.now();
     return function () {
-      if ((time + wait - Date.now()) < 0) {
+      if (time + wait - Date.now() < 0) {
         fn();
         time = Date.now();
       }
-    }
+    };
   };
 
   useLayoutEffect(() => {
@@ -60,7 +64,10 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
 
   useEffect(() => {
     setIsBottom(false);
-    if (Array.isArray(dataToRender) && (cumulatedData?.[0]?._id !== dataToRender?.[0]?._id)) {
+    if (
+      Array.isArray(dataToRender) &&
+      cumulatedData?.[0]?._id !== dataToRender?.[0]?._id
+    ) {
       if (component.loadMore) {
         setCumulatedData([...cumulatedData, ...dataToRender]);
       } else {
@@ -136,14 +143,20 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
       })} */}
       {component.loadMore && dataToRender && (
         <div className="load_more_btn_container">
-          <MuiButton variant="contained" className="dcc_load_more_btn" onClick={handleLoadMore}>{component.loadMore}</MuiButton>
+          <MuiButton
+            variant="contained"
+            className="dcc_load_more_btn"
+            onClick={handleLoadMore}
+          >
+            {component.loadMore}
+          </MuiButton>
         </div>
       )}
       {component.paginatioName && dataToRender && (
         <BasicPagination
           paginationClass={component.paginationClass}
           handlePageChange={(e, newPage) => {
-            handleValueChange({ label: "page", value: (newPage - 1) });
+            handleValueChange({ label: "page", value: newPage - 1 });
             page.current = newPage;
           }}
           currentPage={page.current || defaultPage}
@@ -157,8 +170,6 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
     </div>
   );
 }
-
-
 
 // export default function DynamicCardContainer({ component, handleValueChange, onLoadMore, setApiStatus, setSliceData }) {
 //   const showOptions = component.showOptions;
@@ -231,7 +242,7 @@ export default function DynamicCardContainer({ component, handleValueChange, onL
 //     if (Array.isArray(dataToRender) && (cumulatedData?.[0]?._id !== dataToRender?.[0]?._id)) {
 //       if (component.loadMore) {
 //         setCumulatedData([...cumulatedData, ...dataToRender]);
-//       } 
+//       }
 //       // else {
 //       //   setCumulatedData([...dataToRender]);
 //       // }

@@ -10,11 +10,10 @@ import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded.js";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
-const MenuState = ({ component }) => {
+const MenuState = ({ component, isMobile }) => {
   const [open, setOpen] = React.useState(false);
   const [visited, setVisited] = React.useState(false);
   const navigate = useRouter();
-  let isMobile = false;
   const customerProfile = useSelector((state) => state.customer);
 
   React.useEffect(() => {
@@ -51,13 +50,19 @@ const MenuState = ({ component }) => {
 
   return (
     <div className="menu_comp" onMouseLeave={handleMouseLeave}>
-      <Button
-        className={`menu_btn ${open && "main_menu_open"}`}
-        onClick={() => setOpen(!open)}
-      >
+      <Button className={`menu_btn ${open && "main_menu_open"}`}>
         {/* <BiMenuAltLeft size={30} color="blue" /> */}
-        <SortRoundedIcon className="main_menu_icon max-md:w-7 max-md:h-7" />
-        <span className="menu_btn_label">Menu</span>
+        <SortRoundedIcon
+          onClick={() => setOpen(!open)}
+          className="main_menu_icon max-md:w-7 max-md:h-7"
+        />
+        <a
+          href={"/"}
+          className="capitalize flex items-center gap-2 text-[20px] text-black ml-3"
+        >
+          <img src={component.image} alt="" width="40px" height="50px" />
+          {isMobile ? component.mobileText : component.text}
+        </a>
       </Button>
       {open && (
         <div className="main_menu_popup" onMouseEnter={() => setVisited(true)}>

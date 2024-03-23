@@ -244,12 +244,6 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                       required={field.isRequired}
                       isMulti={field.isMulti}
                     />
-                    {console.log(
-                      masterData?.[field.name].find(
-                        (item) => item.value === "1ST FLOOR"
-                      ),
-                      "arijit"
-                    )}
                     {field.name === "floor" && <>ho ho ho</>}
                   </div>
                 )}
