@@ -566,7 +566,7 @@ function comp() {
           }}
         >
           <Button
-            className={`ol_open_btn signin_btn py-2`}
+            className={`ol_open_btn signin_btn h-[40px] w-[100px] mr-3`}
             onClick={() => setOpen(!open)}
           >
             Sign In

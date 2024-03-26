@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
-  const router = useRouter();
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -58,6 +58,7 @@ const ForgetPassword = () => {
           <label className="lab-class">Email</label>
           <input
             className="normal_input"
+            name="email"
             type={EMAIL}
             value={email}
             onChange={handleEmailChange}

@@ -10,23 +10,20 @@ import { convertToCr, formatData } from "../utils/HelperMethods.js";
 import IframeBuilder from "./IframeBuilder.jsx";
 import { FaShareAlt, FaRegHeart } from "react-icons/fa";
 import * as _ from "lodash";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos.js';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos.js';
-import Tooltip from '@mui/material/Tooltip';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone.js';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp.js';
-import CloseIcon from '@mui/icons-material/Close.js';
-import FullscreenIcon from '@mui/icons-material/Fullscreen.js';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos.js";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos.js";
+import Tooltip from "@mui/material/Tooltip";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone.js";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp.js";
+import CloseIcon from "@mui/icons-material/Close.js";
+import FullscreenIcon from "@mui/icons-material/Fullscreen.js";
 import { Helmet } from "react-helmet";
 import { Typography } from "@mui/material";
 import dynamic from "next/dynamic.js";
 import { CARD_DETAILS_SCREEN } from "../pages/DetailedView.js";
+import { USER_ROLE } from "@/ScreenJson.js";
 
-function page({
-  component,
-  singledata,
-  onClickNavigate,
-}) {
+function page({ component, singledata, onClickNavigate }) {
   // Prioritize singledata if available
   const data = singledata || component;
   let iconList = data?.icons;
@@ -55,8 +52,8 @@ function page({
   let pathname = window.location.href;
   let cardDetailUrl = window.location.href;
   let id = getStringAfterLastHyphen(pathname);
-  let getApiEndpoint = '';
-  let apiEndpoint = '';
+  let getApiEndpoint = "";
+  let apiEndpoint = "";
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -78,7 +75,9 @@ function page({
     }
   }, []);
 
-  const apiData = useSelector((state) => selectApiData(state, data.apiSliceName)?.data);
+  const apiData = useSelector(
+    (state) => selectApiData(state, data.apiSliceName)?.data
+  );
   const customerProfile = useSelector((state) => state.customer);
   const [mediaPrepared, setMediaPrepared] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
@@ -97,13 +96,13 @@ function page({
     virtualFiles: 0,
     layouts: 0,
     videos: 0,
-    thumbnails: 0
+    thumbnails: 0,
   };
   const allImages = [];
 
-  Object.keys(cardData).forEach(prop => {
+  Object.keys(cardData).forEach((prop) => {
     if (imageTypes.includes(prop)) {
-      cardData[prop].forEach(link => {
+      cardData[prop].forEach((link) => {
         console.log(link);
         if (link !== "") {
           typeCounts[prop] = typeCounts[prop] + 1;
@@ -145,10 +144,12 @@ function page({
     let newIndex;
     if (index) {
       newIndex = index % allImages.length;
-      setCurrMedia({ ...payload, index: (index % allImages.length) });
+      setCurrMedia({ ...payload, index: index % allImages.length });
     } else {
-      newIndex = dir === "PREV"
-        ? ((currMedia?.index || 0) - 1) : ((currMedia?.index || 0) + 1);
+      newIndex =
+        dir === "PREV"
+          ? (currMedia?.index || 0) - 1
+          : (currMedia?.index || 0) + 1;
       newIndex = newIndex % allImages.length;
       setCurrMedia({ ...allImages[newIndex], index: newIndex });
     }
@@ -165,12 +166,10 @@ function page({
 
   const handleWhatsappContact = () => {
     const text = component.whatsappText?.replace("{link}", cardDetailUrl);
-    const payload = `https://wa.me/+91${cardData?.parentId?.phoneNumber || cardData.cpPhoneNumber
-      }?text=${encodeURIComponent(text)}`;
-    window.open(
-      payload,
-      "_blank"
-    );
+    const payload = `https://wa.me/+91${
+      cardData?.parentId?.phoneNumber || cardData.cpPhoneNumber
+    }?text=${encodeURIComponent(text)}`;
+    window.open(payload, "_blank");
   };
 
   const handlePropertyContacted = () => {
@@ -186,7 +185,8 @@ function page({
       dispatch(callApi(options))
         .then((res) => {
           // console.log('=============== add property contacted res ============', res);
-        }).catch((error) => {
+        })
+        .catch((error) => {
           // console.log('=============== add property contacted error ============', error);
         });
     }
@@ -194,7 +194,7 @@ function page({
 
   const getTotalImgsExcept = (type = null) => {
     let total = 0;
-    Object.keys(typeCounts).forEach(key => {
+    Object.keys(typeCounts).forEach((key) => {
       if (!type.includes(key)) {
         total += typeCounts[key];
       }
@@ -232,8 +232,24 @@ function page({
     return str;
   };
 
+  const [isMobile, setIsMobile] = useState(false);
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    if (window !== undefined) {
+      setIsMobile(window.innerWidth <= 768);
+    }
+    if (typeof localStorage !== "undefined") {
+      setUserRole(localStorage.getItem("role"));
+    }
+  }, []);
+
+  console.log(cardData, "arijit");
+
   const getContactNumber = () => {
-    return cardData?.parentId?.phoneNumber || cardData?.cpPhoneNumber;
+    return userRole == USER_ROLE.channelPartner || userRole == USER_ROLE.bfAdmin
+      ? cardData?.ownerContact
+      : cardData?.builderContact;
   };
 
   const render360Media = () => {
@@ -252,13 +268,23 @@ function page({
   const renderGeneralMedia = () => {
     return (
       <div className="general_media_wrapper">
-        {
-          currMedia.type === "videos" ? (
-            <video src={currMedia?.link} controls width={320} height={260} className="media_video"></video>
-          ) : (
-            <img src={currMedia?.link} alt={cardData?.title} width={300} height={300} className="media_img" />
-          )
-        }
+        {currMedia.type === "videos" ? (
+          <video
+            src={currMedia?.link}
+            controls
+            width={320}
+            height={260}
+            className="media_video"
+          ></video>
+        ) : (
+          <img
+            src={currMedia?.link}
+            alt={cardData?.title}
+            width={300}
+            height={300}
+            className="media_img"
+          />
+        )}
       </div>
     );
   };
@@ -288,9 +314,17 @@ function page({
         <div className="detailed-title-component">
           <h1 className="card_title">{cardData?.title}</h1>
           <div className="detailicondiv">
-            {cardData?.createdAt && (<Typography variant="body2" color="text.tertiary">{formatData(cardData?.createdAt)}</Typography>)}
+            {cardData?.createdAt && (
+              <Typography variant="body2" color="text.tertiary">
+                {formatData(cardData?.createdAt)}
+              </Typography>
+            )}
             <Tooltip title="Share" arrow classes="tooltip">
-              <Button variant="outlined" onClick={handleShareClick} className="btn sc_btn sc_share_btn">
+              <Button
+                variant="outlined"
+                onClick={handleShareClick}
+                className="btn sc_btn sc_share_btn"
+              >
                 <FaShareAlt size={"23px"} className="share_icon" />
               </Button>
             </Tooltip>
@@ -306,47 +340,61 @@ function page({
 
           </div>
         )} */}
-        <div className={`detail-image-div ${fullscreen ? "fullscreen_img_slider" : ""}`}>
-          <div className="main-images" onClick={() => {
-            setFullscreen(true);
-          }}>
+        <div
+          className={`detail-image-div ${
+            fullscreen ? "fullscreen_img_slider" : ""
+          }`}
+        >
+          <div
+            className="main-images"
+            onClick={() => {
+              setFullscreen(true);
+            }}
+          >
             {renderMainMedia()}
-            {
-              currMedia?.index > 0 && (
-                <Tooltip title="Previous" arrow classes="tooltip">
-                  <Button className="slider_ctrl_btn slide_back" onClick={(e) => {
+            {currMedia?.index > 0 && (
+              <Tooltip title="Previous" arrow classes="tooltip">
+                <Button
+                  className="slider_ctrl_btn slide_back"
+                  onClick={(e) => {
                     e.stopPropagation();
                     handleImageChange(null, null, "PREV");
-                  }}>
-                    <ArrowBackIosIcon className="slider_icon" />
-                  </Button>
-                </Tooltip>
-              )
-            }
-            {
-              currMedia?.index < (allImages.length - 1) && (
-                <Tooltip title="Next" arrow classes="tooltip">
-                  <Button className="slider_ctrl_btn slide_next" onClick={(e) => {
+                  }}
+                >
+                  <ArrowBackIosIcon className="slider_icon" />
+                </Button>
+              </Tooltip>
+            )}
+            {currMedia?.index < allImages.length - 1 && (
+              <Tooltip title="Next" arrow classes="tooltip">
+                <Button
+                  className="slider_ctrl_btn slide_next"
+                  onClick={(e) => {
                     e.stopPropagation();
                     handleImageChange(null, null, "NEXT");
-                  }}>
-                    <ArrowForwardIosIcon className="slider_icon" />
-                  </Button>
-                </Tooltip>
-              )
-            }
-            <Tooltip title={`${fullscreen ? "Exit Fullscreen" : "Fullscreen"}`} arrow classes="tooltip">
-              <Button className="slider_ctrl_btn fullscreen_btn" onClick={(e) => {
-                e.stopPropagation();
-                setFullscreen(!fullscreen);
-              }}>
-                {
-                  fullscreen ? (
-                    <CloseIcon className="fullscreen_close_icon" />
-                  ) : (
-                    <FullscreenIcon className="fullscreen_icon" />
-                  )
-                }
+                  }}
+                >
+                  <ArrowForwardIosIcon className="slider_icon" />
+                </Button>
+              </Tooltip>
+            )}
+            <Tooltip
+              title={`${fullscreen ? "Exit Fullscreen" : "Fullscreen"}`}
+              arrow
+              classes="tooltip"
+            >
+              <Button
+                className="slider_ctrl_btn fullscreen_btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFullscreen(!fullscreen);
+                }}
+              >
+                {fullscreen ? (
+                  <CloseIcon className="fullscreen_close_icon" />
+                ) : (
+                  <FullscreenIcon className="fullscreen_icon" />
+                )}
               </Button>
             </Tooltip>
           </div>
@@ -355,23 +403,21 @@ function page({
               return (
                 currMedia?.link !== image.link && (
                   <div className="other-images">
-                    {
-                      image.type === "videos" ? (
-                        <video
-                          src={image.link}
-                          alt={component ? component.title : singledata.title}
-                          onClick={() => handleImageChange(index, image)}
-                          className="other_images_item"
-                        ></video>
-                      ) : (
-                        <img
-                          src={image.link}
-                          alt={component ? component.title : singledata.title}
-                          onClick={() => handleImageChange(index, image)}
-                          className="other_images_item"
-                        />
-                      )
-                    }
+                    {image.type === "videos" ? (
+                      <video
+                        src={image.link}
+                        alt={component ? component.title : singledata.title}
+                        onClick={() => handleImageChange(index, image)}
+                        className="other_images_item"
+                      ></video>
+                    ) : (
+                      <img
+                        src={image.link}
+                        alt={component ? component.title : singledata.title}
+                        onClick={() => handleImageChange(index, image)}
+                        className="other_images_item"
+                      />
+                    )}
                   </div>
                 )
               );
@@ -384,17 +430,22 @@ function page({
         <div className="lowercontainer">
           <div className="detail-info-div">
             <h3 className="detail_title">{cardData?.detailTitle}</h3>
-            <pre className="detail_desc">
-              {cardData?.description}
-            </pre>
-            <Button variant="contained" className="detail-button detail_price_btn">
+            <pre className="detail_desc">{cardData?.description}</pre>
+            <Button
+              variant="contained"
+              className="detail-button detail_price_btn"
+            >
               {"₹ " + price + " Cr."}
             </Button>
           </div>
           <div className="detail-icon-div">
             <div className="icons_wrapper">
               <div className="detail_icon_wrapper">
-                <img src={iconList?.sectorNumber} alt="location" className="location_icon" />
+                <img
+                  src={iconList?.sectorNumber}
+                  alt="location"
+                  className="location_icon"
+                />
                 {cardData?.sectorNumber}
               </div>
               <div className="detail_icon_wrapper">
@@ -402,7 +453,11 @@ function page({
                 {cardData?.size} Sq. Yd.
               </div>
               <div className="detail_icon_wrapper">
-                <img src={iconList?.accommodation} alt="accommodation" className="acc_icon" />
+                <img
+                  src={iconList?.accommodation}
+                  alt="accommodation"
+                  className="acc_icon"
+                />
                 {cardData?.accommodation}
               </div>
               <div className="detail_icon_wrapper">
@@ -410,38 +465,55 @@ function page({
                 {cardData?.floor}
               </div>
               <div className="detail_icon_wrapper">
-                <img src={iconList?.facing} alt="facing" className="facing_icon" />
+                <img
+                  src={iconList?.facing}
+                  alt="facing"
+                  className="facing_icon"
+                />
                 {cardData?.facing}
               </div>
               <div className="detail_icon_wrapper">
-                <img src={iconList?.possession} alt="possession" className="poss_icon" />
+                <img
+                  src={iconList?.possession}
+                  alt="possession"
+                  className="poss_icon"
+                />
                 {cardData?.possession}
               </div>
               <div className="detail_icon_wrapper">
-                <img src={iconList?.parkFacing} alt="park facing" className="park_icon" />
+                <img
+                  src={iconList?.parkFacing}
+                  alt="park facing"
+                  className="park_icon"
+                />
                 {cardData?.parkFacing}
               </div>
               <div className="detail_icon_wrapper">
-                <img src={iconList?.corner} alt="corner" className="corner_icon" />
+                <img
+                  src={iconList?.corner}
+                  alt="corner"
+                  className="corner_icon"
+                />
                 {cardData?.corner}
               </div>
             </div>
 
             <div className="rowicon contacts-wrapper" id="rowicon-btn">
               <a href={`tel:${getContactNumber()}`}>
-
-              <Button
-                className="detail-button contact-btn"
-                variant="contained"
-                onClick={() => {
-                  handlePropertyContacted();
-                  setShowNumber(!ShowNumber);
-                }}
-              >
-                {/* <img src={component?.icons?.phone} alt="" /> */}
-                <LocalPhoneIcon className="detail_btn_icon" />
-                <span className="detail_btn_label">{ShowNumber ? getContactNumber() : "Call"}</span>
-              </Button>
+                <Button
+                  className="detail-button contact-btn"
+                  variant="contained"
+                  onClick={() => {
+                    handlePropertyContacted();
+                    setShowNumber(!ShowNumber);
+                  }}
+                >
+                  {/* <img src={component?.icons?.phone} alt="" /> */}
+                  <LocalPhoneIcon className="detail_btn_icon" />
+                  <span className="detail_btn_label">
+                    {ShowNumber ? getContactNumber() : "Call"}
+                  </span>
+                </Button>
               </a>
               <Button
                 className="detail-button"
@@ -467,6 +539,6 @@ function page({
   );
 }
 
-const DetailDataCard = dynamic(() => Promise.resolve(page), { ssr: false })
+const DetailDataCard = dynamic(() => Promise.resolve(page), { ssr: false });
 
 export default DetailDataCard;

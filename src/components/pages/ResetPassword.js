@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -6,8 +7,36 @@ const ResetPassword = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  const handleSubmit = (e) => {
+
+  const router = useRouter();
+  const { token } = router.query;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await fetch(
+        "https://bfservices.trainright.fit/api/users/reset_password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token: token, newPassword: password }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          alert("Password changed successfully");
+          router.push("/login");
+        }
+      } else {
+        console.error("Failed to send email");
+      }
+    } catch (error) {
+      console.error("Error sending email", error);
+    }
   };
 
   return (
