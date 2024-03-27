@@ -213,14 +213,12 @@ const HeaderComp = () => {
           component={{
             items: MENU_ITEMS,
             className: "menu_comp",
-            text: "BuilderFloor.com",
-            isMobiletext: "BuilderFloor",
-            image: "/BUILDER.png",
+            title: "BuilderFloor",
           }}
         />
       </div>
-      <div className={`component_wrapper ${"page_header_comp"}`}>
-        {/* <Header
+      {/* <div className={`component_wrapper ${"page_header_comp"}`}>
+        <Header
           isMobile={isMobile}
           component={{
             url: "/",
@@ -229,8 +227,8 @@ const HeaderComp = () => {
             titleMobile: "BuilderFloor",
             className: "page_header_comp",
           }}
-        /> */}
-      </div>
+        />
+      </div> */}
       <div className={`component_wrapper ${"ol_comp_wrapper"} flex gap-2`}>
         <div className="flex items-center">
           <RenderComponent jsonToRender={FILTER} />

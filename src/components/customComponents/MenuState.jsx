@@ -10,7 +10,7 @@ import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded.js";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
-const MenuState = ({ component, isMobile }) => {
+const MenuState = ({ isMobile, component }) => {
   const [open, setOpen] = React.useState(false);
   const [visited, setVisited] = React.useState(false);
   const navigate = useRouter();
@@ -54,14 +54,10 @@ const MenuState = ({ component, isMobile }) => {
         {/* <BiMenuAltLeft size={30} color="blue" /> */}
         <SortRoundedIcon
           onClick={() => setOpen(!open)}
-          className="main_menu_icon max-md:w-7 max-md:h-7"
+          className="main_menu_icon"
         />
-        <a
-          href={"/"}
-          className="capitalize flex items-center gap-2 text-[20px] text-black ml-3"
-        >
-          <img src={component.image} alt="" width="40px" height="50px" />
-          {isMobile ? component.mobileText : component.text}
+        <a href="/" className="menu_btn_label">
+          {component.title}
         </a>
       </Button>
       {open && (
