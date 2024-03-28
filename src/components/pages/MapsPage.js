@@ -7,6 +7,8 @@ import EditMapDocumentModal from "../customComponents/EditMapDocumentModal";
 import AddMapDocumentModal from "../customComponents/AddMapDocumentModal";
 import MapDocumentTable from "../customComponents/MapDocumentTable";
 import { API_DOMAIN } from "@/redux/utils/api";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 const MapPage = () => {
   const [heading, setHeading] = useState("");
@@ -59,6 +61,16 @@ const MapPage = () => {
       console.log("Upload successful:", response.data);
       setModal(false);
       fetchData();
+      toast.success("Map added successfully!", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } catch (error) {
       console.error("Error uploading image:", error);
     }
@@ -86,7 +98,7 @@ const MapPage = () => {
   return (
     <div className="px-6">
       <div>
-        <h2 className="text-center font-bold text-2xl mt-4">
+        <h2 className="text-center font-bold text-2xl mt-20">
           WELCOME TO BUILDERFLOOR.COM
         </h2>
         {modal === true && (
@@ -98,10 +110,22 @@ const MapPage = () => {
             title={"Add Map"}
           />
         )}
+        <ToastContainer
+          position="bottom-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
       <div>
         <div>
-          <p className="text-center font-bold text-lg mb-4">Manage Maps</p>
+          <p className="text-center font-bold text-lg my-6">Manage Maps</p>
           <div className="flex justify-between items-center">
             <CustomRouteButton
               component={{
@@ -136,6 +160,7 @@ const MapPage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

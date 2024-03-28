@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import RenderComponent from "../customComponents/ComponentRenderer.jsx";
 import HeaderComp from "../newComponents/HeaderComp.jsx";
@@ -25,6 +25,8 @@ import {
   TOGGLE_BUTTON,
 } from "../utils/Const.js";
 import { API_ENDPOINTS } from "@/redux/utils/api.js";
+import { useRouter } from "next/router.js";
+import axios from "axios";
 
 export const SEARCH_RESULT = {
   name: "Search Result",
@@ -339,6 +341,26 @@ export const SEARCH_RESULT = {
 };
 
 export default function SearchResult() {
+  const router = useRouter();
+  const { query } = router.query;
+  const [filterData, setFilterData] = useState([]);
+
+  const filter = async () => {
+    let payload = {
+      city: "Gurgaon",
+      location: [query],
+    };
+    const res = await axios.post(
+      `https://bfservices.trainright.fit/api/properties/searchPropertiesData`,
+      payload
+    );
+    setFilterData(res?.data?.data);
+  };
+
+  useEffect(() => {
+    filter();
+  }, [query]);
+
   return (
     <>
       <Card className="search-result-screen">

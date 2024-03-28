@@ -29,6 +29,7 @@ import dynamic from "next/dynamic";
 import { storeUserData } from "@/redux/slice/userSlice.js";
 import { newUserConst } from "../fieldConsts/UserFieldConst.js";
 import { newPropertyConst } from "../fieldConsts/PropertiesFieldConst.js";
+import ListingForm from "../customComponents/ListingForm.jsx";
 
 const comp = () => {
   const finalizeRef = useRef(null);
@@ -134,7 +135,26 @@ const comp = () => {
             "videoFile",
             "virtualFile",
           ];
-
+          var floor1 = {
+            floor: "1ST FLOOR",
+            floor: 100000000,
+            possession: "1M",
+          };
+          var floor2 = {
+            floor: "2ND FLOOR",
+            price: 200000000,
+            possession: "1M",
+          };
+          var floor3 = {
+            floor: "3RD FLOOR",
+            price: 200000000,
+            possession: "1M",
+          };
+          var floor4 = {
+            floor: "4TH FLOOR",
+            price: 200000000,
+            possession: "1M",
+          };
           fileFields.forEach((field) => {
             if (formData[field]) {
               for (const file of formData[field]) {
@@ -142,6 +162,11 @@ const comp = () => {
               }
             }
           });
+
+          newFormData.append("floor1", JSON.stringify(floor1));
+          newFormData.append("floor2", JSON.stringify(floor2));
+          newFormData.append("floor3", JSON.stringify(floor3));
+          newFormData.append("floor4", JSON.stringify(floor4));
 
           // Ad"Post Submitted Successfully"d additional fields to formData
           newFormData.append("parentId", userProfile._id);
@@ -270,7 +295,6 @@ const comp = () => {
       setCheck(true);
     }
   }, [loginStatus]);
-  console.log(loginStatus, "arijit");
 
   return (
     <>
@@ -287,6 +311,9 @@ const comp = () => {
                   : {}
               }
             />
+            {/* <div className="mb-10">
+              <ListingForm />
+            </div> */}
             <div className="form_controls_wrapper">
               <Button
                 variant="contained"

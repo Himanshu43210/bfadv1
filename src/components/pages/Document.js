@@ -2,21 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import CustomRouteButton from "../customComponents/RouteButton";
 import { ROUTE_BUTTON } from "../utils/Const";
-import { FaMapMarkerAlt } from "react-icons/fa";
 import Footer from "../customComponents/Footer";
 import ScrollToTop from "../customComponents/ScrollToTop";
 import Chatbot from "../customComponents/Chatbot";
 import HeaderComp from "../newComponents/HeaderComp";
-import Image from "next/image";
-import { FcFile } from "react-icons/fc";
 import { useReactToPrint } from "react-to-print";
 import { Button } from "react-bootstrap";
 
 const Document = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState(false);
-  const [documentOpen, setDocumentOpen] = useState(false);
+  const [documentOpen, setDocumentOpen] = useState(true);
   const [currentDocument, setCurrentDocument] = useState("");
 
   const printRef = useRef();
@@ -30,8 +26,14 @@ const Document = () => {
         const apiUrl =
           "https://bfservices.trainright.fit/api/content/findAll?page=0&limit=10";
         const response = await axios.get(apiUrl);
-        setData(response.data);
+        const filteredData = response?.data?.result.filter(
+          (item) => item.category === "document"
+        );
+        setData(filteredData);
         setLoading(false);
+        if (filteredData.length > 0) {
+          setCurrentDocument(filteredData[0]._id);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -80,25 +82,21 @@ const Document = () => {
         ) : (
           <div>
             <ul className="flex justify-start gap-4">
-              {data?.result?.map(
-                (item) =>
-                  item.category === "document" && (
-                    <div>
-                      <li
-                        className={`cursor-pointer text-xl ${
-                          currentDocument === item._id ? "underline" : ""
-                        }`}
-                        onClick={() => handleDocumentOpen(item._id)}
-                      >
-                        {item.heading.toUpperCase()}
-                      </li>
-                    </div>
-                  )
-              )}
+              {data?.map((item) => (
+                <div>
+                  <li
+                    className={`cursor-pointer text-xl ${
+                      currentDocument === item._id ? "underline" : ""
+                    }`}
+                    onClick={() => handleDocumentOpen(item._id)}
+                  >
+                    {item.heading.toUpperCase()}
+                  </li>
+                </div>
+              ))}
             </ul>
-            {data?.result?.map(
+            {data?.map(
               (item) =>
-                item.category === "document" &&
                 documentOpen === true &&
                 item._id === currentDocument && (
                   <div>

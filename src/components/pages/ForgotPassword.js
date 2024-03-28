@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { EMAIL } from "../utils/Const.js";
 import Link from "next/link";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +32,16 @@ const ForgetPassword = () => {
       if (response.ok) {
         const data = await response.json();
         if (data.success) {
-          alert("Check email for reset password link");
+          toast.success("Please check email to reset password!", {
+            position: "bottom-left",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         }
       } else {
         console.error("Failed to send email");
@@ -69,6 +80,18 @@ const ForgetPassword = () => {
           Submit
         </button>
       </form>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
