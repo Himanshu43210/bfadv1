@@ -124,7 +124,10 @@ const comp = () => {
     if (!submitting) {
       const formData = finalizeRef.current.finalizeData();
       if (formData) {
-        console.log("Received validated data:", formData);
+        console.log(
+          "Received validated data:",
+          formData.floorOnePrice["value"]
+        );
         try {
           let newFormData = new FormData();
           const fileFields = [
@@ -137,23 +140,23 @@ const comp = () => {
           ];
           var floor1 = {
             floor: "1ST FLOOR",
-            floor: 100000000,
-            possession: "1M",
+            price: formData.floorOnePrice,
+            possession: formData.floorOnePossession.value,
           };
           var floor2 = {
             floor: "2ND FLOOR",
-            price: 200000000,
-            possession: "1M",
+            price: formData.floorTwoPrice,
+            possession: formData.floorTwoPossession.value,
           };
           var floor3 = {
             floor: "3RD FLOOR",
-            price: 200000000,
-            possession: "1M",
+            price: formData.floorThreePrice,
+            possession: formData.floorThreePossession.value,
           };
           var floor4 = {
             floor: "4TH FLOOR",
-            price: 200000000,
-            possession: "1M",
+            price: formData.floorFourPrice,
+            possession: formData.floorFourPossession.value,
           };
           fileFields.forEach((field) => {
             if (formData[field]) {
@@ -167,7 +170,14 @@ const comp = () => {
           newFormData.append("floor2", JSON.stringify(floor2));
           newFormData.append("floor3", JSON.stringify(floor3));
           newFormData.append("floor4", JSON.stringify(floor4));
-
+          delete formData.floorOnePrice;
+          delete formData.floorOnePossession;
+          delete formData.floorTwoPrice;
+          delete formData.floorTwoPossession;
+          delete formData.floorThreePrice;
+          delete formData.floorThreePossession;
+          delete formData.floorFourPrice;
+          delete formData.floorFourPossession;
           // Ad"Post Submitted Successfully"d additional fields to formData
           newFormData.append("parentId", userProfile._id);
           newFormData.append(
