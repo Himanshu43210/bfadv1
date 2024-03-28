@@ -40,6 +40,7 @@ import {
   CONTACT_US,
   HEADER_COMP,
   SELECT_SLIDER2,
+  SELECT3,
 } from "../utils/Const.js";
 import Banner from "./Banner.jsx";
 import Footer from "./Footer.jsx";
@@ -86,6 +87,7 @@ import Line from "./Line.jsx";
 import Title from "./Title.jsx";
 import dynamic from "next/dynamic";
 import HeaderComp from "../newComponents/HeaderComp.jsx";
+import SearchSelect from "./SearchSelect.jsx";
 
 const comp = ({ component }) => {
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as per your needs
@@ -253,6 +255,13 @@ const comp = ({ component }) => {
       )}
       {component.type === SELECT2 && (
         <DropSelect
+          component={component}
+          values={sliceData[component.name]}
+          onSubmit={handleValueChange}
+        />
+      )}
+      {component.type === SELECT3 && (
+        <SearchSelect
           component={component}
           values={sliceData[component.name]}
           onSubmit={handleValueChange}

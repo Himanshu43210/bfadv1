@@ -1,4 +1,3 @@
-import HeaderSearchBar from "./HeaderSearchBar";
 import SearchBar from "./SearchBar";
 
 export default function Banner({ component }) {

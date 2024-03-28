@@ -34,7 +34,7 @@ export const API_ENDPOINTS = {
   getPropertyData: API_DOMAIN + "properties/list",
   getAdminPropertyData: API_DOMAIN + "properties/adminPropertyList",
   addPropertyData: API_DOMAIN + "properties/addProperty",
-  alterPropertyData: API_DOMAIN + "properties/editProperty",
+  alterPropertyData: API_DOMAIN + "properties/v2/editProperty",
   deletePropertyData: API_DOMAIN + "properties/deleteProperty",
   approvePropertyData: API_DOMAIN + "properties/approveProperty",
   getMasterData: API_DOMAIN + "masters/list",

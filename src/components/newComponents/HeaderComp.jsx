@@ -18,6 +18,7 @@ import {
   GET_SEARCH_RESULT,
   POST,
   SELECT2,
+  SELECT3,
 } from "../utils/Const";
 import { API_ENDPOINTS } from "@/redux/utils/api";
 
@@ -69,10 +70,10 @@ export const FILTER = {
       className: "filter-button-div-overflowed",
       children: [
         {
-          type: SELECT2,
+          type: SELECT3,
           sliceName: "filter",
           name: "location",
-          label: "Locations",
+          label: "Search",
           className: "filterChannel",
           fetchOptionsApi: API_ENDPOINTS[GET_MASTER_DATA_ON_HOME],
           optionKey: "sectorNumber",

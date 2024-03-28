@@ -128,14 +128,6 @@ const comp = () => {
         try {
           let newFormData = new FormData();
           const fileFields = [
-            "floorOnePrice",
-            "floorOnePossession",
-            "floorTwoPrice",
-            "floorTwoPossession",
-            "floorThreePrice",
-            "floorThreePossession",
-            "floorFourPrice",
-            "floorFourPossession",
             "thumbnailFile",
             "normalImageFile",
             "threeSixtyImages",
@@ -143,6 +135,26 @@ const comp = () => {
             "videoFile",
             "virtualFile",
           ];
+          var floor1 = {
+            floor: "1ST FLOOR",
+            floor: 100000000,
+            possession: "1M",
+          };
+          var floor2 = {
+            floor: "2ND FLOOR",
+            price: 200000000,
+            possession: "1M",
+          };
+          var floor3 = {
+            floor: "3RD FLOOR",
+            price: 200000000,
+            possession: "1M",
+          };
+          var floor4 = {
+            floor: "4TH FLOOR",
+            price: 200000000,
+            possession: "1M",
+          };
           fileFields.forEach((field) => {
             if (formData[field]) {
               for (const file of formData[field]) {
@@ -150,6 +162,11 @@ const comp = () => {
               }
             }
           });
+
+          newFormData.append("floor1", JSON.stringify(floor1));
+          newFormData.append("floor2", JSON.stringify(floor2));
+          newFormData.append("floor3", JSON.stringify(floor3));
+          newFormData.append("floor4", JSON.stringify(floor4));
 
           // Ad"Post Submitted Successfully"d additional fields to formData
           newFormData.append("parentId", userProfile._id);
@@ -285,7 +302,7 @@ const comp = () => {
         <>
           <div className="standalone_page form_page">
             <div className="formheadingcontainer">{userProfile.formName}</div>
-            {/* <FormBuilder
+            <FormBuilder
               ref={finalizeRef}
               fields={userProfile.formType}
               propsFormData={
@@ -293,20 +310,19 @@ const comp = () => {
                   ? filterAutofillData(userProfile.autofill, userProfile)
                   : {}
               }
-            /> */}
-            <div className="mb-10">
+            />
+            {/* <div className="mb-10">
               <ListingForm />
-            </div>
-
+            </div> */}
             <div className="form_controls_wrapper">
-              {/* <Button
+              <Button
                 variant="contained"
                 onClick={handleSubmit}
                 disabled={submitting}
                 className="save_btn"
               >
                 {submitting ? "Submitting..." : "Submit"}
-              </Button> */}
+              </Button>
               {userProfile?.showSaveBtn ? (
                 <Button
                   variant="secondary"

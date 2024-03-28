@@ -222,7 +222,14 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                             : formData[field.name])) ||
                         field.defaultOption
                       }
-                      options={field.options || masterData?.[field.name]}
+                      options={
+                        field.name === "floorOnePossession" ||
+                        field.name === "floorTwoPossession" ||
+                        field.name === "floorThreePossession" ||
+                        field.name === "floorFourPossession"
+                          ? masterData?.["possession"]
+                          : field.options || masterData?.[field.name]
+                      }
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
@@ -321,7 +328,6 @@ const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
                 )}
                 {field.type === "price" && (
                   <div className={`price_inputs ${field.className}`}>
-                    {console.log(field.name)}
                     <div className="price_unit">
                       <input
                         className="inputtag input_elem normal_input number_input"

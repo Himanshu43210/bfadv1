@@ -13,6 +13,7 @@ export const EMAIL = "email";
 // components
 export const SELECT = "SELECT";
 export const SELECT2 = "SELECT2";
+export const SELECT3 = "SELECT3";
 export const DASHBOARD_LISTING = "DASHBOARD_LISTING";
 export const IMAGE = "IMAGE";
 export const SLIDER = "SLIDER";
