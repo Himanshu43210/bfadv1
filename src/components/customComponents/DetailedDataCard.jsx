@@ -245,8 +245,6 @@ function page({ component, singledata, onClickNavigate }) {
     }
   }, []);
 
-  console.log(cardData, "arijit");
-
   const getContactNumber = () => {
     return userRole == USER_ROLE.channelPartner || userRole == USER_ROLE.bfAdmin
       ? cardData?.ownerContact

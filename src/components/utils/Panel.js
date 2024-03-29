@@ -1,5 +1,10 @@
 import React from "react";
-import { FaClipboardList, FaUsers, FaUserTie, FaBuilding } from "react-icons/fa/index.js";
+import {
+  FaClipboardList,
+  FaUsers,
+  FaUserTie,
+  FaBuilding,
+} from "react-icons/fa/index.js";
 import { AiFillHome, AiOutlineLogout } from "react-icons/ai/index.js";
 import {
   ADMIN_DASHBOARD,
@@ -22,10 +27,7 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
             <AiFillHome className="admin-panel-icons" /> &nbsp;
             <h6>BuilderFloor</h6>
           </Link> */}
-        <a
-          href="/"
-          className="panel-link"
-        >
+        <a href="/" className="panel-link">
           <AiFillHome className="admin-panel-icons" />
           <h6 className="panel_link_label">BuilderFloor</h6>
         </a>
@@ -70,6 +72,7 @@ function Panel({ nonSalesUser, handlePageClick, onLogoutClick }) {
           onClick={() => {
             dispatch(resetApiStatus(onLogoutClick));
             localStorage.removeItem("email");
+            localStorage.removeItem("role");
             localStorage.removeItem("login");
           }}
           className="panel-link panel-logout-btn"
