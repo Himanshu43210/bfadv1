@@ -17,9 +17,9 @@ export default function Banner({ component }) {
             <span className="banner_subtext">{component.spanText}</span>
           )}
         </h1>
-        <div className="md:hidden mt-6">
+        {/* <div className="md:hidden mt-6">
           <RenderComponent jsonToRender={FILTER} />
-        </div>
+        </div> */}
       </article>
     </>
   );
