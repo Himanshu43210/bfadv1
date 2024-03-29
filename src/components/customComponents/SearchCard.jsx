@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { generatePropertyUrl } from "../utils/propertyUtils.js";
 import { useState } from "react";
 import { formatData } from "../utils/HelperMethods.js";
+import { GiStairs } from "react-icons/gi";
 
 export default function SearchCard({
   element = {},
@@ -26,7 +27,26 @@ export default function SearchCard({
   optVal,
 }) {
   const [opt, setOpt] = useState(optVal);
-  const cardDetailUrl = generatePropertyUrl(element);
+  const [floors, setFloors] = useState([
+    { floor1: { floor: "1ST FLOOR", price: 10000000, possession: "1M" } },
+    { floor2: { floor: "2ND FLOOR", price: 20000000, possession: "READY" } },
+    { floor3: { floor: "3RD FLOOR", price: 30000000, possession: "1M" } },
+    { floor4: { floor: "4TH FLOOR", price: 40000000, possession: "1M" } },
+  ]);
+
+  const [selectedFloor, setSelectedFloor] = useState("");
+
+  const floor = "1ST FLOOR";
+  const cardDetailUrl = generatePropertyUrl(element, floor);
+
+  const handleFloorClick = (selectedFloor) => {
+    setSelectedFloor(selectedFloor);
+    if (!disableOnClickNavigate) {
+      const cardDetailUrl = generatePropertyUrl(element, selectedFloor);
+      window.open(cardDetailUrl, "_blank");
+    }
+  };
+
   const handleShareClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -102,19 +122,19 @@ export default function SearchCard({
           // alt="Left_Image"
           alt={element.title}
           className="thumbnail"
-          onClick={() => {
-            if (!disableOnClickNavigate) {
-              window.open(cardDetailUrl, "_blank");
-              // navigateTo(cardDetailUrl);
-            }
-          }}
+          // onClick={() => {
+          //   if (!disableOnClickNavigate) {
+          //     window.open(cardDetailUrl, "_blank");
+          //     // navigateTo(cardDetailUrl);
+          //   }
+          // }}
         />
         <div>
           <CardContent className="card_details">
             <div className="detailcardheadingdiv">
               <a
-                href={!disableOnClickNavigate ? cardDetailUrl : null}
-                className="property_link"
+                // href={!disableOnClickNavigate ? cardDetailUrl : null}
+                // className="property_link"
                 target="_blank"
               >
                 <Typography
@@ -204,47 +224,68 @@ export default function SearchCard({
                   />
                   <Typography fontWeight="lg">{element.facing}</Typography>
                 </div>
+                <div className="detail_list_item">
+                  <img
+                    className="detailimages"
+                    src="/icons/check.png"
+                    alt=""
+                    style={{ paddingRight: "6px" }}
+                  />
+                  <Typography fontWeight="lg">{element.possession}</Typography>
+                </div>
               </div>
             </div>
           </CardContent>
-          <div className="mx-6 mt-2">
-            <h3 className="text-lg font-semibold">Floor 1</h3>
-            <div className="flex items-center justify-between gap-4 text-lg">
-              <div className="detail_list_item">
-                Possession:
-                <img
-                  className="detailimages"
-                  src="/icons/check.png"
-                  alt=""
-                  style={{ paddingRight: "6px" }}
-                />
-                <Typography fontWeight="lg">{element.possession}</Typography>
-              </div>
-              <div className="gap-2 flex items-center">
-                <ApiButton
-                  component={{
-                    apiType: apiType,
-                    api: onClickApi,
-                    buttonLabel: `₹ ${element.price / 10000000} Cr.`,
-                    btnClass: `btn price_btn`,
-                    // navigate: (!disableOnClickNavigate ? cardDetailUrl : null),
-                  }}
-                  queryParams={{ id: element._id }}
-                  newTab={true}
-                />
-                <Typography
-                  className="view_details"
-                  fontWeight="lg"
-                  onClick={() => {
-                    if (!disableOnClickNavigate) {
-                      window.open(cardDetailUrl, "_blank");
-                      // navigateTo(cardDetailUrl);
-                    }
-                  }}
-                >
-                  View Details {">>"}
-                </Typography>
-              </div>
+          <div className="gap-2 flex items-center px-6 my-4">
+            <p className="text-lg">Starts From:</p>
+            {/* <ApiButton
+                    component={{
+                      apiType: apiType,
+                      api: onClickApi,
+                      buttonLabel: `₹ ${element.price / 10000000} Cr.`,
+                      btnClass: `btn price_btn`,
+                      // navigate: (!disableOnClickNavigate ? cardDetailUrl : null),
+                    }}
+                    queryParams={{ id: element._id }}
+                    newTab={true}
+                  /> */}
+            <button className="btn price_btn ">
+              ₹{element.price / 10000000} Cr.
+            </button>
+            {/* <Typography
+                    className="view_details cursor-pointer hover:underline"
+                    fontWeight="lg"
+                    onClick={() => {
+                      if (!disableOnClickNavigate) {
+                        window.open(cardDetailUrl, "_blank");
+                        // navigateTo(cardDetailUrl);
+                      }
+                    }}
+                  >
+                    View Details {">>"}
+                  </Typography> */}
+          </div>
+          <div className="px-6 my-4">
+            <p className="text-lg">Available Floors:</p>
+            <div className="flex items-center flex-wrap gap-6 ">
+              {floors.map((floor, index) => {
+                const floorKey = `floor${index + 1}`;
+                const floorDetails = floors[index][floorKey];
+                if (floorDetails) {
+                  return (
+                    <div
+                      key={index}
+                      className="flex flex-wrap gap-1 items-center font-medium text-white mt-2 cursor-pointer p-2 rounded-md bg-[#006D77] hover:shadow-lg"
+                      onClick={() => handleFloorClick(floorDetails.floor)}
+                    >
+                      <GiStairs className="w-6 h-6" />
+                      {floorDetails.floor}
+                    </div>
+                  );
+                } else {
+                  return null;
+                }
+              })}
             </div>
           </div>
         </div>

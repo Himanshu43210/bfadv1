@@ -1,3 +1,5 @@
+import { FILTER } from "../newComponents/HeaderComp";
+import RenderComponent from "./ComponentRenderer";
 import SearchBar from "./SearchBar";
 
 export default function Banner({ component }) {
@@ -15,10 +17,9 @@ export default function Banner({ component }) {
             <span className="banner_subtext">{component.spanText}</span>
           )}
         </h1>
-        {/* <div className="md:hidden mt-6">
-          {" "}
-          <HeaderSearchBar />
-        </div> */}
+        <div className="md:hidden mt-6">
+          <RenderComponent jsonToRender={FILTER} />
+        </div>
       </article>
     </>
   );

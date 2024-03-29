@@ -232,7 +232,9 @@ const HeaderComp = () => {
       </div> */}
       <div className={`component_wrapper ${"ol_comp_wrapper"} flex gap-2`}>
         <div className="flex items-center">
-          <RenderComponent jsonToRender={FILTER} />
+          <div className="max-md:hidden">
+            <RenderComponent jsonToRender={FILTER} />
+          </div>
           <div className="flex gap-2 h-[40px]">
             <Button className={`ol_open_btn`} onClick={handlePostListing}>
               Post Listing
