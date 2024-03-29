@@ -22,6 +22,7 @@ import { Typography } from "@mui/material";
 import dynamic from "next/dynamic.js";
 import { CARD_DETAILS_SCREEN } from "../pages/DetailedView.js";
 import { USER_ROLE } from "@/ScreenJson.js";
+import { useRouter } from "next/router.js";
 
 function page({ component, singledata, onClickNavigate }) {
   // Prioritize singledata if available
@@ -303,7 +304,43 @@ function page({ component, singledata, onClickNavigate }) {
         return null;
     }
   };
+  useEffect(() => {
+    const url = window.location.href;
+    const searchParamsIndex = url.indexOf("?");
 
+    if (searchParamsIndex !== -1) {
+      const searchParamsString = url.substring(searchParamsIndex + 1);
+      const params = new URLSearchParams(searchParamsString);
+
+      const floorPossibilities = [
+        "1ST_FLOOR",
+        "2ND_FLOOR",
+        "3RD_FLOOR",
+        "4TH_FLOOR",
+      ];
+      let floorFound = null;
+
+      for (const floor of floorPossibilities) {
+        if (params.has(floor)) {
+          floorFound = params.get(floor);
+          break;
+        }
+      }
+
+      console.log(floorFound); // Output: 1ST_FLOOR
+    } else {
+      console.log("No query parameters found in the URL.");
+    }
+  }, []);
+
+  const router = useRouter();
+  const { query } = router;
+  const urlArray = query?.pid?.split("-");
+
+  var floor = urlArray?.[3];
+  var floorPossession = urlArray?.[urlArray.length - 3];
+  var floorPrice = urlArray?.[urlArray.length - 2];
+  console.log(urlArray);
   return (
     <>
       <Helmet>
@@ -435,7 +472,7 @@ function page({ component, singledata, onClickNavigate }) {
               variant="contained"
               className="detail-button detail_price_btn"
             >
-              {"₹ " + price + " Cr."}
+              {"₹ " + convertToCr(floorPrice) + " Cr."}
             </Button>
           </div>
           <div className="detail-icon-div">
@@ -462,7 +499,7 @@ function page({ component, singledata, onClickNavigate }) {
               </div>
               <div className="detail_icon_wrapper">
                 <img src={iconList?.floor} alt="floor" className="floor_icon" />
-                {cardData?.floor}
+                {floor?.replace("_", " ")}
               </div>
               <div className="detail_icon_wrapper">
                 <img
@@ -478,7 +515,7 @@ function page({ component, singledata, onClickNavigate }) {
                   alt="possession"
                   className="poss_icon"
                 />
-                {cardData?.possession}
+                {floorPossession}
               </div>
               <div className="detail_icon_wrapper">
                 <img

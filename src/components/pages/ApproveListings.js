@@ -90,8 +90,10 @@ export default function ApproveListing() {
                   [USER_ROLE.bfAdmin]: {
                     "Company Name": "createdByName",
                     "Mobile Number": "createdByPhoneNumber",
-                    City: "city",
                     "Primary Title": "title",
+                    State: "state",
+                    City: "city",
+                    Location: "sectorNumber",
                   },
                   [USER_ROLE.channelPartner]: {
                     "Sub User Name": "createdByName",
