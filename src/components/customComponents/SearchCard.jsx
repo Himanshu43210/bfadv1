@@ -285,17 +285,24 @@ export default function SearchCard({
                   return null;
                 }
               })} */}
-              {floors.map((item) => (
-                <div
-                  className="flex flex-wrap gap-1 items-center font-medium text-white mt-2 cursor-pointer p-2 rounded-md bg-[#006D77] hover:shadow-lg"
-                  onClick={() =>
-                    handleFloorClick(item.floor, item.possession, item.price)
-                  }
-                >
-                  <GiStairs className="w-6 h-6" />
-                  {item.floor}
-                </div>
-              ))}
+              {floors.map(
+                (item) =>
+                  item.price && (
+                    <div
+                      className="flex flex-wrap gap-1 items-center font-medium text-white mt-2 cursor-pointer p-2 rounded-md bg-[#006D77] hover:shadow-lg"
+                      onClick={() =>
+                        handleFloorClick(
+                          item.floor,
+                          item.possession,
+                          item.price
+                        )
+                      }
+                    >
+                      <GiStairs className="w-6 h-6" />
+                      {item.floor}
+                    </div>
+                  )
+              )}
             </div>
           </div>
         </div>

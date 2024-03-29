@@ -335,12 +335,12 @@ function page({ component, singledata, onClickNavigate }) {
 
   const router = useRouter();
   const { query } = router;
-  const urlArray = query.pid.split("-");
+  const urlArray = query?.pid?.split("-");
 
-  var floor = urlArray[3];
-  var floorPossession = urlArray[7];
-  var floorPrice = urlArray[8];
-
+  var floor = urlArray?.[3];
+  var floorPossession = urlArray?.[urlArray.length - 3];
+  var floorPrice = urlArray?.[urlArray.length - 2];
+  console.log(urlArray);
   return (
     <>
       <Helmet>
@@ -499,7 +499,7 @@ function page({ component, singledata, onClickNavigate }) {
               </div>
               <div className="detail_icon_wrapper">
                 <img src={iconList?.floor} alt="floor" className="floor_icon" />
-                {floor.replace("_", " ")}
+                {floor?.replace("_", " ")}
               </div>
               <div className="detail_icon_wrapper">
                 <img

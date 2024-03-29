@@ -138,26 +138,71 @@ const comp = () => {
             "videoFile",
             "virtualFile",
           ];
-          var floor1 = {
-            floor: "1ST FLOOR",
-            price: formData.floorOnePrice,
-            possession: formData.floorOnePossession.value,
-          };
-          var floor2 = {
-            floor: "2ND FLOOR",
-            price: formData.floorTwoPrice,
-            possession: formData.floorTwoPossession.value,
-          };
-          var floor3 = {
-            floor: "3RD FLOOR",
-            price: formData.floorThreePrice,
-            possession: formData.floorThreePossession.value,
-          };
-          var floor4 = {
-            floor: "4TH FLOOR",
-            price: formData.floorFourPrice,
-            possession: formData.floorFourPossession.value,
-          };
+          // var floor1 = {
+          //   floor: "1ST FLOOR",
+          //   price: formData.floorOnePrice,
+          //   possession: formData.floorOnePossession.value,
+          // };
+          // var floor2 = {
+          //   floor: "2ND FLOOR",
+          //   price: formData.floorTwoPrice,
+          //   possession: formData.floorTwoPossession.value,
+          // };
+          // var floor3 = {
+          //   floor: "3RD FLOOR",
+          //   price: formData.floorThreePrice,
+          //   possession: formData.floorThreePossession.value,
+          // };
+          // var floor4 = {
+          //   floor: "4TH FLOOR",
+          //   price: formData.floorFourPrice,
+          //   possession: formData.floorFourPossession.value,
+          // };
+          // fileFields.forEach((field) => {
+          //   if (formData[field]) {
+          //     for (const file of formData[field]) {
+          //       newFormData.append(field, file);
+          //     }
+          //   }
+          // });
+
+          // newFormData.append("floor1", JSON.stringify(floor1));
+          // newFormData.append("floor2", JSON.stringify(floor2));
+          // newFormData.append("floor3", JSON.stringify(floor3));
+          // newFormData.append("floor4", JSON.stringify(floor4));
+          if (formData.floorOnePrice != 0) {
+            var floor1 = {
+              floor: "1ST FLOOR",
+              price: formData.floorOnePrice,
+              possession: formData.floorOnePossession?.value,
+            };
+            newFormData.append("floor1", JSON.stringify(floor1));
+          }
+          if (formData.floorTwoPrice != 0) {
+            var floor2 = {
+              floor: "2ND FLOOR",
+              price: formData.floorTwoPrice,
+              possession: formData.floorTwoPossession?.value,
+            };
+            newFormData.append("floor2", JSON.stringify(floor2));
+          }
+          if (formData.floorThreePrice != 0) {
+            var floor3 = {
+              floor: "3RD FLOOR",
+              price: formData.floorThreePrice,
+              possession: formData.floorThreePossession?.value,
+            };
+            newFormData.append("floor3", JSON.stringify(floor3));
+          }
+          if (formData.floorFourPrice != 0) {
+            var floor4 = {
+              floor: "4TH FLOOR",
+              price: formData.floorFourPrice,
+              possession: formData.floorFourPossession?.value,
+            };
+            newFormData.append("floor4", JSON.stringify(floor4));
+          }
+
           fileFields.forEach((field) => {
             if (formData[field]) {
               for (const file of formData[field]) {
@@ -166,10 +211,18 @@ const comp = () => {
             }
           });
 
-          newFormData.append("floor1", JSON.stringify(floor1));
-          newFormData.append("floor2", JSON.stringify(floor2));
-          newFormData.append("floor3", JSON.stringify(floor3));
-          newFormData.append("floor4", JSON.stringify(floor4));
+          // if (floor1.price) {
+          //   newFormData.append("floor1", JSON.stringify(floor1));
+          // }
+          // if (floor2.price) {
+          //   newFormData.append("floor2", JSON.stringify(floor2));
+          // }
+          // if (floor3.price) {
+          //   newFormData.append("floor3", JSON.stringify(floor3));
+          // }
+          // if (floor4.price) {
+          //   newFormData.append("floor4", JSON.stringify(floor4));
+          // }
           delete formData.floorOnePrice;
           delete formData.floorOnePossession;
           delete formData.floorTwoPrice;
