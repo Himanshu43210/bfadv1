@@ -328,7 +328,7 @@ const ListingTable = ({
     // "Updated At": updatedAtOptions,
   };
   const [selectedHeader, setSelectedHeader] = useState(null);
-
+  console.log(currentRowData);
   useEffect(() => {
     if (selectedHeader !== null) {
       setFilterKey(headersDesktop[selectedHeader]);

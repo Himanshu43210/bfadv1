@@ -2,7 +2,7 @@ import React from "react";
 
 import { Card } from "react-bootstrap";
 import RenderComponent from "../customComponents/ComponentRenderer.jsx";
-import HeaderComp from "../newComponents/HeaderComp.jsx";
+import HeaderComp, { FILTER } from "../newComponents/HeaderComp.jsx";
 import AutoFetchApi from "../customComponents/AutoFetchApi.jsx";
 import {
   API_BUTTON,
