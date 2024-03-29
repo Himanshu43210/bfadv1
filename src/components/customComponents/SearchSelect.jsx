@@ -19,6 +19,13 @@ const SearchSelect = ({ component, values, onSubmit }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [options, setOptions] = useState(component.options);
 
+  console.log(
+    options
+      ?.filter((option) => !selections.includes(option.value))
+      .map((item) => item.label),
+    "arijit"
+  );
+
   useEffect(() => {
     if (component.fetchOptionsApi) {
       dispatch(
@@ -125,7 +132,10 @@ const SearchSelect = ({ component, values, onSubmit }) => {
         />
       </div>
       {popupState && (
-        <div className="dd_popup" onMouseEnter={() => setVisited(true)}>
+        <div
+          className="bg-white fixed z-999999 pb-3 max-h-[300px] overflow-auto md:min-w-[300px] min-w-[220px]"
+          onMouseEnter={() => setVisited(true)}
+        >
           {showSearchResults ? (
             searchResults?.map((option) => (
               <div className="dd_item" onClick={() => handleChange(option)}>
