@@ -138,15 +138,11 @@ const comp = () => {
             "videoFile",
             "virtualFile",
           ];
-          if (formData?.possessionForFloorOne?.length > 0) {
-            var floor1 = {
-              floor: "1ST FLOOR",
-              price: formData.floorOnePrice,
-              possession: formData.floorOnePossession.value,
-            };
-            newFormData.append("floor1", JSON.stringify(floor1));
-          }
-
+          var floor1 = {
+            floor: "1ST FLOOR",
+            price: formData.floorOnePrice,
+            possession: formData.floorOnePossession.value,
+          };
           var floor2 = {
             floor: "2ND FLOOR",
             price: formData.floorTwoPrice,
@@ -170,6 +166,7 @@ const comp = () => {
             }
           });
 
+          newFormData.append("floor1", JSON.stringify(floor1));
           newFormData.append("floor2", JSON.stringify(floor2));
           newFormData.append("floor3", JSON.stringify(floor3));
           newFormData.append("floor4", JSON.stringify(floor4));

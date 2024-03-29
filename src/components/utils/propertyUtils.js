@@ -1,4 +1,4 @@
-export const generatePropertyUrl = (property, floor) => {
+export const generatePropertyUrl = (property, floor, possession, price) => {
   return `/${property.title?.replaceAll(
     " ",
     "-"
@@ -9,7 +9,5 @@ export const generatePropertyUrl = (property, floor) => {
     "_"
   )}-${property.facing}_FACING-${property.parkFacing === "YES" ? "park-" : ""}${
     property.corner === "YES" ? "corner-" : ""
-  }${
-    property.possession === "READY" ? "READY_POSSESSION" : "UNDER_CONSTRUCTION"
-  }-${property._id}`;
+  }${possession}-${price}-${property._id}`;
 };

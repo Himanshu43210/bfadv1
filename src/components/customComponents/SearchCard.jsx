@@ -27,22 +27,22 @@ export default function SearchCard({
   optVal,
 }) {
   const [opt, setOpt] = useState(optVal);
-  const [floors, setFloors] = useState([
-    { floor1: { floor: "1ST FLOOR", price: 10000000, possession: "1M" } },
-    { floor2: { floor: "2ND FLOOR", price: 20000000, possession: "READY" } },
-    { floor3: { floor: "3RD FLOOR", price: 30000000, possession: "1M" } },
-    { floor4: { floor: "4TH FLOOR", price: 40000000, possession: "1M" } },
-  ]);
+  const [floors, setFloors] = useState(element?.floors);
 
   const [selectedFloor, setSelectedFloor] = useState("");
 
-  const floor = "1ST FLOOR";
-  const cardDetailUrl = generatePropertyUrl(element, floor);
+  // const floor = "1ST FLOOR";
+  // const cardDetailUrl = generatePropertyUrl(element, floor);
 
-  const handleFloorClick = (selectedFloor) => {
+  const handleFloorClick = (selectedFloor, possession, price) => {
     setSelectedFloor(selectedFloor);
     if (!disableOnClickNavigate) {
-      const cardDetailUrl = generatePropertyUrl(element, selectedFloor);
+      const cardDetailUrl = generatePropertyUrl(
+        element,
+        selectedFloor,
+        possession,
+        price
+      );
       window.open(cardDetailUrl, "_blank");
     }
   };
@@ -79,7 +79,7 @@ export default function SearchCard({
       handleValueChange(element._id, options?.[optIdx]?.key);
     }
   };
-
+  console.log(floors, "rr");
   const renderOptions = () => {
     return (
       <div className="sc_options_wrapper">
@@ -106,7 +106,6 @@ export default function SearchCard({
       </div>
     );
   };
-
   return (
     <Card className={`search_card ${classname}`}>
       <CardActionArea className="searchcardiv">
@@ -224,7 +223,7 @@ export default function SearchCard({
                   />
                   <Typography fontWeight="lg">{element.facing}</Typography>
                 </div>
-                <div className="detail_list_item">
+                {/* <div className="detail_list_item">
                   <img
                     className="detailimages"
                     src="/icons/check.png"
@@ -232,43 +231,43 @@ export default function SearchCard({
                     style={{ paddingRight: "6px" }}
                   />
                   <Typography fontWeight="lg">{element.possession}</Typography>
-                </div>
+                </div> */}
               </div>
             </div>
           </CardContent>
-          <div className="gap-2 flex items-center px-6 my-4">
+          {/* <div className="gap-2 flex items-center px-6 my-4">
             <p className="text-lg">Starts From:</p>
-            {/* <ApiButton
-                    component={{
-                      apiType: apiType,
-                      api: onClickApi,
-                      buttonLabel: `₹ ${element.price / 10000000} Cr.`,
-                      btnClass: `btn price_btn`,
-                      // navigate: (!disableOnClickNavigate ? cardDetailUrl : null),
-                    }}
-                    queryParams={{ id: element._id }}
-                    newTab={true}
-                  /> */}
+            <ApiButton
+              component={{
+                apiType: apiType,
+                api: onClickApi,
+                buttonLabel: `₹ ${element.price / 10000000} Cr.`,
+                btnClass: `btn price_btn`,
+                // navigate: (!disableOnClickNavigate ? cardDetailUrl : null),
+              }}
+              queryParams={{ id: element._id }}
+              newTab={true}
+            />
             <button className="btn price_btn ">
               ₹{element.price / 10000000} Cr.
             </button>
-            {/* <Typography
-                    className="view_details cursor-pointer hover:underline"
-                    fontWeight="lg"
-                    onClick={() => {
-                      if (!disableOnClickNavigate) {
-                        window.open(cardDetailUrl, "_blank");
-                        // navigateTo(cardDetailUrl);
-                      }
-                    }}
-                  >
-                    View Details {">>"}
-                  </Typography> */}
-          </div>
+            <Typography
+              className="view_details cursor-pointer hover:underline"
+              fontWeight="lg"
+              onClick={() => {
+                if (!disableOnClickNavigate) {
+                  window.open(cardDetailUrl, "_blank");
+                  // navigateTo(cardDetailUrl);
+                }
+              }}
+            >
+              View Details {">>"}
+            </Typography>
+          </div> */}
           <div className="px-6 my-4">
             <p className="text-lg">Available Floors:</p>
             <div className="flex items-center flex-wrap gap-6 ">
-              {floors.map((floor, index) => {
+              {/* {floors.map((floor, index) => {
                 const floorKey = `floor${index + 1}`;
                 const floorDetails = floors[index][floorKey];
                 if (floorDetails) {
@@ -285,7 +284,18 @@ export default function SearchCard({
                 } else {
                   return null;
                 }
-              })}
+              })} */}
+              {floors.map((item) => (
+                <div
+                  className="flex flex-wrap gap-1 items-center font-medium text-white mt-2 cursor-pointer p-2 rounded-md bg-[#006D77] hover:shadow-lg"
+                  onClick={() =>
+                    handleFloorClick(item.floor, item.possession, item.price)
+                  }
+                >
+                  <GiStairs className="w-6 h-6" />
+                  {item.floor}
+                </div>
+              ))}
             </div>
           </div>
         </div>

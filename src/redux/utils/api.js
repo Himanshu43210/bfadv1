@@ -21,11 +21,11 @@ export const API_ENDPOINTS = {
   getPropertiesCountsByUserId:
     API_DOMAIN + "properties/getPropertiesCountsByUserId",
   adminDashboardLogin: API_DOMAIN + "users/auth/login",
-  getHomeScreenData: API_DOMAIN + "properties/getHomeData",
+  getHomeScreenData: API_DOMAIN + "properties/v2/getHomeData",
   getSimilarPropertyData:
     API_DOMAIN + "properties/getSimilarProperties?limit=5",
-  getCardData: API_DOMAIN + "properties",
-  getSearchResult: API_DOMAIN + "properties/searchPropertiesData",
+  getCardData: API_DOMAIN + "properties/v2",
+  getSearchResult: API_DOMAIN + "properties/v2/searchPropertiesData",
   getUserData: API_DOMAIN + "users/list",
   getAdminUserData: API_DOMAIN + "users/adminUserList",
   alterUserData: API_DOMAIN + "users/editUser",
@@ -36,7 +36,7 @@ export const API_ENDPOINTS = {
   addPropertyData: API_DOMAIN + "properties/addProperty",
   alterPropertyData: API_DOMAIN + "properties/v2/editProperty",
   deletePropertyData: API_DOMAIN + "properties/deleteProperty",
-  approvePropertyData: API_DOMAIN + "properties/approveProperty",
+  approvePropertyData: API_DOMAIN + "properties/v2/approveProperty",
   getMasterData: API_DOMAIN + "masters/list",
   addMasterData: API_DOMAIN + "masters/addMaster",
   alterMasterData: API_DOMAIN + "masters/editMaster",
@@ -46,7 +46,7 @@ export const API_ENDPOINTS = {
   getUnapprovedBrokerCounts: API_DOMAIN + "users/upapprovedBrokerCounts",
   getPropertiesListByUserId:
     API_DOMAIN + "properties/getPropertiesListByUserId",
-  getApprovalProperties: API_DOMAIN + "properties/getApprovalProperties",
+  getApprovalProperties: API_DOMAIN + "properties/v2/getApprovalProperties",
   getMasterDataOnHome: API_DOMAIN + "masters/getMasterDataOnHome",
   addCustomer: API_DOMAIN + "customers/addCustomer",
   signInCustomer: API_DOMAIN + "customers/signIn",
