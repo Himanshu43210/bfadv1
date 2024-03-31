@@ -70,10 +70,10 @@ export const FILTER = {
       className: "filter-button-div-overflowed",
       children: [
         {
-          type: SELECT3,
+          type: SELECT2,
           sliceName: "filter",
           name: "location",
-          label: "Search",
+          label: "Location",
           className: "filterChannel",
           fetchOptionsApi: API_ENDPOINTS[GET_MASTER_DATA_ON_HOME],
           optionKey: "sectorNumber",
