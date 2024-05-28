@@ -27,8 +27,8 @@ export default function SearchCard({
   optVal,
 }) {
   const [opt, setOpt] = useState(optVal);
-  const [floors, setFloors] = useState(element?.floors);
-
+  // const [floors, setFloors] = useState(element?.floors);
+  const floors = element?.floors;
   const [selectedFloor, setSelectedFloor] = useState("");
 
   // const floor = "1ST FLOOR";
