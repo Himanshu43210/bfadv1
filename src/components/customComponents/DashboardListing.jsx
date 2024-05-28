@@ -67,6 +67,7 @@ const DashboardListing = ({ component }) => {
       filterValue={component.filterValue}
       setFilterKey={component.setFilterKey}
       filterKey={component.filterKey}
+      state={component?.state}
     />
   );
 };

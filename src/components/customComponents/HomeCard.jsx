@@ -5,14 +5,17 @@ import {
   CardMedia,
   Rating,
   Typography,
-  Button
+  Button,
 } from "@mui/material";
 import ApiButton from "./ApiButton.jsx";
 import { FaShareAlt } from "react-icons/fa/index.js";
 import { convertToCr, formatData } from "../utils/HelperMethods.js";
 import { GET } from "../utils/Const.js";
-import Tooltip from '@mui/material/Tooltip';
-import { generatePropertyUrl } from "../utils/propertyUtils.js";
+import Tooltip from "@mui/material/Tooltip";
+import {
+  generatePropertyUrl,
+  generatePropertyUrlHome,
+} from "../utils/propertyUtils.js";
 import { useRouter } from "next/navigation.js";
 
 export default function HomeCard({
@@ -24,7 +27,12 @@ export default function HomeCard({
   disableOnClickNavigate = false,
 }) {
   const navigateTo = useRouter();
-  const cardDetailUrl = generatePropertyUrl(element);
+  const cardDetailUrl = generatePropertyUrl(
+    element,
+    element?.floors?.[0]?.floor,
+    element?.floors?.[0]?.possession,
+    element?.floors?.[0]?.price
+  );
   const handleShareClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -38,21 +46,26 @@ export default function HomeCard({
       window.AndroidShareHandler.share(cardDetailUrl);
     }
   };
+
   return (
     <Card
       className={`home-card ${classname}`}
-    // sx={{
-    //   maxWidth: "345px",
-    //   width: "auto",
-    //   minHeight: "auto",
-    //   marginTop: "0px",
-    // }}
+      // sx={{
+      //   maxWidth: "345px",
+      //   width: "auto",
+      //   minHeight: "auto",
+      //   marginTop: "0px",
+      // }}
     >
       <CardActionArea className="hc_action">
         <CardMedia
           component="img"
           height="100"
-          image={Array.isArray(element.thumbnails) ? element.thumbnails[0] : element.thumbnails}
+          image={
+            Array.isArray(element.thumbnails)
+              ? element.thumbnails[0]
+              : element.thumbnails
+          }
           // image = "https://builderfloors.s3.ap-south-1.amazonaws.com/upload/photos/A329ASL1/1st%20Floor/NORMAL/THUMBNAIL.jpg"
           alt={element.title}
           className="thumbnail"
@@ -78,8 +91,17 @@ export default function HomeCard({
           alt={"360-image-icon"}
         /> */}
         <CardContent className="home_card_content">
-          <a href={!disableOnClickNavigate ? cardDetailUrl : null} className="property_link" target="_blank">
-            <Typography gutterBottom variant="h6" component="div" className="title">
+          <a
+            href={!disableOnClickNavigate ? cardDetailUrl : null}
+            className="property_link"
+            target="_blank"
+          >
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="div"
+              className="title"
+            >
               {element?.title}
             </Typography>
           </a>
@@ -95,7 +117,11 @@ export default function HomeCard({
                 height="20px"
                 width="20px"
               />
-              <Typography variant="body2" className="homecardtext" color="text.secondary">
+              <Typography
+                variant="body2"
+                className="homecardtext"
+                color="text.secondary"
+              >
                 {element?.accommodation}
               </Typography>
             </div>
@@ -107,7 +133,9 @@ export default function HomeCard({
                 height="20px"
                 width="20px"
               />
-              <Typography variant="body2" color="text.secondary">{element?.floor}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {element?.floor}
+              </Typography>
             </div>
             <div className="list_item">
               <img
@@ -117,7 +145,9 @@ export default function HomeCard({
                 height="20px"
                 width="20px"
               />
-              <Typography variant="body2" color="text.secondary">{element?.size}Sq.Yd.</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {element?.size}Sq.Yd.
+              </Typography>
             </div>
           </div>
         </CardContent>
@@ -125,7 +155,11 @@ export default function HomeCard({
         <div className="ratings_and_price">
           <div className="share_and_date">
             <Tooltip title="Share" arrow classes="tooltip">
-              <Button variant="outlined" onClick={e => handleShareClick(e)} className="btn sc_btn sc_share_btn hc_share_btn">
+              <Button
+                variant="outlined"
+                onClick={(e) => handleShareClick(e)}
+                className="btn sc_btn sc_share_btn hc_share_btn"
+              >
                 <FaShareAlt size={"23px"} className="share_icon" />
               </Button>
             </Tooltip>
@@ -136,14 +170,17 @@ export default function HomeCard({
             readOnly
           /> */}
             {element?.createdAt && (
-              <Typography variant="body2" color="text.secondary">{formatData(element?.createdAt)}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {formatData(element?.createdAt)}
+              </Typography>
             )}
           </div>
+
           <ApiButton
             component={{
               apiType: apiType,
               api: onClickApi,
-              buttonLabel: `₹ ${convertToCr(element?.price)} Cr.`,
+              buttonLabel: `₹ ${convertToCr(element?.floors?.[0]?.price)} Cr.`,
               btnClass: `btn price_btn`,
               // navigate: (!disableOnClickNavigate && `/${element?.title?.replaceAll(
               //   " ",

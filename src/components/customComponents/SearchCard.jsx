@@ -285,7 +285,7 @@ export default function SearchCard({
                   return null;
                 }
               })} */}
-              {floors.map(
+              {floors?.map(
                 (item) =>
                   item.price && (
                     <div

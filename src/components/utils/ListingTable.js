@@ -40,13 +40,14 @@ import { selectApiStatus } from "./../../redux/utils/selectors.js";
 import { sanitizeFormData } from "./reusableMethods.js";
 import { USER_ROLE } from "../../ScreenJson.js";
 import SnackBar from "../customComponents/SnackBar.jsx";
-import { useRouter } from "next/navigation.js";
+import { usePathname, useRouter } from "next/navigation.js";
 import { generatePropertyUrl } from "./propertyUtils.js";
 import Link from "next/link.js";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import axios from "axios";
+import { formatData } from "./HelperMethods.js";
 
 const ListingTable = ({
   headersDesktop = [],
@@ -88,6 +89,7 @@ const ListingTable = ({
   setFilterKey,
   filterValue,
   filterKey,
+  state,
 }) => {
   const finalizeRef = useRef(null);
   const [snackbar, setSnackbar] = useState({});
@@ -112,10 +114,14 @@ const ListingTable = ({
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const filterSiZe = [...new Set(tableData.map((property) => property.size))];
+
   const siZeOptions = filterSiZe.map((value) => ({
     key: value,
     value,
   }));
+
+  var pathname = usePathname();
+  console.log(pathname, "raju");
 
   const filterOptions = {
     Location: [
@@ -354,7 +360,7 @@ const ListingTable = ({
   });
 
   const userProfile = useSelector((state) => state[PROFILE]);
-  const navigateTo = useRouter();
+  const router = useRouter();
   let allowedTableColumns = roleSpecificDesktopHeaders
     ? roleSpecificDesktopHeaders[userProfile.role]
     : tableHeaders;
@@ -828,7 +834,7 @@ const ListingTable = ({
       }
     }
   };
-
+  console.log(tableData, "arijit");
   const handleShare = (shareData, e = null) => {
     if (e) {
       e.preventDefault();
@@ -1554,17 +1560,85 @@ const ListingTable = ({
                     />
                   </td>
                 )}
-                {/* {Object.keys(allowedTableColumns).map((headerLabel, index) => (
-                  <td className="bodytext" key={index}>
-                    {formatTableCell(element, headerLabel)}
-                  </td>
-                ))} */}
-                <td className="bodytext">{element.type}</td>
-                <td className="bodytext">{element.subType}</td>
-                <td className="bodytext">{element.title}</td>
-                <td className="bodytext">{element.details}</td>
-                <td className="bodytext">{element.status}</td>
-                <td className="bodytext">{element?.userId?.name}</td>
+
+                {pathname === "/admin/reachOutCustomers" ? (
+                  <>
+                    <td className="bodytext">{element?.phoneNumber}</td>
+                    <td className="bodytext">{element?.contacted}</td>
+                    <td className="bodytext">
+                      {formatData(element?.createdAt)}
+                    </td>
+                    <td className="bodytext">
+                      {formatData(element?.updatedAt)}
+                    </td>
+                  </>
+                ) : pathname === "/admin/master" ? (
+                  <>
+                    <td className="bodytext">{element?.fieldName}</td>
+                    <td className="bodytext">{element?.fieldLabel}</td>
+                    <td className="bodytext">{element?.fieldValue}</td>
+                  </>
+                ) : pathname === "/admin/statistics" ? (
+                  <>
+                    <td className="bodytext">{element?.companyName}</td>
+                    <td className="bodytext">{element?.phoneNumber}</td>
+                    <td className="bodytext">{element?.city}</td>
+                    <td className="bodytext">{element?.total_count}</td>
+                    <td className="bodytext">{element?.approved_count}</td>
+                    <td className="bodytext">{element?.pending_count}</td>
+                    <td className="bodytext">
+                      {element?.total_count -
+                        (element?.pending_count + element?.approved_count)}
+                    </td>
+                  </>
+                ) : pathname === "/admin/listingData" ? (
+                  <>
+                    <td className="bodytext">{element?.sectorNumber}</td>
+                    <td className="bodytext">{element?.plotNumber}</td>
+                    <td className="bodytext">{element?.size}</td>
+                    <td className="bodytext">{element?.floor}</td>
+                    <td className="bodytext">{element?.title}</td>
+                    <td className="bodytext">{element?.price}</td>
+                    <td className="bodytext">{element?.accommodation}</td>
+                    <td className="bodytext">{element?.facing}</td>
+                    <td className="bodytext">{element?.parkFacing}</td>
+                    <td className="bodytext">{element?.corner}</td>
+                    <td className="bodytext">{element?.possession}</td>
+                    <td className="bodytext">{element?.builderName}</td>
+                    <td className="bodytext">{element?.builderContact}</td>
+                    <td className="bodytext">{element?.city}</td>
+                    <td className="bodytext">{element?.state}</td>
+                    <td className="bodytext">
+                      {formatData(element?.createdAt)}
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="bodytext">
+                      {element?.type ??
+                        element?.companyName ??
+                        element?.fullName}
+                    </td>
+                    <td className="bodytext">
+                      {element?.subType ??
+                        element?.createdByPhoneNumber ??
+                        element?.phoneNumber}
+                    </td>
+                    <td className="bodytext">
+                      {element?.title ?? element?.name ?? element?.email}
+                    </td>
+                    <td className="bodytext">
+                      {element?.details ??
+                        element?.city ??
+                        formatData(element?.updatedAt)}
+                    </td>
+                    {state && <td className="bodytext">{element?.state}</td>}
+                    <td className="bodytext">
+                      {element?.status ?? element?.sectorNumber}
+                    </td>
+                  </>
+                )}
+
                 {!hideActions && (
                   <td className="tablebody tableborder text actionColumn">
                     <>
@@ -1679,7 +1753,7 @@ const ListingTable = ({
                           className="row_action_btn text_btn"
                           onClick={(e) => {
                             setCurrentRowData(element);
-                            navigateTo.push(
+                            router.push(
                               `/admin/addRecommendation?uid=${element.userId?._id}`
                             );
                           }}
@@ -1690,7 +1764,7 @@ const ListingTable = ({
                           className="row_action_btn text_btn"
                           onClick={(e) => {
                             setCurrentRowData(element);
-                            navigateTo.push(
+                            router.push(
                               `/admin/showRecommended?uid=${element.userId?._id}`
                             );
                           }}
@@ -1708,9 +1782,7 @@ const ListingTable = ({
                       className="row_action_btn"
                       onClick={(e) => {
                         setCurrentRowData(element);
-                        navigateTo.push(
-                          showViewAllListing + "?id=" + element._id
-                        );
+                        router.push(showViewAllListing + "?id=" + element._id);
                       }}
                     >
                       <AiOutlineDoubleRight size={12} />
