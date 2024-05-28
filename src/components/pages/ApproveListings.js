@@ -91,8 +91,8 @@ export default function ApproveListing() {
                     "Company Name": "createdByName",
                     "Mobile Number": "createdByPhoneNumber",
                     "Primary Title": "title",
-                    State: "state",
                     City: "city",
+                    State: "state",
                     Location: "sectorNumber",
                   },
                   [USER_ROLE.channelPartner]: {
@@ -102,6 +102,7 @@ export default function ApproveListing() {
                     "Primary Title": "title",
                   },
                 },
+                state: true,
                 user: true,
                 getDataApi: GET_APPROVAL_PROPERTIES,
                 dataApi: GET_APPROVAL_PROPERTIES,

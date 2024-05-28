@@ -91,6 +91,8 @@ export default function DynamicCardContainer({
     }
   }, []);
 
+  console.log(cumulatedData, "raju");
+
   return (
     <div className={`searchdiv ${component.className}`}>
       {cumulatedData?.map((element) => {
