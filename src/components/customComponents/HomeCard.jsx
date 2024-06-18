@@ -175,7 +175,22 @@ export default function HomeCard({
               </Typography>
             )}
           </div>
-
+          {/* <div>
+            {element?.floors?.length > 1 && (
+              <p className="text-sm">Starts from:</p>
+            )}
+            <Button variant="contained" className="btn price_btn">
+              {" "}
+              {" ₹ " +
+                convertToCr(
+                  element?.floors?.reduce(
+                    (min, floor) => (floor.price < min ? floor.price : min),
+                    element?.floors[0]?.price
+                  )
+                ) +
+                " Cr."}
+            </Button>
+          </div> */}
           <ApiButton
             component={{
               apiType: apiType,

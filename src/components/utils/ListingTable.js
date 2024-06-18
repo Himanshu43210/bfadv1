@@ -48,6 +48,7 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import axios from "axios";
 import { formatData } from "./HelperMethods.js";
+import { FaShare } from "react-icons/fa";
 
 const ListingTable = ({
   headersDesktop = [],
@@ -121,7 +122,6 @@ const ListingTable = ({
   }));
 
   var pathname = usePathname();
-  console.log(pathname, "raju");
 
   const filterOptions = {
     Location: [
@@ -834,7 +834,7 @@ const ListingTable = ({
       }
     }
   };
-  console.log(tableData, "arijit");
+
   const handleShare = (shareData, e = null) => {
     if (e) {
       e.preventDefault();
@@ -875,6 +875,20 @@ const ListingTable = ({
     }
     if (window.AndroidShareHandler) {
       window.AndroidShareHandler.share(formattedShareData);
+    }
+  };
+
+  const handleShareMasterData = (e, url) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (navigator.share !== undefined) {
+      navigator.share({
+        title: "WebShare",
+        url: url,
+      });
+    }
+    if (window.AndroidShareHandler) {
+      window.AndroidShareHandler.share(cardDetailUrl);
     }
   };
 
@@ -1610,6 +1624,48 @@ const ListingTable = ({
                     <td className="bodytext">{element?.state}</td>
                     <td className="bodytext">
                       {formatData(element?.createdAt)}
+                    </td>
+                  </>
+                ) : pathname === "/admin/masterTable" ? (
+                  <>
+                    <td className="bodytext">{element?.sectorNumber}</td>
+                    <td className="bodytext">{element?.plotNumber}</td>
+                    <td className="bodytext">{element?.size}</td>
+                    <td className="bodytext">{element?.floor}</td>
+                    <td className="bodytext">{element?.price}</td>
+                    <td className="bodytext">{element?.accommodation}</td>
+                    <td className="bodytext">{element?.facing}</td>
+                    <td className="bodytext">{element?.parkFacing}</td>
+                    <td className="bodytext">{element?.corner}</td>
+                    <td className="bodytext">{element?.possession}</td>
+                    <td className="bodytext">{element?.builderName}</td>
+                    <td className="bodytext">{element?.builderContact}</td>
+                    <td className="bodytext"></td>
+                    <td className="bodytext">{element?.ownerContact}</td>
+                    <td className="bodytext"></td>
+                    <td className="bodytext">{element?.city}</td>
+                    <td className="bodytext">{element?.state}</td>
+                    <td className="bodytext">
+                      {formatData(element?.updatedAt)}
+                    </td>
+                    <td className="bodytext">
+                      <Button
+                        onClick={(e) =>
+                          handleShareMasterData(
+                            e,
+                            generatePropertyUrl(
+                              element,
+                              element?.floor,
+                              element?.possession,
+                              element?.price
+                            )
+                          )
+                        }
+                        className="selection_ctrl_btn edit_btn selection_share_btn"
+                      >
+                        <ShareRoundedIcon className="tsc_icon share_icon" />
+                        Share
+                      </Button>
                     </td>
                   </>
                 ) : (

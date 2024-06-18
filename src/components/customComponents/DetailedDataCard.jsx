@@ -325,7 +325,7 @@ function page({ component, singledata, onClickNavigate }) {
         }
       }
 
-      console.log(floorFound); // Output: 1ST_FLOOR
+      console.log(floorFound);
     } else {
       console.log("No query parameters found in the URL.");
     }
@@ -338,7 +338,7 @@ function page({ component, singledata, onClickNavigate }) {
   var floor = urlArray?.[3];
   var floorPossession = urlArray?.[urlArray.length - 3];
   var floorPrice = urlArray?.[urlArray.length - 2];
-  console.log(urlArray);
+
   return (
     <>
       <Helmet>
@@ -466,11 +466,14 @@ function page({ component, singledata, onClickNavigate }) {
           <div className="detail-info-div">
             <h3 className="detail_title">{cardData?.detailTitle}</h3>
             <pre className="detail_desc">{cardData?.description}</pre>
+
             <Button
               variant="contained"
               className="detail-button detail_price_btn"
             >
-              {"₹ " + convertToCr(floorPrice) + " Cr."}
+              {" ₹ " +
+                convertToCr(floorPrice ?? cardData?.floors[0]?.price) +
+                " Cr."}
             </Button>
           </div>
           <div className="detail-icon-div">
