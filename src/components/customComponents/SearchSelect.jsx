@@ -22,8 +22,7 @@ const SearchSelect = ({ component, values, onSubmit }) => {
   console.log(
     options
       ?.filter((option) => !selections.includes(option.value))
-      .map((item) => item.label),
-    "arijit"
+      .map((item) => item.label)
   );
 
   useEffect(() => {

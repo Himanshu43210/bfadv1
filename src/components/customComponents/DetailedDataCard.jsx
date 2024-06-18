@@ -338,7 +338,6 @@ function page({ component, singledata, onClickNavigate }) {
   var floor = urlArray?.[3];
   var floorPossession = urlArray?.[urlArray.length - 3];
   var floorPrice = urlArray?.[urlArray.length - 2];
-  console.log(cardData, "raju");
 
   return (
     <>

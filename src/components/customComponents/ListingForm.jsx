@@ -136,7 +136,6 @@ const ListingForm = ({ ...props }) => {
     fetchData();
   }, []);
 
-  console.log(masterData, "raju");
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex items-center gap-10 flex-wrap">
