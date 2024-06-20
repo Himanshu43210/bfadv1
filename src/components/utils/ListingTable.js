@@ -1631,8 +1631,8 @@ const ListingTable = ({
                     <td className="bodytext">{element?.sectorNumber}</td>
                     <td className="bodytext">{element?.plotNumber}</td>
                     <td className="bodytext">{element?.size}</td>
-                    <td className="bodytext">{element?.floor}</td>
-                    <td className="bodytext">{element?.price}</td>
+                    {/* <td className="bodytext">{element?.floor}</td>
+                    <td className="bodytext">{element?.price}</td> */}
                     <td className="bodytext">{element?.accommodation}</td>
                     <td className="bodytext">{element?.facing}</td>
                     <td className="bodytext">{element?.parkFacing}</td>
@@ -1640,11 +1640,8 @@ const ListingTable = ({
                     <td className="bodytext">{element?.possession}</td>
                     <td className="bodytext">{element?.builderName}</td>
                     <td className="bodytext">{element?.builderContact}</td>
-                    <td className="bodytext"></td>
                     <td className="bodytext">{element?.ownerContact}</td>
-                    <td className="bodytext"></td>
-                    <td className="bodytext">{element?.city}</td>
-                    <td className="bodytext">{element?.state}</td>
+                    <td className="bodytext">{element?.parentId?.name}</td>
                     <td className="bodytext">
                       {formatData(element?.updatedAt)}
                     </td>
