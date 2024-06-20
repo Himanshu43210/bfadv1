@@ -88,10 +88,12 @@ export default function ApproveListing() {
                 },
                 roleSpecificDesktopHeaders: {
                   [USER_ROLE.bfAdmin]: {
-                    "Company Name": "createdByName",
+                    "Broker Name": "createdByName",
                     "Mobile Number": "createdByPhoneNumber",
                     "Primary Title": "title",
                     City: "city",
+                    State: "state",
+                    Location: "sectorNumber",
                   },
                   [USER_ROLE.channelPartner]: {
                     "Sub User Name": "createdByName",
