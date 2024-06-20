@@ -1673,7 +1673,8 @@ const ListingTable = ({
                     <td className="bodytext">
                       {element?.type ??
                         element?.companyName ??
-                        element?.fullName}
+                        element?.fullName ??
+                        element?.createdByName}
                     </td>
                     <td className="bodytext">
                       {element?.subType ??
