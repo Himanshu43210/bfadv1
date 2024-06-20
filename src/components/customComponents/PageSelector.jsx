@@ -50,7 +50,7 @@ export default function PageSelector({ pageName }) {
             },
           };
           dispatch(callApi(options));
-        } catch (error) { }
+        } catch (error) {}
       } else {
         navigate.push("/login");
       }
