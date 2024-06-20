@@ -124,10 +124,10 @@ const comp = () => {
     if (!submitting) {
       const formData = finalizeRef.current.finalizeData();
       if (formData) {
-        console.log(
-          "Received validated data:",
-          formData.floorOnePrice["value"]
-        );
+        // console.log(
+        //   "Received validated data:",
+        //   formData.floorOnePrice["value"]
+        // );
         try {
           let newFormData = new FormData();
           const fileFields = [
