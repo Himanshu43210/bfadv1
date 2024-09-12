@@ -49,6 +49,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import axios from "axios";
 import { formatData } from "./HelperMethods.js";
 import { FaShare } from "react-icons/fa";
+import { MdUpload } from "react-icons/md";
 
 const ListingTable = ({
   headersDesktop = [],
@@ -114,7 +115,7 @@ const ListingTable = ({
   const [imgsToBeDeleted, setImgsToBeDeleted] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
-  const filterSiZe = [...new Set(tableData.map((property) => property.size))];
+  const filterSiZe = [...new Set(tableData?.map((property) => property.size))];
 
   const siZeOptions = filterSiZe.map((value) => ({
     key: value,
@@ -445,7 +446,7 @@ const ListingTable = ({
       !(jsonData instanceof File) &&
       !(jsonData instanceof Blob)
     ) {
-      Object.keys(jsonData).forEach((key) => {
+      Object?.keys(jsonData).forEach((key) => {
         generateFormData(
           formData,
           jsonData[key],
@@ -1184,6 +1185,66 @@ const ListingTable = ({
     return cellData;
   };
 
+  const handleSubmitEdit = async (property) => {
+    try {
+      const formData = new FormData();
+
+      // Add floor data to the formData object
+      for (let i = 1; i <= 4; i++) {
+        const floor = property.floors[i - 1];
+        if (floor) {
+          formData.append(
+            `floor${i}`,
+            JSON.stringify({
+              floor: floor.floor,
+              price: floor.price || "",
+              possession: floor.possession || "",
+            })
+          );
+        } else {
+          formData.append(
+            `floor${i}`,
+            JSON.stringify({ floor: `${i}TH FLOOR` })
+          );
+        }
+      }
+
+      formData.append("parentId", property.parentId._id);
+      formData.append("contactId", property.contactId);
+      formData.append("needApprovalBy", property.parentId.parentId);
+      formData.append("city", property.city);
+      formData.append("state", property.state);
+      formData.append("sectorNumber", property.sectorNumber);
+      formData.append("size", property.size);
+      formData.append("plotNumber", property.plotNumber);
+      formData.append("accommodation", property.accommodation);
+      formData.append("facing", property.facing);
+      formData.append("parkFacing", property.parkFacing);
+      formData.append("corner", property.corner);
+      formData.append("builderName", property.builderName);
+      formData.append("builderContact", property.builderContact);
+      formData.append("ownerContact", property.ownerContact);
+      formData.append("title", property.title);
+      formData.append("detailTitle", property.detailTitle);
+      formData.append("description", property.description);
+
+      await axios.post(
+        `${API_DOMAIN}properties/v2/editProperty?draftId=${property._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("Property updated successfully");
+      router.push("/admin/masterTable");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update property");
+    }
+  };
+
   return (
     <>
       {showEditModal && (
@@ -1383,33 +1444,43 @@ const ListingTable = ({
       )}
 
       <div className="tablediv">
-        {showTableControls && (
-          <div className="table_controls_wrapper">
-            <input
-              type="text"
-              onChange={(e) => {
-                setTableFilter({
-                  search: e.target.value,
-                });
-              }}
-              value={[tableFilter["search"]] || ""}
-              className="filter_input"
-            />
-            <Button
-              onClick={() => applyFilters()}
-              className="filter_submit filter_btn"
-            >
-              <RiFilter2Fill className="filter_icon" />
-              Filter&nbsp;Data
-            </Button>
-            {/* {showColumnFilter && (
+        <div className="flex items-center justify-between">
+          {showTableControls && (
+            <div className="table_controls_wrapper">
+              <input
+                type="text"
+                onChange={(e) => {
+                  setTableFilter({
+                    search: e.target.value,
+                  });
+                }}
+                value={[tableFilter["search"]] || ""}
+                className="filter_input"
+              />
+              <Button
+                onClick={() => applyFilters()}
+                className="filter_submit filter_btn"
+              >
+                <RiFilter2Fill className="filter_icon" />
+                Filter&nbsp;Data
+              </Button>
+              {/* {showColumnFilter && (
               <Button onClick={() => setShowFilters(!showFilters)} className="filter_btn">
                 <RiFilter2Fill className="filter_icon" />
                 Filter
               </Button>
             )} */}
-          </div>
-        )}
+            </div>
+          )}
+          {pathname === "/admin/masterTable" && (
+            <Button
+              className="filter_submit filter_btn"
+              onClick={() => router.push("/drafts")}
+            >
+              Saved Drafts
+            </Button>
+          )}
+        </div>
         {selectedRows?.length > 0 && (
           <div className="table_selection_controls">
             <div className="selection_info">
@@ -1628,22 +1699,40 @@ const ListingTable = ({
                   </>
                 ) : pathname === "/admin/masterTable" ? (
                   <>
-                    <td className="bodytext">{element?.sectorNumber}</td>
-                    <td className="bodytext">{element?.plotNumber}</td>
-                    <td className="bodytext">{element?.size}</td>
-                    {/* <td className="bodytext">{element?.floor}</td>
-                    <td className="bodytext">{element?.price}</td> */}
-                    <td className="bodytext">{element?.accommodation}</td>
-                    <td className="bodytext">{element?.facing}</td>
-                    <td className="bodytext">{element?.parkFacing}</td>
-                    <td className="bodytext">{element?.corner}</td>
-                    {/* <td className="bodytext">{element?.possession}</td> */}
-                    <td className="bodytext">{element?.builderName}</td>
-                    <td className="bodytext">{element?.builderContact}</td>
-                    <td className="bodytext">{element?.ownerContact}</td>
-                    <td className="bodytext">{element?.parentId?.name}</td>
+                    <td className="bodytext">{element.sectorNumber}</td>
+                    <td className="bodytext">{element.plotNumber}</td>
+                    <td className="bodytext">{element.size}</td>
+                    {[0, 1, 2, 3].map((index) =>
+                      element.floors[index] ? (
+                        <React.Fragment key={index}>
+                          <td className="bodytext">
+                            {element.floors[index].floor}
+                          </td>
+                          <td className="bodytext">
+                            {element.floors[index].price}
+                          </td>
+                          <td className="bodytext">
+                            {element.floors[index].possession}
+                          </td>
+                        </React.Fragment>
+                      ) : (
+                        <React.Fragment key={index}>
+                          <td className="bodytext">-</td>
+                          <td className="bodytext">-</td>
+                          <td className="bodytext">-</td>
+                        </React.Fragment>
+                      )
+                    )}
+                    <td className="bodytext">{element.accommodation}</td>
+                    <td className="bodytext">{element.facing}</td>
+                    <td className="bodytext">{element.parkFacing}</td>
+                    <td className="bodytext">{element.corner}</td>
+                    <td className="bodytext">{element.builderName}</td>
+                    <td className="bodytext">{element.builderContact}</td>
+                    <td className="bodytext">{element.ownerContact}</td>
+                    <td className="bodytext">{element.parentId?.name}</td>
                     <td className="bodytext">
-                      {formatData(element?.updatedAt)}
+                      {formatData(element.updatedAt)}
                     </td>
                     <td className="bodytext">
                       <Button
@@ -1652,9 +1741,9 @@ const ListingTable = ({
                             e,
                             generatePropertyUrl(
                               element,
-                              element?.floor,
-                              element?.possession,
-                              element?.price
+                              element.floors[0]?.floor,
+                              element.floors[0]?.possession,
+                              element.floors[0]?.price
                             )
                           )
                         }
@@ -1662,6 +1751,56 @@ const ListingTable = ({
                       >
                         <ShareRoundedIcon className="tsc_icon share_icon" />
                         Share
+                      </Button>
+                    </td>
+                  </>
+                ) : pathname === "/drafts" ? (
+                  <>
+                    <td className="bodytext">{element.sectorNumber}</td>
+
+                    <td className="bodytext">{element.plotNumber}</td>
+                    <td className="bodytext">{element.size}</td>
+                    {[0, 1, 2, 3].map((index) =>
+                      element.floors[index] ? (
+                        <React.Fragment key={index}>
+                          <td className="bodytext">
+                            {element.floors[index].floor}
+                          </td>
+                          <td className="bodytext">
+                            {element.floors[index].price}
+                          </td>
+                          <td className="bodytext">
+                            {element.floors[index].possession}
+                          </td>
+                        </React.Fragment>
+                      ) : (
+                        <React.Fragment key={index}>
+                          <td className="bodytext">-</td>
+                          <td className="bodytext">-</td>
+                          <td className="bodytext">-</td>
+                        </React.Fragment>
+                      )
+                    )}
+                    <td className="bodytext">{element.accommodation}</td>
+                    <td className="bodytext">{element.facing}</td>
+                    <td className="bodytext">{element.parkFacing}</td>
+                    <td className="bodytext">{element.corner}</td>
+                    <td className="bodytext">{element.builderName}</td>
+                    <td className="bodytext">{element.builderContact}</td>
+                    <td className="bodytext">{element.ownerContact}</td>
+                    <td className="bodytext">{element.parentId?.name}</td>
+                    <td className="bodytext">
+                      {formatData(element.updatedAt)}
+                    </td>
+                    <td className="bodytext">
+                      <Button
+                        className="row_action_btn edit_btn ListingEditbtn"
+                        variant="success"
+                        onClick={() => {
+                          handleSubmitEdit(element);
+                        }}
+                      >
+                        <MdUpload size={20} />
                       </Button>
                     </td>
                   </>
@@ -1851,7 +1990,7 @@ const ListingTable = ({
 
       {apiStatus === "loading" || showLoader ? (
         <CircularProgress className="loader-class" />
-      ) : tableData.length > 0 && showPagination ? (
+      ) : tableData?.length > 0 && showPagination ? (
         <BasicTablePagination
           dataLength={totalItems}
           currentPage={activePage}

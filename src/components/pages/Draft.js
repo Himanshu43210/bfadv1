@@ -3,21 +3,15 @@ import _ from "lodash";
 import { USER_ROLE } from "../../ScreenJson.js";
 import LoginRefresh from "../customComponents/LoginRefresh.jsx";
 import AutoFetchApiPost from "../customComponents/AutoFetchApiPost.jsx";
-import { API_ENDPOINTS } from "@/redux/utils/api.js";
-import {
-  ALTER_PROPERTY_DATA,
-  APPROVE_PROPERTY_DATA,
-  DELETE_PROPERTY_DATA,
-  GET_ADMIN_PROPERTY_DATA,
-  POST,
-} from "../utils/Const.js";
+import { API_DOMAIN, API_ENDPOINTS } from "@/redux/utils/api.js";
+import { POST } from "../utils/Const.js";
 import PanelHeader from "../customComponents/PanelHeader.jsx";
 import Title from "../customComponents/Title.jsx";
 import CustomRouteButton from "../customComponents/RouteButton.jsx";
 import DashboardListing from "../customComponents/DashboardListing.jsx";
 import { newPropertyConst } from "../fieldConsts/PropertiesFieldConst.js";
 
-export default function PropertyManagement() {
+export default function Draft() {
   const [filterValue, setFilterValue] = useState("");
   const [filterKey, setFilterKey] = useState("");
 
@@ -34,7 +28,7 @@ export default function PropertyManagement() {
           <div className={`component_wrapper ${""}`}>
             <AutoFetchApiPost
               component={{
-                api: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
+                api: `${API_DOMAIN}properties/v2/adminPropertyListDraft`,
                 data: payload,
                 method: POST,
                 className: "header",
@@ -63,9 +57,9 @@ export default function PropertyManagement() {
             <Title
               component={{
                 titles: [
-                  "Master Data of Super Admin",
-                  "Master Data of Broker",
-                  "Master Data of Sub User",
+                  "Draft Data of Super Admin",
+                  "Draft Data of Broker",
+                  "Draft Data of Sub User",
                 ],
               }}
             />
@@ -95,7 +89,7 @@ export default function PropertyManagement() {
                     City: "city",
                     State: "state",
                     "Dated of Posting": "createdAt",
-                    "Link Share": "",
+                    Actions: "actions",
                   },
                   mobileHeaders: {
                     Location: "sectorNumber",
@@ -117,7 +111,7 @@ export default function PropertyManagement() {
                     City: "Gurgaon",
                     State: "Haryana",
                     "Dated of Posting": "createdAt",
-                    "Link Share": "",
+                    Actions: "actions",
                   },
                   roleSpecificDesktopHeaders: {
                     [USER_ROLE.bfAdmin]: {
@@ -145,7 +139,7 @@ export default function PropertyManagement() {
                       "Owner Contact": "ownerContact",
                       "Created By": "parentId.name",
                       "Updated At": "updatedAt",
-                      "Link Share": "",
+                      Actions: "actions",
                     },
                     [USER_ROLE.channelPartner]: {
                       Location: "sectorNumber",
@@ -172,7 +166,7 @@ export default function PropertyManagement() {
                       "Owner Contact": "ownerContact",
                       "Created By": "parentId.name",
                       "Updated At": "updatedAt",
-                      "Link Share": "",
+                      Actions: "actions",
                     },
                     [USER_ROLE.salesUser]: {
                       Location: "sectorNumber",
@@ -199,17 +193,11 @@ export default function PropertyManagement() {
                       "Owner Contact": "ownerContact",
                       "Approved By": "parentId.name",
                       "Updated At": "updatedAt",
-                      "Link Share": "",
+                      Actions: "actions",
                     },
                   },
                   fieldConst: newPropertyConst,
-                  editApi: ALTER_PROPERTY_DATA,
-                  deleteApi: DELETE_PROPERTY_DATA,
-                  getDataApi: GET_ADMIN_PROPERTY_DATA,
-                  approveApi: APPROVE_PROPERTY_DATA,
-                  endpoint: API_ENDPOINTS[GET_ADMIN_PROPERTY_DATA],
-                  dataPoint: GET_ADMIN_PROPERTY_DATA,
-                  onRefreshApiType: POST,
+
                   disableRowModal: true,
                   showPreviewButton: true,
                   showColumnFilter: true,
@@ -219,6 +207,7 @@ export default function PropertyManagement() {
                   filterValue: filterValue,
                   setFilterKey: setFilterKey,
                   filterKey: filterKey,
+                  hideActions: true,
                 }}
               />
               <div className={`component_wrapper ${"toogle-filter"}`}>

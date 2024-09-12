@@ -23,6 +23,8 @@ import dynamic from "next/dynamic.js";
 import { CARD_DETAILS_SCREEN } from "../pages/DetailedView.js";
 import { USER_ROLE } from "@/ScreenJson.js";
 import { useRouter } from "next/router.js";
+import SearchCard from "./SearchCard.jsx";
+import SameBuilderCard from "./SameBuilderCard.jsx";
 
 function page({ component, singledata, onClickNavigate }) {
   // Prioritize singledata if available
@@ -172,6 +174,8 @@ function page({ component, singledata, onClickNavigate }) {
     }?text=${encodeURIComponent(text)}`;
     window.open(payload, "_blank");
   };
+
+  console.log(cardData, "raju");
 
   const handlePropertyContacted = () => {
     // console.log('=============== HANDLE PROPERTY CONTACTED ==============', customerProfile, id);
@@ -338,6 +342,18 @@ function page({ component, singledata, onClickNavigate }) {
   var floor = urlArray?.[3];
   var floorPossession = urlArray?.[urlArray.length - 3];
   var floorPrice = urlArray?.[urlArray.length - 2];
+
+  const cumulatedData = [cardData];
+
+  const finalFloorData = cumulatedData[0]?.floors?.filter(
+    (item) => item?.floor != floor?.replace("_", " ")
+  );
+
+  useEffect(() => {
+    if (!floor || !floorPossession || !floorPrice) {
+      router.push("/");
+    }
+  }, [floor, floorPossession, floorPrice, router]);
 
   return (
     <>
@@ -568,6 +584,18 @@ function page({ component, singledata, onClickNavigate }) {
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-10 w-fit">
+        {cumulatedData?.map((element) => {
+          return (
+            <>
+              <p className="text-xl mb-2 font-semibold">
+                Available floors in the same building:
+              </p>
+              <SameBuilderCard element={element} floors={finalFloorData} />
+            </>
+          );
+        })}
       </div>
       <div className="similar-option-title">
         {component ? component.moreOptionText : singledata.moreOptionText}

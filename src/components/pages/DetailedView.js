@@ -29,6 +29,8 @@ import Heading from "../customComponents/Heading.jsx";
 import Footer from "../customComponents/Footer.jsx";
 import ScrollToTop from "../customComponents/ScrollToTop.jsx";
 import Chatbot from "../customComponents/Chatbot.jsx";
+import { useRouter } from "next/router.js";
+import { generatePropertyUrl } from "../utils/propertyUtils.js";
 
 export const CARD_DETAILS_SCREEN = {
   name: "Card Detail Screen",
@@ -220,6 +222,34 @@ export const FILTER_DETAILS_SCREEN = {
 };
 
 function comp() {
+  const router = useRouter();
+  const { query } = router;
+
+  // useEffect(() => {
+  //   // Extract parameters from the query
+  //   const property = {
+  //     title: query.title,
+  //     sectorNumber: query.sectorNumber,
+  //     size: query.size,
+  //     accommodation: query.accommodation,
+  //     facing: query.facing,
+  //     parkFacing: query.parkFacing,
+  //     corner: query.corner,
+  //     _id: query._id,
+  //   };
+  //   const floor = query.floor;
+  //   const possession = query.possession;
+  //   const price = query.price;
+
+  //   // Generate the expected URL format
+  //   const expectedUrl = generatePropertyUrl(property, floor, possession, price);
+
+  //   // Check if query.pid matches the expected URL
+  //   if (query.pid !== expectedUrl) {
+  //     router.push("/"); // Redirect to homepage if the format is incorrect
+  //   }
+  // }, [query, router]);
+
   return (
     <>
       <Card className="property_page detail-screen">

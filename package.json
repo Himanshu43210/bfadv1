@@ -30,6 +30,7 @@
     "firebase": "^10.2.0",
     "formik": "^2.4.5",
     "lodash": "^4.17.21",
+    "lucide-react": "^0.439.0",
     "material-ui-popup-state": "^5.0.9",
     "next": "14.0.2",
     "react": "^18",

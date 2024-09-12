@@ -48,20 +48,20 @@ function comp() {
 
   const customerProfile = useSelector((state) => state.customer);
   const user = useSelector((state) => state.profile);
-  const handleScrollEvent = () => {
-    if (initialLoad.current && window.scrollY > 1200) {
-      handleReachOutToMe();
-    }
-    if (!initialLoad.current) {
-      handleRemoveEL();
-    }
-  };
+  // const handleScrollEvent = () => {
+  //   if (initialLoad.current && window.scrollY > 1200) {
+  //     handleReachOutToMe();
+  //   }
+  //   if (!initialLoad.current) {
+  //     handleRemoveEL();
+  //   }
+  // };
 
-  const handleRemoveEL = () => {
-    window.removeEventListener("scroll", () => {
-      handleScrollEvent();
-    });
-  };
+  // const handleRemoveEL = () => {
+  //   window.removeEventListener("scroll", () => {
+  //     handleScrollEvent();
+  //   });
+  // };
 
   useEffect(() => {
     if (window !== "undefined") {
@@ -74,10 +74,10 @@ function comp() {
         dispatch(storeCustomerData(customerData));
       }
     }
-    if (window.location.pathname === "/") {
-      window.addEventListener("scroll", handleScrollEvent);
-      return handleRemoveEL;
-    }
+    // if (window.location.pathname === "/") {
+    //   window.addEventListener("scroll", handleScrollEvent);
+    //   return handleRemoveEL;
+    // }
   }, []);
 
   const registerAgent = {
@@ -331,10 +331,10 @@ function comp() {
     setVisited(false);
   };
 
-  const handleReachOutToMe = () => {
-    setMode("REACHME");
-    routeEntry("REACHME");
-  };
+  // const handleReachOutToMe = () => {
+  //   setMode("REACHME");
+  //   routeEntry("REACHME");
+  // };
 
   const renderDetailsForm = () => {
     return (

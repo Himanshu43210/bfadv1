@@ -12,7 +12,7 @@ import {
   PROPERTY_DEALER,
   ROUTE_BUTTON,
 } from "../utils/Const.js";
-import { API_ENDPOINTS } from "../../redux/utils/api.js";
+import { API_DOMAIN, API_ENDPOINTS } from "../../redux/utils/api.js";
 import { callApi } from "../../redux/utils/apiActions.js";
 import {
   filterAutofillData,
@@ -40,6 +40,8 @@ const comp = () => {
   const router = useRouter();
   const { type } = router.query;
   const userProfile = useSelector((state) => state.profile);
+
+  console.log(API_ENDPOINTS[userProfile.formSaveApi], "raju");
 
   console.log(
     "+++++ form page : user profile +++++",
@@ -123,6 +125,8 @@ const comp = () => {
   const handleSubmit = async () => {
     if (!submitting) {
       const formData = finalizeRef.current.finalizeData();
+
+      console.log(finalizeRef.current.finalizeData(), "raju");
       if (formData) {
         // console.log(
         //   "Received validated data:",
@@ -313,6 +317,152 @@ const comp = () => {
     }
   };
 
+  const handleSubmitDraft = async () => {
+    if (!submitting) {
+      const formData = finalizeRef.current.finalizeData();
+
+      console.log(finalizeRef.current.finalizeData(), "raju");
+      if (formData) {
+        try {
+          let newFormData = new FormData();
+          const fileFields = [
+            "thumbnailFile",
+            "normalImageFile",
+            "threeSixtyImages",
+            "layoutFile",
+            "videoFile",
+            "virtualFile",
+          ];
+
+          if (formData.floorOnePrice != 0) {
+            var floor1 = {
+              floor: "1ST FLOOR",
+              price: formData.floorOnePrice,
+              possession: formData.floorOnePossession?.value,
+            };
+            newFormData.append("floor1", JSON.stringify(floor1));
+          }
+          if (formData.floorTwoPrice != 0) {
+            var floor2 = {
+              floor: "2ND FLOOR",
+              price: formData.floorTwoPrice,
+              possession: formData.floorTwoPossession?.value,
+            };
+            newFormData.append("floor2", JSON.stringify(floor2));
+          }
+          if (formData.floorThreePrice != 0) {
+            var floor3 = {
+              floor: "3RD FLOOR",
+              price: formData.floorThreePrice,
+              possession: formData.floorThreePossession?.value,
+            };
+            newFormData.append("floor3", JSON.stringify(floor3));
+          }
+          if (formData.floorFourPrice != 0) {
+            var floor4 = {
+              floor: "4TH FLOOR",
+              price: formData.floorFourPrice,
+              possession: formData.floorFourPossession?.value,
+            };
+            newFormData.append("floor4", JSON.stringify(floor4));
+          }
+
+          fileFields.forEach((field) => {
+            if (formData[field]) {
+              for (const file of formData[field]) {
+                newFormData.append(field, file);
+              }
+            }
+          });
+
+          delete formData.floorOnePrice;
+          delete formData.floorOnePossession;
+          delete formData.floorTwoPrice;
+          delete formData.floorTwoPossession;
+          delete formData.floorThreePrice;
+          delete formData.floorThreePossession;
+          delete formData.floorFourPrice;
+          delete formData.floorFourPossession;
+          newFormData.append("parentId", userProfile._id);
+          newFormData.append(
+            "contactId",
+            userProfile.role === USER_ROLE[PROPERTY_DEALER]
+              ? userProfile.parentId
+              : userProfile._id
+          );
+          newFormData.append(NEED_APPROVAL_BY, userProfile.parentId);
+
+          function isObjectNotString(value) {
+            return (
+              typeof value === "object" &&
+              !Array.isArray(value) &&
+              value !== null
+            );
+          }
+
+          function isFileList(value) {
+            return value instanceof FileList;
+          }
+
+          Object.keys(formData).forEach((element) => {
+            if (!isFileList(formData[element])) {
+              if (isObjectNotString(formData[element])) {
+                newFormData.append(element, formData[element].value);
+              } else {
+                newFormData.append(element, formData[element]);
+              }
+            }
+          });
+
+          const imagesCheck = fileFields.some((field) => formData[field]);
+
+          let headers = imagesCheck
+            ? { "Content-Type": "multipart/form-data" }
+            : { "Content-Type": "application/json" };
+
+          let data = imagesCheck
+            ? newFormData
+            : sanitizeFormData({
+                ...formData,
+                parentId: userProfile._id,
+                role:
+                  userProfile.role === USER_ROLE[BF_ADMIN]
+                    ? USER_ROLE["channelPartner"]
+                    : USER_ROLE["salesUser"],
+              });
+
+          const options = {
+            url: `${API_DOMAIN}properties/v2/editPropertyDraft`,
+            method: POST,
+            headers: headers,
+            data: data,
+          };
+
+          setSubmitting(true);
+          dispatch(callApi(options)).then(() => {
+            setSubmitting(false);
+            setTimeout(() => {
+              router.push("/admin");
+            }, 1200);
+            setSnackbar({ open: true, message: getMessage() });
+          });
+        } catch (error) {
+          setSubmitting(false);
+          setSnackbar({ open: true, message: `Submit Failed.` });
+          console.log("--- SUBMIT failed ---", error);
+        }
+      } else {
+        setSubmitting(false);
+        setSnackbar({
+          open: true,
+          message: `Empty required field(s) or no change.`,
+        });
+      }
+    } else {
+      setSnackbar({ open: true, message: `Submitting.` });
+    }
+  };
+
   const navigate = useRouter();
   const loginStatus = useSelector((state) =>
     selectApiStatus(state, ADMIN_DASHBOARD_LOGIN)
@@ -386,6 +536,22 @@ const comp = () => {
               >
                 {submitting ? "Submitting..." : "Submit"}
               </Button>
+              <Button
+                variant="outlined"
+                onClick={handleReset}
+                className="border border-[#004E55] text-[#004E55] hover:border hover:border-[#004E55] hover:text-[#004E55] hover:bg-green-50"
+              >
+                Reset
+              </Button>
+              {userProfile.formName === "Post Listing" && (
+                <Button
+                  variant="outlined"
+                  onClick={handleSubmitDraft}
+                  className="border border-[#004E55] text-[#004E55] hover:border hover:border-[#004E55] hover:text-[#004E55] hover:bg-green-50"
+                >
+                  Save Draft
+                </Button>
+              )}
               {userProfile?.showSaveBtn ? (
                 <Button
                   variant="secondary"

@@ -5,7 +5,7 @@ import { getApiName } from "../utils/api.js";
 
 const apiSlice = createSlice({
   name: "api/callApi",
-  initialState: { data: {}, status: {}, error: null },
+  initialState: { data: {}, status: {}, error: {} }, // Change error: null to error: {}
   reducers: {
     resetApiStatus: (state, action) => {
       state.status[action.payload] = undefined;
@@ -24,9 +24,8 @@ const apiSlice = createSlice({
       .addCase(callApi.rejected, (state, action) => {
         const apiname = getApiName(action?.meta?.arg?.url);
         if (apiname !== "") {
-          state.status[getApiName(action?.meta?.arg?.url)] = FAILED;
-          state.error[getApiName(action?.meta?.arg?.url)] =
-            action?.error.message;
+          state.status[apiname] = FAILED;
+          state.error[apiname] = action?.error.message; // Update state.error instead of a non-existent property
         }
       });
   },

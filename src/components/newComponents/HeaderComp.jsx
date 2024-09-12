@@ -21,6 +21,7 @@ import {
   SELECT3,
 } from "../utils/Const";
 import { API_ENDPOINTS } from "@/redux/utils/api";
+import { Search } from "lucide-react";
 
 const MENU_ITEMS = [
   {
@@ -206,6 +207,13 @@ const HeaderComp = () => {
     }
   }, [location]);
 
+  const [prompt, setPrompt] = useState("");
+  const handleSearch = () => {
+    if (!prompt) return;
+    navigate.push(`/search?query=${prompt}`);
+    setPrompt("");
+  };
+
   return (
     <div className={`component_wrapper ${"homeHeader"}`}>
       <div className={`component_wrapper ${"menu_comp"}`}>
@@ -232,8 +240,39 @@ const HeaderComp = () => {
       </div> */}
       <div className={`component_wrapper ${"ol_comp_wrapper"} flex gap-2`}>
         <div className="flex items-center">
-          <div className="max-md:hidden">
-            <RenderComponent jsonToRender={FILTER} />
+          <div className="max-md:hidden mr-10">
+            <div className="flex-none gap-2">
+              <div className="hidden md:flex lg:flex flex-row items-center bg-white pr-3  border border-[#006D77] ">
+                <input
+                  value={prompt}
+                  type="text"
+                  placeholder="Search"
+                  onChange={(e) => setPrompt(e.target.value)}
+                  className="px-3 py-1 outline-none w-24 md:w-auto"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && prompt) {
+                      handleSearch();
+                    }
+                  }}
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-6 h-6 text-gray-700 cursor-pointer"
+                  onClick={handleSearch}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                  />
+                </svg>
+              </div>
+            </div>
+            {/* <RenderComponent jsonToRender={FILTER} /> */}
           </div>
           <div className="flex gap-2 h-[40px]">
             <Button className={`ol_open_btn`} onClick={handlePostListing}>
