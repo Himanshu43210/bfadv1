@@ -16,6 +16,8 @@ export const getApiName = (api) => {
   }
 };
 
+console.log("rrr");
+
 export const API_ENDPOINTS = {
   rejectProperty: API_DOMAIN + "properties/rejectProperty",
   getPropertiesCountsByUserId:
