@@ -12,6 +12,7 @@ import { isValueEmpty } from "./reusableMethods.js";
 const FormBuilder = forwardRef(({ fields, propsFormData }, ref) => {
   const [formData, setFormData] = useState(propsFormData || {});
   const [fieldErrors, setFieldErrors] = useState({});
+  console.log(formData, "raju");
 
   const masterData = useSelector((state) => {
     return selectMasterData(state, GET_MASTER_DATA_ON_HOME || "");
