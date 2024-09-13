@@ -195,7 +195,7 @@ export const SEARCH_RESULT = {
                   name: "budget",
                   buttonLabel: "Budget",
                   minValue: 0,
-                  maxValue: 200000000,
+                  maxValue: 500000000,
                   onClickApi: API_ENDPOINTS[GET_SEARCH_RESULT],
                   onClickApiMethod: POST,
                   step: 1000000,

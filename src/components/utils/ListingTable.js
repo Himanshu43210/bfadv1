@@ -1245,6 +1245,8 @@ const ListingTable = ({
     }
   };
 
+  console.log(currentRowData, "raju");
+
   return (
     <>
       {showEditModal && (

@@ -1,9 +1,9 @@
 import _ from "lodash";
 
 export const APP_DOMAIN = "https://builderfloor.com";
-export const API_DOMAIN = "https://bfservices.trainright.fit/api/";
+// export const API_DOMAIN = "https://bfservices.trainright.fit/api/";
 const CHAT_API_DOMAIN = "https://itsolutionshub.com/chat";
-// export const API_DOMAIN = "http://localhost:5000/api/";
+export const API_DOMAIN = "http://localhost:5000/api/";
 
 export const getApiName = (api) => {
   if (api) {

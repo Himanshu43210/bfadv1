@@ -47,7 +47,7 @@ const HOME_SCREEN = {
           className: "select-range",
           name: "budget",
           minValue: 0,
-          maxValue: 200000000,
+          maxValue: 500000000,
           step: 1000000,
           defaultValue: [20000000, 50000000],
         },
