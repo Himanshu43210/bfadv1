@@ -168,10 +168,16 @@ function page({ component, singledata, onClickNavigate }) {
   };
 
   const handleWhatsappContact = () => {
-    const text = component.whatsappText?.replace("{link}", cardDetailUrl);
+    const text = component.whatsappText
+      ?.replace("{link}", cardDetailUrl)
+      .replace("{builderName}", cardData.builderName)
+      .replace("{builderContact}", cardData.builderContact)
+      .replace("{plotNumber}", cardData.plotNumber);
+
     const payload = `https://wa.me/+91${
       cardData?.parentId?.phoneNumber || cardData.cpPhoneNumber
     }?text=${encodeURIComponent(text)}`;
+
     window.open(payload, "_blank");
   };
 

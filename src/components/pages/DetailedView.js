@@ -31,6 +31,7 @@ import ScrollToTop from "../customComponents/ScrollToTop.jsx";
 import Chatbot from "../customComponents/Chatbot.jsx";
 import { useRouter } from "next/router.js";
 import { generatePropertyUrl } from "../utils/propertyUtils.js";
+import Head from "next/head.js";
 
 export const CARD_DETAILS_SCREEN = {
   name: "Card Detail Screen",
@@ -252,6 +253,9 @@ function comp() {
 
   return (
     <>
+      <Head>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
       <Card className="property_page detail-screen">
         <HeaderComp />
         <div className={`component_wrapper ${"header"}`}>
@@ -272,7 +276,15 @@ function comp() {
               loadingApi: GET_CARD_DATA,
               className: "property_images_container",
               apiSliceName: GET_CARD_DATA,
-              whatsappText: `Hi! I saw a property {link} on BuilderFloor.com and I am interested in it. Is it available?`,
+              whatsappText: `Hi! I'm interested in your property on BuilderFloor.com:
+
+🏠 {link}
+🏗️ Builder: {builderName}
+📞 Contact: {builderContact}
+🔢 Plot: {plotNumber}
+
+Is it still available? When can I view it? Thanks!`,
+              // whatsappText: `Hi! I saw a property {link} on BuilderFloor.com posted by {builderName}, Builder Contact No: {builderContact} in plot number {plotNumber} and I am interested in it. Is it available?`,
               icons: {
                 sectorNumber: "/icons/location.png",
                 size: "/icons/area.png",
